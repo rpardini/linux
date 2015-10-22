@@ -410,6 +410,8 @@ struct mv88e6xxx_chip {
 
 	/* Bridge MST to SID mappings */
 	struct list_head msts;
+
+	struct dentry *dbgfs;
 };
 
 struct mv88e6xxx_bus_ops {
