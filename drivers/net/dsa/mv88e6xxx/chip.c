@@ -3177,8 +3177,13 @@ static int mv88e6390_setup_errata(struct mv88e6xxx_chip *chip)
 	return mv88e6xxx_software_reset(chip);
 }
 
+#include "mv88e6xxx_debugfs.c"
+
 static void mv88e6xxx_teardown(struct dsa_switch *ds)
 {
+	struct mv88e6xxx_chip *chip = ds->priv;
+
+	mv88e6xxx_remove_debugfs(chip);
 	mv88e6xxx_teardown_devlink_params(ds);
 	dsa_devlink_resources_unregister(ds);
 	mv88e6xxx_teardown_devlink_regions_global(ds);
@@ -3305,6 +3310,8 @@ static int mv88e6xxx_setup(struct dsa_switch *ds)
 	err = mv88e6xxx_stats_setup(chip);
 	if (err)
 		goto unlock;
+
+	mv88e6xxx_init_debugfs(chip);
 
 unlock:
 	mv88e6xxx_reg_unlock(chip);

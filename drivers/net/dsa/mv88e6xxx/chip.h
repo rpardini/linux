@@ -387,6 +387,8 @@ struct mv88e6xxx_chip {
 
 	/* devlink regions */
 	struct devlink_region *regions[_MV88E6XXX_REGION_MAX];
+
+	struct dentry *dbgfs;
 };
 
 struct mv88e6xxx_bus_ops {
