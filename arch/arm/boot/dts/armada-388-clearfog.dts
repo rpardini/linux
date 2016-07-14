@@ -47,10 +47,8 @@
 
 &eth1 {
 	/* ethernet@30000 */
-	fixed-link {
-		speed = <1000>;
-		full-duplex;
-	};
+	phy-mode = "1000base-x";
+	managed = "in-band-status";
 };
 
 &expander0 {
@@ -131,10 +129,6 @@
 				reg = <5>;
 				label = "cpu";
 				ethernet = <&eth1>;
-				fixed-link {
-					speed = <1000>;
-					full-duplex;
-				};
 			};
 
 			port@6 {
