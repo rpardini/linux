@@ -164,8 +164,8 @@
 		fcs,suspend-voltage-selector = <1>;
 		reg = <0x40>;
 		regulator-name = "vdd_cpu";
-		regulator-min-microvolt = <850000>;
-		regulator-max-microvolt = <1350000>;
+		regulator-min-microvolt = <712500>;
+		regulator-max-microvolt = <1500000>;
 		regulator-always-on;
 		regulator-boot-on;
 		regulator-enable-ramp-delay = <300>;
@@ -178,8 +178,8 @@
 		fcs,suspend-voltage-selector = <1>;
 		reg = <0x41>;
 		regulator-name = "vdd_gpu";
-		regulator-min-microvolt = <850000>;
-		regulator-max-microvolt = <1350000>;
+		regulator-min-microvolt = <712500>;
+		regulator-max-microvolt = <1500000>;
 		regulator-always-on;
 		vin-supply = <&vcc_sys>;
 	};
