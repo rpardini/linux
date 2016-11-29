@@ -59,6 +59,12 @@
 #define  PCIE_INT_INTX(i)		BIT(24+i)
 #define  PCIE_INT_PM_PME		BIT(28)
 #define  PCIE_INT_ALL_MASK		GENMASK(31, 0)
+#define  PCIE_MASK_ERR_COR		BIT(18)
+#define  PCIE_MASK_ERR_NONFATAL		BIT(17)
+#define  PCIE_MASK_ERR_FATAL		BIT(16)
+#define  PCIE_MASK_FERR_DET		BIT(10)
+#define  PCIE_MASK_NFERR_DET		BIT(9)
+#define  PCIE_MASK_CORERR_DET		BIT(8)
 #define PCIE_CTRL_OFF		0x1a00
 #define  PCIE_CTRL_X1_MODE		0x0001
 #define  PCIE_CTRL_RC_MODE		BIT(1)
@@ -618,6 +624,54 @@ mvebu_pci_bridge_emul_base_conf_read(struct pci_bridge_emul *bridge,
 	return PCI_BRIDGE_EMUL_HANDLED;
 }
 
+static void mvebu_pcie_handle_irq_change(struct mvebu_pcie_port *port)
+{
+	u32 reg, old;
+	u16 devctl, rtctl;
+
+	/*
+	 * Errors from downstream devices:
+	 *  bridge control register SERR: enables reception of errors
+	 * Errors from this device, or received errors:
+	 *  command SERR: enables ERR_NONFATAL and ERR_FATAL messages
+	 *   => when enabled, these conditions also flag SERR in status register
+	 *  devctl CERE: enables ERR_CORR messages
+	 *  devctl NFERE: enables ERR_NONFATAL messages
+	 *  devctl FERE: enables ERR_FATAL messages
+	 * Enabled messages then have three paths:
+	 *  1. rtctl: enables system error indication
+	 *  2. root error status register updated
+	 *  3. root error command register: forwarding via MSI
+	 */
+	old = mvebu_readl(port, PCIE_INT_UNMASK_OFF);
+	reg = old & ~(PCIE_INT_PM_PME | PCIE_MASK_FERR_DET |
+		      PCIE_MASK_NFERR_DET | PCIE_MASK_CORERR_DET |
+		      PCIE_MASK_ERR_COR | PCIE_MASK_ERR_NONFATAL |
+		      PCIE_MASK_ERR_FATAL);
+
+	devctl = port->bridge.pcie_conf.devctl;
+	if (devctl & PCI_EXP_DEVCTL_FERE)
+		reg |= PCIE_MASK_FERR_DET | PCIE_MASK_ERR_FATAL;
+	if (devctl & PCI_EXP_DEVCTL_NFERE)
+		reg |= PCIE_MASK_NFERR_DET | PCIE_MASK_ERR_NONFATAL;
+	if (devctl & PCI_EXP_DEVCTL_CERE)
+		reg |= PCIE_MASK_CORERR_DET | PCIE_MASK_ERR_COR;
+	if (port->bridge.conf.command & PCI_COMMAND_SERR)
+		reg |= PCIE_MASK_FERR_DET | PCIE_MASK_NFERR_DET |
+		       PCIE_MASK_ERR_FATAL | PCIE_MASK_ERR_NONFATAL;
+
+	if (!(port->bridge.conf.bridgectrl & PCI_BRIDGE_CTL_SERR))
+		reg &= ~(PCIE_MASK_ERR_COR | PCIE_MASK_ERR_NONFATAL |
+			 PCIE_MASK_ERR_FATAL);
+
+	rtctl = port->bridge.pcie_conf.rootctl;
+	if (rtctl & PCI_EXP_RTCTL_PMEIE)
+		reg |= PCIE_INT_PM_PME;
+
+	if (old != reg)
+		mvebu_writel(port, reg, PCIE_INT_UNMASK_OFF);
+}
+
 static pci_bridge_emul_read_status_t
 mvebu_pci_bridge_emul_pcie_conf_read(struct pci_bridge_emul *bridge,
 				     int reg, u32 *value)
@@ -734,6 +788,9 @@ mvebu_pci_bridge_emul_base_conf_write(struct pci_bridge_emul *bridge,
 	switch (reg) {
 	case PCI_COMMAND:
 		mvebu_writel(port, new, PCIE_CMD_OFF);
+
+		if ((old ^ new) & PCI_COMMAND_SERR)
+			mvebu_pcie_handle_irq_change(port);
 		break;
 
 	case PCI_IO_BASE:
@@ -775,6 +832,8 @@ mvebu_pci_bridge_emul_base_conf_write(struct pci_bridge_emul *bridge,
 		break;
 
 	case PCI_INTERRUPT_LINE:
+		if (((old ^ new) >> 16) & PCI_BRIDGE_CTL_SERR)
+			mvebu_pcie_handle_irq_change(port);
 		if (mask & (PCI_BRIDGE_CTL_BUS_RESET << 16)) {
 			u32 ctrl = mvebu_readl(port, PCIE_CTRL_OFF);
 			if (new & (PCI_BRIDGE_CTL_BUS_RESET << 16))
@@ -798,7 +857,18 @@ mvebu_pci_bridge_emul_pcie_conf_write(struct pci_bridge_emul *bridge,
 
 	switch (reg) {
 	case PCI_EXP_DEVCTL:
+		/*
+		 * Armada370 data says these bits must always
+		 * be zero when in root complex mode.
+		 */
+		new &= ~(PCI_EXP_DEVCTL_URRE | PCI_EXP_DEVCTL_FERE |
+			 PCI_EXP_DEVCTL_NFERE | PCI_EXP_DEVCTL_CERE);
+
 		mvebu_writel(port, new, PCIE_CAP_PCIEXP + PCI_EXP_DEVCTL);
+
+		if ((new ^ old) & (PCI_EXP_DEVCTL_FERE | PCI_EXP_DEVCTL_NFERE |
+				   PCI_EXP_DEVCTL_CERE | PCI_EXP_DEVCTL_URRE))
+			mvebu_pcie_handle_irq_change(port);
 		break;
 
 	case PCI_EXP_LNKCTL:
@@ -848,6 +918,12 @@ mvebu_pci_bridge_emul_pcie_conf_write(struct pci_bridge_emul *bridge,
 		break;
 
 	default:
+		break;
+
+	case PCI_EXP_RTCTL:
+		if ((new ^ old) & (PCI_EXP_RTCTL_SECEE | PCI_EXP_RTCTL_SENFEE |
+				   PCI_EXP_RTCTL_SEFEE | PCI_EXP_RTCTL_PMEIE))
+			mvebu_pcie_handle_irq_change(port);
 		break;
 	}
 }
