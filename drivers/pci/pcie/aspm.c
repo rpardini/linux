@@ -622,6 +622,12 @@ static void pcie_aspm_cap_init(struct pcie_link_state *link, int blacklist)
 	pcie_capability_read_dword(child, PCI_EXP_LNKCAP, &child_lnkcap);
 	pcie_capability_read_word(parent, PCI_EXP_LNKCTL, &parent_lnkctl);
 	pcie_capability_read_word(child, PCI_EXP_LNKCTL, &child_lnkctl);
+dev_info(&parent->dev, "up support %x enabled %x\n",
+	 (parent_lnkcap & PCI_EXP_LNKCAP_ASPMS) >> 10,
+	 !!(parent_lnkctl & PCI_EXP_LNKCTL_ASPMC));
+dev_info(&parent->dev, "dn support %x enabled %x\n",
+	 (child_lnkcap & PCI_EXP_LNKCAP_ASPMS) >> 10,
+	 !!(child_lnkctl & PCI_EXP_LNKCTL_ASPMC));
 
 	/*
 	 * Setup L0s state

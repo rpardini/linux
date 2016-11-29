@@ -327,6 +327,7 @@ int pcie_port_device_register(struct pci_dev *dev)
 
 	/* Get and check PCI Express port services */
 	capabilities = get_port_device_capability(dev);
+   dev_info(&dev->dev, "PCIe capabilities: 0x%x\n", capabilities);
 	if (!capabilities)
 		return 0;
 
@@ -339,6 +340,7 @@ int pcie_port_device_register(struct pci_dev *dev)
 	 * if that is to be used.
 	 */
 	status = pcie_init_service_irqs(dev, irqs, capabilities);
+	dev_info(&dev->dev, "init_service_irqs: %d\n", status);
 	if (status) {
 		capabilities &= PCIE_PORT_SERVICE_HP;
 		if (!capabilities)

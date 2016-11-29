@@ -158,6 +158,7 @@ struct pci_bridge_reg_behavior pci_regs_behavior[PCI_STD_HEADER_SIZEOF / 4] = {
 		.rw = (GENMASK(7, 0) |
 		       ((PCI_BRIDGE_CTL_PARITY |
 			 PCI_BRIDGE_CTL_SERR |
+			 /* NOTE: PCIe does not allow ISA, VGA, MASTER_ABORT */
 			 PCI_BRIDGE_CTL_ISA |
 			 PCI_BRIDGE_CTL_VGA |
 			 PCI_BRIDGE_CTL_MASTER_ABORT |
@@ -335,6 +336,7 @@ int pci_bridge_emul_init(struct pci_bridge_emul *bridge,
 	bridge->conf.header_type = PCI_HEADER_TYPE_BRIDGE;
 	bridge->conf.cache_line_size = 0x10;
 	bridge->conf.status = cpu_to_le16(PCI_STATUS_CAP_LIST);
+	bridge->conf.bridgectrl = cpu_to_le16(PCI_BRIDGE_CTL_SERR);
 	bridge->pci_regs_behavior = kmemdup(pci_regs_behavior,
 					    sizeof(pci_regs_behavior),
 					    GFP_KERNEL);
