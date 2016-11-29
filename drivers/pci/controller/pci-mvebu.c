@@ -54,7 +54,14 @@
 #define PCIE_INT_CAUSE_OFF	0x1900
 #define  PCIE_INT_PM_PME		BIT(28)
 #define PCIE_MASK_OFF		0x1910
+#define  PCIE_MASK_PM_PME		BIT(28)
 #define  PCIE_MASK_ENABLE_INTS          0x0f000000
+#define  PCIE_MASK_ERR_COR		BIT(18)
+#define  PCIE_MASK_ERR_NONFATAL		BIT(17)
+#define  PCIE_MASK_ERR_FATAL		BIT(16)
+#define  PCIE_MASK_FERR_DET		BIT(10)
+#define  PCIE_MASK_NFERR_DET		BIT(9)
+#define  PCIE_MASK_CORERR_DET		BIT(8)
 #define PCIE_CTRL_OFF		0x1a00
 #define  PCIE_CTRL_X1_MODE		0x0001
 #define  PCIE_CTRL_RC_MODE		BIT(1)
@@ -488,6 +495,54 @@ mvebu_pci_bridge_emul_base_conf_read(struct pci_bridge_emul *bridge,
 	return PCI_BRIDGE_EMUL_HANDLED;
 }
 
+static void mvebu_pcie_handle_irq_change(struct mvebu_pcie_port *port)
+{
+	u32 reg, old;
+	u16 devctl, rtctl;
+
+	/*
+	 * Errors from downstream devices:
+	 *  bridge control register SERR: enables reception of errors
+	 * Errors from this device, or received errors:
+	 *  command SERR: enables ERR_NONFATAL and ERR_FATAL messages
+	 *   => when enabled, these conditions also flag SERR in status register
+	 *  devctl CERE: enables ERR_CORR messages
+	 *  devctl NFERE: enables ERR_NONFATAL messages
+	 *  devctl FERE: enables ERR_FATAL messages
+	 * Enabled messages then have three paths:
+	 *  1. rtctl: enables system error indication
+	 *  2. root error status register updated
+	 *  3. root error command register: forwarding via MSI
+	 */
+	old = mvebu_readl(port, PCIE_MASK_OFF);
+	reg = old & ~(PCIE_MASK_PM_PME | PCIE_MASK_FERR_DET |
+		      PCIE_MASK_NFERR_DET | PCIE_MASK_CORERR_DET |
+		      PCIE_MASK_ERR_COR | PCIE_MASK_ERR_NONFATAL |
+		      PCIE_MASK_ERR_FATAL);
+
+	devctl = port->bridge.pcie_conf.devctl;
+	if (devctl & PCI_EXP_DEVCTL_FERE)
+		reg |= PCIE_MASK_FERR_DET | PCIE_MASK_ERR_FATAL;
+	if (devctl & PCI_EXP_DEVCTL_NFERE)
+		reg |= PCIE_MASK_NFERR_DET | PCIE_MASK_ERR_NONFATAL;
+	if (devctl & PCI_EXP_DEVCTL_CERE)
+		reg |= PCIE_MASK_CORERR_DET | PCIE_MASK_ERR_COR;
+	if (port->bridge.conf.command & PCI_COMMAND_SERR)
+		reg |= PCIE_MASK_FERR_DET | PCIE_MASK_NFERR_DET |
+		       PCIE_MASK_ERR_FATAL | PCIE_MASK_ERR_NONFATAL;
+
+	if (!(port->bridge.conf.bridgectrl & PCI_BRIDGE_CTL_SERR))
+		reg &= ~(PCIE_MASK_ERR_COR | PCIE_MASK_ERR_NONFATAL |
+			 PCIE_MASK_ERR_FATAL);
+
+	rtctl = port->bridge.pcie_conf.rootctl;
+	if (rtctl & PCI_EXP_RTCTL_PMEIE)
+		reg |= PCIE_MASK_PM_PME;
+
+	if (old != reg)
+		mvebu_writel(port, reg, PCIE_MASK_OFF);
+}
+
 static pci_bridge_emul_read_status_t
 mvebu_pci_bridge_emul_pcie_conf_read(struct pci_bridge_emul *bridge,
 				     int reg, u32 *value)
@@ -534,6 +589,30 @@ mvebu_pci_bridge_emul_pcie_conf_read(struct pci_bridge_emul *bridge,
 
 	case PCI_EXP_LNKCTL2:
 		*value = mvebu_readl(port, PCIE_CAP_PCIEXP + PCI_EXP_LNKCTL2);
+		break;
+
+	default:
+		return PCI_BRIDGE_EMUL_NOT_HANDLED;
+	}
+
+	return PCI_BRIDGE_EMUL_HANDLED;
+}
+
+static pci_bridge_emul_read_status_t
+mvebu_pci_bridge_emul_pcie_ext_read(struct pci_bridge_emul *bridge,
+				    int reg, u32 *value)
+{
+	struct mvebu_pcie_port *port = bridge->data;
+
+	switch (reg) {
+	case 0x00 ... 0x28:
+		*value = mvebu_readl(port, 0x100 + (reg & ~3));
+		break;
+
+	case PCI_ERR_ROOT_COMMAND:
+	case PCI_ERR_ROOT_STATUS:
+	case PCI_ERR_ROOT_ERR_SRC:
+		*value = 0;
 		break;
 
 	default:
