@@ -3283,6 +3283,20 @@ static int mv88e6xxx_setup_upstream_port(struct mv88e6xxx_chip *chip, int port)
 	return 0;
 }
 
+static int mv88e6xxx_setup_led(struct mv88e6xxx_chip *chip, int port)
+{
+	int err;
+
+	/* LED0 = link/activity, LED1 = 10/100 */
+	err = mv88e6xxx_wait_bit(chip, chip->info->port_base_addr + port,
+				 MV88E6XXX_PORT_LED_CONTROL, 15, 0);
+	if (err)
+		return err;
+
+	return mv88e6xxx_write(chip, chip->info->port_base_addr + port,
+			      MV88E6XXX_PORT_LED_CONTROL, 0x80b3);
+}
+
 static int mv88e6xxx_setup_port(struct mv88e6xxx_chip *chip, int port)
 {
 	struct device_node *phy_handle = NULL;
@@ -3368,6 +3382,12 @@ static int mv88e6xxx_setup_port(struct mv88e6xxx_chip *chip, int port)
 	err = mv88e6xxx_setup_egress_floods(chip, port);
 	if (err)
 		return err;
+
+	if (chip->info->num_gpio) {
+		err = mv88e6xxx_setup_led(chip, port);
+		if (err)
+			return err;
+	}
 
 	/* Port Control 2: don't force a good FCS, set the MTU size to
 	 * 10222 bytes, disable 802.1q tags checking, don't discard
