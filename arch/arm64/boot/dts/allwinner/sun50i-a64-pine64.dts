@@ -35,6 +35,11 @@
 			};
 		};
 	};
+
+	wifi_pwrseq: wifi_pwrseq {
+		compatible = "mmc-pwrseq-simple";
+		reset-gpios = <&r_pio 0 2 GPIO_ACTIVE_LOW>; /* PL2 */
+	};
 };
 
 &codec {
@@ -134,9 +139,10 @@
 	pinctrl-0 = <&mmc1_pins>;
 	vmmc-supply = <&reg_dldo4>;
 	vqmmc-supply = <&reg_eldo1>;
-	bus-width = <4>;
+	mmc-pwrseq = <&wifi_pwrseq>;
 	non-removable;
-	status = "disabled";
+	bus-width = <4>;
+	status = "okay";
 };
 
 &ohci0 {
