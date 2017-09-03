@@ -56,6 +56,7 @@ config MACH_ARMADA_375
 config MACH_ARMADA_38X
 	bool "Marvell Armada 380/385 boards"
 	depends on ARCH_MULTI_V7
+	select ARCH_WANT_LIBATA_LEDS
 	select ARM_ERRATA_720789
 	select PL310_ERRATA_753970
 	select ARM_GIC
