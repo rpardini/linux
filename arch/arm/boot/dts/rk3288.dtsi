@@ -448,13 +448,6 @@
 	};
 
 	thermal-zones {
-		reserve_thermal: reserve-thermal {
-			polling-delay-passive = <1000>; /* milliseconds */
-			polling-delay = <5000>; /* milliseconds */
-
-			thermal-sensors = <&tsadc 0>;
-		};
-
 		cpu_thermal: cpu-thermal {
 			polling-delay-passive = <100>; /* milliseconds */
 			polling-delay = <5000>; /* milliseconds */
@@ -525,6 +518,13 @@
 						<&gpu THERMAL_NO_LIMIT THERMAL_NO_LIMIT>;
 				};
 			};
+		};
+
+		reserve_thermal: reserve-thermal {
+			polling-delay-passive = <1000>; /* milliseconds */
+			polling-delay = <5000>; /* milliseconds */
+
+			thermal-sensors = <&tsadc 0>;
 		};
 	};
 
