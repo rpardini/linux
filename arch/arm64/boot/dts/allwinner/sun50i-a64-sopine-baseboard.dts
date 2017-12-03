@@ -115,7 +115,7 @@
 	vqmmc-supply = <&reg_eldo1>;
 	bus-width = <4>;
 	non-removable;
-	status = "disabled";
+	status = "okay";
 };
 
 &mmc2 {
