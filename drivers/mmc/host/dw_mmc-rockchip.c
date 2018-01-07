@@ -12,6 +12,11 @@
 #include <linux/pm_runtime.h>
 #include <linux/slab.h>
 
+#include <linux/regulator/consumer.h>
+#include <linux/reboot.h>
+#include <linux/delay.h>
+#include "../core/core.h"
+
 #include "dw_mmc.h"
 #include "dw_mmc-pltfm.h"
 
@@ -340,6 +345,66 @@ static const struct of_device_id dw_mci_rockchip_match[] = {
 };
 MODULE_DEVICE_TABLE(of, dw_mci_rockchip_match);
 
+struct dw_mci_rockchip_broken_boards_data {
+	struct notifier_block reset_nb;
+	struct platform_device *pdev;
+};
+
+/* This reboot handler handles cases where disabling the SDMMC on
+ * reboot will cause the hardware to be unable to start correctly
+ * after rebooting.
+ * 
+ * This happens with Tinkerboard systems...
+ */
+static int dw_mci_rockchip_broken_boards_reset_nb(
+	struct notifier_block *this,
+	unsigned long mode, void *cmd)
+{
+	struct dw_mci_rockchip_broken_boards_data const *data =
+		container_of(this,
+			struct dw_mci_rockchip_broken_boards_data,
+			reset_nb);
+	struct dw_mci *host = platform_get_drvdata(data->pdev);
+	struct mmc_host *mmc = host->slot->mmc;
+
+	printk(KERN_ERR "Meow.\n");
+
+	mmc_power_off(mmc);
+
+	mdelay(20);
+
+	if (!IS_ERR(mmc->supply.vmmc))
+		regulator_enable(mmc->supply.vmmc);
+
+	if (!IS_ERR(mmc->supply.vqmmc))
+		regulator_set_voltage(mmc->supply.vqmmc, 3000000, 3300000);
+
+	printk(KERN_ERR "woeM.\n");
+
+	return NOTIFY_DONE;
+}
+
+static void dw_mci_rockchip_register_broken_boards_reboot_handler(
+	struct platform_device *pdev)
+{
+	struct dw_mci_rockchip_broken_boards_data *data;
+
+	if (!of_machine_is_compatible("asus,rk3288-tinker"))
+		return;
+
+	data = devm_kzalloc(&pdev->dev, sizeof(*data), GFP_KERNEL);
+
+	if (!data)
+		return;
+
+	data->reset_nb.notifier_call =
+		dw_mci_rockchip_broken_boards_reset_nb;
+	data->reset_nb.priority = 255;
+	register_restart_handler(&data->reset_nb);
+
+	data->pdev = pdev;
+}
+
 static int dw_mci_rockchip_probe(struct platform_device *pdev)
 {
 	const struct dw_mci_drv_data *drv_data;
@@ -367,6 +432,7 @@ static int dw_mci_rockchip_probe(struct platform_device *pdev)
 	}
 
 	pm_runtime_put_autosuspend(&pdev->dev);
+	dw_mci_rockchip_register_broken_boards_reboot_handler(pdev);
 
 	return 0;
 }
