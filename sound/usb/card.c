@@ -520,6 +520,14 @@ static void usb_audio_make_shortname(struct usb_device *dev,
 	}
 
 	strim(card->shortname);
+
+	/* Tinker Board ALC4040 CODEC	*/
+
+	if(USB_ID_VENDOR(chip->usb_id) == 0x0bda &&
+		USB_ID_PRODUCT(chip->usb_id) == 0x481a) {
+			strlcat(card->shortname, " OnBoard", sizeof(card->shortname));
+	}
+	
 }
 
 static void usb_audio_make_longname(struct usb_device *dev,
