@@ -6,6 +6,7 @@
 menu "Character devices"
 
 source "drivers/tty/Kconfig"
+source "drivers/char/rockchip/Kconfig"
 
 config TTY_PRINTK
 	tristate "TTY driver to output user messages via printk"
