@@ -561,3 +561,6 @@
 &wdt {
 	status = "okay";
 };
+&gpiomem {
+    status = "okay";
+};
