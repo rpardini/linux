@@ -99,6 +99,25 @@
 	supports-sdio;
 };
 
+&spi2 {
+	max-freq = <50000000>;
+	status = "okay";
+
+	spidev@0 {
+		compatible = "rockchip,spi_tinker";
+		reg = <0x0 0>;
+		spi-max-frequency = <50000000>;
+		spi-cpha = <1>;
+	};
+
+	spidev@1 {
+		compatible = "rockchip,spi_tinker";
+		reg = <0x1>;
+		spi-max-frequency = <50000000>;
+		spi-cpha = <1>;
+	};
+};
+
 &uart0 {
 	pinctrl-names = "default";
 	pinctrl-0 = <&uart0_xfer>, <&uart0_cts>, <&uart0_rts>;
