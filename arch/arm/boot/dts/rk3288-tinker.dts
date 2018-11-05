@@ -40,6 +40,31 @@
 	};
 };
 
+&i2c1 {
+	status = "okay";
+};
+
+&i2c2 {
+	afc0:af-controller@0 {
+		status = "okay";
+		compatible = "silicon touch,vm149C-v4l2-i2c-subdev";
+		reg = <0x0 0x0c>;
+	};
+
+	eeprom:m24c08@50 {
+		compatible = "at,24c08";
+		reg = <0x50>;
+	};
+};
+
+&i2c3 {
+	status = "okay";
+};
+
+&i2c4 {
+	status = "okay";
+};
+
 &io_domains {
 	wifi-supply = <&vcc_18>;
 };
