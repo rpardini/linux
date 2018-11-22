@@ -20,6 +20,7 @@
 #include <linux/regulator/of_regulator.h>
 #include <linux/regmap.h>
 #include <dt-bindings/regulator/active-semi,8865-regulator.h>
+#include <linux/reboot.h>
 
 /*
  * ACT8600 Global Register Map.
@@ -140,6 +141,8 @@
  */
 #define	ACT8865_VOLTAGE_NUM	64
 #define ACT8600_SUDCDC_VOLTAGE_NUM	256
+
+#define ACT8846_SIPC_MASK 0x01
 
 struct act8865 {
 	struct regmap *regmap;
@@ -651,6 +654,22 @@ static int act8600_charger_probe(struct device *dev, struct regmap *regmap)
 	return PTR_ERR_OR_ZERO(charger);
 }
 
+static int act8846_power_cycle(struct notifier_block *this,
+	unsigned long code, void *unused)
+{
+	struct act8865 *act8846;
+
+	act8846 = i2c_get_clientdata(act8865_i2c_client);
+	regmap_write(act8846->regmap, ACT8846_GLB_OFF_CTRL, ACT8846_SIPC_MASK);
+
+	return NOTIFY_DONE;
+}
+
+static struct notifier_block act8846_restart_handler = {
+	.notifier_call = act8846_power_cycle,
+	.priority = 129,
+};
+
 static int act8865_pmic_probe(struct i2c_client *client,
 			      const struct i2c_device_id *i2c_id)
 {
@@ -725,6 +744,8 @@ static int act8865_pmic_probe(struct i2c_client *client,
 	}
 
 	if (of_device_is_system_power_controller(dev->of_node)) {
+		int ret;
+
 		if (!pm_power_off && (off_reg > 0)) {
 			act8865_i2c_client = client;
 			act8865->off_reg = off_reg;
@@ -732,6 +753,14 @@ static int act8865_pmic_probe(struct i2c_client *client,
 			pm_power_off = act8865_power_off;
 		} else {
 			dev_err(dev, "Failed to set poweroff capability, already defined\n");
+		}
+
+		if (type == ACT8846) {
+			act8865_i2c_client = client;
+			ret = register_restart_handler(&act8846_restart_handler);
+			if (ret)
+				pr_err("%s: cannot register restart handler, %d\n",
+					__func__, ret);
 		}
 	}
 
