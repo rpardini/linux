@@ -110,6 +110,13 @@
 		vin-supply = <&vcc5v0_sys>;
 	};
 
+  vcc_phy: vcc-phy-regulator {
+		compatible = "regulator-fixed";
+		regulator-name = "vcc_phy";
+		regulator-always-on;
+		regulator-boot-on;
+	};
+
 	vcc5v0_otg: vcc5v0-otg {
 		compatible = "regulator-fixed";
 		regulator-name = "vcc5v0_otg";
@@ -167,6 +174,17 @@
 	/* num-slots = <1>; */
 	pinctrl-0 = <&sdmmc_clk &sdmmc_cmd &sdmmc_det &sdmmc_bus4>;
 	card-detect-delay = <800>; // Confirm if right value - <200>
+	status = "okay";
+};
+
+&gmac {
+	phy-supply = <&vcc_phy>;
+	clock_in_out = "output";
+	assigned-clocks = <&cru SCLK_MAC>;
+	assigned-clock-parents = <&cru SCLK_MAC_SRC>;
+	snps,reset-gpio = <&gpio0 RK_PA7 GPIO_ACTIVE_LOW>;
+	snps,reset-active-low;
+	snps,reset-delays-us = <0 50000 50000>;
 	status = "okay";
 };
 
