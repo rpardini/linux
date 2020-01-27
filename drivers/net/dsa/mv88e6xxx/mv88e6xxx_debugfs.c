@@ -668,6 +668,7 @@ static const struct file_operations mv88e6xxx_vlan_table_fops = {
 
 static int mv88e6xxx_pvt_show(struct seq_file *s, void *p)
 {
+#if 0
 	struct mv88e6xxx_chip *chip = s->private;
 	struct dsa_switch_tree *dst = chip->ds->dst;
 	int port, src_dev, src_port;
@@ -716,8 +717,10 @@ static int mv88e6xxx_pvt_show(struct seq_file *s, void *p)
 
 unlock:
 	mutex_unlock(&chip->reg_lock);
-
 	return err;
+#else
+	return 0;
+#endif
 }
 
 static ssize_t mv88e6xxx_pvt_write(struct file *file, const char __user *buf,
