@@ -39,6 +39,8 @@ static inline void hci_uart_tx_complete(struct hci_uart *hu, int pkt_type)
 		hdev->stat.sco_tx++;
 		break;
 	}
+
+clear_bit(HCI_UART_REGISTERED, &hu->flags);
 }
 
 static inline struct sk_buff *hci_uart_dequeue(struct hci_uart *hu)
