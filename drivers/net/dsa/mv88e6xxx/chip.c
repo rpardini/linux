@@ -958,6 +958,18 @@ static void mv88e6xxx_mac_link_up(struct dsa_switch *ds, int port,
 		if (err)
 			goto error;
 
+		/* The link parameters passed in are the media side parameters.
+		 * If in RXAUI, XAUI or 10GBASE-R with a rate matching PHY, we
+		 * need to operate our link at 10G.  Only full duplex is
+		 * supported at this speed.
+		 */
+		if (interface == PHY_INTERFACE_MODE_RXAUI ||
+		    interface == PHY_INTERFACE_MODE_XAUI ||
+		    interface == PHY_INTERFACE_MODE_10GBASER) {
+			speed = SPEED_10000;
+			duplex = DUPLEX_FULL;
+		}
+
 		if (ops->port_set_speed_duplex) {
 			err = ops->port_set_speed_duplex(chip, port,
 							 speed, duplex);
