@@ -824,7 +824,7 @@
 
 	vcc3v0-sd {
 		sdmmc0_pwr_h: sdmmc0-pwr-h {
-			rockchip,pins = <0 RK_PA1 RK_FUNC_GPIO &pcfg_pull_up>;
+			rockchip,pins = <0 RK_PA1 RK_FUNC_GPIO &pcfg_output_high>;
 		};
 	};
 };
