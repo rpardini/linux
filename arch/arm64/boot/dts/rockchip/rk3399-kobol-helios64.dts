@@ -74,14 +74,14 @@
 		#clock-cells = <0>;
 	};
 
-	fan1 {
+	fan1: p7-fan {
 		/* fan connected to P7 */
 		compatible = "pwm-fan";
 		pwms = <&pwm0 0 40000 0>;
 		cooling-levels = <0 80 170 255>;
 	};
 
-	fan2 {
+	fan2: p6-fan {
 		/* fan connected to P6 */
 		compatible = "pwm-fan";
 		pwms = <&pwm1 0 40000 0>;
