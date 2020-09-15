@@ -173,20 +173,23 @@
 		};
 	};
 
-	leds {
+	system_leds: system-gpio-leds {
+		status = "okay";
 		compatible = "gpio-leds";
 		pinctrl-names = "default";
-		pinctrl-0 = <&sys_grn_led_on &sys_red_led_on>;
+		pinctrl-0 = <&system_led>;
 
-		led-0 {
-			label = "helios64:green:status";
+		status-led {
+			label = "helios64::status";
 			gpios = <&gpio0 RK_PB4 GPIO_ACTIVE_HIGH>;
+			linux,default-trigger = "none";
 			default-state = "on";
 		};
 
-		led-1 {
+		fault-led {
 			label = "helios64:red:fault";
 			gpios = <&gpio0 RK_PB5 GPIO_ACTIVE_HIGH>;
+			linux,default-trigger = "panic";
 			default-state = "keep";
 		};
 	};
@@ -578,12 +581,9 @@
 	};
 
 	leds {
-		sys_grn_led_on: sys-grn-led-on {
-			rockchip,pins = <0 RK_PB4 RK_FUNC_GPIO &pcfg_pull_down>;
-		};
-
-		sys_red_led_on: sys-red-led-on {
-			rockchip,pins = <0 RK_PB5 RK_FUNC_GPIO &pcfg_pull_down>;
+		system_led: sys-led {
+			rockchip,pins = <0 RK_PB4 RK_FUNC_GPIO &pcfg_pull_down>,
+					<0 RK_PB5 RK_FUNC_GPIO &pcfg_pull_down>;
 		};
 
 		network_act: network-act {
