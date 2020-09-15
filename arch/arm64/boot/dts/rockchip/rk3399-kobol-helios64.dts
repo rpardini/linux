@@ -772,6 +772,14 @@
 	status = "okay";
 };
 
+&u2phy0 {
+	status = "okay";
+
+	u2phy0_host: host-port {
+		status = "okay";
+	};
+};
+
 &u2phy1 {
 	status = "okay";
 
@@ -783,6 +791,14 @@
 };
 
 &uart2 {
+	status = "okay";
+};
+
+&usb_host0_ehci {
+	status = "okay";
+};
+
+&usb_host0_ohci {
 	status = "okay";
 };
 
