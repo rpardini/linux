@@ -625,12 +625,14 @@
 		compatible = "silergy,syr827";
 		reg = <0x40>;
 		fcs,suspend-voltage-selector = <1>;
+		pinctrl-names = "default";
+		pinctrl-0 = <&vsel1_gpio>;
 		regulator-name = "vdd_cpu_b";
 		regulator-always-on;
 		regulator-boot-on;
 		regulator-min-microvolt = <712500>;
 		regulator-max-microvolt = <1500000>;
-		regulator-ramp-delay = <1000>;
+		regulator-ramp-delay = <40000>;
 		vin-supply = <&vcc5v0_sys>;
 
 		regulator-state-mem {
@@ -791,6 +793,10 @@
 	pmic {
 		pmic_int_l: pmic-int-l {
 			rockchip,pins = <0 RK_PB2 RK_FUNC_GPIO &pcfg_pull_none>;
+		};
+
+		vsel1_gpio: vsel1-gpio {
+			rockchip,pins = <1 RK_PC1 RK_FUNC_GPIO &pcfg_pull_down>;
 		};
 
 		vsel2_gpio: vsel2-gpio {
