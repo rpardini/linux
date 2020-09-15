@@ -88,6 +88,15 @@
 		cooling-levels = <0 80 170 255>;
 	};
 
+	gpio-charger {
+		compatible = "gpio-charger";
+		charger-type = "mains";
+		gpios = <&gpio0 RK_PA2 GPIO_ACTIVE_HIGH>;
+		charge-status-gpios = <&gpio2 RK_PD3 GPIO_ACTIVE_HIGH>;
+		pinctrl-names = "default";
+		pinctrl-0 = <&ac_present_ap>, <&charger_status>;
+	};
+
 	gpio-keys {
 		compatible = "gpio-keys";
 		autorepeat;
@@ -611,6 +620,16 @@
 
 		user1btn: usr1btn {
 			rockchip,pins = <0 RK_PA3 RK_FUNC_GPIO &pcfg_pull_none>;
+		};
+	};
+
+	charger {
+		ac_present_ap: ac-present-ap {
+			rockchip,pins = <0 RK_PA2 RK_FUNC_GPIO &pcfg_pull_none>;
+		};
+
+		charger_status: charger-status {
+			rockchip,pins = <2 RK_PD3 RK_FUNC_GPIO &pcfg_pull_none>;
 		};
 	};
 
