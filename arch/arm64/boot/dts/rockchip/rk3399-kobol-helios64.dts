@@ -780,6 +780,16 @@
 	};
 };
 
+/* I2C on UEXT */
+&i2c7 {
+	status = "okay";
+};
+
+/* External I2C */
+&i2c8 {
+	status = "okay";
+};
+
 &i2s2 {
 	status = "okay";
 };
