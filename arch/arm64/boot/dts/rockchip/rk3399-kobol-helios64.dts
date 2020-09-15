@@ -194,6 +194,17 @@
 		};
 	};
 
+	pwmleds {
+		compatible = "pwm-leds";
+		status = "okay";
+
+		power-led {
+			label = "helios64:blue:power-status";
+			pwms = <&pwm3 0 2000000000 0>;
+			max-brightness = <255>;
+		};
+	};
+
 	hdd_a_power: regulator-hdd-a-power {
 		compatible = "regulator-fixed";
 		enable-active-high;
@@ -663,6 +674,10 @@
 
 &pwm1 {
 	/* pwm-fan on P6 */
+	status = "okay";
+};
+
+&pwm3 {
 	status = "okay";
 };
 
