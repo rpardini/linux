@@ -123,6 +123,13 @@
 		};
 	};
 
+	hdmi_dp_sound: hdmi-dp-sound {
+		status = "okay";
+		compatible = "rockchip,rk3399-hdmi-dp";
+		rockchip,cpu = <&i2s2>;
+		rockchip,codec = <&cdn_dp>;
+	};
+
 	io_leds: io-gpio-leds {
 		status = "okay";
 		compatible = "gpio-leds";
@@ -771,6 +778,10 @@
 			};
 		};
 	};
+};
+
+&i2s2 {
+	status = "okay";
 };
 
 &io_domains {
