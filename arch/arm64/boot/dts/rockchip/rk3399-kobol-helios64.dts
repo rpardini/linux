@@ -111,6 +111,68 @@
 		};
 	};
 
+	io_leds: io-gpio-leds {
+		status = "okay";
+		compatible = "gpio-leds";
+		pinctrl-names = "default";
+		pinctrl-0 = <&network_act>, <&usb3_act>,
+			<&sata_act>, <&sata_err_led>;
+
+		network	{
+			label = "helios64:blue:net";
+			gpios = <&gpio0 RK_PA4 GPIO_ACTIVE_HIGH>;
+			linux,default-trigger = "netdev";
+			default-state = "off";
+		};
+
+		sata	{
+			label = "helios64:blue:hdd-status";
+			gpios = <&gpio4 RK_PD4 GPIO_ACTIVE_HIGH>;
+			linux,default-trigger = "disk-activity";
+			default-state = "off";
+		};
+
+		sata_err1 {
+			label = "helios64:red:ata1-err";
+			gpios = <&gpio2 RK_PA2 GPIO_ACTIVE_HIGH>;
+			default-state = "keep";
+		};
+
+		sata_err2 {
+			label = "helios64:red:ata2-err";
+			gpios = <&gpio2 RK_PA3 GPIO_ACTIVE_HIGH>;
+			default-state = "keep";
+		};
+
+		sata_err3 {
+			label = "helios64:red:ata3-err";
+			gpios = <&gpio2 RK_PA4 GPIO_ACTIVE_HIGH>;
+			default-state = "keep";
+		};
+
+		sata_err4 {
+			label = "helios64:red:ata4-err";
+			gpios = <&gpio2 RK_PA5 GPIO_ACTIVE_HIGH>;
+			default-state = "keep";
+		};
+
+		sata_err5 {
+			label = "helios64:red:ata5-err";
+			gpios = <&gpio2 RK_PA6 GPIO_ACTIVE_HIGH>;
+			default-state = "keep";
+		};
+
+		usb3 {
+			label = "helios64:blue:usb3";
+			gpios = <&gpio0 RK_PB3 GPIO_ACTIVE_HIGH>;
+			trigger-sources = <&int_hub_port1>,
+					<&int_hub_port2>,
+					<&int_hub_port3>;
+			linux,default-trigger = "usbport";
+			default-state = "off";
+		};
+	};
+
 	leds {
 		compatible = "gpio-leds";
 		pinctrl-names = "default";
@@ -522,6 +584,26 @@
 
 		sys_red_led_on: sys-red-led-on {
 			rockchip,pins = <0 RK_PB5 RK_FUNC_GPIO &pcfg_pull_down>;
+		};
+
+		network_act: network-act {
+			rockchip,pins = <0 RK_PA4 RK_FUNC_GPIO &pcfg_pull_down>;
+		};
+
+		usb3_act: usb3-act {
+			rockchip,pins = <0 RK_PB3 RK_FUNC_GPIO &pcfg_pull_down>;
+		};
+
+		sata_act: sata-act {
+			rockchip,pins = <4 RK_PD4 RK_FUNC_GPIO &pcfg_pull_down>;
+		};
+
+		sata_err_led: sata-err-led {
+			rockchip,pins = <2 RK_PA2 RK_FUNC_GPIO &pcfg_pull_down>,
+					<2 RK_PA3 RK_FUNC_GPIO &pcfg_pull_down>,
+					<2 RK_PA4 RK_FUNC_GPIO &pcfg_pull_down>,
+					<2 RK_PA5 RK_FUNC_GPIO &pcfg_pull_down>,
+					<2 RK_PA6 RK_FUNC_GPIO &pcfg_pull_down>;
 		};
 	};
 
