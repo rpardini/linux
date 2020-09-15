@@ -505,6 +505,16 @@
 				};
 			};
 
+			/* not used */
+			vcc1v8_dvp: LDO_REG1 {
+				regulator-name = "vcc1v8_dvp";
+			};
+
+			/* not used */
+			vcc3v0_touch: LDO_REG2 {
+				regulator-name = "vcc3v0_touch";
+			};
+
 			vcc1v8_s3: LDO_REG3 {
 				regulator-name = "vcc1v8_s3";
 				regulator-always-on;
@@ -530,6 +540,11 @@
 				};
 			};
 
+			/* not used */
+			vcca3v0_codec: LDO_REG5 {
+				regulator-name = "vcca3v0_codec";
+			};
+
 			vcc1v5_s3: LDO_REG6 {
 				regulator-name = "vcc1v5_s3";
 				regulator-always-on;
@@ -540,6 +555,11 @@
 					regulator-on-in-suspend;
 					regulator-suspend-microvolt = <1500000>;
 				};
+			};
+
+			/* not used */
+			vcca1v8_codec: LDO_REG7 {
+				regulator-name = "vcca1v8_codec";
 			};
 
 			vcc3v0_s3: LDO_REG8 {
@@ -564,6 +584,11 @@
 				regulator-state-mem {
 					regulator-off-in-suspend;
 				};
+			};
+
+			/* not used */
+			vcc3v3_s0: SWITCH_REG2 {
+				regulator-name = "vcc3v3_s0";
 			};
 		};
 	};
