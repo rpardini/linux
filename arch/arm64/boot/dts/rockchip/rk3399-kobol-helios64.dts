@@ -776,6 +776,7 @@
 	status = "okay";
 
 	u2phy0_host: host-port {
+		phy-supply = <&vcc5v0_usb>;
 		status = "okay";
 	};
 };
@@ -783,9 +784,8 @@
 &u2phy1 {
 	status = "okay";
 
-	otg-port {
+	u2phy1_otg: otg-port {
 		/* phy for &usbdrd_dwc3_1 */
-		phy-supply = <&vcc5v0_usb>;
 		status = "okay";
 	};
 };
