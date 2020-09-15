@@ -387,6 +387,21 @@
 		regulator-max-microvolt = <12000000>;
 		vin-supply = <&vcc12v_dcin_bkup>;
 	};
+
+	vdd_log: vdd-log {
+		compatible = "pwm-regulator";
+		pwms = <&pwm2 0 25000 1>;
+		pwm-supply = <&vcc5v0_sys>;
+		regulator-name = "vdd_log";
+		regulator-always-on;
+		regulator-boot-on;
+		regulator-min-microvolt = <830000>;
+		regulator-max-microvolt = <1400000>;
+		regulator-state-mem {
+			regulator-on-in-suspend;
+			regulator-suspend-microvolt = <900000>;
+		};
+	};
 };
 
 &cpu_b0 {
@@ -470,6 +485,19 @@
 		#clock-cells = <1>;
 
 		regulators {
+			vdd_center: DCDC_REG1 {
+				regulator-name = "vdd_center";
+				regulator-always-on;
+				regulator-boot-on;
+				regulator-min-microvolt = <800000>;
+				regulator-max-microvolt = <1000000>;
+				regulator-ramp-delay = <6001>;
+				regulator-state-mem {
+					regulator-on-in-suspend;
+					regulator-suspend-microvolt = <950000>;
+				};
+			};
+
 			vdd_cpu_l: DCDC_REG2 {
 				regulator-name = "vdd_cpu_l";
 				regulator-always-on;
@@ -807,6 +835,10 @@
 
 &pwm1 {
 	/* pwm-fan on P6 */
+	status = "okay";
+};
+
+&pwm2 {
 	status = "okay";
 };
 
