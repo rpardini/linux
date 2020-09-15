@@ -11,6 +11,7 @@
  */
 
 /dts-v1/;
+#include <dt-bindings/input/input.h>
 #include "rk3399.dtsi"
 
 / {
@@ -21,6 +22,20 @@
 		ethernet0 = &gmac;
 		mmc0 = &sdmmc;
 		mmc1 = &sdhci;
+	};
+
+	adc-keys {
+		compatible = "adc-keys";
+		io-channels = <&saradc 1>;
+		io-channel-names = "buttons";
+		keyup-threshold-microvolt = <1800000>;
+		poll-interval = <100>;
+
+		user2-button {
+			label = "User Button 2";
+			linux,code = <BTN_1>;
+			press-threshold-microvolt = <100000>;
+		};
 	};
 
 	avdd_0v9_s0: regulator-avdd-0v9-s0 {
@@ -66,6 +81,29 @@
 		compatible = "pwm-fan";
 		pwms = <&pwm1 0 40000 0>;
 		cooling-levels = <0 80 170 255>;
+	};
+
+	gpio-keys {
+		compatible = "gpio-keys";
+		autorepeat;
+		pinctrl-names = "default";
+		pinctrl-0 = <&pwrbtn>, <&user1btn>, <&wake_on_lan>;
+
+		power {
+			debounce-interval = <100>;
+			gpios = <&gpio0 RK_PA5 GPIO_ACTIVE_LOW>;
+			label = "Power";
+			linux,code = <KEY_POWER>;
+			wakeup-source;
+		};
+
+		user1-button {
+			debounce-interval = <100>;
+			gpios = <&gpio0 RK_PA3 GPIO_ACTIVE_LOW>;
+			label = "User Button 1";
+			linux,code = <BTN_0>;
+			wakeup-source;
+		};
 	};
 
 	leds {
@@ -352,6 +390,18 @@
 				};
 			};
 
+			vcc1v8_s3: LDO_REG3 {
+				regulator-name = "vcc1v8_s3";
+				regulator-always-on;
+				regulator-boot-on;
+				regulator-min-microvolt = <1800000>;
+				regulator-max-microvolt = <1800000>;
+				regulator-state-mem {
+					regulator-on-in-suspend;
+					regulator-suspend-microvolt = <1800000>;
+				};
+			};
+
 			vcc_sdio_s0: LDO_REG4 {
 				regulator-name = "vcc_sdio_s0";
 				regulator-always-on;
@@ -434,6 +484,16 @@
 };
 
 &pinctrl {
+	buttons {
+		pwrbtn: pwrbtn {
+			rockchip,pins = <0 RK_PA5 RK_FUNC_GPIO &pcfg_pull_up>;
+		};
+
+		user1btn: usr1btn {
+			rockchip,pins = <0 RK_PA3 RK_FUNC_GPIO &pcfg_pull_none>;
+		};
+	};
+
 	gmac {
 		gphy_reset: gphy-reset {
 			rockchip,pins = <3 RK_PB7 RK_FUNC_GPIO &pcfg_output_low>;
@@ -447,6 +507,12 @@
 
 		sys_red_led_on: sys-red-led-on {
 			rockchip,pins = <0 RK_PB5 RK_FUNC_GPIO &pcfg_pull_down>;
+		};
+	};
+
+	misc {
+		wake_on_lan: wake-on-lan {
+			rockchip,pins = <0 RK_PB0 RK_FUNC_GPIO &pcfg_pull_none>;
 		};
 	};
 
@@ -500,6 +566,11 @@
 
 &pwm1 {
 	/* pwm-fan on P6 */
+	status = "okay";
+};
+
+&saradc {
+	vref-supply = <&vcc1v8_s3>;
 	status = "okay";
 };
 
