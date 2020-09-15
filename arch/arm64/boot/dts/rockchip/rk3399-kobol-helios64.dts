@@ -244,7 +244,7 @@
 		compatible = "regulator-fixed";
 		enable-active-high;
 		gpio = <&gpio1 RK_PD0 GPIO_ACTIVE_HIGH>;
-		pinctrl-0 = <&pcie_pwr>;
+		pinctrl-0 = <&pcie_pwr_en>;
 		pinctrl-names = "default";
 		regulator-boot-on;
 		regulator-name = "pcie_power";
@@ -784,7 +784,7 @@
 	};
 
 	pcie {
-		pcie_pwr: pcie-pwr {
+		pcie_pwr_en: pcie-pwr-en {
 			rockchip,pins =
 				<1 RK_PD0 RK_FUNC_GPIO &pcfg_pull_none>;
 		};
