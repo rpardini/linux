@@ -1919,7 +1919,7 @@ out:
 	return ret;
 }
 
-static void vop_plane_add_properties(struct drm_plane *plane,
+static void vop_plane_add_properties(struct drm_plane *plane, int zpos,
 				     const struct vop_win_data *win_data)
 {
 	unsigned int flags = 0;
@@ -1929,6 +1929,8 @@ static void vop_plane_add_properties(struct drm_plane *plane,
 	if (flags)
 		drm_plane_create_rotation_property(plane, DRM_MODE_ROTATE_0,
 						   DRM_MODE_ROTATE_0 | flags);
+
+	drm_plane_create_zpos_immutable_property(plane, zpos);
 }
 
 static int vop_create_crtc(struct vop *vop)
@@ -1969,7 +1971,7 @@ static int vop_create_crtc(struct vop *vop)
 
 		plane = &vop_win->base;
 		drm_plane_helper_add(plane, &plane_helper_funcs);
-		vop_plane_add_properties(plane, win_data);
+		vop_plane_add_properties(plane, i, win_data);
 		if (plane->type == DRM_PLANE_TYPE_PRIMARY)
 			primary = plane;
 		else if (plane->type == DRM_PLANE_TYPE_CURSOR)
