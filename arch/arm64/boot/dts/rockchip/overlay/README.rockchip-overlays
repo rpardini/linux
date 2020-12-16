@@ -29,6 +29,11 @@ I2C8 pins (pi-conn) (pi-conn) (SCL, SDA): GPIO1-C5, GPIO1-C4
 Enables PCIe Gen2 link speed on RK3399.
 WARNING! Not officially supported by Rockchip!!!
 
+### rk3399-opp-2ghz
+
+Adds the 2GHz big and 1.5 GHz LITTLE opps for overclocking
+WARNING! Not officially supported by Rockchip!!!
+
 ### spi-jedec-nor
 
 Activates MTD support for JEDEC compatible SPI NOR flash chips on SPI bus
