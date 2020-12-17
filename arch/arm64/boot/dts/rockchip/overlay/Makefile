@@ -3,6 +3,8 @@ dtbo-$(CONFIG_ARCH_ROCKCHIP) += \
 	rockchip-i2c7.dtbo \
 	rockchip-i2c8.dtbo \
 	rockchip-pcie-gen2.dtbo \
+	rockchip-rk3328-opp-1.4ghz.dtbo \
+	rockchip-rk3328-opp-1.5ghz.dtbo \
 	rockchip-rk3399-opp-2ghz.dtbo \
 	rockchip-spi-jedec-nor.dtbo \
 	rockchip-spi-spidev.dtbo \
