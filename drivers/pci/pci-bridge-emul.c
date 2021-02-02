@@ -479,8 +479,11 @@ int pci_bridge_emul_conf_read(struct pci_bridge_emul *bridge, int where,
 		read_op = pci_bridge_emul_read_ssid;
 		cfgspace = NULL;
 		behavior = NULL;
-	} else if (reg >= bridge->pcie_start && reg < bridge->pcie_start + PCI_CAP_PCIE_SIZEOF &&
-		   bridge->has_pcie) {
+	} else if (!bridge->has_pcie) {
+		/* PCIe space is not implemented, and no PCI capabilities */
+		*value = 0;
+		return PCIBIOS_SUCCESSFUL;
+	} else if (reg >= bridge->pcie_start && reg < bridge->pcie_start + PCI_CAP_PCIE_SIZEOF) {
 		/* Our emulated PCIe capability */
 		reg -= bridge->pcie_start;
 		read_op = bridge->ops->read_pcie;
@@ -553,14 +556,16 @@ int pci_bridge_emul_conf_write(struct pci_bridge_emul *bridge, int where,
 		write_op = bridge->ops->write_base;
 		cfgspace = (__le32 *) &bridge->conf;
 		behavior = bridge->pci_regs_behavior;
-	} else if (reg >= bridge->pcie_start && reg < bridge->pcie_start + PCI_CAP_PCIE_SIZEOF &&
-		   bridge->has_pcie) {
+	} else if (!bridge->has_pcie) {
+		/* PCIe space is not implemented, and no PCI capabilities */
+		return PCIBIOS_SUCCESSFUL;
+	} else if (reg >= bridge->pcie_start && reg < bridge->pcie_start + PCI_CAP_PCIE_SIZEOF) {
 		/* Our emulated PCIe capability */
 		reg -= bridge->pcie_start;
 		write_op = bridge->ops->write_pcie;
 		cfgspace = (__le32 *) &bridge->pcie_conf;
 		behavior = bridge->pcie_cap_regs_behavior;
-	} else if (reg >= PCI_CFG_SPACE_SIZE && bridge->has_pcie) {
+	} else if (reg >= PCI_CFG_SPACE_SIZE) {
 		/* PCIe extended capability space */
 		reg -= PCI_CFG_SPACE_SIZE;
 		write_op = bridge->ops->write_ext;
