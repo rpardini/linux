@@ -119,3 +119,7 @@ Activates 1-Wire GPIO master
 Requires an external pull-up resistor on the data pin
 or enabling the internal pull-up
 
+### rk3318-box-led-conf1
+
+Activates led/gpio configuration for rk3318 tv box boards with signature
+YX_RK3328 and clones
