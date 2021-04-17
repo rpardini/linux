@@ -129,3 +129,8 @@ YX_RK3328 and clones
 Activates eMMC DDR capability for rk3318 tv box boards. Probably all the eMMC chips
 nowadays support DDR mode, but its reliability heavily depends upon the quality
 of board wiring
+
+### rk3318-box-wlan-ap6334
+
+Set up additional device tree bits to properly support ap6334 (broadcom BCM4334)
+wifi chip and clones
