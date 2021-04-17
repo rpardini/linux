@@ -10,7 +10,8 @@ dtbo-$(CONFIG_ARCH_ROCKCHIP) += \
 	rockchip-spi-spidev.dtbo \
 	rockchip-uart4.dtbo \
 	rockchip-dwc3-0-host.dtbo \
-	rockchip-w1-gpio.dtbo
+	rockchip-w1-gpio.dtbo \
+	rockchip-rk3318-box-led-conf1.dtbo
 
 scr-$(CONFIG_ARCH_ROCKCHIP) += \
        rockchip-fixup.scr
