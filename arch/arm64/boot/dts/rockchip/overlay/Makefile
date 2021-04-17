@@ -12,7 +12,8 @@ dtbo-$(CONFIG_ARCH_ROCKCHIP) += \
 	rockchip-dwc3-0-host.dtbo \
 	rockchip-w1-gpio.dtbo \
 	rockchip-rk3318-box-led-conf1.dtbo \
-	rockchip-rk3318-box-emmc-ddr.dtbo
+	rockchip-rk3318-box-emmc-ddr.dtbo \
+	rockchip-rk3318-box-wlan-ap6334.dtbo
 
 scr-$(CONFIG_ARCH_ROCKCHIP) += \
        rockchip-fixup.scr
