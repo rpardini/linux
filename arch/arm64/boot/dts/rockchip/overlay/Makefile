@@ -15,7 +15,8 @@ dtbo-$(CONFIG_ARCH_ROCKCHIP) += \
 	rockchip-rk3318-box-emmc-ddr.dtbo \
 	rockchip-rk3318-box-wlan-ap6334.dtbo \
 	rockchip-rk3318-box-wlan-ext.dtbo \
-	rockchip-rk3318-box-wlan-ap6330.dtbo
+	rockchip-rk3318-box-wlan-ap6330.dtbo \
+	rockchip-rk3318-box-cpu-hs.dtbo
 
 scr-$(CONFIG_ARCH_ROCKCHIP) += \
        rockchip-fixup.scr
