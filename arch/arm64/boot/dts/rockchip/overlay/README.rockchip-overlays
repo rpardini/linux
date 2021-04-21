@@ -130,6 +130,12 @@ Activates eMMC DDR capability for rk3318 tv box boards. Probably all the eMMC ch
 nowadays support DDR mode, but its reliability heavily depends upon the quality
 of board wiring
 
+### rk3318-box-emmc-hs200
+
+Activates eMMC HS200 capability for rk3318 tv box boards.
+It should in autodetect mode, but some board have faulty or cheap circuitry that
+enable the mode but then it doesn't work correctly.
+
 ### rk3318-box-wlan-ap6334
 
 Set up additional device tree bits to properly support ap6334 (broadcom BCM4334)
