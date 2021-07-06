@@ -219,9 +219,9 @@ static struct rockchip_clk_branch rk3228_clk_branches[] __initdata = {
 			RK2928_CLKSEL_CON(4), 8, 5, DFLAGS),
 
 	/* PD_DDR */
-	COMPOSITE(0, "clk_ddrphy_src", mux_ddrphy_p, CLK_IGNORE_UNUSED,
-			RK2928_CLKSEL_CON(26), 8, 2, MFLAGS, 0, 2, DFLAGS | CLK_DIVIDER_POWER_OF_TWO,
-			RK2928_CLKGATE_CON(0), 2, GFLAGS),
+	COMPOSITE_DDRCLK(SCLK_DDRCLK, "sclk_ddrc", mux_ddrphy_p, 0,
+			RK2928_CLKSEL_CON(26), 8, 2, 0, 2,
+			ROCKCHIP_DDRCLK_SIP_V2),
 	GATE(0, "ddrphy4x", "clk_ddrphy_src", CLK_IGNORE_UNUSED,
 			RK2928_CLKGATE_CON(7), 1, GFLAGS),
 	FACTOR_GATE(0, "ddrc", "clk_ddrphy_src", CLK_IGNORE_UNUSED, 1, 4,
@@ -575,8 +575,8 @@ static struct rockchip_clk_branch rk3228_clk_branches[] __initdata = {
 	GATE(HCLK_M_CRYPTO, "hclk_crypto_mst", "hclk_cpu", 0, RK2928_CLKGATE_CON(8), 11, GFLAGS),
 	GATE(HCLK_S_CRYPTO, "hclk_crypto_slv", "hclk_cpu", 0, RK2928_CLKGATE_CON(8), 12, GFLAGS),
 
-	GATE(0, "pclk_ddrupctl", "pclk_ddr_pre", 0, RK2928_CLKGATE_CON(8), 4, GFLAGS),
-	GATE(0, "pclk_ddrmon", "pclk_ddr_pre", 0, RK2928_CLKGATE_CON(8), 6, GFLAGS),
+	GATE(0, "pclk_ddr_upctl", "pclk_ddr_pre", 0, RK2928_CLKGATE_CON(8), 4, GFLAGS),
+	GATE(0, "pclk_ddr_mon", "pclk_ddr_pre", 0, RK2928_CLKGATE_CON(8), 6, GFLAGS),
 	GATE(0, "pclk_msch_noc", "pclk_ddr_pre", 0, RK2928_CLKGATE_CON(10), 2, GFLAGS),
 
 	GATE(PCLK_EFUSE_1024, "pclk_efuse_1024", "pclk_cpu", 0, RK2928_CLKGATE_CON(8), 13, GFLAGS),
@@ -651,8 +651,8 @@ static const char *const rk3228_critical_clocks[] __initconst = {
 	"sclk_initmem_mbist",
 	"aclk_initmem",
 	"hclk_rom",
-	"pclk_ddrupctl",
-	"pclk_ddrmon",
+	"pclk_ddr_upctl",
+	"pclk_ddr_mon",
 	"pclk_msch_noc",
 	"pclk_stimer",
 	"pclk_ddrphy",
