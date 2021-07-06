@@ -97,6 +97,13 @@
 		};
 	};
 
+	dfi: dfi@11210000 {
+		reg = <0x11210000 0x400>;
+		compatible = "rockchip,rk3228-dfi";
+		rockchip,grf = <&grf>;
+		status = "okay";
+	};
+
 	arm-pmu {
 		compatible = "arm,cortex-a7-pmu";
 		interrupts = <GIC_SPI 76 IRQ_TYPE_LEVEL_HIGH>,
