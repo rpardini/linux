@@ -15,6 +15,7 @@
 #define ARMCLK			5
 
 /* sclk gates (special clocks) */
+#define SCLK_DDRCLK		64
 #define SCLK_SPI0		65
 #define SCLK_NANDC		67
 #define SCLK_SDMMC		68
