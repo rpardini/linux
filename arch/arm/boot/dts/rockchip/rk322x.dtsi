@@ -7,6 +7,8 @@
 #include <dt-bindings/clock/rk3228-cru.h>
 #include <dt-bindings/thermal/thermal.h>
 #include <dt-bindings/power/rk3228-power.h>
+#include <dt-bindings/clock/rockchip-ddr.h>
+#include <dt-bindings/memory/rockchip,rk322x.h>
 
 / {
 	#address-cells = <1>;
@@ -102,6 +104,68 @@
 		compatible = "rockchip,rk3228-dfi";
 		rockchip,grf = <&grf>;
 		status = "okay";
+	};
+
+	dmc: dmc@11200000 {
+		compatible = "rockchip,rk3228-dmc", "rockchip,rk322x-dram";
+		reg = <0x11200000 0x400>;
+		clocks = <&cru SCLK_DDRCLK>;
+		clock-names = "ddr_sclk";
+		operating-points-v2 = <&dmc_opp_table>;
+		rockchip,dram_timing = <&dram_timing>;
+		rockchip,grf = <&grf>;
+		devfreq-events = <&dfi>;
+		upthreshold = <15>;
+		downdifferential = <10>;
+		#cooling-cells = <2>;
+		status = "disabled";
+	};
+
+	dmc_opp_table: dmc-opp-table {
+		compatible = "operating-points-v2";
+
+		opp-330000000 {
+			opp-hz = /bits/ 64 <330000000>;
+			opp-microvolt = <1050000 1000000 1200000>;
+		};
+		opp-534000000 {
+			opp-hz = /bits/ 64 <534000000>;
+			opp-microvolt = <1050000 1000000 1200000>;
+		};
+		opp-660000000 {
+			opp-hz = /bits/ 64 <660000000>;
+			opp-microvolt = <1100000 1000000 1200000>;
+		};
+		opp-786000000 {
+			opp-hz = /bits/ 64 <786000000>;
+			opp-microvolt = <1150000 1000000 1200000>;
+			status = "disabled";
+		};
+	};
+
+	dram_timing: dram-timing {
+		compatible = "rockchip,dram-timing";
+		dram_spd_bin = <DDR3_DEFAULT>;
+		sr_idle = <0x18>;
+		pd_idle = <0x20>;
+		dram_dll_disb_freq = <300>;
+		phy_dll_disb_freq = <400>;
+		dram_odt_disb_freq = <333>;
+		phy_odt_disb_freq = <333>;
+		ddr3_drv = <DDR3_DS_40ohm>;
+		ddr3_odt = <DDR3_ODT_120ohm>;
+		lpddr3_drv = <LP3_DS_34ohm>;
+		lpddr3_odt = <LP3_ODT_240ohm>;
+		lpddr2_drv = <LP2_DS_34ohm>;
+		/* lpddr2 not supported odt */
+		phy_ddr3_clk_drv = <PHY_DDR3_RON_RTT_45ohm>;
+		phy_ddr3_cmd_drv = <PHY_DDR3_RON_RTT_45ohm>;
+		phy_ddr3_dqs_drv = <PHY_DDR3_RON_RTT_34ohm>;
+		phy_ddr3_odt = <PHY_DDR3_RON_RTT_225ohm>;
+		phy_lp23_clk_drv = <PHY_LP23_RON_RTT_43ohm>;
+		phy_lp23_cmd_drv = <PHY_LP23_RON_RTT_34ohm>;
+		phy_lp23_dqs_drv = <PHY_LP23_RON_RTT_34ohm>;
+		phy_lp3_odt = <PHY_LP23_RON_RTT_240ohm>;
 	};
 
 	arm-pmu {
@@ -676,17 +740,17 @@
 
 		opp-200000000 {
 			opp-hz = /bits/ 64 <200000000>;
-			opp-microvolt = <1050000>;
+			opp-microvolt = <1050000 1000000 1200000>;
 		};
 
 		opp-300000000 {
 			opp-hz = /bits/ 64 <300000000>;
-			opp-microvolt = <1050000>;
+			opp-microvolt = <1050000 1000000 1200000>;
 		};
 
 		opp-500000000 {
 			opp-hz = /bits/ 64 <500000000>;
-			opp-microvolt = <1150000>;
+			opp-microvolt = <1150000 1000000 1200000>;
 		};
 	};
 
