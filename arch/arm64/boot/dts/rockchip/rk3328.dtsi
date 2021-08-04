@@ -563,6 +563,11 @@
 							 <&cpu3 THERMAL_NO_LIMIT THERMAL_NO_LIMIT>;
 					contribution = <4096>;
 				};
+				map1 {
+					trip = <&target>;
+					cooling-device = <&gpu THERMAL_NO_LIMIT THERMAL_NO_LIMIT>;
+					contribution = <4096>;
+				};
 			};
 		};
 
@@ -708,6 +713,7 @@
 		power-domains = <&power RK3328_PD_GPU>;
 		resets = <&cru SRST_GPU_A>;
 		operating-points-v2 = <&gpu_opp_table>;
+		#cooling-cells = <2>;
 	};
 
 	gpu_opp_table: gpu-opp-table {
