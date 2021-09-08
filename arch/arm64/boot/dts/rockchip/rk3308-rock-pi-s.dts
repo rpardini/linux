@@ -211,7 +211,7 @@
 	/* please provide actual vmmc and vqmmc supplies
 	vin is not a valid supply for emmcs */
 	vin-supply = <&vcc_io>;
-	status = "okay";
+	status = "disabled";
 };
 
 &i2c1 {
