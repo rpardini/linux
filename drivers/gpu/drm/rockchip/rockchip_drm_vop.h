@@ -212,6 +212,8 @@ struct vop_win_phy {
 	struct vop_reg alpha_mode;
 	struct vop_reg alpha_en;
 	struct vop_reg channel;
+
+	struct vop_reg hwc_size;
 };
 
 struct vop_win_yuv2yuv_data {
@@ -242,6 +244,7 @@ struct vop_data {
 
 #define VOP_FEATURE_OUTPUT_RGB10	BIT(0)
 #define VOP_FEATURE_INTERNAL_RGB	BIT(1)
+#define VOP_FEATURE_SPECIAL_CURSOR_PLANE BIT(2)
 	u64 feature;
 };
 

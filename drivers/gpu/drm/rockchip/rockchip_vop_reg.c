@@ -680,6 +680,19 @@ static const struct vop_win_phy rk3288_win23_data = {
 	.dst_alpha_ctl = VOP_REG(RK3288_WIN2_DST_ALPHA_CTRL, 0xff, 0),
 };
 
+static const struct vop_win_phy rk3288_cursor_data = {
+	.data_formats = formats_win_lite,
+	.nformats = ARRAY_SIZE(formats_win_lite),
+	.enable = VOP_REG(RK3288_HWC_CTRL0, 0x1, 0),
+	.format = VOP_REG(RK3288_HWC_CTRL0, 0x7, 1),
+	.rb_swap = VOP_REG(RK3288_HWC_CTRL0, 0x1, 12),
+	.dsp_st = VOP_REG(RK3288_HWC_DSP_ST, 0x1fff1fff, 0),
+	.yrgb_mst = VOP_REG(RK3288_HWC_MST, 0xffffffff, 0),
+	.src_alpha_ctl = VOP_REG(RK3288_HWC_SRC_ALPHA_CTRL, 0xff, 0),
+	.dst_alpha_ctl = VOP_REG(RK3288_HWC_DST_ALPHA_CTRL, 0xff, 0),
+	.hwc_size = VOP_REG(RK3288_HWC_CTRL0, 0x3, 5),
+};
+
 static const struct vop_modeset rk3288_modeset = {
 	.htotal_pw = VOP_REG(RK3288_DSP_HTOTAL_HS_END, 0x1fff1fff, 0),
 	.hact_st_end = VOP_REG(RK3288_DSP_HACT_ST_END, 0x1fff1fff, 0),
@@ -773,6 +786,8 @@ static const struct vop_win_data rk3288_vop_win_data[] = {
 	{ .base = 0x00, .phy = &rk3288_win23_data,
 	  .type = DRM_PLANE_TYPE_OVERLAY },
 	{ .base = 0x50, .phy = &rk3288_win23_data,
+	  .type = DRM_PLANE_TYPE_OVERLAY },
+	{ .base = 0x00, .phy = &rk3288_cursor_data,
 	  .type = DRM_PLANE_TYPE_CURSOR },
 };
 
@@ -1117,11 +1132,13 @@ static const struct vop_win_data rk3228_vop_win_data[] = {
 	  .type = DRM_PLANE_TYPE_PRIMARY },
 	{ .base = 0x40, .phy = &rk3228_win1_data,
 	  .type = DRM_PLANE_TYPE_OVERLAY },
+	{ .base = 0x00, .phy = &rk3288_cursor_data,
+	  .type = DRM_PLANE_TYPE_CURSOR },
 };
 
 static const struct vop_data rk3228_vop = {
 	.version = VOP_VERSION(3, 7),
-	.feature = VOP_FEATURE_OUTPUT_RGB10,
+	.feature = VOP_FEATURE_OUTPUT_RGB10 | VOP_FEATURE_SPECIAL_CURSOR_PLANE,
 	.intr = &rk3366_vop_intr,
 	.common = &rk3288_common,
 	.modeset = &rk3288_modeset,
