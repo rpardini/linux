@@ -174,6 +174,15 @@
 		status = "disabled";
 	};
 
+	codec: codec@12010000 {
+		compatible = "rockchip,rk3228-codec";
+		reg = <0x12010000 0x1000>;
+		clocks =  <&cru SCLK_I2S_OUT>, <&cru PCLK_ACODECPHY>, <&cru SCLK_I2S1>;
+		clock-names = "mclk", "pclk", "sclk";
+		spk-en-gpio = <&gpio1 RK_PA3 GPIO_ACTIVE_HIGH>;
+		status = "disabled";
+	};
+
 	i2s0: i2s0@100c0000 {
 		compatible = "rockchip,rk3228-i2s", "rockchip,rk3066-i2s";
 		reg = <0x100c0000 0x4000>;
