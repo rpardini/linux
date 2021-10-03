@@ -12,13 +12,59 @@
 #include "aiu.h"
 #include "meson-codec-glue.h"
 
-#define CTRL_CLK_SEL		GENMASK(1, 0)
-#define CTRL_DATA_SEL_SHIFT	4
-#define CTRL_DATA_SEL		(0x3 << CTRL_DATA_SEL_SHIFT)
+#define AIU_HDMI_CLK_DATA_CTRL_CLK_SEL			GENMASK(1, 0)
+#define AIU_HDMI_CLK_DATA_CTRL_CLK_SEL_DISABLE		0x0
+#define AIU_HDMI_CLK_DATA_CTRL_CLK_SEL_PCM		0x1
+#define AIU_HDMI_CLK_DATA_CTRL_CLK_SEL_AIU		0x2
+#define AIU_HDMI_CLK_DATA_CTRL_DATA_SEL			GENMASK(5, 4)
+#define AIU_HDMI_CLK_DATA_CTRL_DATA_SEL_OUTPUT_ZERO	0x0
+#define AIU_HDMI_CLK_DATA_CTRL_DATA_SEL_PCM_DATA	0x1
+#define AIU_HDMI_CLK_DATA_CTRL_DATA_SEL_I2S_DATA	0x2
 
-static const char * const aiu_codec_ctrl_mux_texts[] = {
-	"DISABLED", "PCM", "I2S",
+#define AIU_CLK_CTRL_MORE_AMCLK				BIT(6)
+
+#define AIU_HDMI_CTRL_MUX_DISABLED			0
+#define AIU_HDMI_CTRL_MUX_PCM				1
+#define AIU_HDMI_CTRL_MUX_I2S				2
+
+static const char * const aiu_codec_hdmi_ctrl_mux_texts[] = {
+	[AIU_HDMI_CTRL_MUX_DISABLED] =  "DISABLED",
+	[AIU_HDMI_CTRL_MUX_PCM] = "PCM",
+	[AIU_HDMI_CTRL_MUX_I2S] = "I2S",
 };
+
+static int aiu_codec_ctrl_mux_get_enum(struct snd_kcontrol *kcontrol,
+				       struct snd_ctl_elem_value *ucontrol)
+{
+	struct snd_soc_component *component =
+		snd_soc_dapm_kcontrol_to_component(kcontrol);
+	unsigned int ctrl, more, mux = AIU_HDMI_CTRL_MUX_DISABLED;
+
+	ctrl = snd_soc_component_read(component, AIU_HDMI_CLK_DATA_CTRL);
+	if (FIELD_GET(AIU_HDMI_CLK_DATA_CTRL_CLK_SEL, ctrl) !=
+	    AIU_HDMI_CLK_DATA_CTRL_CLK_SEL_AIU) {
+		goto out;
+	}
+
+	more = snd_soc_component_read(component, AIU_CLK_CTRL_MORE);
+	if (FIELD_GET(AIU_HDMI_CLK_DATA_CTRL_DATA_SEL, ctrl) ==
+	    AIU_HDMI_CLK_DATA_CTRL_DATA_SEL_I2S_DATA &&
+	    !!(more & AIU_CLK_CTRL_MORE_AMCLK)) {
+		mux = AIU_HDMI_CTRL_MUX_I2S;
+		goto out;
+	}
+
+	if (FIELD_GET(AIU_HDMI_CLK_DATA_CTRL_DATA_SEL, ctrl) ==
+	    AIU_HDMI_CLK_DATA_CTRL_DATA_SEL_OUTPUT_ZERO &&
+	    !(more & AIU_CLK_CTRL_MORE_AMCLK)) {
+		mux = AIU_HDMI_CTRL_MUX_PCM;
+		goto out;
+	}
+
+out:
+	ucontrol->value.enumerated.item[0] = mux;
+	return 0;
+}
 
 static int aiu_codec_ctrl_mux_put_enum(struct snd_kcontrol *kcontrol,
 				       struct snd_ctl_elem_value *ucontrol)
@@ -26,48 +72,51 @@ static int aiu_codec_ctrl_mux_put_enum(struct snd_kcontrol *kcontrol,
 	struct snd_soc_component *component = snd_soc_dapm_kcontrol_to_component(kcontrol);
 	struct snd_soc_dapm_context *dapm = snd_soc_dapm_kcontrol_to_dapm(kcontrol);
 	struct soc_enum *e = (struct soc_enum *)kcontrol->private_value;
-	unsigned int mux, changed;
-
-	if (ucontrol->value.enumerated.item[0] >= e->items)
-		return -EINVAL;
+	unsigned int mux, ctrl, more;
 
 	mux = snd_soc_enum_item_to_val(e, ucontrol->value.enumerated.item[0]);
-	changed = snd_soc_component_test_bits(component, e->reg,
-					      CTRL_DATA_SEL,
-					      FIELD_PREP(CTRL_DATA_SEL, mux));
 
-	if (!changed)
-		return 0;
+	if (mux == AIU_HDMI_CTRL_MUX_I2S) {
+		ctrl = FIELD_PREP(AIU_HDMI_CLK_DATA_CTRL_DATA_SEL,
+				  AIU_HDMI_CLK_DATA_CTRL_DATA_SEL_I2S_DATA);
+		more = AIU_CLK_CTRL_MORE_AMCLK;
+	} else {
+		ctrl = FIELD_PREP(AIU_HDMI_CLK_DATA_CTRL_DATA_SEL,
+				  AIU_HDMI_CLK_DATA_CTRL_DATA_SEL_OUTPUT_ZERO);
+		more = 0;
+	}
+
+	if (mux == AIU_HDMI_CTRL_MUX_DISABLED) {
+		ctrl |= FIELD_PREP(AIU_HDMI_CLK_DATA_CTRL_CLK_SEL,
+				   AIU_HDMI_CLK_DATA_CTRL_CLK_SEL_DISABLE);
+	} else {
+		ctrl |= FIELD_PREP(AIU_HDMI_CLK_DATA_CTRL_CLK_SEL,
+				   AIU_HDMI_CLK_DATA_CTRL_CLK_SEL_AIU);
+	}
 
 	/* Force disconnect of the mux while updating */
 	snd_soc_dapm_mux_update_power(dapm, kcontrol, 0, NULL, NULL);
 
-	/* Reset the source first */
-	snd_soc_component_update_bits(component, e->reg,
-				      CTRL_CLK_SEL |
-				      CTRL_DATA_SEL,
-				      FIELD_PREP(CTRL_CLK_SEL, 0) |
-				      FIELD_PREP(CTRL_DATA_SEL, 0));
+	snd_soc_component_update_bits(component, AIU_HDMI_CLK_DATA_CTRL,
+				      AIU_HDMI_CLK_DATA_CTRL_CLK_SEL |
+				      AIU_HDMI_CLK_DATA_CTRL_DATA_SEL,
+				      ctrl);
 
-	/* Set the appropriate source */
-	snd_soc_component_update_bits(component, e->reg,
-				      CTRL_CLK_SEL |
-				      CTRL_DATA_SEL,
-				      FIELD_PREP(CTRL_CLK_SEL, mux) |
-				      FIELD_PREP(CTRL_DATA_SEL, mux));
+	snd_soc_component_update_bits(component, AIU_CLK_CTRL_MORE,
+				      AIU_CLK_CTRL_MORE_AMCLK,
+				      more);
 
 	snd_soc_dapm_mux_update_power(dapm, kcontrol, mux, e, NULL);
 
 	return 1;
 }
 
-static SOC_ENUM_SINGLE_DECL(aiu_hdmi_ctrl_mux_enum, AIU_HDMI_CLK_DATA_CTRL,
-			    CTRL_DATA_SEL_SHIFT,
-			    aiu_codec_ctrl_mux_texts);
+static SOC_ENUM_SINGLE_VIRT_DECL(aiu_hdmi_ctrl_mux_enum,
+				 aiu_codec_hdmi_ctrl_mux_texts);
 
 static const struct snd_kcontrol_new aiu_hdmi_ctrl_mux =
 	SOC_DAPM_ENUM_EXT("HDMI Source", aiu_hdmi_ctrl_mux_enum,
-			  snd_soc_dapm_get_enum_double,
+			  aiu_codec_ctrl_mux_get_enum,
 			  aiu_codec_ctrl_mux_put_enum);
 
 static const struct snd_soc_dapm_widget aiu_hdmi_ctrl_widgets[] = {
@@ -87,9 +136,9 @@ static const struct snd_soc_dai_ops aiu_codec_ctrl_output_ops = {
 };
 
 #define AIU_CODEC_CTRL_FORMATS					\
-	(SNDRV_PCM_FMTBIT_S16_LE | SNDRV_PCM_FMTBIT_S20_3LE |	\
-	 SNDRV_PCM_FMTBIT_S24_3LE | SNDRV_PCM_FMTBIT_S24_LE |	\
-	 SNDRV_PCM_FMTBIT_S32_LE)
+		(SNDRV_PCM_FMTBIT_S16_LE | SNDRV_PCM_FMTBIT_S20_3LE |	\
+		 SNDRV_PCM_FMTBIT_S24_3LE | SNDRV_PCM_FMTBIT_S24_LE |	\
+		 SNDRV_PCM_FMTBIT_S32_LE)
 
 #define AIU_CODEC_CTRL_STREAM(xname, xsuffix)			\
 {								\
@@ -126,8 +175,8 @@ static const struct snd_soc_dapm_route aiu_hdmi_ctrl_routes[] = {
 };
 
 static int aiu_hdmi_of_xlate_dai_name(struct snd_soc_component *component,
-				      const struct of_phandle_args *args,
-				      const char **dai_name)
+				     const struct of_phandle_args *args,
+				     const char **dai_name)
 {
 	return aiu_of_xlate_dai_name(component, args, dai_name, AIU_HDMI);
 }
@@ -151,4 +200,3 @@ int aiu_hdmi_ctrl_register_component(struct device *dev)
 					  aiu_hdmi_ctrl_dai_drv,
 					  ARRAY_SIZE(aiu_hdmi_ctrl_dai_drv));
 }
-
