@@ -193,11 +193,55 @@ static void pcie_clkpm_cap_init(struct pcie_link_state *link, int blacklist)
 	link->clkpm_disable = blacklist ? 1 : 0;
 }
 
+static int pcie_downgrade_link_to_gen1(struct pci_dev *parent)
+{
+	u16 reg16;
+	u32 reg32;
+	int ret;
+
+	/* Check if link is capable of higher speed than 2.5 GT/s */
+	pcie_capability_read_dword(parent, PCI_EXP_LNKCAP, &reg32);
+	if ((reg32 & PCI_EXP_LNKCAP_SLS) <= PCI_EXP_LNKCAP_SLS_2_5GB)
+		return 0;
+
+	/* Check if link speed can be downgraded to 2.5 GT/s */
+	pcie_capability_read_dword(parent, PCI_EXP_LNKCAP2, &reg32);
+	if (!(reg32 & PCI_EXP_LNKCAP2_SLS_2_5GB)) {
+		pci_err(parent, "ASPM: Bridge does not support changing Link Speed to 2.5 GT/s\n");
+		return -EOPNOTSUPP;
+	}
+
+	/* Force link speed to 2.5 GT/s */
+	ret = pcie_capability_clear_and_set_word(parent, PCI_EXP_LNKCTL2,
+						 PCI_EXP_LNKCTL2_TLS,
+						 PCI_EXP_LNKCTL2_TLS_2_5GT);
+	if (!ret) {
+		/* Verify that new value was really set */
+		pcie_capability_read_word(parent, PCI_EXP_LNKCTL2, &reg16);
+		if ((reg16 & PCI_EXP_LNKCTL2_TLS) != PCI_EXP_LNKCTL2_TLS_2_5GT)
+			ret = -EINVAL;
+	}
+
+	if (ret) {
+		pci_err(parent, "ASPM: Changing Target Link Speed to 2.5 GT/s failed: %d\n", ret);
+		return ret;
+	}
+
+	pci_info(parent, "ASPM: Target Link Speed changed to 2.5 GT/s due to quirk\n");
+	return 0;
+}
+
 static bool pcie_retrain_link(struct pcie_link_state *link)
 {
 	struct pci_dev *parent = link->pdev;
 	unsigned long end_jiffies;
 	u16 reg16;
+
+	if ((link->downstream->dev_flags & PCI_DEV_FLAGS_NO_RETRAIN_LINK_WHEN_NOT_GEN1) &&
+	    pcie_downgrade_link_to_gen1(parent)) {
+		pci_err(parent, "ASPM: Retrain Link at higher speed is disallowed by quirk\n");
+		return false;
+	}
 
 	pcie_capability_read_word(parent, PCI_EXP_LNKCTL, &reg16);
 	reg16 |= PCI_EXP_LNKCTL_RL;
