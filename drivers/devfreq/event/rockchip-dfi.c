@@ -24,6 +24,8 @@
 #include <linux/perf_event.h>
 
 #include <soc/rockchip/rockchip_grf.h>
+#include <soc/rockchip/rk3228_grf.h>
+#include <soc/rockchip/rk3328_grf.h>
 #include <soc/rockchip/rk3399_grf.h>
 #include <soc/rockchip/rk3568_grf.h>
 #include <soc/rockchip/rk3588_grf.h>
@@ -99,6 +101,7 @@ struct rockchip_dfi {
 
 	struct device *dev;
 	void __iomem *regs;
+	struct regmap *regmap_grf;
 	struct regmap *regmap_pmu;
 	struct clk *clk;
 	int usecount;
@@ -669,6 +672,46 @@ static int rockchip_ddr_perf_init(struct rockchip_dfi *dfi)
 }
 #endif
 
+static int rk3228_dfi_init(struct rockchip_dfi *dfi)
+{
+	u32 val;
+
+	regmap_read(dfi->regmap_grf, RK3228_GRF_OS_REG2, &val);
+	dfi->ddr_type = FIELD_GET(RK3228_GRF_OS_REG2_DDRTYPE, val);
+
+	dfi->channel_mask = GENMASK(0, 0);
+	dfi->max_channels = 1;
+
+	dfi->buswidth[0] = 2;  // 16 bit bus width
+
+	dfi->ddrmon_stride = 0x0;  // single channel controller
+	dfi->ddrmon_ctrl_single = true;
+
+	dfi->clk = NULL;
+
+	return 0;
+}
+
+static int rk3328_dfi_init(struct rockchip_dfi *dfi)
+{
+	u32 val;
+
+	regmap_read(dfi->regmap_grf, RK3328_GRF_OS_REG2, &val);
+	dfi->ddr_type = FIELD_GET(RK3328_GRF_OS_REG2_DDRTYPE, val);
+
+	dfi->channel_mask = GENMASK(0, 0);
+	dfi->max_channels = 1;
+
+	dfi->buswidth[0] = 2;  // 16 bit bus width
+
+	dfi->ddrmon_stride = 0x0;  // single channel controller
+	dfi->ddrmon_ctrl_single = true;
+
+	dfi->clk = NULL;
+
+	return 0;
+}
+
 static int rk3399_dfi_init(struct rockchip_dfi *dfi)
 {
 	struct regmap *regmap_pmu = dfi->regmap_pmu;
@@ -757,6 +800,8 @@ static int rk3588_dfi_init(struct rockchip_dfi *dfi)
 };
 
 static const struct of_device_id rockchip_dfi_id_match[] = {
+	{ .compatible = "rockchip,rk3228-dfi", .data = rk3228_dfi_init },
+	{ .compatible = "rockchip,rk3328-dfi", .data = rk3328_dfi_init },
 	{ .compatible = "rockchip,rk3399-dfi", .data = rk3399_dfi_init },
 	{ .compatible = "rockchip,rk3568-dfi", .data = rk3568_dfi_init },
 	{ .compatible = "rockchip,rk3588-dfi", .data = rk3588_dfi_init },
@@ -786,14 +831,30 @@ static int rockchip_dfi_probe(struct platform_device *pdev)
 	if (IS_ERR(dfi->regs))
 		return PTR_ERR(dfi->regs);
 
-	node = of_parse_phandle(np, "rockchip,pmu", 0);
-	if (!node)
-		return dev_err_probe(&pdev->dev, -ENODEV, "Can't find pmu_grf registers\n");
+	if (soc_init == rk3228_dfi_init ||
+	    soc_init == rk3328_dfi_init) {
+		node = of_parse_phandle(np, "rockchip,grf", 0);
+		if (!node)
+			return dev_err_probe(&pdev->dev, -ENODEV, "Can't find grf registers");
 
-	dfi->regmap_pmu = syscon_node_to_regmap(node);
-	of_node_put(node);
-	if (IS_ERR(dfi->regmap_pmu))
-		return PTR_ERR(dfi->regmap_pmu);
+		dfi->regmap_grf = syscon_node_to_regmap(node);
+		of_node_put(node);
+		if (IS_ERR(dfi->regmap_grf))
+			return PTR_ERR(dfi->regmap_grf);
+	}
+
+	if (soc_init == rk3399_dfi_init ||
+	    soc_init == rk3568_dfi_init ||
+	    soc_init == rk3588_dfi_init) {
+		node = of_parse_phandle(np, "rockchip,pmu", 0);
+		if (!node)
+			return dev_err_probe(&pdev->dev, -ENODEV, "Can't find pmu_grf registers\n");
+
+		dfi->regmap_pmu = syscon_node_to_regmap(node);
+		of_node_put(node);
+		if (IS_ERR(dfi->regmap_pmu))
+			return PTR_ERR(dfi->regmap_pmu);
+	}
 
 	dfi->dev = dev;
 	mutex_init(&dfi->mutex);
@@ -817,6 +878,8 @@ static int rockchip_dfi_probe(struct platform_device *pdev)
 	ret = rockchip_ddr_perf_init(dfi);
 	if (ret)
 		return ret;
+
+	dev_notice(dfi->dev, "dfi initialized, dram type: 0x%x, channels: %d\n", dfi->ddr_type, dfi->max_channels);
 
 	platform_set_drvdata(pdev, dfi);
 
