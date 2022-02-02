@@ -674,6 +674,7 @@ static const struct file_operations spidev_fops = {
 static struct class *spidev_class;
 
 static const struct spi_device_id spidev_spi_ids[] = {
+	{ .name = "spi-dev" },
 	{ .name = "dh2228fv" },
 	{ .name = "ltc2488" },
 	{ .name = "sx1301" },
@@ -688,6 +689,7 @@ MODULE_DEVICE_TABLE(spi, spidev_spi_ids);
 
 #ifdef CONFIG_OF
 static const struct of_device_id spidev_dt_ids[] = {
+	{ .compatible = "armbian,spi-dev" },
 	{ .compatible = "rohm,dh2228fv" },
 	{ .compatible = "lineartechnology,ltc2488" },
 	{ .compatible = "semtech,sx1301" },
@@ -750,10 +752,13 @@ static int spidev_probe(struct spi_device *spi)
 	 * spidev should never be referenced in DT without a specific
 	 * compatible string, it is a Linux implementation thing
 	 * rather than a description of the hardware.
+	 * But people don't care and use DT overlays to activate SPIdev
+	 * on demand. Armbian has added a compatible string alias "spi-dev"
+	 * for this module.
 	 */
 	WARN(spi->dev.of_node &&
 	     of_device_is_compatible(spi->dev.of_node, "spidev"),
-	     "%pOF: buggy DT: spidev listed directly in DT\n", spi->dev.of_node);
+	     "%pOF: buggy DT: spidev listed directly in DT\n\tUse an alias like spi-dev in DT\n", spi->dev.of_node);
 
 	spidev_probe_acpi(spi);
 
