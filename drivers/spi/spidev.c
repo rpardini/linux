@@ -703,6 +703,7 @@ static const struct class spidev_class = {
  */
 static const struct spi_device_id spidev_spi_ids[] = {
 	{ .name = /* abb */ "spi-sensor" },
+	{ .name = /* armbian */ "spi-dev" },
 	{ .name = /* cisco */ "spi-petra" },
 	{ .name = /* dh */ "dhcom-board" },
 	{ .name = /* elgin */ "jg10309-01" },
@@ -731,11 +732,13 @@ static int spidev_of_check(struct device *dev)
 		return 0;
 
 	dev_err(dev, "spidev listed directly in DT is not supported\n");
+
 	return -EINVAL;
 }
 
 static const struct of_device_id spidev_dt_ids[] = {
 	{ .compatible = "abb,spi-sensor", .data = &spidev_of_check },
+	{ .compatible = "armbian,spi-dev", .data = &spidev_of_check },
 	{ .compatible = "cisco,spi-petra", .data = &spidev_of_check },
 	{ .compatible = "dh,dhcom-board", .data = &spidev_of_check },
 	{ .compatible = "elgin,jg10309-01", .data = &spidev_of_check },
@@ -758,6 +761,7 @@ MODULE_DEVICE_TABLE(of, spidev_dt_ids);
 static int spidev_acpi_check(struct device *dev)
 {
 	dev_warn(dev, "do not use this driver in production systems!\n");
+	dev_info(dev, "Use a compatible alias string like spi-dev in DT\n");
 	return 0;
 }
 
