@@ -179,6 +179,16 @@
 	bus-width = <4>;
 	non-removable;
 	status = "okay";
+
+	uwe-bsp {
+		compatible = "unisoc,uwe_bsp";
+		keep-power-on;
+		data-irq;
+		//adma-tx;
+		adma-rx;
+		//blksz-512;
+		status = "okay";
+	};
 };
 
 &mmc2 {
