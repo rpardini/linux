@@ -66,3 +66,4 @@ obj-$(CONFIG_PPKB_POWER_MANAGER)+= ppkb-manager.o
 obj-$(CONFIG_GP_PCI1XXXX)	+= mchp_pci1xxxx/
 obj-$(CONFIG_VCPU_STALL_DETECTOR)	+= vcpu_stall_detector.o
 obj-$(CONFIG_MODEM_POWER)	+= modem-power.o
+obj-$(CONFIG_SUNXI_ADDR_MGT)    += sunxi-addr/
