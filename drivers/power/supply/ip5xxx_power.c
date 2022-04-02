@@ -206,20 +206,31 @@ static int ip5xxx_initialize(struct power_supply *psy)
 		return 0;
 
 	/*
+	 * Disable flashlight feature.
+	 */
+	ret = ip5xxx_write(ip5xxx, ip5xxx->regs.wled.enable, 0);
+	if (ret)
+		return ret;
+
+	ret = ip5xxx_write(ip5xxx, ip5xxx->regs.wled.detect_en, 0);
+	if (ret)
+		return ret;
+
+	/*
 	 * Disable shutdown under light load.
-	 * Enable power on when under load.
+	 * Disable power on when under load.
 	 */
 	if (ip5xxx->regs.boost.light_load_shutdown.enable) {
 		ret = ip5xxx_write(ip5xxx, ip5xxx->regs.boost.light_load_shutdown.enable, 0);
 		if (ret)
 			return ret;
 	}
-	ret = ip5xxx_write(ip5xxx, ip5xxx->regs.boost.load_powerup_en, 1);
+	ret = ip5xxx_write(ip5xxx, ip5xxx->regs.boost.load_powerup_en, 0);
 	if (ret)
 		return ret;
 
 	/*
-	 * Enable shutdown after a long button press (as configured below).
+	 * Enable shutdown after a double press (as configured below).
 	 */
 	ret = ip5xxx_write(ip5xxx, ip5xxx->regs.btn.shdn_enable, 1);
 	if (ret)
@@ -234,17 +245,17 @@ static int ip5xxx_initialize(struct power_supply *psy)
 
 	/*
 	 * Enable the NTC.
-	 * Configure the button for two presses => LED, long press => shutdown.
+	 * Configure the button for two presses => shutdown, long press => LED.
 	 */
 	if (ip5xxx->regs.battery.ntc_dis) {
 		ret = ip5xxx_write(ip5xxx, ip5xxx->regs.battery.ntc_dis, 0);
 		if (ret)
 			return ret;
 	}
-	ret = ip5xxx_write(ip5xxx, ip5xxx->regs.btn.wled_mode, 1);
+	ret = ip5xxx_write(ip5xxx, ip5xxx->regs.btn.wled_mode, 0);
 	if (ret)
 		return ret;
-	ret = ip5xxx_write(ip5xxx, ip5xxx->regs.btn.shdn_mode, 1);
+	ret = ip5xxx_write(ip5xxx, ip5xxx->regs.btn.shdn_mode, 0);
 	if (ret)
 		return ret;
 
