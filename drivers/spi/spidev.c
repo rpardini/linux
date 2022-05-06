@@ -22,8 +22,7 @@
 #include <linux/of_device.h>
 #include <linux/acpi.h>
 
-#include <linux/spi/spi.h>
-#include <linux/spi/spidev.h>
+#include <uapi/linux/spi/spidev.h>
 
 #include <linux/uaccess.h>
 
