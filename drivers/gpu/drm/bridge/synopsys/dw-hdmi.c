@@ -2784,6 +2784,10 @@ static u32 *dw_hdmi_bridge_atomic_get_output_bus_fmts(struct drm_bridge *bridge,
 			output_fmts[i++] = MEDIA_BUS_FMT_RGB101010_1X30;
 	}
 
+	/* Prefer 8-bit RGB over YCbCr formats */
+	if (is_tmds_allowed(info, mode, MEDIA_BUS_FMT_RGB888_1X24))
+		output_fmts[i++] = MEDIA_BUS_FMT_RGB888_1X24;
+
 	if ((info->color_formats & DRM_COLOR_FORMAT_YCBCR422) &&
 	    is_tmds_allowed(info, mode, MEDIA_BUS_FMT_UYVY8_1X16))
 		output_fmts[i++] = MEDIA_BUS_FMT_UYVY8_1X16;
@@ -2791,10 +2795,6 @@ static u32 *dw_hdmi_bridge_atomic_get_output_bus_fmts(struct drm_bridge *bridge,
 	if ((info->color_formats & DRM_COLOR_FORMAT_YCBCR444) &&
 	    is_tmds_allowed(info, mode, MEDIA_BUS_FMT_YUV8_1X24))
 		output_fmts[i++] = MEDIA_BUS_FMT_YUV8_1X24;
-
-	/* Default 8bit RGB fallback */
-	if (is_tmds_allowed(info, mode, MEDIA_BUS_FMT_RGB888_1X24))
-		output_fmts[i++] = MEDIA_BUS_FMT_RGB888_1X24;
 
 	*num_output_fmts = i;
 
