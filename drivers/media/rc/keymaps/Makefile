@@ -136,4 +136,5 @@ obj-$(CONFIG_RC_MAP) += \
 			rc-x96max.o \
 			rc-xbox-360.o \
 			rc-xbox-dvd.o \
+			rc-xt-q8l-v10.o \
 			rc-zx-irdec.o
