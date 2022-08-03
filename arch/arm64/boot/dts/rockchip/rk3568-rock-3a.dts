@@ -247,6 +247,10 @@
 	status = "okay";
 };
 
+&hdmi_sound {
+	status = "okay";
+};
+
 &gpu {
 	mali-supply = <&vdd_gpu>;
 	status = "okay";
@@ -540,6 +544,10 @@
 		pinctrl-0 = <&hym8563_int>;
 		wakeup-source;
 	};
+};
+
+&i2s0_8ch {
+	status = "okay";
 };
 
 &i2s0_8ch {
