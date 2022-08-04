@@ -111,6 +111,11 @@
 #define AT803X_DEBUG_SYSTEM_CTRL_MODE		0x05
 #define AT803X_DEBUG_TX_CLK_DLY_EN		BIT(8)
 
+#define AT803X_DEBUG_REG_B                      0x0B
+#define AT803X_DEBUG_REG_B_HIBERNATION_ENABLE	0x1
+#define AT803X_DEBUG_REG_B_HIBERNATION_OFFSET	15
+
+
 #define AT803X_DEBUG_REG_HIB_CTRL		0x0b
 #define   AT803X_DEBUG_HIB_CTRL_SEL_RST_80U	BIT(10)
 #define   AT803X_DEBUG_HIB_CTRL_EN_ANY_CHANGE	BIT(13)
@@ -395,6 +400,20 @@ static int at803x_enable_rx_delay(struct phy_device *phydev)
 {
 	return at803x_debug_reg_mask(phydev, AT803X_DEBUG_ANALOG_TEST_CTRL, 0,
 				     AT803X_DEBUG_RX_CLK_DLY_EN);
+}
+
+static inline int at803x_disable_hibernate(struct phy_device *phydev)
+{
+	int ret = 0;
+	u16 val = 0;
+
+	ret = at803x_debug_reg_read(phydev, AT803X_DEBUG_REG_B);
+	if (ret < 0)
+		return ret;
+
+	val = ret & 0xffff;
+	val &= (~(AT803X_DEBUG_REG_B_HIBERNATION_ENABLE << AT803X_DEBUG_REG_B_HIBERNATION_OFFSET));
+	return phy_write(phydev, AT803X_DEBUG_DATA, val);
 }
 
 static int at803x_enable_tx_delay(struct phy_device *phydev)
@@ -1035,6 +1054,10 @@ static int at803x_config_init(struct phy_device *phydev)
 		ret = at803x_enable_rx_delay(phydev);
 	else
 		ret = at803x_disable_rx_delay(phydev);
+	if (ret < 0)
+		return ret;
+	else
+		ret = at803x_disable_hibernate(phydev);
 	if (ret < 0)
 		return ret;
 
