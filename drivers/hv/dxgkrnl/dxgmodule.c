@@ -27,6 +27,12 @@
 #undef dev_fmt
 #define dev_fmt(fmt)	"dxgk: " fmt
 
+// Was removed from include/linux/uuid.h in f5b3c341a: "mei: Move uuid_le_cmp() to its only user" -- this would be the 2nd user ;-)
+static inline int uuid_le_cmp(const guid_t u1, const guid_t u2)
+{
+	return memcmp(&u1, &u2, sizeof(guid_t));
+}
+
 /*
  * Interface from dxgglobal
  */
