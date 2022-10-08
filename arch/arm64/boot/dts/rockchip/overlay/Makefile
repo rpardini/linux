@@ -14,6 +14,7 @@ dtbo-$(CONFIG_ARCH_ROCKCHIP) += \
 	rockchip-rk3318-box-led-conf1.dtbo \
 	rockchip-rk3318-box-led-conf2.dtbo \
 	rockchip-rk3318-box-led-conf3.dtbo \
+	rockchip-rk3318-box-led-conf4.dtbo \
 	rockchip-rk3318-box-emmc-ddr.dtbo \
 	rockchip-rk3318-box-wlan-ap6334.dtbo \
 	rockchip-rk3318-box-wlan-ext.dtbo \
