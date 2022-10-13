@@ -41,6 +41,12 @@
 #include "pinconf.h"
 #include "pinctrl-rockchip.h"
 
+#define RK3308_SOC_CON0			0x300
+#define RK3308_SOC_CON0_DOMAINS ((BIT(9)-1)-BIT(7))
+#define RK3308_SOC_CON0_DEFAULT 0x10  //default if no io_1v8_domains specified
+//note that this is supposed to be the reset value, but something early
+//in boot sets SOC_CON0 to zero
+
 /*
  * Generate a bitmask for setting a value (v) with a write mask bit in hiword
  * register 31:16 area.
@@ -3514,6 +3520,24 @@ static int rockchip_pinctrl_probe(struct platform_device *pdev)
 	ret = rockchip_pinctrl_register(pdev, info);
 	if (ret)
 		return ret;
+
+	if (ctrl->type == RK3308) {
+	/*
+	 * Update GRF_SOC_CON0 early to reflect board's (fixed) I/O domain voltages
+	 * The io-1v8-domains property may be specified to override default value
+	 */
+		u32 ioVoltSelect = RK3308_SOC_CON0_DEFAULT;
+		device_property_read_u32(dev, "io-1v8-domains", &ioVoltSelect);
+		if (ioVoltSelect & ~RK3308_SOC_CON0_DOMAINS) {
+			dev_warn(dev, "ignored invalid io-1v8-domains\n");
+			ioVoltSelect = RK3308_SOC_CON0_DEFAULT;
+		}
+	  ret = regmap_write(info->regmap_base, RK3308_SOC_CON0,
+		ioVoltSelect | (RK3308_SOC_CON0_DOMAINS << 16));
+		dev_info(dev, "1.8V I/O domains assigned 0x%03x\n", ioVoltSelect);
+		if (ret < 0)
+			dev_warn(dev, "Couldn't update 1.8V I/O domains\n");
+	}
 
 	platform_set_drvdata(pdev, info);
 
