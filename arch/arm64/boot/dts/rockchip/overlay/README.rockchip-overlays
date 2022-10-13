@@ -10,6 +10,10 @@ rockchip (Rockchip)
 
 - i2c7, i2c8, pcie-gen2, spi-spidev, uart4, w1-gpio
 
+for RK3308 (Rock PI-S)
+
+- rk3308bs rk3308bs-1.3ghz sdio-10mhz sdio-4mhz emmc
+
 ### Overlay details:
 
 ### i2c7
@@ -166,3 +170,40 @@ wifi + bt chip and clones.
 ### rk3318-box-cpu-hs
 
 Enable additional cpu "high-speed" bins up to 1.3ghz
+
+**********************************
+Details for Rock Pi-S overlays  (7 Oct 2022):
+
+V1.3 of the RockPi-S uses a the B-S variant of the RK3308 that is optimized
+for lower core voltages than the older chips on the V1.2 and V1.1 boards.
+All V1.3 boards should apply the
+###  rk3308-bs
+overlay to lower the core voltages to reduce power consumption.
+This also enables operation at 1.1Ghz.
+
+Optionally, V1.3 boards may add the
+###  rk3308-bs@1.3ghz
+to overclock the B-S CPU to 1.3Ghz.
+Add the rk3308bs-rock-pi-s-1.3Ghz overlay  *after adding*  rockchip-rk3308bs
+
+===========
+Install the following overlays only on older (unpatched) mainline kernels:
+
+Older mainline kernels disable the Rock Pi S built-in SDNAND (EMMC)
+###  rk3308-emmc
+enables your SDNAND chip.  It is OK to install for boards that lack the SDNAND.
+
+The legacy 4.4 and this mainline kernel drive the SDIO clock at 50Mhz to provide
+maximum WiFi throughput.  However...
+
+Older versions of the Mainline kernel drive the SDIO clock at only 1Mhz
+This reduces WiFi throughput to < 500kB/s !
+
+###  rk3308-sdio@10mhz
+increases the SDIO clock to 10Mhz, providing about 2.4MB/s WiFi throughput.
+
+###  rk3308-sdio@4mhz
+increases the SDIO clock to only 4Mhz, providing about 1MB/s WiFi throughput.
+use this only if 10Mhz SDIO clock is unstable
+
+Note that older mainline kernels cannot drive the SDIO clock faster than 10Mhz.
