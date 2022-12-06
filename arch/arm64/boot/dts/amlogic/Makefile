@@ -1,5 +1,11 @@
 # SPDX-License-Identifier: GPL-2.0
 dtb-$(CONFIG_ARCH_MESON) += meson-a1-ad401.dtb
+dtb-$(CONFIG_ARCH_MESON) += meson-sm1-odroid-c4-spidev.dtb
+dtb-$(CONFIG_ARCH_MESON) += meson-g12b-radxa-zero2-spidev.dtb
+dtb-$(CONFIG_ARCH_MESON) += meson-g12b-odroid-n2-plus-spidev.dtb
+dtb-$(CONFIG_ARCH_MESON) += meson-g12b-a311d-khadas-vim3-spidev.dtb
+dtb-$(CONFIG_ARCH_MESON) += meson-g12a-radxa-zero-spidev.dtb
+dtb-$(CONFIG_ARCH_MESON) += meson-sm1-khadas-vim3l-spidev.dtb
 dtb-$(CONFIG_ARCH_MESON) += meson-axg-jethome-jethub-j100.dtb
 dtb-$(CONFIG_ARCH_MESON) += meson-axg-jethome-jethub-j110-rev-2.dtb
 dtb-$(CONFIG_ARCH_MESON) += meson-axg-jethome-jethub-j110-rev-3.dtb
