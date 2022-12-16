@@ -2143,7 +2143,7 @@ static inline u32 ov8858_cal_delay(u32 cycles)
 static int __ov8858_power_on(struct ov8858 *ov8858)
 {
 	int ret;
-	u32 delay_us;
+	//u32 delay_us;
 	struct device *dev = &ov8858->client->dev;
 
 	if (!IS_ERR_OR_NULL(ov8858->pins_default)) {
