@@ -1,4 +1,4 @@
-#### kernel patching: 57 total patches; 57 applied; 2 with problems; 2 needs_rebase
+#### kernel patching: 57 total patches; 57 applied; 2 with problems; 2 needs_rebase 
 
 | Status | Patch  | Diffstat Summary | Files patched | Author / Subject |
 | :---:    | :---   | :---   | :---   | :---  |
