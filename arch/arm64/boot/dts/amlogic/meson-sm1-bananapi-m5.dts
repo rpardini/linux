@@ -12,6 +12,7 @@
 #include <dt-bindings/gpio/meson-g12a-gpio.h>
 #include <dt-bindings/sound/meson-g12a-toacodec.h>
 #include <dt-bindings/sound/meson-g12a-tohdmitx.h>
+#include <dt-bindings/mmc/meson-gx-mmc.h>
 
 / {
 	compatible = "bananapi,bpi-m5", "amlogic,sm1";
@@ -558,6 +559,8 @@
 	cd-gpios = <&gpio GPIOC_6 GPIO_ACTIVE_LOW>;
 	vmmc-supply = <&tflash_vdd>;
 	vqmmc-supply = <&vddio_c>;
+	
+	amlogic,mmc-phase = <CLK_PHASE_270 CLK_PHASE_0 CLK_PHASE_0>;
 };
 
 /* eMMC */
@@ -577,6 +580,8 @@
 	mmc-pwrseq = <&emmc_pwrseq>;
 	vmmc-supply = <&vddao_3v3>;
 	vqmmc-supply = <&emmc_1v8>;
+
+	amlogic,mmc-phase = <CLK_PHASE_270 CLK_PHASE_0 CLK_PHASE_0>;
 };
 
 &tdmif_b {
