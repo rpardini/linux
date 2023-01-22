@@ -33,6 +33,18 @@ I2C8 pins (SCL, SDA): GPIO1-C5, GPIO1-C4
 Enables PCIe Gen2 link speed on RK3399.
 WARNING! Not officially supported by Rockchip!!!
 
+### rk3328-i2c0
+
+Activates TWI/I2C bus 0
+
+I2C0 (SCL, SDA): GPIO2-D0, GPIO2-D1
+
+### rk3328-uart1
+
+Activates UART1
+
+UART1 pins (RX, TX): GPIO3_A6, GPIO3_A4
+
 ### rk3328-opp-1.4ghz
 
 Adds the 1.4GHz opp for overclocking
