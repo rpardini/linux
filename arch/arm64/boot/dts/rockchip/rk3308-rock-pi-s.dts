@@ -191,6 +191,15 @@
 	cpu-supply = <&vdd_core>;
 };
 
+&cpu0_opp_table {
+	opp-1200000000 {
+		status = "okay";
+	};
+	opp-1296000000 {
+		status = "okay";
+	};
+};
+
 &emmc {
 	bus-width = <4>;  // Confirm if right value - <8>
 	cap-mmc-highspeed;
