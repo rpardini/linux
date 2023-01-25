@@ -555,6 +555,12 @@ static void rk808_pm_power_off(void)
 		dev_err(&rk808_i2c_client->dev, "Failed to shutdown device!\n");
 }
 
+static void rk808_pm_power_off_prepare(void)
+{
+	struct rk808 *rk808 = i2c_get_clientdata(rk808_i2c_client);
+	regmap_update_bits(rk808->regmap, RK808_LDO_EN_REG, 0x08, 0x00);
+}
+
 static void rk8xx_shutdown(struct i2c_client *client)
 {
 	struct rk808 *rk808 = i2c_get_clientdata(client);
@@ -724,6 +730,8 @@ static int rk808_probe(struct i2c_client *client,
 		rk808_i2c_client = client;
 		pm_power_off = rk808_pm_power_off;
 	}
+	rk808_i2c_client = client;
+	pm_power_off_prepare = rk808_pm_power_off_prepare;
 
 	return 0;
 
