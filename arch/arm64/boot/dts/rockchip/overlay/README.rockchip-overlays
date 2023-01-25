@@ -44,6 +44,11 @@ WARNING! Not officially supported by Rockchip!!!
 Adds the 2GHz big and 1.5 GHz LITTLE opps for overclocking
 WARNING! Not officially supported by Rockchip!!!
 
+### rockpi4cplus-usb-host
+
+Switches the top USB 3.0 port to host mode.
+WARNING! Not officially supported by Rockchip!!!
+
 ### spi-jedec-nor
 
 Activates MTD support for JEDEC compatible SPI NOR flash chips on SPI bus
