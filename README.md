@@ -1,150 +1,71 @@
-# How do I submit patches to Android Common Kernels
+#### kernel patching: 65 total patches; 65 applied; 13 with problems; 9 needs_rebase; 4 not_mbox
 
-1. BEST: Make all of your changes to upstream Linux. If appropriate, backport to the stable releases.
-   These patches will be merged automatically in the corresponding common kernels. If the patch is already
-   in upstream Linux, post a backport of the patch that conforms to the patch requirements below.
-   - Do not send patches upstream that contain only symbol exports. To be considered for upstream Linux,
-additions of `EXPORT_SYMBOL_GPL()` require an in-tree modular driver that uses the symbol -- so include
-the new driver or changes to an existing driver in the same patchset as the export.
-   - When sending patches upstream, the commit message must contain a clear case for why the patch
-is needed and beneficial to the community. Enabling out-of-tree drivers or functionality is not
-not a persuasive case.
+| Status | Patch  | Diffstat Summary | Files patched | Author / Subject |
+| :---:    | :---   | :---   | :---   | :---  |
+| ✅  | `0001-dma-buf-add-dma_resv_get_singleton-v2` | `(+61/-0)[2M]` | f42a38077253c2fcbf334d5df89e6fe9fc719f7e `dma-resv.c`, `dma-resv.h` | `=?UTF-8?q?Christian=20K=C3=B6nig?=` _dma-buf: add dma_resv_get_singleton v2_ |
+| ⚠️`[needs_rebase]`  | `0002-dma-buf-Add-an-API-for-exporting-sync-files-v14` | `(+102/-0)[2M]` | 84d585d038b9640097a41400f03b64acf21a7ee8 `dma-buf.c`, `dma-buf.h` | `Jason Ekstrand` _dma-buf: Add an API for exporting sync files (v14)_ |
+| ⚠️`[needs_rebase]`  | `0003-dma-buf-Add-an-API-for-importing-sync-files-v10` | `(+91/-0)[2M]` | a59458d2b39b92d8709b62f5efa374412411f2c7 `dma-buf.h`, `dma-buf.c` | `Jason Ekstrand` _dma-buf: Add an API for importing sync files (v10)_ |
+| ⚠️`[needs_rebase]`  | `0004-MALI-bifrost-avoid-fence-double-free` | `(+0/-1)[1M]` | f6ce1c14ab8eae9c4ebe3357c7042fccae6286f8 `mali_kbase_csf_kcpu.c` | `Icecream95` _MALI: bifrost: Avoid fence double-free_ |
+| ⚠️`[needs_rebase]`  | `0005-drm-rockchip-Re-add-implicit-fencing-support-for-pla` | `(+2/-0)[1M]` | 4ee1fbbfaa508e9e3ddcc93657b75ac76df28c2e `rockchip_drm_vop2.c` | `Icecream95` _drm/rockchip: Re-add implicit fencing support for planes_ |
+| ⚠️`[not_mbox]`  | `001-scripts-fix-modpost` | `(+63/-90)[3M]` | 52f99f014f36175b68363e8c39491517e60b09f8 `modpost.c`, `modpost.h`, `sumversion.c` | `unifreq` _[ARCHEOLOGY] rockchip-rk3588-legacy: kernel patch up to 5.10.72 (#4195)_ |
+| ⚠️`[not_mbox]`  | `003-fix-compile-error-for-usb-gadget-legacy-webcam` | `(+1/-0)[1M]` | 8a54a705d3445b6b5829b9a834eab400c1557d58 `webcam.c` | `unifreq` _[ARCHEOLOGY] rockchip-rk3588-legacy: kernel patch up to 5.10.72 (#4195)_ |
+| ⚠️`[not_mbox]`  | `005-fix-cec` | `(+9/-0)[1M]` | 30200589626919a53070f4d79d86b8d8e46934b3 `dw-hdmi-qp.c` | `catalinii` _[ARCHEOLOGY] Fix cec disconnecting after TV restart (#4725)_ |
+| ⚠️`[needs_rebase]`  | `2001-add-board-orangepi5` | `(+2045/-8)[3M, 7A]` | bea4f660b2d45cc764570a460bdfaa6ab556801c `rk3588s-orangepi.dtsi`, `rk3588s-orangepi-5.dts`, `rk3588s-orangepi-5.dtsi`, `rk3588s-orangepi-5-camera2.dtsi`, `rk3588s-orangepi-5-camera3.dtsi`, `rk3588s-orangepi-5-camera1.dtsi`, `rk3588s-orangepi-5-lcd.dtsi`, `rk3588s.dtsi`, `rk3588s-pinctrl.dtsi`, `Makefile` | `Ricardo Pardini` _OrangePi5 Device Tree; extracted from Xunlong tree_ |
+| ✅  | `2002-OrangePi5-Motorcomm-stuff-extracted-from-Xun` | `(+2156/-0)[2M, 3A]` | f90cf83e5db10b997169c294d92970d366a7d375 `motorcomm.c`, `yt8614-phy.h`, `motorcomm_phy.h`, `Kconfig`, `Makefile` | `Ricardo Pardini` _OrangePi5; dubious Motorcomm stuff extracted from Xunlong tree_ |
+| ✅  | `2005-OrangePi5-tcpm-stuff-extracted-from-Xunlong-` | `(+6/-9)[1M]` | e6377636b0803c478d80124484038303eefaba14 `tcpm.c` | `Ricardo Pardini` _OrangePi5; dubious `tcpm` stuff extracted from Xunlong tree_ |
+| ✅  | `2009-Variously-HDMI-improvements-for-OPi-5` | `(+21/-4)[2M]` | 592c67baa274e1e3ef90708c5a11b246b3adcb76 `rk3588s-orangepi-5.dts`, `rk3588s-orangepi.dtsi` | `Muhammed Efe Cetin` _Variously HDMI improvements for OPi 5_ |
+| ⚠️`[needs_rebase]`  | `2010-Add-sata-support-on-Orange-Pi-5` | `(+22/-0)[1M, 1A]` | 2465fd73808c34b9e89a39f22f74e0721cfc8a6e `rockchip-rk3588-opi5-sata.dts`, `Makefile` | `danielpinto8zz6` _Add sata support on Orange Pi 5_ |
+| ⚠️`[needs_rebase]`  | `2011-Add-missing-I2C-SPI-PWM-UART-LCD-overlays-to-OrangePi5` | `(+432/-0)[1M, 19A]` | 2289414ccca470e6af9da4567202e49eaf34a753 `rockchip-rk3588-opi5-lcd1.dts`, `rockchip-rk3588-opi5-lcd2.dts`, `rockchip-rk3588-opi5-spi4-m0-cs1-spidev.dts`, `Makefile`, `rockchip-rk3588-opi5-can1-m1.dts`, `rockchip-rk3588-opi5-can2-m1.dts`, `rockchip-rk3588-opi5-i2c1-m2.dts`, `rockchip-rk3588-opi5-i2c1-m4.dts`, `rockchip-rk3588-opi5-i2c3-m0.dts`, `rockchip-rk3588-opi5-i2c5-m3.dts`, `rockchip-rk3588-opi5-pwm0-m1.dts`, `rockchip-rk3588-opi5-pwm1-m1.dts`, `rockchip-rk3588-opi5-pwm1-m2.dts`, `rockchip-rk3588-opi5-pwm15-m2.dts`, `rockchip-rk3588-opi5-pwm3-m0.dts`, _and 5 more_ | `Muhammed Efe Cetin` _Add missing I2C, SPI, PWM, UART, LCD overlays to Orange Pi 5._ |
+| ⚠️`[needs_rebase]`  | `2012-Add-rockchip-rk3588-opp-oc-24ghz-overlay-for-RK3588` | `(+356/-0)[1M, 1A]` | ca066a10d8f58a6464572e23ab7b4eaafe9923fe `rockchip-rk3588-opp-oc-24ghz.dts`, `Makefile` | `Muhammed Efe Cetin` _Add rockchip-rk3588-opp-oc-24ghz overlay for RK3588 boards_ |
+| ⚠️`[needs_rebase]`  | `2013-Disable-hardware-cursor-for-Rock-5B` | `(+0/-4)[1M]` | c4f6c37878030b6d68191f05480b09adc8e923d3 `rk3588-rock-5b.dts` | `Muhammed Efe Cetin` _Disable hardware cursor for Rock 5B_ |
+| ✅  | `3000-add-board-khadas-edge2-and-drivers` | `(+5305/-14)[10M, 7A]` | f965c6671285320aac96f517e31828ff31ced0af `rk3588s-khadas-edge2.dtsi`, `rk3588s-khadas-edge2.dts`, `rk3588-nvr-demo-khadas-edge2.dtsi`, `khadas-mcu.c`, `rk3588s-khadas-edge2-camera.dtsi`, `rk3588-rk806-single-khadas-edge2.dtsi`, `khadas_wdt.c`, `leds-gpio.c`, `kxtj9.c`, `rockchip_thermal.c`, `Kconfig`, `rockchip,boot-mode.h`, `sensor-dev.c`, `btbcm.c`, `Makefile` | `Jack Zhao` _Some of Khadas Edge2 DT, mcu stuff extracted from Khadas .66 tree, rebased against .100_ |
+| ✅  | `3001_most_of_khadas_incl_dts_and_drivers` | `(+1626/-1861)[3M, 1A]` | 2122d368ee54eec12fe15d92d5160567db9b66c3 `rk3588s-khadas-edge2.dtsi`, `rk3588s-khadas-edge2.dts`, `kedges_defconfig`, `rk3588s-khadas-edge2-camera.dtsi` | `Jack Zhao` _arm64: rockchip: Edge2: configure Edge2 basic support_ |
+| ✅  | `3001_most_of_khadas_incl_dts_and_drivers` | `(+75/-2)[2M]` | 0d2808ba9430428f88faaf30c3c7771a70bad34c `rk3588s-khadas-edge2.dts`, `rk3588s-khadas-edge2.dtsi` | `Jack Zhao` _[RPARDINI INTERVENTION TO SEPARATE FILES] arm64: dts: rockchip: Edge2: PMIC: support rk806 single_ |
+| ✅  | `3001_most_of_khadas_incl_dts_and_drivers` | `(+25/-1)[2M]` | 84882a20bcaf8e968a202b4b362a45f7ff620e85 `rk3588s-khadas-edge2.dts`, `rk3588s-khadas-edge2.dtsi` | `Jack Zhao` _arm64: dts: rockchip: Edge2: fix sdmmc_ |
+| ✅  | `3001_most_of_khadas_incl_dts_and_drivers` | `(+29/-106)[1M]` | 130ff45e4d96850de975cc60c659f53088f6adf1 `rk3588s-khadas-edge2.dts` | `Jack Zhao` _arm64: dts: rockchip: Edge2: HDMI: support HDMI display_ |
+| ✅  | `3001_most_of_khadas_incl_dts_and_drivers` | `(+6/-0)[1M]` | 41c3c266866c7a0ef51138cbfcdb27c2cf72f89d `rk3588s-khadas-edge2.dts` | `Jack Zhao` _arm64: dts: rockchip: Edge2: add spi flash NOR support_ |
+| ✅  | `3001_most_of_khadas_incl_dts_and_drivers` | `(+4/-3)[1M]` | 72fe0de909f29160929a674d71f1ef192d3772c5 `rk3588s-khadas-edge2.dts` | `Jack Zhao` _arm64: dts: rockchip: Edge2: support fusb302_ |
+| ✅  | `3001_most_of_khadas_incl_dts_and_drivers` | `(+2/-2)[1M]` | 60cc395c918ea469dd35b9b0c749a5d67e95d7b2 `rk3588s-khadas-edge2.dts` | `Jack Zhao` _arm64: dts: rockchip: Edge2: enable usb host power_ |
+| ✅  | `3001_most_of_khadas_incl_dts_and_drivers` | `(+4/-3)[1M]` | e22596e955692bf212615f633ac5c3de276ffb9a `rk3588s-khadas-edge2.dts` | `Jack Zhao` _arm64: dts: rockchip: Edge2: USB: fix USB host 3.0_ |
+| ✅  | `3001_most_of_khadas_incl_dts_and_drivers` | `(+8/-6)[1M]` | 455be1abc50d354ffc79e5492bf5d31eb074563d `rk3588s-khadas-edge2.dts` | `Jack Zhao` _arm64: dts: rockchip: Edge2: support TYPEC0_ |
+| ✅  | `3001_most_of_khadas_incl_dts_and_drivers` | `(+3/-13)[1M]` | 8646579428a4edeb10ea71f2c0c6e91a72b1b6ea `rk3588s-khadas-edge2.dts` | `Jack Zhao` _arm64: dts: rockchip: Edge2: RTC: support PT7C4363_ |
+| ✅  | `3001_most_of_khadas_incl_dts_and_drivers` | `(+18/-15)[2M]` | 8dffb6f3a4156efe748faa4f5f05a80a576b544d `rk3588s-khadas-edge2.dts`, `kedges_defconfig` | `Jack Zhao` _arm64: rockchip: Edge2: supoort AP6275P wifi and bt_ |
+| ✅  | `3001_most_of_khadas_incl_dts_and_drivers` | `(+23/-0)[1M]` | 64353e774689a5bcf24f54a30d58d5a252763971 `rk3588s-khadas-edge2.dts` | `Jack Zhao` _arm64: dts: rockchip: Edge2: enable spi1_ |
+| ✅  | `3001_most_of_khadas_incl_dts_and_drivers` | `(+3/-21)[1M]` | cc289ff0f11c975dad9a10049c59468def7c83e2 `rk3588s-khadas-edge2.dtsi` | `Jack Zhao` _arm64: dts: rockchip: Edge2: Key: configure fun key as home key_ |
+| ✅  | `3001_most_of_khadas_incl_dts_and_drivers` | `(+209/-203)[3M]` | 09c70e1f1f9b9b1d99dab593cbfabc0dd5b9011d `edt-ft5x06.c`, `rk3588s-khadas-edge2.dts`, `kedges_defconfig` | `Jack Zhao` _[NEEDS INTERVENTION DROP?] Edge2: TP: support khadas TS050 TP_ |
+| ✅  | `3001_most_of_khadas_incl_dts_and_drivers` | `(+1262/-566)[4M]` | 92a9c9b0b3a3fdb5bd2ece5091dc4eca4aedfdac `rk3588s-khadas-edge2.dtsi`, `rk3588s-khadas-edge2.dts`, `dw-mipi-dsi2-rockchip.c`, `panel-simple.c` | `Jack Zhao` _[NEEDS INTERVENTION DROP?] Edge2: lcd: support khadas mipi lcd panel_ |
+| ✅  | `3001_most_of_khadas_incl_dts_and_drivers` | `(+1/-1)[1M]` | 87ff836e3f90341df1dff8b0227a5ca16e2d0fc3 `rk3588s-khadas-edge2.dts` | `Jack Zhao` _arm64: dts: rockchip: Edge2: support DP display_ |
+| ✅  | `3001_most_of_khadas_incl_dts_and_drivers` | `(+8/-0)[1M]` | 4f8c3b195597b4db867813af5a71dc18ee3138ee `rk3588s-khadas-edge2.dts` | `Jack Zhao` _arm64: dts: rockchip: Edge2: Enable HDMI sound card_ |
+| ✅  | `3001_most_of_khadas_incl_dts_and_drivers` | `(+18/-5)[1M]` | 53a76eaac9c6401031bfda901ba00970a59ade30 `rk3588s-khadas-edge2.dts` | `Jack Zhao` _arm64: dts: rockchip: Edge2: support DMIC array_ |
+| ✅  | `3001_most_of_khadas_incl_dts_and_drivers` | `(+25/-41)[1M]` | 5d91220b8b575c5f6c0e6e2af7f0f492d9da0927 `rk3588s-khadas-edge2.dts` | `Jack Zhao` _Edge2: support codec es8316_ |
+| ✅  | `3001_most_of_khadas_incl_dts_and_drivers` | `(+184/-71)[1M]` | 67dd4a03e393f901c5f4b1fdbefdb8197759dcb9 `rk3588s-khadas-edge2-camera.dtsi` | `Jack Zhao` _arm64: dts: Edge2: camera: add imx415 camera_ |
+| ✅  | `3001_most_of_khadas_incl_dts_and_drivers` | `(+13/-0)[1M]` | 88005c581df73b01c74b24ce2a45a457305e76f5 `rk3588s-khadas-edge2.dts` | `Jack Zhao` _arm64: dts: rockchip: Edge2: support 8k_ |
+| ✅  | `3001_most_of_khadas_incl_dts_and_drivers` | `(+20/-10)[2M]` | 8617f28e91105fc74a1435fde877a352a79ce83b `kedges_defconfig`, `rk3588s-khadas-edge2.dts` | `Jack Zhao` _Edge2: change bluetooth to mainline way_ |
+| ✅  | `3001_most_of_khadas_incl_dts_and_drivers` | `(+19/-8)[2M]` | cf156d431993d31b68ed6fe17e33af6ad8919830 `rk3588s-khadas-edge2.dts`, `kedges_defconfig` | `Jack Zhao` _Edge2: WIFI: configure WiFi to dynamically load modules_ |
+| ✅  | `3001_most_of_khadas_incl_dts_and_drivers` | `(+1/-1)[1M]` | 1829d48704b97b5aa1444273c5ef1dc73e83b13a `rk3588s-khadas-edge2.dts` | `Jack Zhao` _arm64: dts: rockchip: Edge2: modify power pin of SD card_ |
+| ✅  | `3001_most_of_khadas_incl_dts_and_drivers` | `(+2/-2)[1M]` | 4eb40b0ef1f2b527abac37e5d0875590181f4b94 `rk3588s-khadas-edge2.dts` | `Jack Zhao` _arm64: dts: rockchip: Edge2: HDMI: modify the enable_ |
+| ✅  | `3001_most_of_khadas_incl_dts_and_drivers` | `(+72/-70)[1M]` | 7a2f844f6a0c4090917e0a98630f42b40c7ee1a3 `rk3588s-khadas-edge2.dts` | `Jack Zhao` _arm64: dts: rockchip: Edge2: mount fusb302 to i2c2_ |
+| ✅  | `3001_most_of_khadas_incl_dts_and_drivers` | `(+2/-2)[1M]` | ec7bee56a13e12366763e8f9484a466fbafa038f `rk3588s-khadas-edge2.dts` | `Jack Zhao` _arm64: dts: rockchip: Edge2: modify the pin of USB power_ |
+| ✅  | `3001_most_of_khadas_incl_dts_and_drivers` | `(+1/-1)[1M]` | 203e7e438e450420f94b37cd59410e35e3a5c1c6 `rk3588s-khadas-edge2.dts` | `Jack Zhao` _arm64: dts: rockchip: Edge2: modify the pin of typec0 int_ |
+| ✅  | `3001_most_of_khadas_incl_dts_and_drivers` | `(+1/-1)[1M]` | c7d9795efb870ee3ed256778b314a54a9c719e7f `rk3588s-khadas-edge2.dts` | `Jack Zhao` _arm64: dts: rockchip: Edge2: modify the power pin of WiFi_ |
+| ✅  | `3001_most_of_khadas_incl_dts_and_drivers` | `(+8/-8)[1M]` | 728ed1e9acd0705451dccde754c260c56e899ad4 `rk3588s-khadas-edge2.dts` | `Jack Zhao` _arm64: dts: rockchip: Edge2: RTC: configure pt7c4363 to i2c2_ |
+| ✅  | `3001_most_of_khadas_incl_dts_and_drivers` | `(+3/-3)[1M]` | fa660e8a11ef706a2d8ae94a89adda3a820f46e7 `rk3588s-khadas-edge2.dts` | `Jack Zhao` _arm64: dts: rockchip: Edge2: fix khadas RGB led_ |
+| ✅  | `3001_most_of_khadas_incl_dts_and_drivers` | `(+12/-12)[1M]` | eef5b387fe3ec0f416111f89ec785233d329f519 `rk3588s-khadas-edge2.dts` | `Jack Zhao` _Edge2: fix MCU and fan_ |
+| ✅  | `3001_most_of_khadas_incl_dts_and_drivers` | `(+19/-7)[1M]` | 34f98abfd671ce53de693cba35c108e3bcbe96ce `rk3588s-khadas-edge2.dts` | `Jack Zhao` _arm64: dts: rockchip: Edge2: fix khadas TS050 TP_ |
+| ✅  | `3001_most_of_khadas_incl_dts_and_drivers` | `(+44/-24)[2M]` | cb2a74ecac62eb043c8495dc4f86986782dd0bb3 `rk3588s-khadas-edge2.dts`, `rk3588s-khadas-edge2.dtsi` | `Jack Zhao` _arm64: dts: rockchip: Edge2: fix khadas mipi lcd panel_ |
+| ✅  | `3001_most_of_khadas_incl_dts_and_drivers` | `(+1/-4)[1M]` | 3027712e978fee29c65cd118f7ef45e185cf54a1 `rk3588s-khadas-edge2.dts` | `Jack Zhao` _arm64: dts: rockchip: Edge2: fix DP display_ |
+| ✅  | `3001_most_of_khadas_incl_dts_and_drivers` | `(+104/-134)[2M]` | a9e13d9b51d6d6bec8d1d324f6b2d91e8d451688 `rk3588s-khadas-edge2-camera.dtsi`, `rk3588s-khadas-edge2.dts` | `Jack Zhao` _arm64: dts: rockchip: Edge2: fix camera_ |
+| ✅  | `3001_most_of_khadas_incl_dts_and_drivers` | `(+24/-0)[1M]` | 42b77b5418d52fa2669b39d27b61bab653b77136 `rk3588s-khadas-edge2.dts` | `Jack Zhao` _arm64: dts: Edge2: turn on Bluetooth mic_ |
+| ✅  | `3001_most_of_khadas_incl_dts_and_drivers` | `(+0/-18)[1M]` | 13205bc51e9f5a0b47649310002561d3eb6417b7 `rk3588s-khadas-edge2.dts` | `Jack Zhao` _arm64: dts: rockchip: Edge2: remove redundant device nodes_ |
+| ✅  | `3001_most_of_khadas_incl_dts_and_drivers` | `(+1/-1)[1M]` | cb2a8fcb1be81a46aec7b430d69ac4518b72c34d `rk3588s-khadas-edge2.dts` | `Nick Xie` _arm64: dts: Edge2: disable mipi dsi_ |
+| ✅  | `3001_most_of_khadas_incl_dts_and_drivers` | `(+1/-1)[1M]` | e2b93cfcc749f57472867d9f78b9e01cfea9e110 `rk3588s-khadas-edge2.dts` | `Nick Xie` _arm64: dts: Edge2: disable spi1 by default_ |
+| ✅  | `3001_most_of_khadas_incl_dts_and_drivers` | `(+0/-6)[1M]` | 99549198f7b5c2ce980c1b30624ca36a19f98607 `rk3588s-khadas-edge2.dts` | `Nick Xie` _arm64: dts: Edge2: move spidev to overlays_ |
+| ✅  | `3001_most_of_khadas_incl_dts_and_drivers` | `(+827/-63)[2M]` | d2fb4e193f9fb8a9356c350924cdf7cf8fbbefec `kedges_defconfig`, `rk3588s-khadas-edge2.dts` | `Nick Xie` _bt: disable HCIUART_BCM_ |
+| ✅  | `3001_most_of_khadas_incl_dts_and_drivers` | `(+48/-27)[1M]` | c960b017b7b59b3659af2c0b757498a98bdcb38b `rk3588s-khadas-edge2-camera.dtsi` | `Yan Wang` _arm64: dts: Edge2: fix imx415_ |
+| ✅  | `3001_most_of_khadas_incl_dts_and_drivers` | `(+9/-9)[1M]` | c5527c2e66b1b45c9d78ab6078c1129eb1d0055d `rk3588s-khadas-edge2-camera.dtsi` | `Nick Xie` _arm64: dts: camera: Edge2: update lens pinctrl_ |
+| ✅  | `3001_most_of_khadas_incl_dts_and_drivers` | `(+1/-1)[1M]` | 91a08be6cfa5e0db3578129a78c5397717de79de `rk3588s-khadas-edge2.dts` | `Nick Xie` _arm64: dts: camera: Edge2: enable mipi_dcphy1_ |
+| ✅  | `3001_most_of_khadas_incl_dts_and_drivers` | `(+44/-31)[1M]` | ac344152bb7160fe7f22b0364f9e4826b5fcfb58 `rk3588s-khadas-edge2.dts` | `Ivan Li` _dts: rockchip: Edge2: IR: Add khadas remote key value_ |
+| ✅  | `3001_most_of_khadas_incl_dts_and_drivers` | `(+0/-90)[1M]` | df313a9f08a5b536f32d962c158fc28a2d40e646 `rk3588s-khadas-edge2.dts` | `Nick Xie` _arm64: dts: IR: Edge2: remove unused IR map_ |
+| ⚠️`[not_mbox]`  | `999-remove-chosen-bootargs-from-dtsi` | `(+3/-3)[1M]` | a2b851b6a550d8de8bff37312bdcad24397f0bb7 `rk3588-linux.dtsi` | `Ricardo Pardini` _[ARCHEOLOGY] `orangepi5.wip`: initial OrangePi5 support; collab with @efectn (#4582)_ |
 
-2. LESS GOOD: Develop your patches out-of-tree (from an upstream Linux point-of-view). Unless these are
-   fixing an Android-specific bug, these are very unlikely to be accepted unless they have been
-   coordinated with kernel-team@android.com. If you want to proceed, post a patch that conforms to the
-   patch requirements below.
-
-# Common Kernel patch requirements
-
-- All patches must conform to the Linux kernel coding standards and pass `script/checkpatch.pl`
-- Patches shall not break gki_defconfig or allmodconfig builds for arm, arm64, x86, x86_64 architectures
-(see  https://source.android.com/setup/build/building-kernels)
-- If the patch is not merged from an upstream branch, the subject must be tagged with the type of patch:
-`UPSTREAM:`, `BACKPORT:`, `FROMGIT:`, `FROMLIST:`, or `ANDROID:`.
-- All patches must have a `Change-Id:` tag (see https://gerrit-review.googlesource.com/Documentation/user-changeid.html)
-- If an Android bug has been assigned, there must be a `Bug:` tag.
-- All patches must have a `Signed-off-by:` tag by the author and the submitter
-
-Additional requirements are listed below based on patch type
-
-## Requirements for backports from mainline Linux: `UPSTREAM:`, `BACKPORT:`
-
-- If the patch is a cherry-pick from Linux mainline with no changes at all
-    - tag the patch subject with `UPSTREAM:`.
-    - add upstream commit information with a `(cherry picked from commit ...)` line
-    - Example:
-        - if the upstream commit message is
-```
-        important patch from upstream
-
-        This is the detailed description of the important patch
-
-        Signed-off-by: Fred Jones <fred.jones@foo.org>
-```
->- then Joe Smith would upload the patch for the common kernel as
-```
-        UPSTREAM: important patch from upstream
-
-        This is the detailed description of the important patch
-
-        Signed-off-by: Fred Jones <fred.jones@foo.org>
-
-        Bug: 135791357
-        Change-Id: I4caaaa566ea080fa148c5e768bb1a0b6f7201c01
-        (cherry picked from commit c31e73121f4c1ec41143423ac6ce3ce6dafdcec1)
-        Signed-off-by: Joe Smith <joe.smith@foo.org>
-```
-
-- If the patch requires any changes from the upstream version, tag the patch with `BACKPORT:`
-instead of `UPSTREAM:`.
-    - use the same tags as `UPSTREAM:`
-    - add comments about the changes under the `(cherry picked from commit ...)` line
-    - Example:
-```
-        BACKPORT: important patch from upstream
-
-        This is the detailed description of the important patch
-
-        Signed-off-by: Fred Jones <fred.jones@foo.org>
-
-        Bug: 135791357
-        Change-Id: I4caaaa566ea080fa148c5e768bb1a0b6f7201c01
-        (cherry picked from commit c31e73121f4c1ec41143423ac6ce3ce6dafdcec1)
-        [joe: Resolved minor conflict in drivers/foo/bar.c ]
-        Signed-off-by: Joe Smith <joe.smith@foo.org>
-```
-
-## Requirements for other backports: `FROMGIT:`, `FROMLIST:`,
-
-- If the patch has been merged into an upstream maintainer tree, but has not yet
-been merged into Linux mainline
-    - tag the patch subject with `FROMGIT:`
-    - add info on where the patch came from as `(cherry picked from commit <sha1> <repo> <branch>)`. This
-must be a stable maintainer branch (not rebased, so don't use `linux-next` for example).
-    - if changes were required, use `BACKPORT: FROMGIT:`
-    - Example:
-        - if the commit message in the maintainer tree is
-```
-        important patch from upstream
-
-        This is the detailed description of the important patch
-
-        Signed-off-by: Fred Jones <fred.jones@foo.org>
-```
->- then Joe Smith would upload the patch for the common kernel as
-```
-        FROMGIT: important patch from upstream
-
-        This is the detailed description of the important patch
-
-        Signed-off-by: Fred Jones <fred.jones@foo.org>
-
-        Bug: 135791357
-        (cherry picked from commit 878a2fd9de10b03d11d2f622250285c7e63deace
-         https://git.kernel.org/pub/scm/linux/kernel/git/foo/bar.git test-branch)
-        Change-Id: I4caaaa566ea080fa148c5e768bb1a0b6f7201c01
-        Signed-off-by: Joe Smith <joe.smith@foo.org>
-```
-
-
-- If the patch has been submitted to LKML, but not accepted into any maintainer tree
-    - tag the patch subject with `FROMLIST:`
-    - add a `Link:` tag with a link to the submittal on lore.kernel.org
-    - add a `Bug:` tag with the Android bug (required for patches not accepted into
-a maintainer tree)
-    - if changes were required, use `BACKPORT: FROMLIST:`
-    - Example:
-```
-        FROMLIST: important patch from upstream
-
-        This is the detailed description of the important patch
-
-        Signed-off-by: Fred Jones <fred.jones@foo.org>
-
-        Bug: 135791357
-        Link: https://lore.kernel.org/lkml/20190619171517.GA17557@someone.com/
-        Change-Id: I4caaaa566ea080fa148c5e768bb1a0b6f7201c01
-        Signed-off-by: Joe Smith <joe.smith@foo.org>
-```
-
-## Requirements for Android-specific patches: `ANDROID:`
-
-- If the patch is fixing a bug to Android-specific code
-    - tag the patch subject with `ANDROID:`
-    - add a `Fixes:` tag that cites the patch with the bug
-    - Example:
-```
-        ANDROID: fix android-specific bug in foobar.c
-
-        This is the detailed description of the important fix
-
-        Fixes: 1234abcd2468 ("foobar: add cool feature")
-        Change-Id: I4caaaa566ea080fa148c5e768bb1a0b6f7201c01
-        Signed-off-by: Joe Smith <joe.smith@foo.org>
-```
-
-- If the patch is a new feature
-    - tag the patch subject with `ANDROID:`
-    - add a `Bug:` tag with the Android bug (required for android-specific features)
 
