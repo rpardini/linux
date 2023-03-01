@@ -294,6 +294,12 @@ enum {
 	 * during the hdev->setup vendor callback.
 	 */
 	HCI_QUIRK_BROKEN_MWS_TRANSPORT_CONFIG,
+	
+	/*
+	 * Device declares that support Park link status, but it really
+	 * does not support it and fails to initialize
+	 */
+	HCI_QUIRK_BROKEN_PARK_LINK_STATUS
 };
 
 /* HCI device flags */
