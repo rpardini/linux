@@ -6,6 +6,7 @@ dtbo-$(CONFIG_ARCH_ROCKCHIP) += \
 	rockchip-rk3328-opp-1.4ghz.dtbo \
 	rockchip-rk3328-opp-1.5ghz.dtbo \
 	rockchip-rk3399-opp-2ghz.dtbo \
+	rockchip-rockpi4cplus-usb-host.dtbo \
 	rockchip-spi-jedec-nor.dtbo \
 	rockchip-spi-spidev.dtbo \
 	rockchip-uart4.dtbo \
