@@ -146,16 +146,6 @@
 		vin-supply = <&vcc12v_dcin>;
 	};
 
-	vcc5v0_usb: vcc5v0-usb {
-		compatible = "regulator-fixed";
-		regulator-name = "vcc5v0_usb";
-		regulator-always-on;
-		regulator-boot-on;
-		regulator-min-microvolt = <5000000>;
-		regulator-max-microvolt = <5000000>;
-		vin-supply = <&vcc12v_dcin>;
-	};
-
 	vcc5v0_usb_host: vcc5v0-usb-host {
 		compatible = "regulator-fixed";
 		enable-active-high;
@@ -165,7 +155,8 @@
 		regulator-name = "vcc5v0_usb_host";
 		regulator-min-microvolt = <5000000>;
 		regulator-max-microvolt = <5000000>;
-		vin-supply = <&vcc5v0_usb>;
+		regulator-always-on;
+		regulator-boot-on;
 	};
 
 	vcc5v0_usb_hub: vcc5v0-usb-hub-regulator {
@@ -176,7 +167,6 @@
 		pinctrl-0 = <&vcc5v0_usb_hub_en>;
 		regulator-name = "vcc5v0_usb_hub";
 		regulator-always-on;
-		vin-supply = <&vcc5v0_usb>;
 	};
 
 	vcc5v0_usb_otg: vcc5v0-usb-otg-regulator {
@@ -188,7 +178,8 @@
 		regulator-name = "vcc5v0_usb_otg";
 		regulator-min-microvolt = <5000000>;
 		regulator-max-microvolt = <5000000>;
-		vin-supply = <&vcc5v0_usb>;
+		regulator-always-on;
+		regulator-boot-on;
 	};
 
 	vcc_cam: vcc-cam {
@@ -767,6 +758,7 @@
 
 &usb_host0_xhci {
 	extcon = <&usb2phy0>;
+	dr_mode = "host";
 	status = "okay";
 };
 
