@@ -23,6 +23,7 @@ dtbo-$(CONFIG_ARCH_ROCKCHIP) += \
 	rockchip-rk3318-box-wlan-ap6330.dtbo \
 	rockchip-rk3318-box-cpu-hs.dtbo \
 	rockchip-rk3318-box-emmc-hs200.dtbo \
+	rockchip-rk3328-i2s1-pcm5102.dtbo \
         rk3308-bs.dtbo rk3308-bs@1.3ghz.dtbo \
         rk3308-sdio@10mhz.dtbo rk3308-sdio@4mhz.dtbo \
         rk3308-emmc.dtbo
