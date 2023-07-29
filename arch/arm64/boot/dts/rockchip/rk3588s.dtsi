@@ -2251,6 +2251,19 @@
 		interrupts = <GIC_SPI 315 IRQ_TYPE_LEVEL_HIGH 0>;
 	};
 
+	sfc: spi@fe2b0000 {
+		compatible = "rockchip,sfc";
+		reg = <0x0 0xfe2b0000 0x0 0x4000>;
+		interrupts = <GIC_SPI 206 IRQ_TYPE_LEVEL_HIGH 0>;
+		clocks = <&cru SCLK_SFC>, <&cru HCLK_SFC>;
+		clock-names = "clk_sfc", "hclk_sfc";
+		assigned-clocks = <&cru SCLK_SFC>;
+		assigned-clock-rates = <100000000>;
+		#address-cells = <1>;
+		#size-cells = <0>;
+		status = "disabled";
+	};
+
 	spi0: spi@feb00000 {
 		compatible = "rockchip,rk3588-spi", "rockchip,rk3066-spi";
 		reg = <0x0 0xfeb00000 0x0 0x1000>;
