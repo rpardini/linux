@@ -1457,13 +1457,12 @@ static int ncm_bind(struct usb_configuration *c, struct usb_function *f)
 	if (!ncm_opts->bound) {
 		ncm_opts->net->mtu = (ncm_opts->max_segment_size - ETH_HLEN);
 		status = gether_register_netdev(ncm_opts->net);
+		if (!status)
+			ncm_opts->bound = true;
 	}
 	mutex_unlock(&ncm_opts->lock);
-
 	if (status)
 		return status;
-
-	ncm_opts->bound = true;
 
 	ncm_string_defs[1].s = ncm->ethaddr;
 
@@ -1718,6 +1717,8 @@ static void ncm_free(struct usb_function *f)
 static void ncm_unbind(struct usb_configuration *c, struct usb_function *f)
 {
 	struct f_ncm *ncm = func_to_ncm(f);
+	struct f_ncm_opts *opts = container_of(f->fi, struct f_ncm_opts,
+					       func_inst);
 
 	DBG(c->cdev, "ncm unbind\n");
 
@@ -1736,6 +1737,8 @@ static void ncm_unbind(struct usb_configuration *c, struct usb_function *f)
 
 	kfree(ncm->notify_req->buf);
 	usb_ep_free_request(ncm->notify, ncm->notify_req);
+
+	gether_set_gadget(opts->net, NULL);
 }
 
 static struct usb_function *ncm_alloc(struct usb_function_instance *fi)
