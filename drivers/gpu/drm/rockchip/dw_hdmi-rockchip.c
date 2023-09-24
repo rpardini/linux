@@ -326,35 +326,31 @@ dw_hdmi_rockchip_mode_valid(struct dw_hdmi *dw_hdmi, void *data,
 			    const struct drm_display_info *info,
 			    const struct drm_display_mode *mode)
 {
-	struct rockchip_hdmi *hdmi = data;
-	const struct dw_hdmi_mpll_config *mpll_cfg = rockchip_mpll_cfg;
-	int pclk = mode->clock * 1000;
-	bool exact_match = hdmi->plat_data->phy_force_vendor;
-	int i;
+	struct dw_hdmi_plat_data *pdata = (struct dw_hdmi_plat_data *)data;
+	const struct dw_hdmi_mpll_config *mpll_cfg = pdata->mpll_cfg;
+	int clock = mode->clock;
+	unsigned int i = 0;
 
-	if (hdmi->ref_clk) {
-		int rpclk = clk_round_rate(hdmi->ref_clk, pclk);
-
-		if (abs(rpclk - pclk) > pclk / 1000)
-			return MODE_NOCLOCK;
+	if (pdata->ycbcr_420_allowed && drm_mode_is_420(info, mode) &&
+	    (info->color_formats & DRM_COLOR_FORMAT_YCBCR420)) {
+		clock /= 2;
+		mpll_cfg = pdata->mpll_cfg_420;
 	}
 
-	for (i = 0; mpll_cfg[i].mpixelclock != (~0UL); i++) {
-		/*
-		 * For vendor specific phys force an exact match of the pixelclock
-		 * to preserve the original behaviour of the driver.
-		 */
-		if (exact_match && pclk == mpll_cfg[i].mpixelclock)
-			return MODE_OK;
-		/*
-		 * The Synopsys phy can work with pixelclocks up to the value given
-		 * in the corresponding mpll_cfg entry.
-		 */
-		if (!exact_match && pclk <= mpll_cfg[i].mpixelclock)
-			return MODE_OK;
+	if ((!mpll_cfg && clock > 340000) ||
+	    (info->max_tmds_clock && clock > info->max_tmds_clock))
+		return MODE_CLOCK_HIGH;
+
+	if (mpll_cfg) {
+		while ((clock * 1000) < mpll_cfg[i].mpixelclock &&
+		       mpll_cfg[i].mpixelclock != (~0UL))
+		       i++;
+
+		if (mpll_cfg[i].mpixelclock == (~0UL))
+			return MODE_CLOCK_HIGH;
 	}
 
-	return MODE_BAD;
+	return MODE_OK;
 }
 static void
 dw_hdmi_rockchip_bridge_mode_set(struct drm_bridge *bridge,
