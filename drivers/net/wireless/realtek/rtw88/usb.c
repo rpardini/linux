@@ -142,7 +142,6 @@ static int rtw_usb_parse(struct rtw_dev *rtwdev,
 	struct usb_host_interface *host_interface = &interface->altsetting[0];
 	struct usb_interface_descriptor *interface_desc = &host_interface->desc;
 	struct usb_endpoint_descriptor *endpoint;
-	struct usb_device *usbd = interface_to_usbdev(interface);
 	int num_out_pipes = 0;
 	int i;
 	u8 num;
@@ -182,22 +181,6 @@ static int rtw_usb_parse(struct rtw_dev *rtwdev,
 
 			rtwusb->out_ep[num_out_pipes++] = num;
 		}
-	}
-
-	switch (usbd->speed) {
-	case USB_SPEED_LOW:
-	case USB_SPEED_FULL:
-		rtwusb->bulkout_size = RTW_USB_FULL_SPEED_BULK_SIZE;
-		break;
-	case USB_SPEED_HIGH:
-		rtwusb->bulkout_size = RTW_USB_HIGH_SPEED_BULK_SIZE;
-		break;
-	case USB_SPEED_SUPER:
-		rtwusb->bulkout_size = RTW_USB_SUPER_SPEED_BULK_SIZE;
-		break;
-	default:
-		rtw_err(rtwdev, "failed to detect usb speed\n");
-		return -EINVAL;
 	}
 
 	rtwdev->hci.bulkout_num = num_out_pipes;
@@ -654,7 +637,6 @@ static int rtw_usb_alloc_rx_bufs(struct rtw_usb *rtwusb)
 	for (i = 0; i < RTW_USB_RXCB_NUM; i++) {
 		struct rx_usb_ctrl_block *rxcb = &rtwusb->rx_cb[i];
 
-		rxcb->n = i;
 		rxcb->rtwdev = rtwusb->rtwdev;
 		rxcb->rx_urb = usb_alloc_urb(0, GFP_KERNEL);
 		if (!rxcb->rx_urb)
@@ -723,7 +705,7 @@ static int rtw_usb_init_rx(struct rtw_dev *rtwdev)
 	struct rtw_usb *rtwusb = rtw_get_usb_priv(rtwdev);
 	int i;
 
-	rtwusb->rxwq = create_singlethread_workqueue("rtw88_usb: rx wq");
+	rtwusb->rxwq = alloc_workqueue("rtw88_usb: rx wq", WQ_UNBOUND | WQ_HIGHPRI, 0);
 	if (!rtwusb->rxwq) {
 		rtw_err(rtwdev, "failed to create RX work queue\n");
 		return -ENOMEM;
@@ -757,7 +739,7 @@ static int rtw_usb_init_tx(struct rtw_dev *rtwdev)
 	struct rtw_usb *rtwusb = rtw_get_usb_priv(rtwdev);
 	int i;
 
-	rtwusb->txwq = create_singlethread_workqueue("rtw88_usb: tx wq");
+	rtwusb->txwq = alloc_workqueue("rtw88_usb: tx wq", WQ_UNBOUND | WQ_HIGHPRI, 0);
 	if (!rtwusb->txwq) {
 		rtw_err(rtwdev, "failed to create TX work queue\n");
 		return -ENOMEM;
@@ -840,11 +822,11 @@ int rtw_usb_probe(struct usb_interface *intf, const struct usb_device_id *id)
 
 	ret = rtw_usb_alloc_rx_bufs(rtwusb);
 	if (ret)
-		goto err_release_hw;
+		goto err_free_rx_bufs;
 
 	ret = rtw_core_init(rtwdev);
 	if (ret)
-		goto err_free_rx_bufs;
+		goto err_release_hw;
 
 	ret = rtw_usb_intf_init(rtwdev, intf);
 	if (ret) {
