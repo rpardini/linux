@@ -851,7 +851,7 @@ stmmac_probe_config_acpi(struct platform_device *pdev, u8 *mac)
 
 	np = dev_fwnode(&(pdev->dev));
 
-	plat->interface = fw_get_phy_mode(np);
+	plat->mac_interface = fw_get_phy_mode(np);
 
 	/* Get max speed of operation from device tree */
 	if (fwnode_property_read_u32(np, "max-speed", &plat->max_speed))
@@ -881,8 +881,9 @@ stmmac_probe_config_acpi(struct platform_device *pdev, u8 *mac)
 
 	plat->force_sf_dma_mode =
 		fwnode_property_read_bool(np, "snps,force_sf_dma_mode");
-	plat->en_tx_lpi_clockgating =
-		fwnode_property_read_bool(np, "snps,en-tx-lpi-clockgating");
+
+	if (fwnode_property_read_bool(np, "snps,en-tx-lpi-clockgating"))
+		plat->flags |= STMMAC_FLAG_EN_TX_LPI_CLOCKGATING;
 
 	/* Set the maxmtu to a default of JUMBO_LEN in case the
 	 * parameter is not present.
