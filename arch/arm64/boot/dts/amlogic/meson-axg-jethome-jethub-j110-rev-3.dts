@@ -37,3 +37,15 @@
 		vcc-supply = <&vddao_3v3>;
 	};
 };
+
+&i2c_AO {
+	/* EEPROM on base board */
+	eeprompd: eeprom@56 {
+                compatible = "atmel,24c64";
+                reg = <0x56>;
+                pagesize = <0x20>;
+		label = "eeprompd";
+		address-width = <0x10>;
+                vcc-supply = <&vddao_3v3>;
+        };
+};
