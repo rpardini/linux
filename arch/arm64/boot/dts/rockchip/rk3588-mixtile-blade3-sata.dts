@@ -1,0 +1,17 @@
+// SPDX-License-Identifier: (GPL-2.0+ OR MIT)
+
+/dts-v1/;
+
+#include "rk3588-mixtile-blade3.dts"
+
+/ {
+	model = "Mixtile Blade 3 (SATA)";
+};
+
+&pcie2x1l1 {
+	status = "disabled";
+};
+
+&sata2 {
+	status = "okay";
+};
