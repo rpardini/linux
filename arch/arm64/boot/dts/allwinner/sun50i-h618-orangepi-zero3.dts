@@ -30,6 +30,7 @@
 
 &gpu {
 	mali-supply = <&reg_dcdc1>;
+	status = "okay";
 };
 
 &hdmi {
