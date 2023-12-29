@@ -383,9 +383,9 @@ static int rockchip_canfd_get_berr_counter(const struct net_device *ndev,
 
 	pm_runtime_put(rcan->dev);
 
-	netdev_dbg(ndev, "%s RX_ERR_CNT=0x%08x, TX_ERR_CNT=0x%08x\n", __func__,
-		   rockchip_canfd_read(rcan, CAN_RX_ERR_CNT),
-		   rockchip_canfd_read(rcan, CAN_TX_ERR_CNT));
+	//netdev_dbg(ndev, "%s RX_ERR_CNT=0x%08x, TX_ERR_CNT=0x%08x\n", __func__,
+	//	   rockchip_canfd_read(rcan, CAN_RX_ERR_CNT),
+	//	   rockchip_canfd_read(rcan, CAN_TX_ERR_CNT));
 
 	return 0;
 }
