@@ -243,3 +243,7 @@
 		status = "okay";
 	};
 };
+
+&sec_AO	{
+	secure-monitor = <&sm>;
+};
