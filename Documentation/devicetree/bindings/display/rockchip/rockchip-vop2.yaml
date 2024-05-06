@@ -69,6 +69,22 @@ properties:
       - const: pll_hdmiphy0
       - const: pll_hdmiphy1
 
+  resets:
+    minItems: 3
+    items:
+      - description: Pixel clock reset for video port 0.
+      - description: Pixel clock reset for video port 1.
+      - description: Pixel clock reset for video port 2.
+      - description: Pixel clock reset for video port 3.
+
+  reset-names:
+    minItems: 3
+    items:
+      - const: dclk_vp0
+      - const: dclk_vp1
+      - const: dclk_vp2
+      - const: dclk_vp3
+
   rockchip,grf:
     $ref: /schemas/types.yaml#/definitions/phandle
     description:
@@ -132,6 +148,11 @@ allOf:
         clock-names:
           minItems: 7
 
+        resets:
+          minItems: 4
+        reset-names:
+          minItems: 4
+
         ports:
           required:
             - port@0
@@ -185,6 +206,12 @@ examples:
                 clock-names = "aclk",
                               "hclk",
                               "dclk_vp0",
+                              "dclk_vp1",
+                              "dclk_vp2";
+                resets = <&cru SRST_VOP0>,
+                         <&cru SRST_VOP1>,
+                         <&cru SRST_VOP2>;
+                reset-names = "dclk_vp0",
                               "dclk_vp1",
                               "dclk_vp2";
                 power-domains = <&power RK3568_PD_VO>;
