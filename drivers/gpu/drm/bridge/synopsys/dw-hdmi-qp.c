@@ -5,6 +5,7 @@
  *      Algea Cao <algea.cao@rock-chips.com>
  */
 #include <linux/clk.h>
+#include <linux/debugfs.h>
 #include <linux/delay.h>
 #include <linux/dma-mapping.h>
 #include <linux/err.h>
