@@ -309,5 +309,8 @@ dtb-$(CONFIG_ARCH_ROCKCHIP) += rk3588s-roc-pc.dtb
 dtb-$(CONFIG_ARCH_ROCKCHIP) += rk3588s-tablet-rk806-single-v10.dtb
 dtb-$(CONFIG_ARCH_ROCKCHIP) += rk3588s-tablet-v10.dtb
 dtb-$(CONFIG_ARCH_ROCKCHIP) += rk3588s-tablet-v11.dtb
+dtb-$(CONFIG_ARCH_ROCKCHIP) += rk3399-tinker-2.dtb
 
 subdir-y := $(dts-dirs) overlay
+
+# Armbian: Incremental: assuming overlay targets are already in the Makefile
