@@ -8,8 +8,8 @@
 #include "rk3566.dtsi"
 
 / {
-	model = "Radxa ROCK 3C";
-	compatible = "radxa,rock-3c", "rockchip,rk3566";
+	model = "Radxa ROCK3 Model C";
+	compatible = "radxa,rock3c", "rockchip,rk3566";
 
 	aliases {
 		ethernet0 = &gmac1;
@@ -20,13 +20,6 @@
 
 	chosen: chosen {
 		stdout-path = "serial2:1500000n8";
-	};
-
-	gmac1_clkin: external-gmac1-clock {
-		compatible = "fixed-clock";
-		clock-frequency = <125000000>;
-		clock-output-names = "gmac1_clkin";
-		#clock-cells = <0>;
 	};
 
 	hdmi-con {
@@ -40,16 +33,45 @@
 		};
 	};
 
+	gmac1_clkin: external-gmac1-clock {
+		compatible = "fixed-clock";
+		clock-frequency = <125000000>;
+		clock-output-names = "gmac1_clkin";
+		#clock-cells = <0>;
+	};
+
 	leds {
 		compatible = "gpio-leds";
 
-		led-0 {
+		led_user: led-0 {
 			gpios = <&gpio0 RK_PA0 GPIO_ACTIVE_HIGH>;
 			function = LED_FUNCTION_HEARTBEAT;
 			color = <LED_COLOR_ID_BLUE>;
 			linux,default-trigger = "heartbeat";
 			pinctrl-names = "default";
-			pinctrl-0 = <&user_led2>;
+			pinctrl-0 = <&led_user_en>;
+		};
+	};
+
+	pwm-fan {
+		compatible = "pwm-fan";
+		#cooling-cells = <2>;
+		cooling-levels = <0 64 128 192 255>;
+		pwms = <&pwm15 0 40000 0>;
+	};
+
+	rk809-sound {
+		compatible = "simple-audio-card";
+		simple-audio-card,format = "i2s";
+		simple-audio-card,name = "Analog RK809";
+		simple-audio-card,mclk-fs = <256>;
+
+		simple-audio-card,cpu {
+			sound-dai = <&i2s1_8ch>;
+		};
+
+		simple-audio-card,codec {
+			sound-dai = <&rk809>;
 		};
 	};
 
@@ -105,13 +127,13 @@
 		vin-supply = <&vcc5v_dcin>;
 	};
 
-	vcc5v0_usb30_host: vcc5v0-usb30-host-regulator {
+	vcc5v0_usb_host: vcc5v0-usb-host-regulator {
 		compatible = "regulator-fixed";
 		enable-active-high;
 		gpio = <&gpio0 RK_PC5 GPIO_ACTIVE_HIGH>;
 		pinctrl-names = "default";
-		pinctrl-0 = <&vcc5v0_usb30_host_en>;
-		regulator-name = "vcc5v0_usb30_host";
+		pinctrl-0 = <&vcc5v0_usb_host_en>;
+		regulator-name = "vcc5v0_usb_host";
 		regulator-min-microvolt = <5000000>;
 		regulator-max-microvolt = <5000000>;
 		vin-supply = <&vcc5v0_sys>;
@@ -191,15 +213,21 @@
 	assigned-clock-parents = <&cru SCLK_GMAC1_RGMII_SPEED>, <&gmac1_clkin>;
 	clock_in_out = "input";
 	phy-handle = <&rgmii_phy1>;
-	phy-mode = "rgmii-id";
+	phy-mode = "rgmii";
 	phy-supply = <&vcc_3v3>;
 	pinctrl-names = "default";
 	pinctrl-0 = <&gmac1m1_miim
 		     &gmac1m1_tx_bus2
 		     &gmac1m1_rx_bus2
 		     &gmac1m1_rgmii_clk
-		     &gmac1m1_rgmii_bus
-		     &gmac1m1_clkinout>;
+		     &gmac1m1_clkinout
+		     &gmac1m1_rgmii_bus>;
+	snps,reset-gpio = <&gpio3 RK_PC0 GPIO_ACTIVE_LOW>;
+	snps,reset-active-low;
+	/* Reset time is 20ms, 100ms for rtl8211f */
+	snps,reset-delays-us = <0 20000 100000>;
+	tx_delay = <0x47>;
+	rx_delay = <0x27>;
 	status = "okay";
 };
 
@@ -255,10 +283,15 @@
 		reg = <0x20>;
 		interrupt-parent = <&gpio0>;
 		interrupts = <RK_PA3 IRQ_TYPE_LEVEL_LOW>;
-		clock-output-names = "rk808-clkout1", "rk808-clkout2";
+		assigned-clocks = <&cru I2S1_MCLKOUT_TX>;
+		assigned-clock-parents = <&cru CLK_I2S1_8CH_TX>;
+		#clock-cells = <1>;
+		clock-names = "mclk";
+		clocks = <&cru I2S1_MCLKOUT_TX>;
 		pinctrl-names = "default";
 		pinctrl-0 = <&pmic_int_l>, <&i2s1m0_mclk>;
-		system-power-controller;
+		rockchip,system-power-controller;
+		#sound-dai-cells = <0>;
 		vcc1-supply = <&vcc3v3_sys>;
 		vcc2-supply = <&vcc3v3_sys>;
 		vcc3-supply = <&vcc3v3_sys>;
@@ -269,7 +302,6 @@
 		vcc8-supply = <&vcc3v3_sys>;
 		vcc9-supply = <&vcc3v3_sys>;
 		wakeup-source;
-		#clock-cells = <1>;
 
 		regulators {
 			vdd_logic: DCDC_REG1 {
@@ -282,7 +314,7 @@
 				regulator-ramp-delay = <6001>;
 
 				regulator-state-mem {
-					regulator-off-in-suspend;
+					regulator-on-in-suspend;
 					regulator-suspend-microvolt = <900000>;
 				};
 			};
@@ -454,11 +486,17 @@
 
 			vcc3v3_sd: SWITCH_REG2 {
 				regulator-name = "vcc3v3_sd";
+				regulator-always-on;
+				regulator-boot-on;
 
 				regulator-state-mem {
 					regulator-off-in-suspend;
 				};
 			};
+		};
+
+		codec {
+			mic-in-differential;
 		};
 	};
 
@@ -484,9 +522,6 @@
 	rgmii_phy1: ethernet-phy@1 {
 		compatible = "ethernet-phy-ieee802.3-c22";
 		reg = <0x1>;
-		reset-assert-us = <20000>;
-		reset-deassert-us = <100000>;
-		reset-gpios = <&gpio3 RK_PC0 GPIO_ACTIVE_LOW>;
 	};
 };
 
@@ -526,7 +561,7 @@
 	};
 
 	leds {
-		user_led2: user-led2 {
+		led_user_en: led_user_en {
 			rockchip,pins = <0 RK_PA0 RK_FUNC_GPIO &pcfg_pull_none>;
 		};
 	};
@@ -543,12 +578,12 @@
 
 	pmic {
 		pmic_int_l: pmic-int-l {
-			rockchip,pins = <0 RK_PA3 RK_FUNC_GPIO &pcfg_pull_up>;
+			rockchip,pins =	<0 RK_PA3 RK_FUNC_GPIO &pcfg_pull_up>;
 		};
 	};
 
 	usb {
-		vcc5v0_usb30_host_en: vcc5v0-usb30-host-en {
+		vcc5v0_usb_host_en: vcc5v0-usb-host-en {
 			rockchip,pins = <0 RK_PC5 RK_FUNC_GPIO &pcfg_pull_none>;
 		};
 
@@ -581,6 +616,11 @@
 	status = "okay";
 };
 
+&pwm15 {
+	pinctrl-names = "active";
+	status = "okay";
+};
+
 &saradc {
 	vref-supply = <&vcca_1v8>;
 	status = "okay";
@@ -589,7 +629,6 @@
 &sdhci {
 	bus-width = <8>;
 	max-frequency = <200000000>;
-	mmc-hs200-1_8v;
 	non-removable;
 	pinctrl-names = "default";
 	pinctrl-0 = <&emmc_bus8 &emmc_clk &emmc_cmd &emmc_datastrobe>;
@@ -601,11 +640,12 @@
 &sdmmc0 {
 	bus-width = <4>;
 	cap-sd-highspeed;
+	cd-gpios = <&gpio0 RK_PA4 GPIO_ACTIVE_LOW>;
 	disable-wp;
 	pinctrl-names = "default";
 	pinctrl-0 = <&sdmmc0_bus4 &sdmmc0_clk &sdmmc0_cmd &sdmmc0_det>;
 	sd-uhs-sdr50;
-	vmmc-supply = <&vcc3v3_sys>;
+	vmmc-supply = <&vcc3v3_sd>;
 	vqmmc-supply = <&vccio_sd>;
 	status = "okay";
 };
@@ -623,17 +663,24 @@
 	vmmc-supply = <&vcc3v3_sys>;
 	vqmmc-supply = <&vcca1v8_pmu>;
 	status = "okay";
+
+	wifi@1 {
+		reg = <1>;
+		interrupt-parent = <&gpio0>;
+		interrupts = <RK_PB7 IRQ_TYPE_LEVEL_HIGH>;
+		interrupt-names = "host-wake";
+		pinctrl-names = "default";
+		pinctrl-0 = <&wifi_host_wake_h>;
+	};
 };
 
 &sfc {
-	#address-cells = <1>;
-	#size-cells = <0>;
 	status = "okay";
 
 	flash@0 {
 		compatible = "jedec,spi-nor";
 		reg = <0x0>;
-		spi-max-frequency = <104000000>;
+		spi-max-frequency = <50000000>;
 		spi-rx-bus-width = <4>;
 		spi-tx-bus-width = <1>;
 	};
@@ -649,6 +696,19 @@
 	pinctrl-names = "default";
 	pinctrl-0 = <&uart1m0_ctsn &uart1m0_rtsn &uart1m0_xfer>;
 	status = "okay";
+
+	bluetooth {
+		compatible = "brcm,bcm4345c5";
+		clocks = <&rk809 1>;
+		clock-names = "lpo";
+		device-wakeup-gpios = <&gpio0 RK_PB4 GPIO_ACTIVE_HIGH>;
+		host-wakeup-gpios = <&gpio0 RK_PB3 GPIO_ACTIVE_HIGH>;
+		shutdown-gpios = <&gpio0 RK_PC1 GPIO_ACTIVE_HIGH>;
+		pinctrl-names = "default";
+		pinctrl-0 = <&bt_host_wake_h &bt_reg_on_h &bt_wake_host_h>;
+		vbat-supply = <&vcc3v3_sys>;
+		vddio-supply = <&vcca1v8_pmu>;
+	};
 };
 
 &uart2 {
@@ -685,7 +745,7 @@
 };
 
 &usb2phy0_host {
-	phy-supply = <&vcc5v0_usb30_host>;
+	phy-supply = <&vcc5v0_usb_host>;
 	status = "okay";
 };
 
@@ -699,12 +759,12 @@
 };
 
 &usb2phy1_host {
-	phy-supply = <&vcc5v0_usb30_host>;
+	phy-supply = <&vcc5v0_usb_host>;
 	status = "okay";
 };
 
 &usb2phy1_otg {
-	phy-supply = <&vcc5v0_usb30_host>;
+	phy-supply = <&vcc5v0_usb_host>;
 	status = "okay";
 };
 
