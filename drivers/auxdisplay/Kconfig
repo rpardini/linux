@@ -49,6 +49,16 @@ config HD44780
 	  kernel and started at boot.
 	  If you don't understand what all this is about, say N.
 
+config TM16XX
+	tristate "TM16xx/FD6xx LED controller driver and compatibles"
+	depends on I2C
+	select NEW_LEDS
+	select LEDS_CLASS
+	help
+	  Say yes here to add support for Titanmicro TM1628, TM1650,
+	  FudaHisi FD628, FD650, FD655, FD6551, RAM mapping 4*8/5*8
+	  LED controller drivers and compatibles
+
 config LCD2S
 	tristate "lcd2s 20x4 character display over I2C console"
 	depends on I2C
