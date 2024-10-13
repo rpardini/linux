@@ -379,7 +379,9 @@ static bool rtw_usb_tx_agg_skb(struct rtw_usb *rtwusb, struct sk_buff_head *list
 
 		skb_iter = skb_peek(list);
 
-		if (skb_iter && skb_iter->len + skb_head->len <= RTW_USB_MAX_XMITBUF_SZ)
+		if (skb_iter &&
+		    skb_iter->len + skb_head->len <= RTW_USB_MAX_XMITBUF_SZ &&
+		    agg_num < rtwdev->chip->usb_tx_agg_desc_num)
 			__skb_unlink(skb_iter, list);
 		else
 			skb_iter = NULL;
@@ -435,23 +437,21 @@ static int rtw_usb_write_data(struct rtw_dev *rtwdev,
 {
 	const struct rtw_chip_info *chip = rtwdev->chip;
 	struct sk_buff *skb;
-	unsigned int desclen, headsize, size;
+	unsigned int size;
 	u8 qsel;
 	int ret = 0;
 
 	size = pkt_info->tx_pkt_size;
 	qsel = pkt_info->qsel;
-	desclen = chip->tx_pkt_desc_sz;
-	headsize = pkt_info->offset ? pkt_info->offset : desclen;
 
-	skb = dev_alloc_skb(headsize + size);
+	skb = dev_alloc_skb(chip->tx_pkt_desc_sz + size);
 	if (unlikely(!skb))
 		return -ENOMEM;
 
-	skb_reserve(skb, headsize);
+	skb_reserve(skb, chip->tx_pkt_desc_sz);
 	skb_put_data(skb, buf, size);
-	skb_push(skb, headsize);
-	memset(skb->data, 0, headsize);
+	skb_push(skb, chip->tx_pkt_desc_sz);
+	memset(skb->data, 0, chip->tx_pkt_desc_sz);
 	rtw_tx_fill_tx_desc(pkt_info, skb);
 	rtw_tx_fill_txdesc_checksum(rtwdev, pkt_info, skb->data);
 
@@ -743,7 +743,7 @@ static int rtw_usb_init_rx(struct rtw_dev *rtwdev)
 {
 	struct rtw_usb *rtwusb = rtw_get_usb_priv(rtwdev);
 
-	rtwusb->rxwq = create_singlethread_workqueue("rtw88_usb: rx wq");
+	rtwusb->rxwq = alloc_workqueue("rtw88_usb: rx wq", WQ_UNBOUND | WQ_HIGHPRI, 0);
 	if (!rtwusb->rxwq) {
 		rtw_err(rtwdev, "failed to create RX work queue\n");
 		return -ENOMEM;
@@ -783,7 +783,7 @@ static int rtw_usb_init_tx(struct rtw_dev *rtwdev)
 	struct rtw_usb *rtwusb = rtw_get_usb_priv(rtwdev);
 	int i;
 
-	rtwusb->txwq = create_singlethread_workqueue("rtw88_usb: tx wq");
+	rtwusb->txwq = alloc_workqueue("rtw88_usb: tx wq", WQ_UNBOUND | WQ_HIGHPRI, 0);
 	if (!rtwusb->txwq) {
 		rtw_err(rtwdev, "failed to create TX work queue\n");
 		return -ENOMEM;

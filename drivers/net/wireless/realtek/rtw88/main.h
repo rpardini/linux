@@ -342,8 +342,10 @@ enum rtw_regulatory_domains {
 	RTW_REGD_UKRAINE	= 7,
 	RTW_REGD_MEXICO		= 8,
 	RTW_REGD_CN		= 9,
-	RTW_REGD_WW,
+	RTW_REGD_QATAR		= 10,
+	RTW_REGD_UK		= 11,
 
+	RTW_REGD_WW,
 	RTW_REGD_MAX
 };
 
@@ -1187,6 +1189,8 @@ struct rtw_chip_info {
 
 	u16 fw_fifo_addr[RTW_FW_FIFO_MAX];
 	const struct rtw_fwcd_segs *fwcd_segs;
+
+	u8 usb_tx_agg_desc_num;
 
 	u8 default_1ss_tx_path;
 
