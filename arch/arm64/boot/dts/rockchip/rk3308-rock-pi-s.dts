@@ -139,6 +139,7 @@
 	non-removable;
 	pinctrl-names = "default";
 	pinctrl-0 = <&emmc_bus8 &emmc_clk &emmc_cmd>;
+	mmc-hs200-1_8v;
 	vmmc-supply = <&vcc_io>;
 	status = "okay";
 };
