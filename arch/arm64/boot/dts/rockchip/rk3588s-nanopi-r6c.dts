@@ -6,9 +6,14 @@
 
 / {
 	model = "FriendlyElec NanoPi R6C";
-	compatible = "friendlyarm,nanopi-r6c", "rockchip,rk3588s";
+	compatible = "friendlyelec,nanopi-r6c", "rockchip,rk3588s";
 };
 
 &lan2_led {
+	/delete-property/ linux,default-trigger;
 	label = "user_led";
+};
+
+&pcie2x1l2 {
+	/delete-node/ pcie@0,0;
 };
