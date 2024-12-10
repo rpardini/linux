@@ -110,7 +110,7 @@
 
 		led {
 			color = <LED_COLOR_ID_GREEN>;
-			function = LED_FUNCTION_INDICATOR;
+			function = LED_FUNCTION_HEARTBEAT;
 			function-enumerator = <2>;
 			max-brightness = <255>;
 			pwms = <&pwm2 0 25000 0>;
