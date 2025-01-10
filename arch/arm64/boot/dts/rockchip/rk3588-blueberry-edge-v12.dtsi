@@ -676,7 +676,6 @@
 	cap-mmc-highspeed;
 	cap-sd-highspeed;
 	disable-wp;
-	sd-uhs-sdr104;
 	vqmmc-supply = <&vccio_sd_s0>;
 	status = "okay";
 };
