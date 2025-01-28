@@ -135,6 +135,15 @@ static int rtl821x_write_page(struct phy_device *phydev, int page)
 	return __phy_write(phydev, RTL821x_PAGE_SELECT, page);
 }
 
+static void rtl821x_led_of_init(struct phy_device *phydev)
+{
+	struct device *dev = &phydev->mdio.dev;
+	u32 val;
+
+	if (!of_property_read_u32(dev->of_node, "realtek,ledsel", &val))
+		phy_write_paged(phydev, 0xd04, 0x10, val);
+}
+
 static int rtl821x_probe(struct phy_device *phydev)
 {
 	struct device *dev = &phydev->mdio.dev;
@@ -459,6 +468,8 @@ static int rtl8211f_config_init(struct phy_device *phydev)
 			       RTL8211F_PHYCR2_PHY_EEE_ENABLE, 0);
 	if (ret)
 		return ret;
+
+	rtl821x_led_of_init(phydev);
 
 	if (priv->has_phycr2) {
 		ret = phy_modify_paged(phydev, 0xa43, RTL8211F_PHYCR2,
