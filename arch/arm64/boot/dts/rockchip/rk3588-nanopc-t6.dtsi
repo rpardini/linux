@@ -1161,6 +1161,7 @@
 };
 
 &u2phy0_otg {
+	phy-supply = <&vbus5v0_usb>;
 	status = "okay";
 };
 
@@ -1237,6 +1238,7 @@
 
 &usb_host1_xhci {
 	dr_mode = "host";
+	extcon = <&u2phy0>;
 	status = "okay";
 };
 
