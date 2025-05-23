@@ -2190,7 +2190,11 @@ static void ssv6200_stop(struct ieee80211_hw *hw, bool flag)
 	}
 	sc->watchdog_flag = WD_SLEEP;
 	mutex_unlock(&sc->mutex);
+	#if LINUX_VERSION_CODE >= KERNEL_VERSION(6, 15, 0)
+	timer_delete_sync(&sc->watchdog_timeout);
+	#else
 	del_timer_sync(&sc->watchdog_timeout);
+	#endif
 #ifdef CONFIG_SSV_SMARTLINK
 	{
 		extern void ksmartlink_exit(void);

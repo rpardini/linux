@@ -461,7 +461,11 @@ static int ssv6xxx_deinit_softc(struct ssv_softc *sc)
 	ssv6xxx_rate_control_unregister();
 	cancel_delayed_work_sync(&sc->bcast_tx_work);
 	//ssv6xxx_watchdog_controller(sc->sh ,(u8)SSV6XXX_HOST_CMD_WATCHDOG_STOP);
+	#if LINUX_VERSION_CODE >= KERNEL_VERSION(6, 15, 0)
+	timer_delete_sync(&sc->watchdog_timeout);
+	#else
 	del_timer_sync(&sc->watchdog_timeout);
+	#endif
 	cancel_delayed_work(&sc->thermal_monitor_work);
 	sc->ps_status = PWRSV_PREPARE;
 	flush_workqueue(sc->thermal_wq);
