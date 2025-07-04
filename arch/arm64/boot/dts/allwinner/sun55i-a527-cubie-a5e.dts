@@ -15,6 +15,7 @@
 	aliases {
 		ethernet0 = &gmac0;
 		ethernet1 = &gmac1;
+		ethernet2 = &sdio_wifi;
 		serial0 = &uart0;
 	};
 
@@ -44,6 +45,16 @@
 		compatible = "iio-hwmon";
 		io-channels = <&axp717_adc 3>, /* vsys_v */
 			      <&axp717_adc 4>; /* pmic_temp */
+	};
+
+	reg_3v3_wifi: 3v3-wifi {
+		compatible = "regulator-fixed";
+		regulator-name = "3v3-wifi";
+		regulator-min-microvolt = <3300000>;
+		regulator-max-microvolt = <3300000>;
+		vin-supply = <&reg_vcc5v>;
+		gpio = <&r_pio 0 7 GPIO_ACTIVE_HIGH>; /* PL7 */
+		enable-active-high;
 	};
 
 	reg_vcc5v: vcc5v {
@@ -126,6 +137,23 @@
 	cd-gpios = <&pio 5 6 (GPIO_ACTIVE_LOW | GPIO_PULL_UP)>; /* PF6 */
 	bus-width = <4>;
 	status = "okay";
+};
+
+&mmc1_pins {
+	drive-strength = <40>;
+};
+
+&mmc1 {
+	bus-width = <4>;
+	vmmc-supply = <&reg_3v3_wifi>;
+	non-removable;
+	// todo: investigate why clock above 40MHz makes data errors
+	max-frequency = <35000000>;
+	status = "okay";
+
+	sdio_wifi: wifi@1 {
+		reg = <1>;
+	};
 };
 
 &ohci0 {
