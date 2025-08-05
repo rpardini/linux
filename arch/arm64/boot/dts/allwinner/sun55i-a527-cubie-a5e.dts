@@ -17,6 +17,7 @@
 		ethernet1 = &gmac1;
 		ethernet2 = &sdio_wifi;
 		serial0 = &uart0;
+		serial1 = &uart1;
 	};
 
 	chosen {
@@ -378,6 +379,14 @@
 &uart0 {
 	pinctrl-names = "default";
 	pinctrl-0 = <&uart0_pb_pins>;
+	status = "okay";
+};
+
+/* Bluetooth */
+&uart1 {
+	pinctrl-names = "default";
+	pinctrl-0 = <&uart1_pins>, <&uart1_rts_cts_pins>;
+	uart-has-rtscts;
 	status = "okay";
 };
 
