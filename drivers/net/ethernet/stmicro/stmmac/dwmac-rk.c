@@ -496,8 +496,8 @@ static const struct rk_gmac_ops rk3288_ops = {
 
 /* RK3308_GRF_MAC_CON0 */
 #define RK3308_GMAC_PHY_INTF_SEL(val)	GRF_FIELD(4, 2, val)
-#define RK3308_GMAC_FLOW_CTRL		GRF_BIT(3)
-#define RK3308_GMAC_FLOW_CTRL_CLR	GRF_CLR_BIT(3)
+#define RK3308_GMAC_FLOW_CTRL		GRF_BIT(1)
+#define RK3308_GMAC_FLOW_CTRL_CLR	GRF_CLR_BIT(1)
 #define RK3308_GMAC_SPEED_10M		GRF_CLR_BIT(0)
 #define RK3308_GMAC_SPEED_100M		GRF_BIT(0)
 
@@ -515,6 +515,13 @@ static const struct rk_reg_speed_data rk3308_reg_speed_data = {
 static int rk3308_set_speed(struct rk_priv_data *bsp_priv,
 			    phy_interface_t interface, int speed)
 {
+
+	int ret = clk_set_rate(bsp_priv->clks[RK_CLK_MAC_SPEED].clk, 250000 * speed);
+	if (ret) {
+		dev_err(bsp_priv->dev, "%s: clk_set_rate for %dMbps returned: %d\n",
+			__func__, speed, ret);
+	}
+
 	return rk_set_reg_speed(bsp_priv, &rk3308_reg_speed_data,
 				RK3308_GRF_MAC_CON0, interface, speed);
 }
