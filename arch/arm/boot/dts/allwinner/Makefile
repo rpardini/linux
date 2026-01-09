@@ -281,3 +281,12 @@ dtb-$(CONFIG_MACH_SUNIV) += \
 	suniv-f1c100s-licheepi-nano.dtb \
 	suniv-f1c200s-lctech-pi.dtb \
 	suniv-f1c200s-popstick-v1.1.dtb
+
+
+# Added by Armbian autopatcher in add-only:true mode
+
+dtb-$(CONFIG_ARCH_SUNXI) += sun8i-h2-plus-nanopi-duo.dtb
+
+
+# Added by Armbian autopatcher for DT overlay
+subdir-y       := $(dts-dirs) overlay
