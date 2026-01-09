@@ -59,3 +59,14 @@ dtb-$(CONFIG_ARCH_SUNXI) += sun55i-a527-cubie-a5e.dtb
 dtb-$(CONFIG_ARCH_SUNXI) += sun55i-h728-x96qpro+.dtb
 dtb-$(CONFIG_ARCH_SUNXI) += sun55i-t527-avaota-a1.dtb
 dtb-$(CONFIG_ARCH_SUNXI) += sun55i-t527-orangepi-4a.dtb
+
+
+# Added by Armbian autopatcher in add-only:true mode
+
+dtb-$(CONFIG_ARCH_SUNXI) += sun50i-h618-kickpi-k2b.dtb
+
+dtb-$(CONFIG_ARCH_SUNXI) += sun50i-h618-bananapi-m4-zero.dtb
+
+
+# Added by Armbian autopatcher for DT overlay
+subdir-y       := $(dts-dirs) overlay
