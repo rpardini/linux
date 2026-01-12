@@ -21,6 +21,8 @@
 	aliases {
 		mmc0 = &sdhci;
 		mmc1 = &sdmmc;
+		ethernet0 = &ethernet0;
+		ethernet1 = &ethernet1;
 	};
 
 	adc-keys-0 {
@@ -640,6 +642,23 @@
 	pinctrl-names = "default";
 	pinctrl-0 = <&pcie2_1_rst>;
 	status = "okay";
+
+	pcie@0,0 {
+		reg = <0x200000 0 0 0 0>;
+		#address-cells = <3>;
+		#size-cells = <2>;
+		ranges;
+		device_type = "pci";
+		bus-range = <0x20 0x2f>;
+
+		ethernet0: ethernet@0,0 {
+			compatible = "pci10ec,8125";
+			reg = <0x210000 0 0 0 0>;
+			device_type = "network";
+			status = "okay";
+			mac-address = [00 00 00 00 00 00]; // to be patched by U-Boot
+		};
+	};
 };
 
 &pcie2x1l2 {
@@ -648,6 +667,23 @@
 	pinctrl-names = "default";
 	pinctrl-0 = <&pcie2_2_rst>;
 	status = "okay";
+
+	pcie@0,0 {
+		reg = <0x400000 0 0 0 0>;
+		#address-cells = <3>;
+		#size-cells = <2>;
+		ranges;
+		device_type = "pci";
+		bus-range = <0x40 0x4f>;
+
+		ethernet1: ethernet@0,0 {
+			compatible = "pci10ec,8125";
+			reg = <0x410000 0 0 0 0>;
+			device_type = "network";
+			status = "okay";
+			mac-address = [00 00 00 00 00 00]; // to be patched by U-Boot
+		};
+	};
 };
 
 &pcie30phy {
