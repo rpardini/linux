@@ -104,3 +104,50 @@ meson-g12a-fbx8am-brcm-dtbs	:= meson-g12a-fbx8am.dtb meson-g12a-fbx8am-brcm.dtbo
 meson-g12a-fbx8am-realtek-dtbs	:= meson-g12a-fbx8am.dtb meson-g12a-fbx8am-realtek.dtbo
 meson-g12b-a311d-khadas-vim3-ts050-dtbs := meson-g12b-a311d-khadas-vim3.dtb meson-khadas-vim3-ts050.dtbo
 meson-sm1-khadas-vim3l-ts050-dtbs	:= meson-sm1-khadas-vim3l.dtb meson-khadas-vim3-ts050.dtbo
+
+
+# Added by Armbian autopatcher in add-only:true mode
+
+dtb-$(CONFIG_ARCH_MESON) += meson-g12b-waveshare-cm4-io-base-b.dtb
+
+dtb-$(CONFIG_ARCH_MESON) += meson-g12b-odroid-n2-plus-spidev.dtb
+
+dtb-$(CONFIG_ARCH_MESON) += meson-g12b-radxa-zero2-spidev.dtb
+
+dtb-$(CONFIG_ARCH_MESON) += meson-g12b-a311d-khadas-vim3-spidev.dtb
+
+dtb-$(CONFIG_ARCH_MESON) += meson-sm1-khadas-vim3l-spidev.dtb
+
+dtb-$(CONFIG_ARCH_MESON) += meson-sm1-ugoos-x3.dtb
+
+dtb-$(CONFIG_ARCH_MESON) += meson-axg-amper-gateway-am-gz80x.dtb
+
+dtb-$(CONFIG_ARCH_MESON) += meson-g12a-radxa-zero-spidev.dtb
+
+dtb-$(CONFIG_ARCH_MESON) += meson-sm1-odroid-c4-spidev.dtb
+
+dtb-$(CONFIG_ARCH_MESON) += meson-gxm-t95z-plus.dtb
+
+dtb-$(CONFIG_ARCH_MESON) += meson-gxm-mini-m8s-pro.dtb
+
+dtb-$(CONFIG_ARCH_MESON) += meson-sm1-khadas-vim3l-spinor.dtb
+
+dtb-$(CONFIG_ARCH_MESON) += meson-sm1-jethome-jethub-j200-spinor.dtb
+
+dtb-$(CONFIG_ARCH_MESON) += meson-gxm-c400-plus.dtb
+
+dtb-$(CONFIG_ARCH_MESON) += meson-gxl-s905x-bestv-r3300-l.dtb
+
+dtb-$(CONFIG_ARCH_MESON) += meson-g12b-odroid-n2-plus-spinor.dtb
+
+dtb-$(CONFIG_ARCH_MESON) += meson-g12b-odroid-n2-spinor.dtb
+
+dtb-$(CONFIG_ARCH_MESON) += meson-sm1-jethome-jethub-j200.dtb
+
+dtb-$(CONFIG_ARCH_MESON) += meson-g12b-a311d-khadas-vim3-spinor.dtb
+
+dtb-$(CONFIG_ARCH_MESON) += meson-g12b-a311d-cainiao-cniot-core.dtb
+
+
+# Added by Armbian autopatcher for DT overlay
+subdir-y       := $(dts-dirs) overlay
