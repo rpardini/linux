@@ -1834,11 +1834,14 @@ EXPORT_SYMBOL_NS_GPL(serial8250_handle_irq_locked, "SERIAL_8250");
  */
 int serial8250_handle_irq(struct uart_port *port, unsigned int iir)
 {
+	unsigned long flags;
+
 	if (iir & UART_IIR_NO_INT)
 		return 0;
 
-	guard(uart_port_lock_irqsave)(port);
+	uart_port_lock_irqsave(port, &flags);
 	serial8250_handle_irq_locked(port, iir);
+	uart_unlock_and_check_sysrq_irqrestore(port, flags);
 
 	return 1;
 }
