@@ -426,19 +426,23 @@ static int dw8250_handle_irq(struct uart_port *p)
 	bool rx_timeout = (iir & 0x3f) == UART_IIR_RX_TIMEOUT;
 	unsigned int quirks = d->pdata->quirks;
 	unsigned int status;
+	unsigned long flags;
 
-	guard(uart_port_lock_irqsave)(p);
+	uart_port_lock_irqsave(p, &flags);
 
 	switch (FIELD_GET(DW_UART_IIR_IID, iir)) {
 	case UART_IIR_NO_INT:
-		if (d->uart_16550_compatible || up->dma)
+		if (d->uart_16550_compatible || up->dma) {
+			uart_port_unlock_irqrestore(p, flags);
 			return 0;
+		}
 
 		if (quirks & DW_UART_QUIRK_IER_KICK &&
 		    d->no_int_count == (DW_UART_QUIRK_IER_KICK_THRES - 1))
 			dw8250_quirk_ier_kick(p);
 		d->no_int_count = (d->no_int_count + 1) % DW_UART_QUIRK_IER_KICK_THRES;
 
+		uart_port_unlock_irqrestore(p, flags);
 		return 0;
 
 	case UART_IIR_BUSY:
@@ -447,6 +451,7 @@ static int dw8250_handle_irq(struct uart_port *p)
 
 		d->no_int_count = 0;
 
+		uart_port_unlock_irqrestore(p, flags);
 		return 1;
 	}
 
@@ -480,6 +485,7 @@ static int dw8250_handle_irq(struct uart_port *p)
 	}
 
 	serial8250_handle_irq_locked(p, iir);
+	uart_unlock_and_check_sysrq_irqrestore(p, flags);
 
 	return 1;
 }
