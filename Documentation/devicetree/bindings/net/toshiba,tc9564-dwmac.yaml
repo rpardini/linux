@@ -58,6 +58,18 @@ properties:
     enum:
       - pci1179,0220 # Toshiba TC9564 (a.k.a. Qualcomm QPS615)
 
+  local-mac-address:
+    $ref: /schemas/net/network-class.yaml#/properties/local-mac-address
+
+  mac-address:
+    $ref: /schemas/net/network-class.yaml#/properties/mac-address
+
+  nvmem-cells:
+    $ref: /schemas/net/ethernet-controller.yaml#/properties/nvmem-cells
+
+  nvmem-cell-names:
+    $ref: /schemas/net/ethernet-controller.yaml#/properties/nvmem-cell-names
+
   gpio:
     type: object
     description: Embedded GPIO controller
