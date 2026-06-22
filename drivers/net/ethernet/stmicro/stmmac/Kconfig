@@ -142,6 +142,18 @@ config DWMAC_NUVOTON
 	  for the stmmac device driver. The nuvoton-dwmac driver is
 	  used for MA35 series SoCs.
 
+config DWMAC_PHYTIUM
+	tristate "Phytium DWMAC support"
+	depends on COMMON_CLK
+	depends on ACPI || COMPILE_TEST
+	help
+	  Support for the onboard Ethernet controller on Phytium SoCs such as
+	  the D2000, where the Synopsys DesignWare MAC is described via ACPI
+	  (_HID "PHYT0004").
+
+	  This selects the Phytium SoC glue layer support for the stmmac
+	  device driver.
+
 config DWMAC_QCOM_ETHQOS
 	tristate "Qualcomm ETHQOS support"
 	default ARCH_QCOM
