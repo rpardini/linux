@@ -313,6 +313,16 @@
 		pinctrl-names = "default";
 	};
 
+	/*
+	 * 5V VBUS on the OTG-C port comes from the rk817 boost through OTG_SWITCH.
+	 * While it is on, the rk817 sees its own boost as charger input and ignores
+	 * a real charger, so keep it off and let userspace switch it on on demand.
+	 */
+	otg_vbus: otg-vbus {
+		compatible = "regulator-output";
+		vout-supply = <&otg_switch>;
+	};
+
 	leds: pwm-leds {
 		compatible = "pwm-leds";
 
@@ -1225,7 +1235,7 @@
 };
 
 &usb_host0_xhci {
-	dr_mode = "peripheral";
+	dr_mode = "otg";
 	phy-names = "usb2-phy";
 	phys = <&usb2phy0_otg>;
 	maximum-speed = "high-speed";
