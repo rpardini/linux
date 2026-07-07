@@ -87,6 +87,28 @@
 		vin-supply = <&vcc_3v3_s3>;
 	};
 
+	vcc5v0_device_s0: regulator-vcc5v0-device-s0 {
+		compatible = "regulator-fixed";
+		regulator-always-on;
+		regulator-boot-on;
+		regulator-min-microvolt = <5000000>;
+		regulator-max-microvolt = <5000000>;
+		regulator-name = "vcc5v0_device_s0";
+		vin-supply = <&vcc5v0_sys_s5>;
+	};
+
+	vcc5v0_host: regulator-vcc5v0-host {
+		compatible = "regulator-fixed";
+		enable-active-high;
+		gpio = <&gpio_xten 2 GPIO_ACTIVE_HIGH>;
+		regulator-always-on;
+		regulator-boot-on;
+		regulator-min-microvolt = <5000000>;
+		regulator-max-microvolt = <5000000>;
+		regulator-name = "vcc5v0_host";
+		vin-supply = <&vcc5v0_device_s0>;
+	};
+
 	vcc5v0_sys_s5: regulator-vcc5v0-sys-s5 {
 		compatible = "regulator-fixed";
 		regulator-always-on;
@@ -95,6 +117,18 @@
 		regulator-max-microvolt = <5000000>;
 		regulator-name = "vcc5v0_sys_s5";
 		vin-supply = <&vcc12v_dcin>;
+	};
+
+	vcc5v0_usb30_host: regulator-vcc5v0-usb30-host {
+		compatible = "regulator-fixed";
+		enable-active-high;
+		gpio = <&gpio_xten 1 GPIO_ACTIVE_HIGH>;
+		regulator-always-on;
+		regulator-boot-on;
+		regulator-min-microvolt = <5000000>;
+		regulator-max-microvolt = <5000000>;
+		regulator-name = "vcc5v0_usb30_host";
+		vin-supply = <&vcc5v0_device_s0>;
 	};
 
 	vcc_1v1_nldo_s3: regulator-vcc-1v1-nldo-s3 {
@@ -140,6 +174,10 @@
 		regulator-name = "vsys_3v3_exp";
 		vin-supply = <&vcc5v0_sys_s5>;
 	};
+};
+
+&combphy1_psu {
+	status = "okay";
 };
 
 &cpu_b0 {
@@ -200,6 +238,16 @@
 		     &eth1m0_rgmii_clk
 		     &eth1m0_rgmii_bus>;
 	status = "okay";
+};
+
+&gpio0 {
+	/* Hold the on-board USB 2.0 hub out of reset. */
+	usb-hub-reset-hog {
+		gpio-hog;
+		gpios = <RK_PC3 GPIO_ACTIVE_HIGH>;
+		output-high;
+		line-name = "usb_hub_reset";
+	};
 };
 
 &gpu {
@@ -718,8 +766,22 @@
 	status = "disabled";
 };
 
+&u2phy1 {
+	status = "okay";
+};
+
+&u2phy1_otg {
+	phy-supply = <&vcc5v0_usb30_host>;
+	status = "okay";
+};
+
 &uart0 {
 	pinctrl-0 = <&uart0m0_xfer>;
 	pinctrl-names = "default";
+	status = "okay";
+};
+
+&usb_drd1_dwc3 {
+	dr_mode = "host";
 	status = "okay";
 };
