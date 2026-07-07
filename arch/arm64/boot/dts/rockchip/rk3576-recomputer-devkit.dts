@@ -36,8 +36,44 @@
 		mmc0 = &sdmmc;
 	};
 
+	/* Headphone output switch (ES8311 differential OUT to the jack). */
+	hp_amp: audio-amplifier {
+		compatible = "simple-audio-amplifier";
+		enable-gpios = <&gpio2 RK_PA6 GPIO_ACTIVE_HIGH>;
+		pinctrl-names = "default";
+		pinctrl-0 = <&hp_con>;
+		sound-name-prefix = "Headphone Amp";
+	};
+
 	chosen {
 		stdout-path = "serial0:1500000n8";
+	};
+
+	es8311_sound: es8311-sound {
+		compatible = "simple-audio-card";
+		pinctrl-names = "default";
+		pinctrl-0 = <&hp_det>;
+		simple-audio-card,name = "reComputer ES8311";
+		simple-audio-card,format = "i2s";
+		simple-audio-card,mclk-fs = <256>;
+		simple-audio-card,aux-devs = <&hp_amp>;
+		simple-audio-card,hp-det-gpios = <&gpio2 RK_PB7 GPIO_ACTIVE_LOW>;
+		simple-audio-card,widgets = "Headphone", "Headphones",
+					    "Microphone", "Headset Mic";
+		simple-audio-card,routing = "Headphones", "Headphone Amp OUTL",
+					    "Headphones", "Headphone Amp OUTR",
+					    "Headphone Amp INL", "OUT",
+					    "Headphone Amp INR", "OUT",
+					    "MIC1", "Headset Mic";
+
+		simple-audio-card,cpu {
+			sound-dai = <&sai1>;
+		};
+
+		simple-audio-card,codec {
+			sound-dai = <&es8311>;
+			system-clock-frequency = <12288000>;
+		};
 	};
 
 	hdmi-con {
@@ -690,6 +726,18 @@
 	pinctrl-0 = <&i2c4m3_xfer>;
 	status = "okay";
 
+	es8311: audio-codec@18 {
+		compatible = "everest,es8311";
+		reg = <0x18>;
+		clocks = <&cru CLK_SAI1_MCLKOUT_TO_IO>;
+		clock-names = "mclk";
+		assigned-clocks = <&cru CLK_SAI1_MCLKOUT_TO_IO>;
+		assigned-clock-rates = <12288000>;
+		#sound-dai-cells = <0>;
+		pinctrl-names = "default";
+		pinctrl-0 = <&sai1m0_mclk>;
+	};
+
 	gpio_xten: gpio@21 {
 		compatible = "nxp,pca9535";
 		reg = <0x21>;
@@ -834,6 +882,16 @@
 		};
 	};
 
+	headphone {
+		hp_con: hp-con {
+			rockchip,pins = <2 RK_PA6 RK_FUNC_GPIO &pcfg_pull_none>;
+		};
+
+		hp_det: hp-det {
+			rockchip,pins = <2 RK_PB7 RK_FUNC_GPIO &pcfg_pull_up>;
+		};
+	};
+
 	pcf8563 {
 		pcf8563_int: pcf8563-int {
 			rockchip,pins = <0 RK_PA5 RK_FUNC_GPIO &pcfg_pull_up>;
@@ -875,6 +933,17 @@
 			rockchip,pins = <4 RK_PC5 RK_FUNC_GPIO &pcfg_pull_down>;
 		};
 	};
+};
+
+&sai1 {
+	pinctrl-names = "default";
+	pinctrl-0 = <&sai1m0_lrck
+		     &sai1m0_sclk
+		     &sai1m0_sdi0
+		     &sai1m0_sdo2>;
+	rockchip,sai-rx-route = <0 1 2 3>;
+	rockchip,sai-tx-route = <2 1 0 3>;
+	status = "okay";
 };
 
 &sai6 {
