@@ -20,6 +20,7 @@
 #include <dt-bindings/gpio/gpio.h>
 #include <dt-bindings/pinctrl/rockchip.h>
 #include <dt-bindings/usb/pd.h>
+#include <dt-bindings/soc/rockchip,vop2.h>
 #include "rk3588.dtsi"
 
 / {
@@ -194,6 +195,31 @@
 		regulator-min-microvolt = <1100000>;
 		regulator-max-microvolt = <1100000>;
 		vin-supply = <&vcc5v0_sys>;
+	};
+
+	/* miniPCIe 2.0 slot power enable; GPIO3_C6 = PCIE20_PWREN (schematic) */
+	vcc3v3_minipcie: vcc3v3-minipcie-regulator {
+		compatible = "regulator-fixed";
+		regulator-name = "vcc3v3_minipcie";
+		regulator-min-microvolt = <3300000>;
+		regulator-max-microvolt = <3300000>;
+		enable-active-high;
+		gpio = <&gpio3 RK_PC6 GPIO_ACTIVE_HIGH>;
+		startup-delay-us = <5000>;
+		vin-supply = <&vcc5v0_sys>;
+		pinctrl-names = "default";
+		pinctrl-0 = <&minipcie_pwren>;
+	};
+
+	hdmi0-con {
+		compatible = "hdmi-connector";
+		type = "a";
+
+		port {
+			hdmi0_con_in: endpoint {
+				remote-endpoint = <&hdmi0_out_con>;
+			};
+		};
 	};
 };
 
@@ -506,6 +532,7 @@
 &pcie2x1l1 { // combphy2, to miniPCIe socket
 	reset-gpios = <&gpio4 RK_PA2 GPIO_ACTIVE_HIGH>;
 	rockchip,init-delay-ms = <100>;
+	vpcie3v3-supply = <&vcc3v3_minipcie>;
 	//pinctrl-names = "default";
 	//pinctrl-0 = <&pcie2_1_rst>;
 	status = "okay";
@@ -578,7 +605,18 @@
 		};
 	};
 
-	// GPIO3_C6: 3 RK_PC6 is for power to the minipci 2.0 slot (out of scope; TODO)
+	pcie2 {
+		minipcie_pwren: minipcie-pwren {
+			/* GPIO3_C6 = PCIE20_PWREN, powers the miniPCIe 2.0 slot */
+			rockchip,pins = <3 RK_PC6 RK_FUNC_GPIO &pcfg_pull_none>;
+		};
+	};
+
+	hdmirx {
+		hdmirx_hpd: hdmirx-5v-detection {
+			rockchip,pins = <1 RK_PD5 RK_FUNC_GPIO &pcfg_pull_up>;
+		};
+	};
 };
 
 &pwm8 { // 4-pin FAN HEADER, PWM OUTPUT
@@ -1053,5 +1091,114 @@
 
 &uart2 {
 	pinctrl-0 = <&uart2m0_xfer>;
+	status = "okay";
+};
+
+/* CAN2 exposed on the 30-pin header; routed on can2_m0 (GPIO3_C4/C5) per schematic */
+&can2 {
+	pinctrl-names = "default";
+	pinctrl-0 = <&can2m0_pins>;
+	status = "okay";
+};
+
+/*
+ * Display / HDMI. Note: the two Type-C ports' DP alt-mode display output is NOT
+ * wired here -- no board in this tree drives VOP->DP over a Type-C connector, so
+ * dp0/dp1 alt-mode display is deferred rather than adding non-functional nodes.
+ * HDMI0 is the working display path.
+ */
+&vop {
+	status = "okay";
+};
+
+&vop_mmu {
+	status = "okay";
+};
+
+&vp0 {
+	vp0_out_hdmi0: endpoint@ROCKCHIP_VOP2_EP_HDMI0 {
+		reg = <ROCKCHIP_VOP2_EP_HDMI0>;
+		remote-endpoint = <&hdmi0_in_vp0>;
+	};
+};
+
+&hdmi0 {
+	status = "okay";
+};
+
+&hdmi0_in {
+	hdmi0_in_vp0: endpoint {
+		remote-endpoint = <&vp0_out_hdmi0>;
+	};
+};
+
+&hdmi0_out {
+	hdmi0_out_con: endpoint {
+		remote-endpoint = <&hdmi0_con_in>;
+	};
+};
+
+&hdmi0_sound {
+	status = "okay";
+};
+
+&hdptxphy0 {
+	status = "okay";
+};
+
+/* HDMI0 audio */
+&i2s5_8ch {
+	status = "okay";
+};
+
+/* HDMI-RX (input capture) on this board; HPD/5V-detect on GPIO1_D5 */
+&hdmi_receiver_cma {
+	status = "okay";
+};
+
+&hdmi_receiver {
+	hpd-gpios = <&gpio1 RK_PD5 GPIO_ACTIVE_LOW>;
+	pinctrl-names = "default";
+	pinctrl-0 = <&hdmim1_rx_cec &hdmim1_rx_hpdin &hdmim1_rx_scl &hdmim1_rx_sda &hdmirx_hpd>;
+	status = "okay";
+};
+
+/* HDMI-RX audio */
+&i2s7_8ch {
+	status = "okay";
+};
+
+/* NPU (rocket driver); rails from vdd_npu_s0 on i2c1 */
+&pd_npu {
+	domain-supply = <&vdd_npu_s0>;
+};
+
+&rknn_core_0 {
+	npu-supply = <&vdd_npu_s0>;
+	sram-supply = <&vdd_npu_s0>;
+	status = "okay";
+};
+
+&rknn_core_1 {
+	npu-supply = <&vdd_npu_s0>;
+	sram-supply = <&vdd_npu_s0>;
+	status = "okay";
+};
+
+&rknn_core_2 {
+	npu-supply = <&vdd_npu_s0>;
+	sram-supply = <&vdd_npu_s0>;
+	status = "okay";
+};
+
+&rknn_mmu_0 {
+	status = "okay";
+};
+
+&rknn_mmu_1 {
+	status = "okay";
+};
+
+&rknn_mmu_2 {
 	status = "okay";
 };
