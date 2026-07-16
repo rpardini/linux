@@ -450,18 +450,18 @@
 			data-role = "dual";
 			power-role = "dual";
 			try-power-role = "sink";
-			op-sink-microwatt = <1000000>;
-			sink-pdos =
-				<PDO_FIXED(5000, 1000, PDO_FIXED_USB_COMM)>;
-			source-pdos =
-				<PDO_FIXED(5000, 3000, PDO_FIXED_USB_COMM)>;
-
-			altmodes {
-				displayport {
-					svid = /bits/ 16 <0xff01>;
-					vdo = <0xffffffff>;
-				};
-			};
+			/*
+			 * PD is disabled on Type-C0: it is a USB3 data / host port that
+			 * only needs to source 5V Type-C VBUS to attached devices. With PD
+			 * enabled the fusb302/tcpm endlessly retries Source_Capabilities
+			 * against non-PD USB devices ("PD retry failed"). VBUS sourcing is
+			 * driven by the vbus5v0_typec0 regulator on Type-C attach and is
+			 * unaffected. Type-C1 keeps PD -- it is the USB-C power-input port.
+			 * typec-power-opmode is required by the binding when pd-disable is
+			 * set; advertise 1.5A as the Type-C source current.
+			 */
+			pd-disable;
+			typec-power-opmode = "1.5A";
 
 			ports {
 				#address-cells = <1>;
@@ -1157,6 +1157,12 @@
 &can2 {
 	pinctrl-names = "default";
 	pinctrl-0 = <&can2m0_pins>;
+	/*
+	 * The rk3588 CANFD needs its baud clock >= 300MHz; the default 99MHz
+	 * trips erratum 5 ("expect degraded performance"). Pin it to 300MHz.
+	 */
+	assigned-clocks = <&cru CLK_CAN2>;
+	assigned-clock-rates = <300000000>;
 	status = "okay";
 };
 
