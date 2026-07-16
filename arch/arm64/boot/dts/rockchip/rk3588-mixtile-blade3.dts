@@ -1,19 +1,8 @@
 // SPDX-License-Identifier: (GPL-2.0+ OR MIT)
 
-// rpardini, early 2026:
-// - Status of this mainline port:
-// - Initially started by Joshua Riek (2023?)
-// - I then added some PCIe3x4 stuff, but never got around to finishing it
-// - Specifically, the 2 FUSB302's are beyond me for now
-//   - One of them _powers_ the board. To use with mainline, power the board some other way with 12V, otherwise kaboom.
-//     - See sre's talk on this issue; Blade3 should be similar to Rock-5b in this aspect.
-// - A challenge has been the PCI2x1 lanes to the miniPCIe and ASM1182e switch
-//   - Which by themselves seem to work, but the devices behind them (Switch + RTL8169 NICs) do not get powered
-//   - Until one day I tried to describe a (in theory) USB-related power pin, and suddenly both PCIe NICs started working!
-// - All that said, the board is really not stable with this; end-users are much better off with vendor kernel for now.
+// rpardini, mid 2026:
 // - Any and all help is appreciated. Those boards are nice, they've 2 FUSB302, and fancy PCIe Endpoint mode stuff.
 // - Schematics we have access to are in https://damwold5pt25n.cloudfront.net/blade3/file/Schematic_Blade_3_v1.1.0.pdf
-//   - Those clearly lie.
 
 /dts-v1/;
 
@@ -332,7 +321,6 @@
 		reg = <0x42>;
 		fcs,suspend-voltage-selector = <1>;
 		regulator-name = "vdd_npu_s0";
-		regulator-always-on;
 		regulator-boot-on;
 		regulator-min-microvolt = <550000>;
 		regulator-max-microvolt = <950000>;
@@ -352,10 +340,7 @@
 	 * the PD spec window. NOTE (Rock 5B precedent): the Linux tcpm can send PD
 	 * messages too late (>5s), making a PD supply hard-reset and thus reset the
 	 * whole board; Rock 5B works around this by disabling its power-input
-	 * fusb302 in the *kernel* (status = "fail"). This board is normally powered
-	 * by 12V injected through a non-USB-C port, so that hazard does not apply and
-	 * we keep it enabled (vendor-faithful). If you power THIS port from a PD
-	 * source and hit boot-reset loops, disable usbc1 in the kernel only.
+	 * fusb302 in the *kernel* (status = "fail").
 	 */
 	usbc1: usb-typec@22 {
 		compatible = "fcs,fusb302";
@@ -365,7 +350,14 @@
 		pinctrl-names = "default";
 		pinctrl-0 = <&usbc1_int>;
 		vbus-supply = <&vbus5v0_typec1>;
-		status = "okay";
+
+		/*
+		 * When the board is starting to send power-delivery messages
+		 * too late (5 seconds according to the specification), the
+		 * power-supply reacts with a hard-reset. That removes the
+		 * power from VBUS for some time, which resets te whole board.
+		 */
+		status = "fail";
 
 		usb_con1: connector {
 			compatible = "usb-c-connector";
@@ -1154,24 +1146,16 @@
 };
 
 /* CAN2 exposed on the 30-pin header; routed on can2_m0 (GPIO3_C4/C5) per schematic */
+/* Disabled as it is not in mainline yet
 &can2 {
 	pinctrl-names = "default";
 	pinctrl-0 = <&can2m0_pins>;
-	/*
-	 * The rk3588 CANFD needs its baud clock >= 300MHz; the default 99MHz
-	 * trips erratum 5 ("expect degraded performance"). Pin it to 300MHz.
-	 */
 	assigned-clocks = <&cru CLK_CAN2>;
 	assigned-clock-rates = <300000000>;
 	status = "okay";
 };
+*/
 
-/*
- * Display / HDMI. Note: the two Type-C ports' DP alt-mode display output is NOT
- * wired here -- no board in this tree drives VOP->DP over a Type-C connector, so
- * dp0/dp1 alt-mode display is deferred rather than adding non-functional nodes.
- * HDMI0 is the working display path.
- */
 &vop {
 	status = "okay";
 };
