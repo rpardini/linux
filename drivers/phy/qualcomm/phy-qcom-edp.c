@@ -633,7 +633,7 @@ static int qcom_edp_ldo_config_v4(const struct qcom_edp *edp)
 	u32 ldo_config;
 
 	if (!edp->is_edp)
-		ldo_config = 0x0;
+		ldo_config = 0x1;
 	else if (dp_opts->link_rate <= 2700)
 		ldo_config = 0xc1;
 	else
