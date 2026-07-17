@@ -363,15 +363,26 @@
 			compatible = "usb-c-connector";
 			label = "USB-C";
 			data-role = "dual";
-			power-role = "dual";
-			try-power-role = "sink";
+			/*
+			 * Power-INPUT port: force sink so the fusb302 never
+			 * presents Rp / sources 5V out vbus5v0_typec1. It only
+			 * ever draws power into the VCC12V~20V_DCIN rail.
+			 */
+			power-role = "sink";
+			/* fusb302 supports PD Rev 2.0 Ver 1.2 */
+			pd-revision = /bits/ 8 <0x2 0x0 0x1 0x2>;
 			op-sink-microwatt = <15000000>;
+			/*
+			 * VCC12V~20V_DCIN only supports 12V+, so the variable
+			 * sink PDO starts at 12V and negotiation can't land on
+			 * an unsupported 5V/9V contract. The mandatory vSafe5V
+			 * fixed PDO stays (a sink must always advertise it).
+			 */
 			sink-pdos =
-				<PDO_FIXED(5000, 1000, PDO_FIXED_USB_COMM)
-				 PDO_VAR(5000, 20000, 1000)
-				 PDO_PPS_APDO(5000, 20000, 1000)>;
+				<PDO_FIXED(5000, 3000, PDO_FIXED_USB_COMM)
+				 PDO_VAR(12000, 20000, 5000)>;
 			source-pdos =
-				<PDO_FIXED(5000, 1000, PDO_FIXED_USB_COMM)>;
+				<PDO_FIXED(5000, 3000, PDO_FIXED_USB_COMM)>;
 
 			altmodes {
 				displayport {
