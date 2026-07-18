@@ -1442,20 +1442,22 @@ static int qcom_swrm_get_port_config(struct qcom_swrm_ctrl *ctrl)
 	ctrl->num_din_ports = FIELD_GET(SWRM_COMP_PARAMS_DIN_PORTS_MASK, val);
 
 	ret = of_property_read_u32(np, "qcom,din-ports", &val);
-	if (!ret) { /* only if present */
-		if (val != ctrl->num_din_ports) {
-			dev_err(ctrl->dev, "din-ports (%d) mismatch with controller (%d)",
+	if (!ret) { /* deprecated, honoured only if present */
+		if (val > ctrl->num_din_ports) {
+			dev_err(ctrl->dev, "din-ports (%d) exceed controller count (%d)\n",
 				val, ctrl->num_din_ports);
+			return -EINVAL;
 		}
 
 		ctrl->num_din_ports = val;
 	}
 
 	ret = of_property_read_u32(np, "qcom,dout-ports", &val);
-	if (!ret) { /* only if present */
-		if (val != ctrl->num_dout_ports) {
-			dev_err(ctrl->dev, "dout-ports (%d) mismatch with controller (%d)",
+	if (!ret) { /* deprecated, honoured only if present */
+		if (val > ctrl->num_dout_ports) {
+			dev_err(ctrl->dev, "dout-ports (%d) exceed controller count (%d)\n",
 				val, ctrl->num_dout_ports);
+			return -EINVAL;
 		}
 
 		ctrl->num_dout_ports = val;
