@@ -371,6 +371,40 @@
 			};
 		};
 
+		usbdrd3: usb@fe500000 {
+			compatible = "rockchip,rk3562-dwc3", "rockchip,rk3399-dwc3";
+			clocks = <&cru CLK_USB3OTG_REF>, <&cru CLK_USB3OTG_SUSPEND>,
+				 <&cru ACLK_USB3OTG>, <&cru PCLK_PHP>;
+			clock-names = "ref", "suspend", "bus", "pipe_clk";
+			resets = <&cru SRST_USB3OTG>;
+			reset-names = "usb3-otg";
+			#address-cells = <2>;
+			#size-cells = <2>;
+			ranges;
+			status = "disabled";
+
+			usbdrd_dwc3: usb@fe500000 {
+				compatible = "snps,dwc3";
+				reg = <0x0 0xfe500000 0x0 0x400000>;
+				interrupts = <GIC_SPI 149 IRQ_TYPE_LEVEL_HIGH>;
+				dr_mode = "otg";
+				phys = <&u2phy_otg>, <&combphy PHY_TYPE_USB3>;
+				phy-names = "usb2-phy", "usb3-phy";
+				phy_type = "utmi_wide";
+				power-domains = <&power RK3562_PD_PHP>;
+				snps,dis_enblslpm_quirk;
+				/* snps,dis-u1-entry-quirk; */
+				/* snps,dis-u2-entry-quirk; */
+				snps,dis-u2-freeclk-exists-quirk;
+				snps,dis-del-phy-power-chg-quirk;
+				snps,dis-tx-ipgap-linecheck-quirk;
+				snps,dis_rxdet_inp3_quirk;
+				/* snps,parkmode-disable-hs-quirk; */
+				/* snps,parkmode-disable-ss-quirk; */
+				status = "disabled";
+			};
+		};
+
 		gic: interrupt-controller@fe901000 {
 			compatible = "arm,gic-400";
 			#interrupt-cells = <3>;
@@ -381,6 +415,26 @@
 			      <0x0 0xfe904000 0 0x2000>,
 			      <0x0 0xfe906000 0 0x2000>;
 			interrupts = <GIC_PPI 9 (GIC_CPU_MASK_SIMPLE(4) | IRQ_TYPE_LEVEL_LOW)>;
+		};
+
+		usb_host_ehci: usb@fed00000 {
+			compatible = "generic-ehci";
+			reg = <0x0 0xfed00000 0x0 0x40000>;
+			interrupts = <GIC_SPI 150 IRQ_TYPE_LEVEL_HIGH>;
+			clocks = <&cru HCLK_USB2HOST>, <&cru HCLK_USB2HOST_ARB>;
+			phys = <&u2phy_host>;
+			phy-names = "usb2-phy";
+			status = "disabled";
+		};
+
+		usb_host_ohci: usb@fed40000 {
+			compatible = "generic-ohci";
+			reg = <0x0 0xfed40000 0x0 0x40000>;
+			interrupts = <GIC_SPI 151 IRQ_TYPE_LEVEL_HIGH>;
+			clocks = <&cru HCLK_USB2HOST>, <&cru HCLK_USB2HOST_ARB>;
+			phys = <&u2phy_host>;
+			phy-names = "usb2-phy";
+			status = "disabled";
 		};
 
 		qos_dma2ddr: qos@fee03800 {
@@ -1016,6 +1070,33 @@
 			reset-names = "saradc-apb";
 			#io-channel-cells = <1>;
 			status = "disabled";
+		};
+
+		u2phy: usb2-phy@ff740000 {
+			compatible = "rockchip,rk3562-usb2phy";
+			reg = <0x0 0xff740000 0x0 0x10000>;
+			clocks = <&cru CLK_USB2PHY_REF>, <&cru PCLK_USB2PHY>;
+			clock-names = "phyclk", "pclk";
+			#clock-cells = <0>;
+			clock-output-names = "usb480m_phy";
+			rockchip,usbgrf = <&usbphy_grf>;
+			status = "disabled";
+
+			u2phy_otg: otg-port {
+				#phy-cells = <0>;
+				interrupts = <GIC_SPI 153 IRQ_TYPE_LEVEL_HIGH>,
+					     <GIC_SPI 154 IRQ_TYPE_LEVEL_HIGH>,
+					     <GIC_SPI 155 IRQ_TYPE_LEVEL_HIGH>;
+				interrupt-names = "otg-bvalid", "otg-id", "linestate";
+				status = "disabled";
+			};
+
+			u2phy_host: host-port {
+				#phy-cells = <0>;
+				interrupts = <GIC_SPI 156 IRQ_TYPE_LEVEL_HIGH>;
+				interrupt-names = "linestate";
+				status = "disabled";
+			};
 		};
 
 		combphy: phy@ff750000 {
