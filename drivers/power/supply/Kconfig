@@ -880,6 +880,17 @@ config CHARGER_S2M
 	  devices provide USB power supply information and also required
 	  for USB OTG role switching.
 
+config CHARGER_SGM41542
+	tristate "SGM41542 battery charger"
+	depends on I2C
+	depends on GPIOLIB || COMPILE_TEST
+	select REGMAP_I2C
+	help
+	  Say Y to enable support for the SGMICRO SGM41542 battery charger.
+	  The SGM41542 is an I2C-controlled single-cell Li-ion/Li-polymer
+	  battery charger with OTG VBUS output, input voltage/current DPM,
+	  watchdog timer, and NTC temperature monitoring.
+
 config CHARGER_SMB347
 	tristate "Summit Microelectronics SMB3XX Battery Charger"
 	depends on I2C
