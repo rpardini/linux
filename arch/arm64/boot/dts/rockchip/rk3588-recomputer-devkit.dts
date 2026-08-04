@@ -69,6 +69,21 @@
 		};
 	};
 
+	/*
+	 * Always-on discrete 12 V to 3.3 V regulator; supplies the Ethernet
+	 * controllers, the USB 3.x hub, the user LED and the expansion
+	 * connectors.
+	 */
+	ext_3v3: regulator-ext-3v3 {
+		compatible = "regulator-fixed";
+		regulator-always-on;
+		regulator-boot-on;
+		regulator-min-microvolt = <3300000>;
+		regulator-max-microvolt = <3300000>;
+		regulator-name = "ext_3v3";
+		vin-supply = <&vcc12v_dcin>;
+	};
+
 	vcc_1v1_nldo_s3: regulator-vcc-1v1-nldo-s3 {
 		compatible = "regulator-fixed";
 		regulator-always-on;
@@ -145,6 +160,14 @@
 		regulator-name = "vcc5v0_usb0";
 		vin-supply = <&vcc5v0_sys>;
 	};
+};
+
+&combphy0_ps {
+	status = "okay";
+};
+
+&combphy1_ps {
+	status = "okay";
 };
 
 &cpu_b0 {
@@ -375,6 +398,28 @@
 	};
 };
 
+/* Realtek RTL8125B, right Ethernet port. */
+&pcie2x1l0 {
+	pinctrl-names = "default";
+	pinctrl-0 = <&pcie2_1_rst>;
+	reset-gpios = <&gpio4 RK_PA5 GPIO_ACTIVE_HIGH>;
+	vpcie3v3-supply = <&ext_3v3>;
+	status = "okay";
+};
+
+/*
+ * Realtek RTL8125B, left Ethernet port. The reset line is called
+ * PCIE20_1_2_WAKEn_M1_L on the schematic, but it is wired to the
+ * controller's PERSTB pin.
+ */
+&pcie2x1l2 {
+	pinctrl-names = "default";
+	pinctrl-0 = <&pcie2_0_rst>;
+	reset-gpios = <&gpio3 RK_PD0 GPIO_ACTIVE_HIGH>;
+	vpcie3v3-supply = <&ext_3v3>;
+	status = "okay";
+};
+
 &pd_gpu {
 	domain-supply = <&vdd_gpu_s0>;
 };
@@ -397,6 +442,16 @@
 	pcf8563 {
 		pcf8563_int: pcf8563-int {
 			rockchip,pins = <0 RK_PB0 RK_FUNC_GPIO &pcfg_pull_none>;
+		};
+	};
+
+	pcie {
+		pcie2_0_rst: pcie2-0-rst {
+			rockchip,pins = <3 RK_PD0 RK_FUNC_GPIO &pcfg_pull_none>;
+		};
+
+		pcie2_1_rst: pcie2-1-rst {
+			rockchip,pins = <4 RK_PA5 RK_FUNC_GPIO &pcfg_pull_none>;
 		};
 	};
 
