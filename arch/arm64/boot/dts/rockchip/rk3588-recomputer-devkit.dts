@@ -36,8 +36,44 @@
 		mmc1 = &sdmmc;
 	};
 
+	/* Switch between the ES8311 differential output and the jack. */
+	hp_amp: audio-amplifier {
+		compatible = "simple-audio-amplifier";
+		enable-gpios = <&gpio4 RK_PA4 GPIO_ACTIVE_HIGH>;
+		pinctrl-names = "default";
+		pinctrl-0 = <&hp_con>;
+		sound-name-prefix = "Headphone Amp";
+	};
+
 	chosen {
 		stdout-path = "serial2:1500000n8";
+	};
+
+	es8311_sound: es8311-sound {
+		compatible = "simple-audio-card";
+		pinctrl-names = "default";
+		pinctrl-0 = <&hp_det>;
+		simple-audio-card,name = "reComputer ES8311";
+		simple-audio-card,format = "i2s";
+		simple-audio-card,mclk-fs = <256>;
+		simple-audio-card,aux-devs = <&hp_amp>;
+		simple-audio-card,hp-det-gpios = <&gpio1 RK_PC4 GPIO_ACTIVE_LOW>;
+		simple-audio-card,widgets = "Headphone", "Headphones",
+					    "Microphone", "Headset Mic";
+		simple-audio-card,routing = "Headphones", "Headphone Amp OUTL",
+					    "Headphones", "Headphone Amp OUTR",
+					    "Headphone Amp INL", "OUT",
+					    "Headphone Amp INR", "OUT",
+					    "MIC1", "Headset Mic";
+
+		simple-audio-card,cpu {
+			sound-dai = <&i2s0_8ch>;
+		};
+
+		simple-audio-card,codec {
+			sound-dai = <&es8311>;
+			system-clock-frequency = <12288000>;
+		};
 	};
 
 	hdmi0-con {
@@ -523,6 +559,30 @@
 	};
 };
 
+&i2c7 {
+	status = "okay";
+
+	es8311: audio-codec@18 {
+		compatible = "everest,es8311";
+		reg = <0x18>;
+		clocks = <&cru I2S0_8CH_MCLKOUT>;
+		clock-names = "mclk";
+		assigned-clocks = <&cru I2S0_8CH_MCLKOUT>;
+		assigned-clock-rates = <12288000>;
+		#sound-dai-cells = <0>;
+	};
+};
+
+&i2s0_8ch {
+	pinctrl-names = "default";
+	pinctrl-0 = <&i2s0_lrck
+		     &i2s0_mclk
+		     &i2s0_sclk
+		     &i2s0_sdi0
+		     &i2s0_sdo0>;
+	status = "okay";
+};
+
 &i2s5_8ch {
 	status = "okay";
 };
@@ -593,6 +653,16 @@
 	hdmirx {
 		hdmirx_hpd: hdmirx-5v-detection {
 			rockchip,pins = <1 RK_PD5 RK_FUNC_GPIO &pcfg_pull_none>;
+		};
+	};
+
+	headphone {
+		hp_con: hp-con {
+			rockchip,pins = <4 RK_PA4 RK_FUNC_GPIO &pcfg_pull_none>;
+		};
+
+		hp_det: hp-det {
+			rockchip,pins = <1 RK_PC4 RK_FUNC_GPIO &pcfg_pull_up>;
 		};
 	};
 
