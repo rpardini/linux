@@ -498,6 +498,13 @@
 	};
 };
 
+/* Exposed on the 40-pin header: pin 3 (SDA) and pin 5 (SCL). */
+&i2c3 {
+	pinctrl-names = "default";
+	pinctrl-0 = <&i2c3m1_xfer>;
+	status = "okay";
+};
+
 &i2c4 {
 	pinctrl-names = "default";
 	pinctrl-0 = <&i2c4m1_xfer>;
@@ -800,6 +807,18 @@
 		spi-tx-bus-width = <1>;
 		vcc-supply = <&vcc_3v3_s0>;
 	};
+};
+
+/*
+ * Exposed on the 40-pin header: pins 19 (MOSI), 21 (MISO), 23 (SCLK) and
+ * 24 (CE0). The same pins reach the mini PCIe slot's PCM lines, which a
+ * LoRa concentrator drives as an SPI bus, so leave the controller
+ * disabled and let an overlay enable it for whichever is in use.
+ */
+&spi1 {
+	pinctrl-names = "default";
+	pinctrl-0 = <&spi1m0_pins &spi1m0_cs0>;
+	status = "disabled";
 };
 
 &spi2 {
@@ -1163,6 +1182,13 @@
 &uart2 {
 	pinctrl-names = "default";
 	pinctrl-0 = <&uart2m0_xfer>;
+	status = "okay";
+};
+
+/* Exposed on the 40-pin header: pin 33 (TX) and pin 35 (RX). */
+&uart4 {
+	pinctrl-names = "default";
+	pinctrl-0 = <&uart4m0_xfer>;
 	status = "okay";
 };
 
