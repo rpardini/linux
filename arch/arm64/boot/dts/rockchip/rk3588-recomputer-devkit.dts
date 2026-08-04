@@ -127,6 +127,26 @@
 		};
 	};
 
+	fan: pwm-fan {
+		compatible = "pwm-fan";
+		/*
+		 * The fan idles at its ~1000 rpm floor and only ramps once
+		 * the package gets warm; the levels above the first roughly
+		 * track the measured rpm curve, so the steps are even.
+		 */
+		cooling-levels = <25 35 55 80 115 165 255>;
+		/* Sustains down to 8%, but needs 10% to break away. */
+		fan-stop-to-start-percent = <15>;
+		fan-supply = <&vcc5v0_sys>;
+		interrupt-parent = <&gpio3>;
+		interrupts = <RK_PB6 IRQ_TYPE_EDGE_RISING>;
+		pinctrl-names = "default";
+		pinctrl-0 = <&fan_tach>;
+		pulses-per-revolution = <2>;
+		pwms = <&pwm2 0 50000 0>;
+		#cooling-cells = <2>;
+	};
+
 	/*
 	 * Always-on discrete 12 V to 3.3 V regulator; supplies the Ethernet
 	 * controllers, the USB 3.x hub, the user LED and the expansion
@@ -625,6 +645,80 @@
 	status = "okay";
 };
 
+&package_thermal {
+	polling-delay = <1000>;
+
+	trips {
+		package_fan0: package-fan0 {
+			temperature = <50000>;
+			hysteresis = <2000>;
+			type = "active";
+		};
+
+		package_fan1: package-fan1 {
+			temperature = <55000>;
+			hysteresis = <2000>;
+			type = "active";
+		};
+
+		package_fan2: package-fan2 {
+			temperature = <60000>;
+			hysteresis = <2000>;
+			type = "active";
+		};
+
+		package_fan3: package-fan3 {
+			temperature = <65000>;
+			hysteresis = <2000>;
+			type = "active";
+		};
+
+		package_fan4: package-fan4 {
+			temperature = <70000>;
+			hysteresis = <2000>;
+			type = "active";
+		};
+
+		package_fan5: package-fan5 {
+			temperature = <75000>;
+			hysteresis = <2000>;
+			type = "active";
+		};
+	};
+
+	cooling-maps {
+		map-fan0 {
+			trip = <&package_fan0>;
+			cooling-device = <&fan 1 1>;
+		};
+
+		map-fan1 {
+			trip = <&package_fan1>;
+			cooling-device = <&fan 2 2>;
+		};
+
+		map-fan2 {
+			trip = <&package_fan2>;
+			cooling-device = <&fan 3 3>;
+		};
+
+		map-fan3 {
+			trip = <&package_fan3>;
+			cooling-device = <&fan 4 4>;
+		};
+
+		map-fan4 {
+			trip = <&package_fan4>;
+			cooling-device = <&fan 5 5>;
+		};
+
+		map-fan5 {
+			trip = <&package_fan5>;
+			cooling-device = <&fan 6 6>;
+		};
+	};
+};
+
 /* Realtek RTL8125B, right Ethernet port. */
 &pcie2x1l0 {
 	pinctrl-names = "default";
@@ -670,6 +764,17 @@
 };
 
 &pinctrl {
+	fan {
+		/* Pull down so the fan is off while the PWM is disabled. */
+		fan_pwm: fan-pwm {
+			rockchip,pins = <4 RK_PC2 11 &pcfg_pull_down_drv_level_2>;
+		};
+
+		fan_tach: fan-tach {
+			rockchip,pins = <3 RK_PB6 RK_FUNC_GPIO &pcfg_pull_up>;
+		};
+	};
+
 	hdmi {
 		hdmi0_tx_on_h: hdmi0-tx-on-h {
 			rockchip,pins = <4 RK_PB1 RK_FUNC_GPIO &pcfg_pull_none>;
@@ -761,6 +866,12 @@
 			rockchip,pins = <4 RK_PA7 RK_FUNC_GPIO &pcfg_pull_none>;
 		};
 	};
+};
+
+&pwm2 {
+	pinctrl-names = "default";
+	pinctrl-0 = <&fan_pwm>;
+	status = "okay";
 };
 
 &saradc {
