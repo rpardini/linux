@@ -1240,6 +1240,11 @@ properties:
           - const: seeed,recomputer-rk3576-devkit
           - const: rockchip,rk3576
 
+      - description: Seeed Studio reComputer RK3588 Dev Kit
+        items:
+          - const: seeed,recomputer-rk3588-devkit
+          - const: rockchip,rk3588
+
       - description: Sinovoip RK3308 Banana Pi P2 Pro
         items:
           - const: sinovoip,rk3308-bpi-p2pro
