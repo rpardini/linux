@@ -164,6 +164,29 @@
 	cpu-supply = <&vdd_cpu_lit_s0>;
 };
 
+&gpio3 {
+	/*
+	 * The on-board VL822 USB 3.x hub has no DT consumer that could own
+	 * these: it is not in the onboard_usb_dev device table. Hold its
+	 * 1.05 V core rail enabled and hold it out of reset. The schematic
+	 * calls the reset line SYS_3V3_EN, but it drives the reset
+	 * supervisor's MR input, not a rail enable.
+	 */
+	usb-hub-power-hog {
+		gpio-hog;
+		gpios = <RK_PB3 GPIO_ACTIVE_HIGH>;
+		line-name = "usb_hub30_en";
+		output-high;
+	};
+
+	usb-hub-reset-hog {
+		gpio-hog;
+		gpios = <RK_PC3 GPIO_ACTIVE_HIGH>;
+		line-name = "usb_hub30_reset_n";
+		output-high;
+	};
+};
+
 &gpu {
 	mali-supply = <&vdd_gpu_s0>;
 	status = "okay";
@@ -672,8 +695,48 @@
 	status = "okay";
 };
 
+&u2phy1 {
+	status = "okay";
+};
+
+/* USB 2.0 half of the link to the on-board USB 3.x hub. */
+&u2phy1_otg {
+	status = "okay";
+};
+
+&u2phy3 {
+	status = "okay";
+};
+
+&u2phy3_host {
+	status = "okay";
+};
+
 &uart2 {
 	pinctrl-names = "default";
 	pinctrl-0 = <&uart2m0_xfer>;
+	status = "okay";
+};
+
+/* USB 2.0 host port, routed to the mini PCIe slot. */
+&usb_host1_ehci {
+	status = "okay";
+};
+
+&usb_host1_ohci {
+	status = "okay";
+};
+
+/*
+ * Upstream port of the on-board VL822 hub, which fans out to the four
+ * USB 3.0 Type-A connectors.
+ */
+&usb_host1_xhci {
+	dr_mode = "host";
+	status = "okay";
+};
+
+/* SuperSpeed half of the link to the on-board USB 3.x hub. */
+&usbdp_phy1 {
 	status = "okay";
 };
