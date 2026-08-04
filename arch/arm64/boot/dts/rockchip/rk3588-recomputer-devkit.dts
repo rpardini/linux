@@ -311,6 +311,19 @@
 	};
 };
 
+&gpio1 {
+	/*
+	 * Radio disable of the mini PCIe slot, active low. Deassert it so a
+	 * fitted card is allowed to transmit.
+	 */
+	minipcie-w-disable-hog {
+		gpio-hog;
+		gpios = <RK_PC1 GPIO_ACTIVE_HIGH>;
+		line-name = "minipcie_w_disable_n";
+		output-high;
+	};
+};
+
 &gpio3 {
 	/*
 	 * The on-board VL822 USB 3.x hub has no DT consumer that could own
@@ -330,6 +343,20 @@
 		gpio-hog;
 		gpios = <RK_PC3 GPIO_ACTIVE_HIGH>;
 		line-name = "usb_hub30_reset_n";
+		output-high;
+	};
+};
+
+&gpio4 {
+	/*
+	 * PERST# of the mini PCIe slot, active low. The slot carries USB and
+	 * I2C rather than PCIe, so nothing claims this line; hold it
+	 * deasserted to let a fitted card run.
+	 */
+	minipcie-perst-hog {
+		gpio-hog;
+		gpios = <RK_PB3 GPIO_ACTIVE_HIGH>;
+		line-name = "minipcie_perst_n";
 		output-high;
 	};
 };
