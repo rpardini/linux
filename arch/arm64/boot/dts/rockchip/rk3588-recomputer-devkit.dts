@@ -9,6 +9,7 @@
 #include <dt-bindings/input/input.h>
 #include <dt-bindings/leds/common.h>
 #include <dt-bindings/pinctrl/rockchip.h>
+#include <dt-bindings/usb/pd.h>
 #include "rk3588.dtsi"
 
 / {
@@ -129,6 +130,19 @@
 		regulator-max-microvolt = <5000000>;
 		regulator-name = "vcc5v0_sys";
 		vin-supply = <&vcc12v_dcin>;
+	};
+
+	/* Type-C VBUS, switched by an SY6280AAC limited to 1.0 A. */
+	vcc5v0_usb0: regulator-vcc5v0-usb0 {
+		compatible = "regulator-fixed";
+		enable-active-high;
+		gpio = <&gpio1 RK_PB2 GPIO_ACTIVE_HIGH>;
+		pinctrl-names = "default";
+		pinctrl-0 = <&typec5v_pwren>;
+		regulator-min-microvolt = <5000000>;
+		regulator-max-microvolt = <5000000>;
+		regulator-name = "vcc5v0_usb0";
+		vin-supply = <&vcc5v0_sys>;
 	};
 };
 
@@ -271,6 +285,51 @@
 &i2c6 {
 	status = "okay";
 
+	/*
+	 * Awinic AW35615, register-compatible with the FUSB302B. An HUSB311
+	 * at 0x4e is an alternate BOM option, not fitted by default.
+	 */
+	usbc0: usb-typec@22 {
+		compatible = "fcs,fusb302";
+		reg = <0x22>;
+		interrupt-parent = <&gpio0>;
+		interrupts = <RK_PD3 IRQ_TYPE_LEVEL_LOW>;
+		pinctrl-names = "default";
+		pinctrl-0 = <&usbc0_int>;
+		vbus-supply = <&vcc5v0_usb0>;
+
+		connector {
+			compatible = "usb-c-connector";
+			data-role = "dual";
+			label = "USB-C";
+			op-sink-microwatt = <1000000>;
+			power-role = "dual";
+			/* The VBUS switch on this port is limited to 1.0 A. */
+			sink-pdos = <PDO_FIXED(5000, 1000, PDO_FIXED_USB_COMM)>;
+			source-pdos = <PDO_FIXED(5000, 1000, PDO_FIXED_USB_COMM)>;
+			try-power-role = "sink";
+
+			ports {
+				#address-cells = <1>;
+				#size-cells = <0>;
+
+				port@0 {
+					reg = <0>;
+					usbc0_hs: endpoint {
+						remote-endpoint = <&usb_host0_xhci_hs>;
+					};
+				};
+
+				port@1 {
+					reg = <1>;
+					usbc0_ss: endpoint {
+						remote-endpoint = <&usbdp_phy0_ss_out>;
+					};
+				};
+			};
+		};
+	};
+
 	rtc@51 {
 		compatible = "nxp,pcf8563";
 		reg = <0x51>;
@@ -308,6 +367,16 @@
 	sdmmc {
 		sdmmc_pwren: sdmmc-pwren {
 			rockchip,pins = <1 RK_PB1 RK_FUNC_GPIO &pcfg_pull_none>;
+		};
+	};
+
+	usb-typec {
+		typec5v_pwren: typec5v-pwren {
+			rockchip,pins = <1 RK_PB2 RK_FUNC_GPIO &pcfg_pull_none>;
+		};
+
+		usbc0_int: usbc0-int {
+			rockchip,pins = <0 RK_PD3 RK_FUNC_GPIO &pcfg_pull_up>;
 		};
 	};
 };
@@ -691,6 +760,14 @@
 	status = "okay";
 };
 
+&u2phy0 {
+	status = "okay";
+};
+
+&u2phy0_otg {
+	status = "okay";
+};
+
 &u2phy1 {
 	status = "okay";
 };
@@ -714,6 +791,31 @@
 	status = "okay";
 };
 
+/* The USB Type-C port. */
+&usb_host0_xhci {
+	usb-role-switch;
+	status = "okay";
+
+	ports {
+		#address-cells = <1>;
+		#size-cells = <0>;
+
+		port@0 {
+			reg = <0>;
+			usb_host0_xhci_hs: endpoint {
+				remote-endpoint = <&usbc0_hs>;
+			};
+		};
+
+		port@1 {
+			reg = <1>;
+			usb_host0_xhci_ss: endpoint {
+				remote-endpoint = <&usbdp_phy0_ss_in>;
+			};
+		};
+	};
+};
+
 /* USB 2.0 host port, routed to the mini PCIe slot. */
 &usb_host1_ehci {
 	status = "okay";
@@ -730,6 +832,27 @@
 &usb_host1_xhci {
 	dr_mode = "host";
 	status = "okay";
+};
+
+/* SuperSpeed half of the USB Type-C port. */
+&usbdp_phy0 {
+	orientation-switch;
+	status = "okay";
+
+	port {
+		#address-cells = <1>;
+		#size-cells = <0>;
+
+		usbdp_phy0_ss_out: endpoint@0 {
+			reg = <0>;
+			remote-endpoint = <&usbc0_ss>;
+		};
+
+		usbdp_phy0_ss_in: endpoint@1 {
+			reg = <1>;
+			remote-endpoint = <&usb_host0_xhci_ss>;
+		};
+	};
 };
 
 /* SuperSpeed half of the link to the on-board USB 3.x hub. */
