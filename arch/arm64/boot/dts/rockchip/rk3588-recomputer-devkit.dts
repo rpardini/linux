@@ -84,6 +84,17 @@
 		vin-supply = <&vcc12v_dcin>;
 	};
 
+	/* Always-on discrete 12 V to 3.3 V regulator for the two M.2 slots. */
+	pcie_3v3: regulator-pcie-3v3 {
+		compatible = "regulator-fixed";
+		regulator-always-on;
+		regulator-boot-on;
+		regulator-min-microvolt = <3300000>;
+		regulator-max-microvolt = <3300000>;
+		regulator-name = "pcie_3v3";
+		vin-supply = <&vcc12v_dcin>;
+	};
+
 	vcc_1v1_nldo_s3: regulator-vcc-1v1-nldo-s3 {
 		compatible = "regulator-fixed";
 		regulator-always-on;
@@ -112,6 +123,25 @@
 		regulator-min-microvolt = <12000000>;
 		regulator-max-microvolt = <12000000>;
 		regulator-name = "vcc12v_dcin";
+	};
+
+	/*
+	 * Supplies the PI6C557-05B buffer that fans the PCIe 3.0 reference
+	 * clock out to the x4 M.2 slot. It has no consumer of its own, so
+	 * keep it on.
+	 */
+	vcc3v3_pcie_clk: regulator-vcc3v3-pcie-clk {
+		compatible = "regulator-fixed";
+		enable-active-high;
+		gpio = <&gpio1 RK_PA4 GPIO_ACTIVE_HIGH>;
+		pinctrl-names = "default";
+		pinctrl-0 = <&pcie30_clk_en>;
+		regulator-always-on;
+		regulator-boot-on;
+		regulator-min-microvolt = <3300000>;
+		regulator-max-microvolt = <3300000>;
+		regulator-name = "vcc3v3_pcie_clk";
+		vin-supply = <&vcc4v0_sys>;
 	};
 
 	vcc3v3_sd_s0: regulator-vcc3v3-sd-s0 {
@@ -167,6 +197,10 @@
 };
 
 &combphy1_ps {
+	status = "okay";
+};
+
+&combphy2_psu {
 	status = "okay";
 };
 
@@ -407,6 +441,15 @@
 	status = "okay";
 };
 
+/* M.2 M-key slot, PCIe 2.0 x1. */
+&pcie2x1l1 {
+	pinctrl-names = "default";
+	pinctrl-0 = <&pcie2_2_rst>;
+	reset-gpios = <&gpio4 RK_PA2 GPIO_ACTIVE_HIGH>;
+	vpcie3v3-supply = <&pcie_3v3>;
+	status = "okay";
+};
+
 /*
  * Realtek RTL8125B, left Ethernet port. The reset line is called
  * PCIE20_1_2_WAKEn_M1_L on the schematic, but it is wired to the
@@ -417,6 +460,19 @@
 	pinctrl-0 = <&pcie2_0_rst>;
 	reset-gpios = <&gpio3 RK_PD0 GPIO_ACTIVE_HIGH>;
 	vpcie3v3-supply = <&ext_3v3>;
+	status = "okay";
+};
+
+&pcie30phy {
+	status = "okay";
+};
+
+/* M.2 M-key slot, PCIe 3.0 x4. */
+&pcie3x4 {
+	pinctrl-names = "default";
+	pinctrl-0 = <&pcie3_rst>;
+	reset-gpios = <&gpio4 RK_PB6 GPIO_ACTIVE_HIGH>;
+	vpcie3v3-supply = <&pcie_3v3>;
 	status = "okay";
 };
 
@@ -448,6 +504,18 @@
 
 		pcie2_1_rst: pcie2-1-rst {
 			rockchip,pins = <4 RK_PA5 RK_FUNC_GPIO &pcfg_pull_none>;
+		};
+
+		pcie2_2_rst: pcie2-2-rst {
+			rockchip,pins = <4 RK_PA2 RK_FUNC_GPIO &pcfg_pull_none>;
+		};
+
+		pcie30_clk_en: pcie30-clk-en {
+			rockchip,pins = <1 RK_PA4 RK_FUNC_GPIO &pcfg_pull_none>;
+		};
+
+		pcie3_rst: pcie3-rst {
+			rockchip,pins = <4 RK_PB6 RK_FUNC_GPIO &pcfg_pull_none>;
 		};
 	};
 
