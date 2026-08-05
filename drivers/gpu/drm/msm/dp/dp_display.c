@@ -400,6 +400,9 @@ static int msm_dp_display_handle_irq_hpd(struct msm_dp_display_private *dp)
 	return 0;
 }
 
+static void msm_dp_display_handle_plugged_change(struct msm_dp *msm_dp_display,
+		bool plugged);
+
 static int msm_dp_hpd_plug_handle(struct msm_dp_display_private *dp)
 {
 	int ret;
@@ -434,6 +437,10 @@ static int msm_dp_hpd_plug_handle(struct msm_dp_display_private *dp)
 			dp->link->sink_count);
 
 	dp->plugged = true;
+
+	/* Undo the jack removal the unplug reported, a modeset may never come */
+	if (!ret && dp->msm_dp_display.power_on && !was_plugged)
+		msm_dp_display_handle_plugged_change(&dp->msm_dp_display, true);
 
 	return ret;
 };
