@@ -1021,6 +1021,20 @@ static irqreturn_t msm_dp_display_irq_thread(int irq, void *dev_id)
 		drm_bridge_hpd_notify(dp->msm_dp_display.bridge,
 				      connector_status_connected);
 
+	/*
+	 * A replug means the sink went away and came back while the controller
+	 * was left enabled, so its capabilities and its EDID may both differ
+	 * now. Drive a full disconnect and reconnect to reread them; a bare
+	 * connected notification would be swallowed as a repeat of the state
+	 * the connector is already in.
+	 */
+	if (hpd_isr_status & DP_DP_HPD_REPLUG_INT_MASK) {
+		drm_bridge_hpd_notify(dp->msm_dp_display.bridge,
+				      connector_status_disconnected);
+		drm_bridge_hpd_notify(dp->msm_dp_display.bridge,
+				      connector_status_connected);
+	}
+
 	if (hpd_isr_status & DP_DP_IRQ_HPD_INT_MASK) {
 		rc = pm_runtime_resume_and_get(&pdev->dev);
 		if (rc)
