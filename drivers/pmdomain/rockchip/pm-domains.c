@@ -654,6 +654,11 @@ static int rockchip_pd_power(struct rockchip_pm_domain *pd, bool power_on)
 	if (rockchip_pmu_domain_is_on(pd) == power_on)
 		return 0;
 
+	if (pd->info->pwr_mask == 0 &&
+	    of_device_is_compatible(pmu->dev->of_node,
+				    "rockchip,rk3528-power-controller"))
+		return 0;
+
 	ret = clk_bulk_enable(pd->num_clks, pd->clks);
 	if (ret < 0) {
 		dev_err(pmu->dev, "failed to enable clocks\n");
