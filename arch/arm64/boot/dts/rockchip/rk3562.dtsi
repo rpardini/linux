@@ -747,6 +747,7 @@
 				#size-cells = <0>;
 
 				power-domain@RK3562_PD_GPU {
+					rockchip,always-on;
 					reg = <RK3562_PD_GPU>;
 					pm_qos = <&qos_gpu>;
 					#power-domain-cells = <0>;
