@@ -30,4 +30,10 @@ config ROCKCHIP_DTPM
 	  on this platform. That will create all the power capping capable
 	  devices.
 
+config ROCKCHIP_CSU
+	tristate "Rockchip Clock Subunit Driver"
+	depends on ARCH_ROCKCHIP
+	help
+	  This adds the clock subunit driver for Rockchip SoCs.
+
 endif

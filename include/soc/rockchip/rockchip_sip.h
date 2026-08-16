@@ -31,4 +31,6 @@ typedef enum {
     SHARE_PAGE_TYPE_MAX,
 } share_page_type_t;
 
+#define ROCKCHIP_SIP_BUS_CFG			0x8200000d
+
 #endif
