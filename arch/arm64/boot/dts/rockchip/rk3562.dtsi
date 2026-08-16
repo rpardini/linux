@@ -10,6 +10,7 @@
 #include <dt-bindings/power/rockchip,rk3562-power.h>
 #include <dt-bindings/pinctrl/rockchip.h>
 #include <dt-bindings/reset/rockchip,rk3562-cru.h>
+#include <dt-bindings/soc/rockchip-csu.h>
 #include <dt-bindings/soc/rockchip,boot-mode.h>
 #include <dt-bindings/thermal/thermal.h>
 
@@ -40,6 +41,23 @@
 		#clock-cells = <0>;
 		clock-frequency = <24000000>;
 		clock-output-names = "xin24m";
+	};
+
+	csu: csu {
+		compatible = "rockchip,rk3562-csu";
+		rockchip,clock = <CSU_GMAC_ACLK  1>,
+				 <CSU_GMAC_PCLK  3>,
+				 <CSU_VOP_ACLK   4>,
+				 <CSU_MCU_CLK    2>;
+		rockchip,bus = <0 0x00a000a8 0x7001>,
+			       <1 0x00a000a8 0x7c39>,
+			       <2 0x00a000a8 0x7c39>,
+			       <3 0x00a000a8 0x7c39>,
+			       <4 0x00a000a4 0xb007>,
+			       <5 0x00a000a8 0x7034>,
+			       <6 0x00a000a8 0x7034>,
+			       <7 0x00a000a8 0x7034>,
+			       <8 0x00a000a8 0x7001>;
 	};
 
 	cpus {
