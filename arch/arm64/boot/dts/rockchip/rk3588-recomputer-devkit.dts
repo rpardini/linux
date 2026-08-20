@@ -333,7 +333,57 @@
 	};
 };
 
+/*
+ * GPIO line names use the schematic's own signal labels, in the format
+ * "Human-readable name [SIGNAL_LABEL]"; they match revision V1.0 of the
+ * RK3588_AIOT_SCH schematic. Lines left unnamed are either unrouted or
+ * belong to the unpopulated Wi-Fi/BT module footprint.
+ */
+&gpio0 {
+	gpio-line-names =
+		/* GPIO0 A0-A7 */
+		"", "Thermal shutdown [TSADC_SHUT_H]",
+		"PMIC [PMIC_PWR_CTRL1]", "CPU big0 select [CPU_BIG0_VSEL]",
+		"MicroSD detect [SDMMC_DET_L]", "PMIC SPI [SPI2_CLK_M2]",
+		"PMIC SPI [SPI2_MOSI_M2]", "PMIC interrupt [PMIC_INT_L]",
+		/* GPIO0 B0-B7 */
+		"RTC interrupt [RTC_INT_L]", "PMIC SPI [SPI2_CS0_M2]", "",
+		"PMIC SPI [SPI2_MISO_M2]", "", "Header pin 08, debug UART",
+		"Header pin 10, debug UART", "CAM0 connector pin 18",
+		/* GPIO0 C0-C7 */
+		"Header pin 11", "NPU select [NPU_VSEL]",
+		"PMIC [PMIC_PWR_CTRL3]", "PMIC [PMIC_PWR_CTRL2]",
+		"Header pin 38", "Header pin 29",
+		"", "Header pin 27 [I2C6_SDA_M0]",
+		/* GPIO0 D0-D7 */
+		"Header pin 28 [I2C6_SCL_M0]", "CPU regulators [I2C0_SCL_M2]",
+		"CPU regulators [I2C0_SDA_M2]", "Type-C interrupt [CC_INT_L]",
+		"NPU regulator [I2C1_SCL_M2]", "NPU regulator [I2C1_SDA_M2]",
+		"CPU big1 select [CPU_BIG1_VSEL]", "";
+};
+
 &gpio1 {
+	gpio-line-names =
+		/* GPIO1 A0-A7 */
+		"", "", "", "", "PCIe 3.0 clock [PCIE30_CLK_EN]",
+		"HDMI0 HPD [HDMITX0_HPDIN_M0]",
+		"HDMI1 HPD [HDMITX1_HPDIN_M0]", "Header pin 12",
+		/* GPIO1 B0-B7 */
+		"Header pin 16", "MicroSD power [SDMMC_PWREN]",
+		"Type-C VBUS [TYPEC5V_PWREN_H]", "Header pin 26",
+		"Header pin 18", "Header pin 22",
+		"M.2 x1 alert [M2M1_ALERT_N]", "Header pin 36",
+		/* GPIO1 C0-C7 */
+		"LoRa [PCIe_SX1261_BUSY_1V8]", "mini PCIe RF kill [W_DISABLE#]",
+		"Audio codec [I2S0_MCLK]", "Audio codec [I2S0_SCLK]",
+		"Headphone detect [HP_DET_L]", "Audio codec [I2S0_LRCK]",
+		"Header pin 15", "Audio codec [I2S0_SDO0]",
+		/* GPIO1 D0-D7 */
+		"Audio codec [I2C7_SCL_M0]", "Audio codec [I2C7_SDA_M0]",
+		"Header pin 33 [UART4_TX_M0]", "Header pin 35 [UART4_RX_M0]",
+		"Audio codec [I2S0_SDI0]", "HDMI-in [HDMIIRX_Plugin_DET_L]",
+		"Header pin 37", "Header pin 32";
+
 	/*
 	 * Radio disable of the mini PCIe slot, active low. Deassert it so a
 	 * fitted card is allowed to transmit.
@@ -346,7 +396,49 @@
 	};
 };
 
+&gpio2 {
+	gpio-line-names =
+		/* GPIO2 A0-A7 */
+		"eMMC [EMMC_CMD]", "eMMC [EMMC_CLKOUT]",
+		"eMMC [EMMC_DATA_STROBE]", "eMMC [EMMC_RSTn]", "", "", "", "",
+		/* GPIO2 B0-B7 */
+		"", "", "", "", "EEPROM, LCM, M.2 [I2C4_SDA_M1]",
+		"EEPROM, LCM, M.2 [I2C4_SCL_M1]",
+		"CAM0 connector pin 17", "Header pin 13",
+		/* GPIO2 C0-C7 */
+		"Header pins 23/40 [SPI1_CLK_M0]",
+		"Header pin 21 [SPI1_MISO_M0]",
+		"Header pin 19 [SPI1_MOSI_M0]", "Header pin 24 [SPI1_CS0_M0]",
+		"HDMI1 [HDMITX1_CEC_M0]", "", "", "",
+		/* GPIO2 D0-D7 */
+		"eMMC [EMMC_D0]", "eMMC [EMMC_D1]", "eMMC [EMMC_D2]",
+		"eMMC [EMMC_D3]", "eMMC [EMMC_D4]", "eMMC [EMMC_D5]",
+		"eMMC [EMMC_D6]", "eMMC [EMMC_D7]";
+};
+
 &gpio3 {
+	gpio-line-names =
+		/* GPIO3 A0-A7 */
+		"SPI NOR flash [FSPI_D0_M2]", "SPI NOR flash [FSPI_D1_M2]",
+		"SPI NOR flash [FSPI_D2_M2]", "SPI NOR flash [FSPI_D3_M2]",
+		"User LED red [USER_LED_R]", "SPI NOR flash [FSPI_CLK_M2]",
+		"User LED green [USER_LED_G]", "LoRa [LoRaWAN_SX1262_CS]",
+		/* GPIO3 B0-B7 */
+		"CAM1 connector pin 17", "User LED blue [USER_LED_B]",
+		"", "USB hub power [USB_HUB30_EN]",
+		"CAM1 connector pin 18", "LCM connector pin 17",
+		"Cooling fan tach [FAN_TACH]", "Header pin 05 [I2C3_SCL_M1]",
+		/* GPIO3 C0-C7 */
+		"Header pin 03 [I2C3_SDA_M1]", "Ethernet [PCIE0_PWR_0V95_EN]",
+		"LoRa [PCIe_SX1261_RST_3V3]", "USB hub reset [SYS_3V3_EN]",
+		"SPI NOR flash [FSPI_CS0_M2]", "HDMI1 [HDMITX1_SDA_M1]",
+		"HDMI1 [HDMITX1_SCL_M1]", "ETH0 [PCIE20_1_2_CLKREQn_M1_L]",
+		/* GPIO3 D0-D7 */
+		"ETH0 [PCIE20_1_2_WAKEn_M1_L]", "HDMI-in [HDMI_RX_CEC]",
+		"HDMI-in [HDMI_RX_SCL_M1]", "HDMI-in [HDMI_RX_SDA_M1]",
+		"HDMI-in HPD [HDMIIRX_HPDOUT_H]",
+		"LCM connector pin 18", "", "";
+
 	/*
 	 * The on-board VL822 USB 3.x hub has no DT consumer that could own
 	 * these: it is not in the onboard_usb_dev device table. Hold its
@@ -370,6 +462,28 @@
 };
 
 &gpio4 {
+	gpio-line-names =
+		/* GPIO4 A0-A7 */
+		"M.2 x1 [PCIEX1_1_CLKREQn_M1_L]",
+		"M.2 x1 [PCIEX1_1_WAKEn_M1_L]", "M.2 x1 [PCIEX1_1_PERSTn_M1_L]",
+		"ETH1 [PCIE30x1_0_CLKREQn_M1_L]",
+		"Headphone amp [PHONE_CTL]", "ETH1 [PCIE30x1_0_PERSTn_M1_L]",
+		"Type-C SBU1 [TYPEC0_SBU1_DC]", "Type-C SBU2 [TYPEC0_SBU2_DC]",
+		/* GPIO4 B0-B7 */
+		"Header pin 31", "HDMI0 enable [HDMI0_TX_ON_H]",
+		"HDMI1 enable [HDMI1_TX_ON_H]", "mini PCIe reset [LTE_RESET]",
+		"M.2 x4 [PCIE30X4_CLKREQn_M1_L]",
+		"M.2 x4 [PCIE30X4_WAKEn_M1_L]",
+		"M.2 x4 [PCIE30X4_PERSTn_M1_L]", "HDMI0 [HDMITX0_SCL_M0]",
+		/* GPIO4 C0-C7 */
+		"HDMI0 [HDMITX0_SDA_M0]", "HDMI0 [HDMITX0_CEC_M0]",
+		"Cooling fan [PWM2_M2]", "mini PCIe LED [LTE_LED_WWAN#]",
+		"", "", "Header pin 07", "",
+		/* GPIO4 D0-D7 */
+		"MicroSD [SDMMC0_D0]", "MicroSD [SDMMC0_D1]",
+		"MicroSD [SDMMC0_D2]", "MicroSD [SDMMC0_D3]",
+		"MicroSD [SDMMC0_CMD]", "MicroSD [SD_CLK]", "", "";
+
 	/*
 	 * PERST# of the mini PCIe slot, active low. The slot carries USB and
 	 * I2C rather than PCIe, so nothing claims this line; hold it
