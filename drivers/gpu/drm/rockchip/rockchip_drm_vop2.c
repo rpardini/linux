@@ -9,6 +9,7 @@
 #include <linux/delay.h>
 #include <linux/iopoll.h>
 #include <linux/kernel.h>
+#include <linux/math64.h>
 #include <linux/media-bus-format.h>
 #include <linux/mfd/syscon.h>
 #include <linux/module.h>
@@ -18,6 +19,7 @@
 #include <linux/pm_runtime.h>
 #include <linux/regmap.h>
 #include <linux/swab.h>
+#include <soc/rockchip/rockchip_csu.h>
 
 #include <drm/drm.h>
 #include <drm/drm_atomic.h>
@@ -1802,6 +1804,28 @@ static void vop2_crtc_atomic_enable(struct drm_crtc *crtc,
 
 	clk_set_rate(vp->dclk, clock);
 
+	if ((vop2->data->feature & VOP2_FEATURE_HAS_CSU) && vop2->csu_aclk) {
+		unsigned long aclk_rate = clk_get_rate(vop2->aclk);
+		unsigned long dclk_rate = clk_get_rate(vp->dclk);
+		u32 csu_div;
+		int csu_ret;
+
+		if (aclk_rate && dclk_rate) {
+			csu_div = clamp_t(u64,
+					  div_u64((u64)(aclk_rate - 1) * 2, dclk_rate),
+					  1, CSU_MAX_DIV);
+
+			if (csu_div != vop2->csu_div) {
+				csu_ret = rockchip_csu_set_div(vop2->csu_aclk, csu_div);
+				if (csu_ret < 0)
+					drm_err(vop2->drm, "failed to set csu aclk divider: %d\n",
+						csu_ret);
+				else
+					vop2->csu_div = csu_div;
+			}
+		}
+	}
+
 	vop2_post_config(crtc);
 
 	vop2_cfg_done(vp);
@@ -2724,6 +2748,12 @@ static int vop2_bind(struct device *dev, struct device *master, void *data)
 		if (IS_ERR(vop2->sys_pmu))
 			return dev_err_probe(drm->dev, PTR_ERR(vop2->sys_pmu),
 					     "cannot get sys_pmu\n");
+	}
+
+	if (vop2_data->feature & VOP2_FEATURE_HAS_CSU) {
+		vop2->csu_aclk = rockchip_csu_get(dev, "aclk");
+		if (IS_ERR(vop2->csu_aclk))
+			vop2->csu_aclk = NULL;
 	}
 
 	vop2->hclk = devm_clk_get(vop2->dev, "hclk");
