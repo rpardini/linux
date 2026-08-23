@@ -29,6 +29,7 @@
 #define VOP2_FEATURE_HAS_VO1_GRF	BIT(2)
 #define VOP2_FEATURE_HAS_VOP_GRF	BIT(3)
 #define VOP2_FEATURE_HAS_SYS_PMU	BIT(4)
+#define VOP2_FEATURE_HAS_CSU		BIT(5)
 
 #define WIN_FEATURE_AFBDC		BIT(0)
 #define WIN_FEATURE_CLUSTER		BIT(1)
@@ -286,6 +287,8 @@ struct vop2_data {
 	unsigned int soc_id;
 };
 
+struct csu_clk;
+
 struct vop2 {
 	u32 version;
 	struct device *dev;
@@ -308,6 +311,9 @@ struct vop2 {
 	struct regmap *vop_grf;
 	struct regmap *vo1_grf;
 	struct regmap *sys_pmu;
+
+	struct csu_clk *csu_aclk;
+	u32 csu_div;
 
 	/* physical map length of vop2 register */
 	u32 len;
@@ -485,6 +491,21 @@ enum dst_factor_mode {
 #define RK3568_VP1_CTRL_BASE			0x0D00
 #define RK3568_VP2_CTRL_BASE			0x0E00
 #define RK3588_VP3_CTRL_BASE			0x0F00
+
+/* rk3562 overlay registers definition */
+#define RK3562_OVL_SYS				0x500
+#define RK3562_OVL_SYS_PORT_SEL_IMD		0x504
+#define RK3562_OVL_SYS_ESMART0_CTRL		0x520
+#define RK3562_OVL_SYS_ESMART1_CTRL		0x524
+#define RK3562_OVL_SYS_ESMART2_CTRL		0x528
+#define RK3562_OVL_SYS_ESMART3_CTRL		0x52C
+#define RK3562_OVL_PORT0_CTRL			0x600
+#define RK3562_OVL_PORT0_LAYER_SEL		0x604
+#define RK3562_OVL_PORT0_BG_MIX_CTRL		0x670
+#define RK3562_OVL_PORT0_CTRL__OVERLAY_MODE	BIT(0)
+
+#define RK3562_GRF_IOC_VO_IO_CON		0x10500
+
 #define RK3568_VP_DSP_CTRL			0x00
 #define RK3568_VP_MIPI_CTRL			0x04
 #define RK3568_VP_COLOR_BAR_CTRL		0x08
@@ -707,6 +728,12 @@ enum dst_factor_mode {
 #define RK3568_DSP_IF_POL__EDP_PIN_POL			GENMASK(15, 12)
 #define RK3568_DSP_IF_POL__HDMI_PIN_POL			GENMASK(7, 4)
 #define RK3568_DSP_IF_POL__RGB_LVDS_PIN_POL		GENMASK(3, 0)
+
+/* RK3562 uses separate pin and clock polarity fields for these outputs. */
+#define RK3562_DSP_IF_POL__MIPI_PIN_POL		GENMASK(14, 12)
+#define RK3562_DSP_IF_POL__MIPI_DCLK_POL		BIT(15)
+#define RK3562_DSP_IF_POL__RGB_LVDS_PIN_POL		GENMASK(2, 0)
+#define RK3562_DSP_IF_POL__LVDS_DCLK_POL		BIT(3)
 
 #define RK3588_DSP_IF_POL__DP1_PIN_POL			GENMASK(14, 12)
 #define RK3588_DSP_IF_POL__DP0_PIN_POL			GENMASK(10, 8)
