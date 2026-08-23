@@ -375,5 +375,6 @@
 #define PCLK_CRYPTO_S			363
 #define CLK_CORE_CRYPTO_S		364
 #define CLK_PKA_CRYPTO_S		365
+#define MCLK_SAI0_TO_IO		366
 
 #endif
