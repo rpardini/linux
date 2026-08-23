@@ -1006,10 +1006,10 @@ static struct rockchip_clk_branch rk3562_clk_branches[] __initdata = {
 	COMPOSITE(ACLK_VO_PRE, "aclk_vo_pre", gpll_cpll_vpll_dmyhpll_p, 0,
 			RK3562_CLKSEL_CON(28), 6, 2, MFLAGS, 0, 5, DFLAGS,
 			RK3562_CLKGATE_CON(13), 0, GFLAGS),
-	COMPOSITE_NOMUX(HCLK_VO_PRE, "hclk_vo_pre", "aclk_vo", 0,
+	COMPOSITE_NOMUX(HCLK_VO_PRE, "hclk_vo_pre", "aclk_vo_pre", 0,
 			RK3562_CLKSEL_CON(29), 0, 5, DFLAGS,
 			RK3562_CLKGATE_CON(13), 1, GFLAGS),
-	GATE(ACLK_VOP, "aclk_vop", "aclk_vo", 0,
+	GATE(ACLK_VOP, "aclk_vop", "aclk_vo_pre", 0,
 			RK3562_CLKGATE_CON(13), 6, GFLAGS),
 	GATE(HCLK_VOP, "hclk_vop", "hclk_vo_pre", 0,
 			RK3562_CLKGATE_CON(13), 7, GFLAGS),
@@ -1019,6 +1019,20 @@ static struct rockchip_clk_branch rk3562_clk_branches[] __initdata = {
 	COMPOSITE(DCLK_VOP1, "dclk_vop1", gpll_dmyhpll_vpll_apll_p, CLK_SET_RATE_NO_REPARENT,
 			RK3562_CLKSEL_CON(31), 14, 2, MFLAGS, 0, 8, DFLAGS,
 			RK3562_CLKGATE_CON(13), 9, GFLAGS),
+};
+
+/*
+ * The VOP clock chain must remain enabled from boot. Otherwise the
+ * unused-clock pass can gate the VOP/MMU bus before the display driver has
+ * had a chance to enable its runtime clocks; register access then hangs.
+ */
+static const char *const rk3562_cru_critical_clocks[] __initconst = {
+	"aclk_vo_pre",
+	"hclk_vo_pre",
+	"aclk_vop",
+	"hclk_vop",
+	"dclk_vop",
+	"dclk_vop1",
 };
 
 static void __init rk3562_clk_init(struct device_node *np)
@@ -1053,6 +1067,9 @@ static void __init rk3562_clk_init(struct device_node *np)
 	rk3562_rst_init(np, reg_base);
 
 	rockchip_register_restart_notifier(ctx, RK3562_GLB_SRST_FST, NULL);
+
+	rockchip_clk_protect_critical(rk3562_cru_critical_clocks,
+				      ARRAY_SIZE(rk3562_cru_critical_clocks));
 
 	rockchip_clk_of_add_provider(np, ctx);
 }
