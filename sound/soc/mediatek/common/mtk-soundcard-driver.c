@@ -325,7 +325,13 @@ int mtk_soundcard_common_probe(struct platform_device *pdev)
 
 	ret = devm_snd_soc_register_card(&pdev->dev, card);
 
-	if (!needs_legacy_probe)
+	/*
+	 * A card whose binding was deferred is queued for a later retry and
+	 * reported back as success. That retry reuses the DAI link info parsed
+	 * here, so keep our references in that case only: drop them once the
+	 * card is bound, or when registration failed for good.
+	 */
+	if (!needs_legacy_probe && (ret || card->instantiated))
 		clean_card_reference(card);
 
 	if (ret) {
