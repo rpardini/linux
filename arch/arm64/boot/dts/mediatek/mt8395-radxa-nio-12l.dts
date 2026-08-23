@@ -1167,6 +1167,7 @@
 };
 
 &ufshci {
+	lanes-per-direction = <1>;
 	vcc-supply = <&mt6359_vemc_1_ldo_reg>;
 	vccq2-supply = <&mt6359_vufs_ldo_reg>;
 	status = "okay";
