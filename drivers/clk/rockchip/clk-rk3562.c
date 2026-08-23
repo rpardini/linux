@@ -7,15 +7,18 @@
 
 #include <linux/clk-provider.h>
 #include <linux/module.h>
+#include <linux/mfd/syscon.h>
 #include <linux/of.h>
 #include <linux/of_device.h>
 #include <linux/of_address.h>
 #include <linux/platform_device.h>
+#include <linux/slab.h>
 #include <linux/syscore_ops.h>
 #include <dt-bindings/clock/rockchip,rk3562-cru.h>
 #include "clk.h"
 
 #define RK3562_GRF_SOC_STATUS0		0x430
+#define RK3562_GRF_PERI_AUDIO_CON	0x70
 #define ROCKCHIP_PLL_ALLOW_POWER_DOWN	BIT(2)
 
 enum rk3562_plls {
@@ -490,6 +493,13 @@ static struct rockchip_clk_branch rk3562_clk_branches[] __initdata = {
 	COMPOSITE_NODIV(MCLK_SAI0_OUT2IO, "mclk_sai0_out2io", mclk_sai0_out2io_p, CLK_SET_RATE_PARENT,
 			RK3562_PERI_CLKSEL_CON(3), 5, 1, MFLAGS,
 			RK3562_PERI_CLKGATE_CON(2), 4, GFLAGS),
+	/*
+	 * GRF_PERI_AUDIO_CON[4] routes SAI0 MCLK from the CRU to the
+	 * shared MCLK pin. Unlike CRU gates, this bit is active high.
+	 */
+	GATE_GRF(MCLK_SAI0_TO_IO, "mclk_sai0_to_io", "mclk_sai0_out2io",
+			0, RK3562_GRF_PERI_AUDIO_CON, 4, CLK_GATE_HIWORD_MASK,
+			grf_type_peri),
 	GATE(HCLK_SAI1, "hclk_sai1", "hclk_peri", 0,
 			RK3562_PERI_CLKGATE_CON(2), 5, GFLAGS),
 	COMPOSITE(CLK_SAI1_SRC, "clk_sai1_src", gpll_cpll_hpll_p, 0,
@@ -1038,11 +1048,19 @@ static const char *const rk3562_cru_critical_clocks[] __initconst = {
 static void __init rk3562_clk_init(struct device_node *np)
 {
 	struct rockchip_clk_provider *ctx;
+	struct rockchip_aux_grf *peri_grf_e;
+	struct regmap *peri_grf;
 	unsigned long clk_nr_clks;
 	void __iomem *reg_base;
 
 	clk_nr_clks = rockchip_clk_find_max_clk_id(rk3562_clk_branches,
 					ARRAY_SIZE(rk3562_clk_branches)) + 1;
+
+	peri_grf = syscon_regmap_lookup_by_compatible("rockchip,rk3562-peri-grf");
+	if (IS_ERR(peri_grf)) {
+		pr_err("%s: could not get PERI GRF syscon\n", __func__);
+		return;
+	}
 
 	reg_base = of_iomap(np, 0);
 	if (!reg_base) {
@@ -1056,6 +1074,16 @@ static void __init rk3562_clk_init(struct device_node *np)
 		iounmap(reg_base);
 		return;
 	}
+
+	peri_grf_e = kzalloc_obj(*peri_grf_e);
+	if (!peri_grf_e) {
+		iounmap(reg_base);
+		return;
+	}
+
+	peri_grf_e->grf = peri_grf;
+	peri_grf_e->type = grf_type_peri;
+	hash_add(ctx->aux_grf_table, &peri_grf_e->node, grf_type_peri);
 
 	rockchip_clk_register_plls(ctx, rk3562_pll_clks,
 				   ARRAY_SIZE(rk3562_pll_clks),

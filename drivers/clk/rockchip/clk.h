@@ -574,6 +574,7 @@ enum rockchip_pll_type {
 
 enum rockchip_grf_type {
 	grf_type_sys = 0,
+	grf_type_peri,
 	grf_type_pmu0,
 	grf_type_pmu1,
 	grf_type_ioc,
