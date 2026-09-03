@@ -2604,9 +2604,15 @@ struct qmp_combo {
 
 	struct typec_switch_dev *sw;
 	enum typec_orientation orientation;
+	enum typec_orientation pending_orientation;
 
 	struct typec_mux_dev *mux;
 };
+
+#if IS_ENABLED(CONFIG_TYPEC)
+static int qmp_combo_typec_switch_set(struct typec_switch_dev *sw,
+				      enum typec_orientation orientation);
+#endif
 
 static void qmp_v3_dp_aux_init(struct qmp_combo *qmp);
 static void qmp_v3_configure_dp_tx(struct qmp_combo *qmp);
@@ -4201,6 +4207,9 @@ static int qmp_combo_dp_power_on(struct phy *phy)
 static int qmp_combo_dp_power_off(struct phy *phy)
 {
 	struct qmp_combo *qmp = phy_get_drvdata(phy);
+#if IS_ENABLED(CONFIG_TYPEC)
+	enum typec_orientation pending_orientation;
+#endif
 
 	mutex_lock(&qmp->phy_mutex);
 
@@ -4208,8 +4217,17 @@ static int qmp_combo_dp_power_off(struct phy *phy)
 	writel(DP_PHY_PD_CTL_PSR_PWRDN, qmp->dp_dp_phy + QSERDES_DP_PHY_PD_CTL);
 
 	qmp->dp_powered_on = false;
+#if IS_ENABLED(CONFIG_TYPEC)
+	pending_orientation = qmp->pending_orientation;
+	qmp->pending_orientation = TYPEC_ORIENTATION_NONE;
+#endif
 
 	mutex_unlock(&qmp->phy_mutex);
+
+#if IS_ENABLED(CONFIG_TYPEC)
+	if (pending_orientation != TYPEC_ORIENTATION_NONE)
+		return qmp_combo_typec_switch_set(qmp->sw, pending_orientation);
+#endif
 
 	return 0;
 }
@@ -4779,18 +4797,28 @@ static int qmp_combo_typec_switch_set(struct typec_switch_dev *sw,
 	struct qmp_combo *qmp = typec_switch_get_drvdata(sw);
 	const struct qmp_phy_cfg *cfg = qmp->cfg;
 
-	if (orientation == TYPEC_ORIENTATION_NONE)
-		return 0;
-
 	mutex_lock(&qmp->phy_mutex);
+
+	if (orientation == TYPEC_ORIENTATION_NONE) {
+		qmp->pending_orientation = TYPEC_ORIENTATION_NONE;
+		goto out_unlock;
+	}
+
+	if (orientation == qmp->orientation) {
+		qmp->pending_orientation = TYPEC_ORIENTATION_NONE;
+		goto out_unlock;
+	}
 
 	/*
 	 * Changing orientation force-cycles the common USB/DP PHY block.
-	 * Defer it until the active DP stream has been powered off.
+	 * Save the request while DP is active and apply it from power_off.
 	 */
-	if (orientation == qmp->orientation || qmp->dp_powered_on)
+	if (qmp->dp_powered_on) {
+		qmp->pending_orientation = orientation;
 		goto out_unlock;
+	}
 
+	qmp->pending_orientation = TYPEC_ORIENTATION_NONE;
 	qmp->orientation = orientation;
 
 	if (qmp->init_count) {
