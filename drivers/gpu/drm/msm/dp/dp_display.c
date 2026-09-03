@@ -1013,7 +1013,9 @@ static irqreturn_t msm_dp_display_irq_thread(int irq, void *dev_id)
 	dp->hpd_isr_status = 0;
 	spin_unlock_irqrestore(&dp->irq_thread_lock, flags);
 
+	mutex_lock(&dp->plugged_lock);
 	was_plugged = dp->plugged;
+	mutex_unlock(&dp->plugged_lock);
 
 	/* notify only on actual state transitions */
 	if (hpd_isr_status & DP_DP_HPD_UNPLUG_INT_MASK && was_plugged)
