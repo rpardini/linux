@@ -92,6 +92,8 @@
 		rtl_eth1: ethernet@0,0 {
 			compatible = "pci10ec,8125";
 			reg = <0x310000 0 0 0 0>;
+			nvmem-cells = <&otp_mac_address 1>;
+			nvmem-cell-names = "mac-address";
 		};
 	};
 };
