@@ -272,6 +272,8 @@
 			      "mac_clk_tx", "clk_mac_refout",
 			      "aclk_mac", "pclk_mac",
 			      "clk_mac_speed", "ptp_ref";
+		nvmem-cells = <&otp_mac_address 0>;
+		nvmem-cell-names = "mac-address";
 		resets = <&cru SRST_A_GMAC0>;
 		reset-names = "stmmaceth";
 		rockchip,grf = <&grf>;

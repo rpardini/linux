@@ -711,6 +711,8 @@
 			      "mac_clk_tx", "clk_mac_refout",
 			      "aclk_mac", "pclk_mac",
 			      "clk_mac_speed", "ptp_ref";
+		nvmem-cells = <&otp_mac_address 1>;
+		nvmem-cell-names = "mac-address";
 		resets = <&cru SRST_A_GMAC1>;
 		reset-names = "stmmaceth";
 		rockchip,grf = <&grf>;
@@ -1137,9 +1139,13 @@
 		reset-names = "otp", "apb", "phy", "sbpi";
 
 		nvmem-layout {
-			compatible = "fixed-layout";
+			compatible = "rockchip,rk3568-otp-cpuid";
 			#address-cells = <1>;
 			#size-cells = <1>;
+
+			otp_mac_address: mac-address {
+				#nvmem-cell-cells = <1>;
+			};
 
 			cpu_code: cpu-code@2 {
 				reg = <0x02 0x2>;
