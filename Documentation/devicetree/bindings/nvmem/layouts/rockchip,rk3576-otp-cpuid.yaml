@@ -25,7 +25,9 @@ select: false
 
 properties:
   compatible:
-    const: rockchip,rk3576-otp-cpuid
+    enum:
+      - rockchip,rk3576-otp-cpuid
+      - rockchip,rk3588-otp-cpuid
 
   mac-address:
     type: object
