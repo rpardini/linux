@@ -21,13 +21,24 @@ description: |
   The location of the CPU ID within the OTP memory differs between SoCs,
   hence the SoC specific compatible.
 
+  Only one layout container is possible per NVMEM device, so this layout
+  also accepts fixed cells described the way fixed-layout.yaml does, for
+  SoCs whose remaining OTP contents are described that way.
+
 select: false
 
 properties:
   compatible:
     enum:
+      - rockchip,rk3568-otp-cpuid
       - rockchip,rk3576-otp-cpuid
       - rockchip,rk3588-otp-cpuid
+
+  "#address-cells":
+    const: 1
+
+  "#size-cells":
+    const: 1
 
   mac-address:
     type: object
@@ -40,6 +51,12 @@ properties:
         const: 1
 
     additionalProperties: false
+
+patternProperties:
+  "@[a-f0-9]+(,[0-7])?$":
+    type: object
+    $ref: fixed-cell.yaml
+    unevaluatedProperties: false
 
 required:
   - compatible
