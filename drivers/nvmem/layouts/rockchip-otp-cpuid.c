@@ -13,6 +13,8 @@
 #include <linux/of.h>
 #include <uapi/linux/if_ether.h>
 
+#include "../internals.h"
+
 #define ROCKCHIP_CPUID_LEN	16
 
 struct rockchip_cpuid_data {
@@ -70,11 +72,22 @@ static int rockchip_cpuid_add_cells(struct nvmem_layout *layout)
 	info.read_post_process = rockchip_cpuid_mac_pp;
 	info.np = of_get_child_by_name(layout_np, info.name);
 
-	of_node_put(layout_np);
-
 	ret = nvmem_add_one_cell(layout->nvmem, &info);
-	if (ret)
+	if (ret) {
 		of_node_put(info.np);
+		goto out;
+	}
+
+	/*
+	 * An NVMEM device can only have one layout container, so SoCs which
+	 * describe the rest of their OTP contents as fixed cells have to put
+	 * those in here as well. Cells without a "reg" property, such as the
+	 * mac-address one added above, are ignored by this.
+	 */
+	ret = nvmem_add_cells_from_dt(layout->nvmem, layout_np);
+
+out:
+	of_node_put(layout_np);
 
 	return ret;
 }
@@ -91,6 +104,10 @@ static void rockchip_cpuid_remove(struct nvmem_layout *layout)
 	nvmem_layout_unregister(layout);
 }
 
+static const struct rockchip_cpuid_data rk3568_cpuid_data = {
+	.offset = 0x0a,
+};
+
 static const struct rockchip_cpuid_data rk3576_cpuid_data = {
 	.offset = 0x0a,
 };
@@ -100,6 +117,10 @@ static const struct rockchip_cpuid_data rk3588_cpuid_data = {
 };
 
 static const struct of_device_id rockchip_cpuid_of_match_table[] = {
+	{
+		.compatible = "rockchip,rk3568-otp-cpuid",
+		.data = &rk3568_cpuid_data,
+	},
 	{
 		.compatible = "rockchip,rk3576-otp-cpuid",
 		.data = &rk3576_cpuid_data,
