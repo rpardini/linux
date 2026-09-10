@@ -544,6 +544,8 @@
 		clock-names = "stmmaceth", "clk_mac_ref",
 			      "pclk_mac", "aclk_mac",
 			      "ptp_ref";
+		nvmem-cells = <&otp_mac_address 0>;
+		nvmem-cell-names = "mac-address";
 		power-domains = <&power RK3588_PD_GMAC>;
 		resets = <&cru SRST_A_GMAC0>;
 		reset-names = "stmmaceth";

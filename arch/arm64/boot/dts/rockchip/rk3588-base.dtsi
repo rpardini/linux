@@ -2301,6 +2301,8 @@
 		clock-names = "stmmaceth", "clk_mac_ref",
 			      "pclk_mac", "aclk_mac",
 			      "ptp_ref";
+		nvmem-cells = <&otp_mac_address 1>;
+		nvmem-cell-names = "mac-address";
 		power-domains = <&power RK3588_PD_GMAC>;
 		resets = <&cru SRST_A_GMAC1>;
 		reset-names = "stmmaceth";
@@ -3364,6 +3366,14 @@
 
 		codec_leakage: codec-leakage@29 {
 			reg = <0x29 0x1>;
+		};
+
+		nvmem-layout {
+			compatible = "rockchip,rk3588-otp-cpuid";
+
+			otp_mac_address: mac-address {
+				#nvmem-cell-cells = <1>;
+			};
 		};
 	};
 
