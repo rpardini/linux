@@ -218,6 +218,9 @@
 
 &gmac1 {
 	clock_in_out = "output";
+	/* gmac1 is the only on-SoC MAC here, and thus ethernet0 */
+	nvmem-cells = <&otp_mac_address 0>;
+	nvmem-cell-names = "mac-address";
 	phy-handle = <&rgmii_phy1>;
 	phy-mode = "rgmii-rxid";
 	pinctrl-0 = <&gmac1_miim
