@@ -95,10 +95,18 @@ static const struct rockchip_cpuid_data rk3576_cpuid_data = {
 	.offset = 0x0a,
 };
 
+static const struct rockchip_cpuid_data rk3588_cpuid_data = {
+	.offset = 0x07,
+};
+
 static const struct of_device_id rockchip_cpuid_of_match_table[] = {
 	{
 		.compatible = "rockchip,rk3576-otp-cpuid",
 		.data = &rk3576_cpuid_data,
+	},
+	{
+		.compatible = "rockchip,rk3588-otp-cpuid",
+		.data = &rk3588_cpuid_data,
 	},
 	{},
 };
