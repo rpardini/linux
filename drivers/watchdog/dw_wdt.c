@@ -395,6 +395,14 @@ static int dw_wdt_resume(struct device *dev)
 	struct dw_wdt *dw_wdt = dev_get_drvdata(dev);
 	int err;
 
+	/*
+	 * Every exit must leave the reset deasserted: the devres release
+	 * asserts it once more at unbind and the next suspend asserts it again.
+	 */
+	err = reset_control_deassert(dw_wdt->rst);
+	if (err)
+		return err;
+
 	err = clk_prepare_enable(dw_wdt->clk);
 	if (err)
 		return err;
@@ -403,10 +411,6 @@ static int dw_wdt_resume(struct device *dev)
 	if (err)
 		goto unprepare_clk;
 
-	err = reset_control_deassert(dw_wdt->rst);
-	if (err)
-		goto unprepare_pclk;
-
 	writel(dw_wdt->timeout, dw_wdt->regs + WDOG_TIMEOUT_RANGE_REG_OFFSET);
 	writel(dw_wdt->control, dw_wdt->regs + WDOG_CONTROL_REG_OFFSET);
 
@@ -414,8 +418,6 @@ static int dw_wdt_resume(struct device *dev)
 
 	return 0;
 
-unprepare_pclk:
-	clk_disable_unprepare(dw_wdt->pclk);
 unprepare_clk:
 	clk_disable_unprepare(dw_wdt->clk);
 
