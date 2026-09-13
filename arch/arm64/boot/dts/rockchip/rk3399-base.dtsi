@@ -1759,6 +1759,7 @@
 		reg = <0x0 0xff848000 0x0 0x100>;
 		clocks = <&cru PCLK_WDT>;
 		interrupts = <GIC_SPI 120 IRQ_TYPE_LEVEL_HIGH 0>;
+		resets = <&cru SRST_P_WDT0>;
 	};
 
 	rktimer: rktimer@ff850000 {
