@@ -43,6 +43,9 @@
 #define PCIE_SHARED_RESET		1
 #define PCIE_NORMAL_RESET		0
 
+/* Link training attempts, the first one included */
+#define PCIE_LINK_TRAIN_TRIES		3
+
 enum pcie_data_rate {
 	PCIE_GEN1,
 	PCIE_GEN2,
@@ -389,6 +392,69 @@ static const struct dw_pcie_ops dw_pcie_ops = {
 	.stop_link = meson_pcie_stop_link,
 };
 
+/* SMLH and RDLH can both read as up while the data link layer stays down */
+static bool meson_pcie_dll_active(struct dw_pcie *pci)
+{
+	u8 offset = dw_pcie_find_capability(pci, PCI_CAP_ID_EXP);
+
+	return dw_pcie_readw_dbi(pci, offset + PCI_EXP_LNKSTA) &
+	       PCI_EXP_LNKSTA_DLLLA;
+}
+
+/* An empty slot never trains, so only a link that carried a device is lost */
+static bool meson_pcie_had_endpoint(struct meson_pcie *mp)
+{
+	struct pci_bus *bus = mp->pci.pp.bridge->bus;
+	struct pci_dev *port;
+
+	port = list_first_entry_or_null(&bus->devices, struct pci_dev,
+					bus_list);
+
+	return port && port->subordinate &&
+	       !list_empty(&port->subordinate->devices);
+}
+
+/*
+ * With no endpoint behind the port there is nothing to wait for: one attempt
+ * is made and its result ignored, as at host init.
+ */
+static int meson_pcie_link_restart(struct meson_pcie *mp, bool endpoint)
+{
+	struct dw_pcie *pci = &mp->pci;
+	struct device *dev = pci->dev;
+	int try, ret;
+
+	for (try = 1; ; try++) {
+		ret = meson_pcie_reset(mp);
+		if (ret) {
+			dev_err(dev, "reset failed, %d\n", ret);
+			return ret;
+		}
+
+		/* dw_pcie_resume_noirq() acts only on a controller marked suspended */
+		pci->suspended = true;
+		ret = dw_pcie_resume_noirq(pci);
+		if (!ret && meson_pcie_dll_active(pci))
+			return 0;
+
+		if (!endpoint)
+			return 0;
+
+		if (try == PCIE_LINK_TRAIN_TRIES) {
+			dev_err(dev, "data link layer down after %d tries\n",
+				try);
+			return ret ? ret : -ETIMEDOUT;
+		}
+
+		dev_warn(dev, "data link layer down, training the link again\n");
+		if (!ret)
+			dw_pcie_stop_link(pci);
+
+		gpiod_set_value_cansleep(mp->reset_gpio, 1);
+		msleep(PCIE_T_PVPERL_MS);
+	}
+}
+
 static int meson_pcie_probe(struct platform_device *pdev)
 {
 	struct device *dev = &pdev->dev;
@@ -501,13 +567,7 @@ static int meson_pcie_resume_noirq(struct device *dev)
 		return ret;
 	}
 
-	ret = meson_pcie_reset(mp);
-	if (ret) {
-		dev_err(dev, "reset failed, %d\n", ret);
-		return ret;
-	}
-
-	return dw_pcie_resume_noirq(&mp->pci);
+	return meson_pcie_link_restart(mp, meson_pcie_had_endpoint(mp));
 }
 
 static DEFINE_NOIRQ_DEV_PM_OPS(meson_pcie_pm_ops, meson_pcie_suspend_noirq,
