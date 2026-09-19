@@ -2087,6 +2087,10 @@ static int phylink_validate_phy(struct phylink *pl, struct phy_device *phy,
 	return phylink_validate(pl, supported, state);
 }
 
+static void phylink_phy_take_wol(struct phylink *pl, struct phy_device *phy);
+static void phylink_phy_give_back_wol(struct phylink *pl,
+				      struct phy_device *phy);
+
 static int phylink_bringup_phy(struct phylink *pl, struct phy_device *phy,
 			       phy_interface_t interface)
 {
@@ -2211,6 +2215,8 @@ static int phylink_bringup_phy(struct phylink *pl, struct phy_device *phy,
 	mutex_unlock(&pl->state_mutex);
 	mutex_unlock(&phy->lock);
 	mutex_unlock(&pl->phydev_mutex);
+
+	phylink_phy_take_wol(pl, phy);
 
 	if (phy_interrupt_is_valid(phy))
 		phy_request_interrupt(phy);
@@ -2380,6 +2386,7 @@ void phylink_disconnect_phy(struct phylink *pl)
 
 	if (phy) {
 		flush_work(&pl->resolve);
+		phylink_phy_give_back_wol(pl, phy);
 		phy_disconnect(phy);
 	}
 }
@@ -2603,6 +2610,61 @@ static bool phylink_phy_supports_wol(struct phylink *pl,
 				     struct phy_device *phydev)
 {
 	return phydev && (pl->config->wol_phy_legacy || phy_can_wakeup(phydev));
+}
+
+/* Offer the MAC's Wake-on-Lan to a PHY that can wake the system itself */
+static void phylink_phy_take_wol(struct phylink *pl, struct phy_device *phy)
+{
+	struct ethtool_wolinfo can = { .cmd = ETHTOOL_GWOL };
+	struct ethtool_wolinfo took = { .cmd = ETHTOOL_GWOL };
+	struct ethtool_wolinfo wol = { .cmd = ETHTOOL_SWOL };
+	u32 wolopts;
+
+	if (!phylink_mac_supports_wol(pl) || !pl->wolopts_mac ||
+	    !phylink_phy_supports_wol(pl, phy))
+		return;
+
+	/* set_wol takes a complete mask: offer what the PHY claims, and carry
+	 * along what it wakes on already and the MAC cannot hold.
+	 */
+	phy_ethtool_get_wol(phy, &can);
+	wol.wolopts = (pl->wolopts_mac & can.supported) |
+		      (can.wolopts & ~pl->config->wol_mac_support);
+	if (!wol.wolopts)
+		return;
+
+	if (wol.wolopts & ~pl->wolopts_mac & WAKE_MAGICSECURE)
+		memcpy(wol.sopass, can.sopass, sizeof(wol.sopass));
+	else
+		memcpy(wol.sopass, pl->wol_sopass, sizeof(wol.sopass));
+	if (phy_ethtool_set_wol(phy, &wol))
+		return;
+
+	phy_ethtool_get_wol(phy, &took);
+	wolopts = pl->wolopts_mac & ~took.wolopts;
+	if (wolopts != pl->wolopts_mac &&
+	    !pl->mac_ops->mac_wol_set(pl->config, wolopts, pl->wol_sopass))
+		pl->wolopts_mac = wolopts;
+}
+
+/* Take back what the PHY wakes on before it goes away */
+static void phylink_phy_give_back_wol(struct phylink *pl,
+				      struct phy_device *phy)
+{
+	struct ethtool_wolinfo w = { .cmd = ETHTOOL_GWOL };
+	u32 wolopts;
+
+	if (!phylink_mac_supports_wol(pl))
+		return;
+
+	phy_ethtool_get_wol(phy, &w);
+
+	wolopts = (pl->wolopts_mac | w.wolopts) & pl->config->wol_mac_support;
+	if (wolopts == pl->wolopts_mac)
+		return;
+
+	if (!pl->mac_ops->mac_wol_set(pl->config, wolopts, pl->wol_sopass))
+		pl->wolopts_mac = wolopts;
 }
 
 static bool phylink_phy_pm_speed_ctrl(struct phylink *pl)
