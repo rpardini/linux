@@ -315,6 +315,16 @@ static int meson_pcie_start_link(struct dw_pcie *pci)
 	return 0;
 }
 
+static void meson_pcie_stop_link(struct dw_pcie *pci)
+{
+	struct meson_pcie *mp = to_meson_pcie(pci);
+	u32 val;
+
+	val = meson_cfg_readl(mp, PCIE_CFG0);
+	val &= ~APP_LTSSM_ENABLE;
+	meson_cfg_writel(mp, val, PCIE_CFG0);
+}
+
 static int meson_pcie_rd_own_conf(struct pci_bus *bus, u32 devfn,
 				  int where, int size, u32 *val)
 {
@@ -376,6 +386,7 @@ static const struct dw_pcie_host_ops meson_pcie_host_ops = {
 static const struct dw_pcie_ops dw_pcie_ops = {
 	.link_up = meson_pcie_link_up,
 	.start_link = meson_pcie_start_link,
+	.stop_link = meson_pcie_stop_link,
 };
 
 static int meson_pcie_probe(struct platform_device *pdev)
@@ -460,6 +471,48 @@ static void meson_pcie_remove(struct platform_device *pdev)
 	meson_pcie_power_off(mp);
 }
 
+static int meson_pcie_suspend_noirq(struct device *dev)
+{
+	struct meson_pcie *mp = dev_get_drvdata(dev);
+	struct dw_pcie *pci = &mp->pci;
+
+	/* Hold the endpoint in PERST# until resume restarts the link */
+	gpiod_set_value_cansleep(mp->reset_gpio, 1);
+	dw_pcie_stop_link(pci);
+	meson_pcie_power_off(mp);
+
+	/*
+	 * Genpd powers the domain off, so resume rebuilds the root complex;
+	 * dw_pcie_suspend_noirq() needs a MSG TLP window this controller lacks.
+	 */
+	pci->suspended = true;
+
+	return 0;
+}
+
+static int meson_pcie_resume_noirq(struct device *dev)
+{
+	struct meson_pcie *mp = dev_get_drvdata(dev);
+	int ret;
+
+	ret = meson_pcie_power_on(mp);
+	if (ret) {
+		dev_err(dev, "phy power on failed, %d\n", ret);
+		return ret;
+	}
+
+	ret = meson_pcie_reset(mp);
+	if (ret) {
+		dev_err(dev, "reset failed, %d\n", ret);
+		return ret;
+	}
+
+	return dw_pcie_resume_noirq(&mp->pci);
+}
+
+static DEFINE_NOIRQ_DEV_PM_OPS(meson_pcie_pm_ops, meson_pcie_suspend_noirq,
+			       meson_pcie_resume_noirq);
+
 static const struct of_device_id meson_pcie_of_match[] = {
 	{
 		.compatible = "amlogic,axg-pcie",
@@ -477,6 +530,7 @@ static struct platform_driver meson_pcie_driver = {
 	.driver = {
 		.name = "meson-pcie",
 		.of_match_table = meson_pcie_of_match,
+		.pm = pm_sleep_ptr(&meson_pcie_pm_ops),
 	},
 };
 
