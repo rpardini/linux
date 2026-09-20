@@ -48,7 +48,6 @@
 		gpio = <&gpio_ao GPIOAO_3 GPIO_OPEN_DRAIN>;
 		enable-active-high;
 		regulator-boot-on;
-		regulator-always-on;
 	};
 
 	tf_io: gpio-regulator-tf-io {
