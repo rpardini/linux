@@ -376,6 +376,16 @@ static const struct spi_device_id tm16xx_spi_id[] = {
 	{ "tm1628",  (kernel_ulong_t)&tm1628_controller },
 	{ "tm1638",  (kernel_ulong_t)&tm1638_controller },
 	{ "fd620",   (kernel_ulong_t)&fd620_controller  },
+	/*
+	 * The SPI bus reports only "spi:<first compatible without its vendor
+	 * prefix>" as modalias, so compatibles that are used solely as the
+	 * specific half of a fallback pair still need an entry here for module
+	 * autoloading to work.
+	 */
+	{ "fd628",   (kernel_ulong_t)&tm1628_controller },
+	{ "pt6964",  (kernel_ulong_t)&tm1628_controller },
+	{ "aip1628", (kernel_ulong_t)&tm1628_controller },
+	{ "aip1618", (kernel_ulong_t)&tm1618_controller },
 	{ /* sentinel */ }
 };
 MODULE_DEVICE_TABLE(spi, tm16xx_spi_id);
