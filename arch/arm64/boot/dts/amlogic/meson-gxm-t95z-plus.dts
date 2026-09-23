@@ -209,5 +209,5 @@
 };
 
 &ir {
-	linux,rc-map-name = "rc-sunvell-t95z-plus";
+	linux,rc-map-name = "rc-sunvell-t95z-plus-blue";
 };
