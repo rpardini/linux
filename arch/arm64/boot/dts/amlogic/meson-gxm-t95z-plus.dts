@@ -193,6 +193,21 @@
 	};
 };
 
+/*
+ * The IR receiver only releases its output, it never drives it high, and this
+ * board has no external pull-up. With the SoC pull disabled the line rises
+ * through leakage alone, taking ~1.9ms: every pulse is stretched by that much
+ * and the 560us NEC data bits all merge into one continuous burst, leaving
+ * three usable edges per frame. Replace the SoC default bias-disable with the
+ * internal pull-up.
+ */
+&remote_input_ao_pins {
+	mux {
+		/delete-property/ bias-disable;
+		bias-pull-up;
+	};
+};
+
 &ir {
 	linux,rc-map-name = "rc-sunvell-t95z-plus";
 };
