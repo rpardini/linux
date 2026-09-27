@@ -94,6 +94,8 @@
 		pinctrl-names = "default";
 		pinctrl-0 = <&usb_wifi_pwr>;
 		regulator-name = "vcc_wifi";
+		regulator-always-on;
+		regulator-boot-on;
 		regulator-min-microvolt = <3300000>;
 		regulator-max-microvolt = <3300000>;
 		vin-supply = <&vcc_3v3>;
@@ -290,6 +292,10 @@
 	status = "okay";
 };
 
+&tsadc {
+	status = "okay";
+};
+
 &uart0 {
 	pinctrl-names = "default";
 	pinctrl-0 = <&uart0m0_xfer>;
@@ -297,6 +303,10 @@
 };
 
 &usb_host0_ehci {
+	status = "okay";
+};
+
+&usb_host0_ohci {
 	status = "okay";
 };
 
