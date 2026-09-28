@@ -991,6 +991,14 @@ static int panfrost_probe(struct platform_device *pdev)
 	pm_runtime_set_active(pfdev->base.dev);
 	pm_runtime_mark_last_busy(pfdev->base.dev);
 	pm_runtime_enable(pfdev->base.dev);
+	if (of_property_read_bool(pdev->dev.of_node, "linux,pin-runtime-pm-probe")) {
+		err = pm_runtime_resume_and_get(pfdev->base.dev);
+		if (err < 0) {
+			dev_err(&pdev->dev, "Fatal: GPU power interconnect anchor failed: %d\n", err);
+			goto err_out1;
+		}
+		panfrost_mmu_reset(pfdev);
+	}
 	pm_runtime_set_autosuspend_delay(pfdev->base.dev, 50); /* ~3 frames */
 	pm_runtime_use_autosuspend(pfdev->base.dev);
 
@@ -1000,7 +1008,7 @@ static int panfrost_probe(struct platform_device *pdev)
 	 */
 	err = drm_dev_register(&pfdev->base, 0);
 	if (err < 0)
-		goto err_out1;
+		goto err_out_pm_put;
 
 	err = panfrost_gem_shrinker_init(&pfdev->base);
 	if (err)
@@ -1010,6 +1018,10 @@ static int panfrost_probe(struct platform_device *pdev)
 
 err_out2:
 	drm_dev_unregister(&pfdev->base);
+err_out_pm_put:
+	if (of_property_read_bool(pdev->dev.of_node, "linux,pin-runtime-pm-probe")) {
+		pm_runtime_put_noidle(pfdev->base.dev);
+	}
 err_out1:
 	pm_runtime_disable(pfdev->base.dev);
 	panfrost_device_fini(pfdev);
@@ -1029,6 +1041,9 @@ static void panfrost_remove(struct platform_device *pdev)
 	pm_runtime_disable(pfdev->base.dev);
 	panfrost_device_fini(pfdev);
 	pm_runtime_set_suspended(pfdev->base.dev);
+	if (of_property_read_bool(pdev->dev.of_node, "linux,pin-runtime-pm-probe")) {
+		pm_runtime_put_noidle(pfdev->base.dev);
+	}
 }
 
 static ssize_t profiling_show(struct device *dev,

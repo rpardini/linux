@@ -118,6 +118,11 @@ properties:
 
       where voltage is in V, frequency is in MHz.
 
+  linux,pin-runtime-pm-probe:
+    type: boolean
+    description:
+      Forces the driver to pin runtime-PM resources during the initialization probe sequence.
+
 required:
   - compatible
   - reg
