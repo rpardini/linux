@@ -942,6 +942,8 @@ static void vop2_crtc_atomic_disable(struct drm_crtc *crtc,
 
 	drm_crtc_vblank_off(crtc);
 
+	vop2_crtc_disable_irq(vp, VP_INT_POST_BUF_EMPTY);
+
 	/*
 	 * Vop standby will take effect at end of current frame,
 	 * if dsp hold valid irq happen, it means standby complete.
@@ -1686,8 +1688,6 @@ static void vop2_crtc_atomic_enable(struct drm_crtc *crtc,
 
 	vcstate->yuv_overlay = is_yuv_output(vcstate->bus_format);
 
-	vop2_crtc_enable_irq(vp, VP_INT_POST_BUF_EMPTY);
-
 	polflags = 0;
 	if (vcstate->bus_flags & DRM_BUS_FLAG_PIXDATA_DRIVE_NEGEDGE)
 		polflags |= POLFLAG_DCLK_INV;
@@ -1922,6 +1922,15 @@ static void vop2_crtc_atomic_flush(struct drm_crtc *crtc,
 	vop2_post_config(crtc);
 
 	vop2_cfg_done(vp);
+
+	/*
+	 * The encoder/PHY is enabled after the crtc, so the dclk source is
+	 * still settling while atomic_enable runs and the post buffer
+	 * underruns. Only report POST_BUF_EMPTY once the whole pipeline
+	 * is up, by which point an underrun is a real problem.
+	 */
+	if (drm_atomic_crtc_needs_modeset(crtc_state) && crtc_state->active)
+		vop2_crtc_enable_irq(vp, VP_INT_POST_BUF_EMPTY);
 
 	spin_lock_irq(&crtc->dev->event_lock);
 
