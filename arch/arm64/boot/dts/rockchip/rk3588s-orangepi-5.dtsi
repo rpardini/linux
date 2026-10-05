@@ -296,7 +296,6 @@
 	max-frequency = <150000000>;
 	no-mmc;
 	no-sdio;
-	sd-uhs-sdr104;
 	vmmc-supply = <&vcc_3v3_sd_s0>;
 	vqmmc-supply = <&vccio_sd_s0>;
 	status = "okay";
