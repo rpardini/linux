@@ -644,9 +644,20 @@ static irqreturn_t rockchip_pcie_rc_sys_irq_thread(int irq, void *arg)
 
 	if (reg & PCIE_LINK_REQ_RST_NOT_INT) {
 		dev_dbg(dev, "hot reset or link-down reset\n");
-		for_each_pci_bridge(port, pp->bridge->bus) {
-			if (pci_pcie_type(port) == PCI_EXP_TYPE_ROOT_PORT)
-				pci_host_handle_link_down(port);
+		/*
+		 * reset_root_port() recovers the link by asserting the
+		 * controller reset, which itself re-raises LINK_REQ_RST_NOT
+		 * once the link retrains. On RK3568 that self-induced event is
+		 * delivered after the link is already back up, so acting on it
+		 * resets the Root Port again and loops forever. Only recover
+		 * when the link is actually down, mirroring the link_up() check
+		 * the endpoint IRQ thread already uses.
+		 */
+		if (!rockchip_pcie_link_up(pci)) {
+			for_each_pci_bridge(port, pp->bridge->bus) {
+				if (pci_pcie_type(port) == PCI_EXP_TYPE_ROOT_PORT)
+					pci_host_handle_link_down(port);
+			}
 		}
 	}
 
