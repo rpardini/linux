@@ -187,7 +187,8 @@ static int qcom_scm_storage_probe(struct platform_device *pdev)
 	if (ret)
 		return ret;
 
-	host->buffer_size = SZ_256K;
+	/* Data plus header must fit the 256 KiB SCM tzmem pool */
+	host->buffer_size = SZ_64K;
 	host->buffer = devm_kzalloc(dev, host->buffer_size, GFP_KERNEL);
 	if (!host->buffer)
 		return -ENOMEM;
