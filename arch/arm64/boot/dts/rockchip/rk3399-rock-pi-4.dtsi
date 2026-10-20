@@ -59,6 +59,7 @@
 		compatible = "audio-graph-card";
 		label = "SPDIF";
 		dais = <&spdif_p0>;
+		status = "disabled";
 	};
 
 	spdif-dit {
