@@ -831,6 +831,11 @@ static bool tcpm_port_is_disconnected(struct tcpm_port *port)
 
 #ifdef CONFIG_DEBUG_FS
 
+/* DEBUG (Armbian, DO NOT UPSTREAM): mirror the debugfs log to the console */
+static bool console_log = true;
+module_param(console_log, bool, 0644);
+MODULE_PARM_DESC(console_log, "Mirror the tcpm debugfs log to the kernel log");
+
 static bool tcpm_log_full(struct tcpm_port *port)
 {
 	return port->logbuffer_tail ==
@@ -855,6 +860,9 @@ static void _tcpm_log(struct tcpm_port *port, const char *fmt, va_list args)
 	}
 
 	vsnprintf(tmpbuffer, sizeof(tmpbuffer), fmt, args);
+
+	if (console_log)
+		dev_info(port->dev, "tcpm: %s\n", tmpbuffer);
 
 	if (tcpm_log_full(port)) {
 		port->logbuffer_head = max(port->logbuffer_head - 1, 0);
