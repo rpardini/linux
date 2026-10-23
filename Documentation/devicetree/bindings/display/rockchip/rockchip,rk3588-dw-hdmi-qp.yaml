@@ -75,6 +75,11 @@ properties:
       The HPD pin is not present or used for another purpose, and the EDID
       must be polled instead to determine if a device is attached.
 
+  hpd-inverted:
+    type: boolean
+    description:
+      On RK3588, indicates that the board inverts the HPD signal.
+
   phys:
     maxItems: 1
     description: The HDMI/eDP PHY
