@@ -163,6 +163,8 @@ struct sgm4154x_device {
 	struct regmap *regmap;
 	struct sgm4154x_init_data init_data;
 	struct sgm4154x_state state;
+	/* last state seen by the IRQ handler; property reads update ->state */
+	struct sgm4154x_state irq_state;
 	struct regulator_dev *otg_rdev;
 	struct mutex lock;
 	bool watchdog_enable;
@@ -712,6 +714,39 @@ static int sgm4154x_charger_get_property(struct power_supply *psy,
 	return ret;
 }
 
+/*
+ * Nothing else enables charging: CHRG_EN keeps whatever was last written,
+ * across reboots too, as long as the battery powers the chip. Set the
+ * input current limit for the detected source and enable charging.
+ */
+static void sgm4154x_vbus_attached(struct sgm4154x_device *sgm,
+				   const struct sgm4154x_state *state)
+{
+	int ilim;
+
+	switch (state->chrg_type) {
+	case SGM4154X_OTG_MODE:
+		return;
+	case SGM4154X_USB_SDP:
+		ilim = SGM4154X_DEFAULT_INPUT_CUR;
+		break;
+	case SGM4154X_USB_CDP:
+		ilim = min(1500000, sgm->init_data.ilim);
+		break;
+	default:
+		/* DCP, USB PD or another non-BC1.2 source */
+		ilim = sgm->init_data.ilim;
+		break;
+	}
+
+	/*
+	 * Reading IRQ clears interrupt, so carry on even if a write fails.
+	 */
+	if (sgm4154x_set_input_curr_lim(sgm, ilim))
+		dev_err(sgm->dev, "set input current error!\n");
+	sgm4154x_enable_charger(sgm);
+}
+
 static irqreturn_t sgm4154x_irq_handler_thread(int irq, void *private)
 {
 	struct sgm4154x_device *sgm = private;
@@ -720,7 +755,7 @@ static irqreturn_t sgm4154x_irq_handler_thread(int irq, void *private)
 
 	guard(mutex)(&sgm->lock);
 
-	oldstate = sgm->state;
+	oldstate = sgm->irq_state;
 
 	ret = sgm4154x_get_state(sgm, &state);
 	if (ret) {
@@ -729,19 +764,15 @@ static irqreturn_t sgm4154x_irq_handler_thread(int irq, void *private)
 	}
 
 	sgm->state = state;
+	sgm->irq_state = state;
 
-	if (state.vbus_gd && !oldstate.vbus_gd) {
-		if (sgm->init_data.ilim >= SGM4154X_DEFAULT_INPUT_CUR) {
-			ret = sgm4154x_set_input_curr_lim(sgm, sgm->init_data.ilim);
-			if (ret) {
-				dev_err(sgm->dev, "set input current error!\n");
-				/*
-				 * Reading IRQ clears interrupt, so return handled
-				 * even if error.
-				 */
-			}
-		}
-	}
+	/*
+	 * Re-apply once input detection has finished as well: it changes
+	 * chrg_type and resets IINDPM to its own (often 500 mA) value.
+	 */
+	if (state.vbus_gd && (!oldstate.vbus_gd ||
+			      state.chrg_type != oldstate.chrg_type))
+		sgm4154x_vbus_attached(sgm, &state);
 
 	power_supply_changed(sgm->charger);
 
@@ -1030,6 +1061,15 @@ static int sgm4154x_probe(struct i2c_client *client)
 	if (IS_ERR(sgm->charger))
 		return dev_err_probe(dev, PTR_ERR(sgm->charger),
 				     "Failed to register power supply\n");
+
+	/* VBUS already present at probe: no attach interrupt will come */
+	scoped_guard(mutex, &sgm->lock) {
+		if (!sgm4154x_get_state(sgm, &sgm->state)) {
+			sgm->irq_state = sgm->state;
+			if (sgm->state.vbus_gd)
+				sgm4154x_vbus_attached(sgm, &sgm->state);
+		}
+	}
 
 	if (client->irq) {
 		ret = devm_request_threaded_irq(dev, client->irq, NULL,
