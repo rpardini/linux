@@ -66,13 +66,13 @@
 			"Headphone", "Headphones",
 			"Speaker", "Speaker";
 
+		simple-audio-card,cpu {
+			sound-dai = <&i2s0_8ch>;
+		};
+
 		simple-audio-card,codec {
 			sound-dai = <&es8388>;
 			system-clock-frequency = <12288000>;
-		};
-
-		simple-audio-card,cpu {
-			sound-dai = <&i2s0_8ch>;
 		};
 	};
 
@@ -297,7 +297,6 @@
 &gmac1 {
 	clock_in_out = "input";
 	phy-handle = <&rgmii_phy>;
-	/* RX delay is added by the PHY, TX delay by the GMAC */
 	phy-mode = "rgmii-rxid";
 	pinctrl-names = "default";
 	pinctrl-0 = <&gmac1_miim
@@ -484,7 +483,7 @@
 		reg = <0x11>;
 		assigned-clocks = <&cru I2S0_8CH_MCLKOUT>;
 		assigned-clock-rates = <12288000>;
-		clocks = <&cru I2S0_8CH_MCLKOUT>;
+		clocks = <&cru I2S0_8CH_MCLKOUT_TO_IO>;
 		AVDD-supply = <&vcc3v3_sys>;
 		DVDD-supply = <&vcc_1v8_s3>;
 		HPVDD-supply = <&vcc3v3_sys>;
@@ -577,6 +576,7 @@
 		bus-range = <0x30 0x3f>;
 
 		r8125: ethernet@0,0 {
+			compatible = "pci10ec,8125";
 			reg = <0x310000 0 0 0 0>;
 		};
 	};
@@ -819,6 +819,7 @@
 
 				regulator-state-mem {
 					regulator-off-in-suspend;
+					regulator-suspend-microvolt = <750000>;
 				};
 			};
 
@@ -845,6 +846,7 @@
 
 				regulator-state-mem {
 					regulator-off-in-suspend;
+					regulator-suspend-microvolt = <850000>;
 				};
 			};
 
@@ -868,6 +870,7 @@
 
 				regulator-state-mem {
 					regulator-on-in-suspend;
+					regulator-suspend-microvolt = <2000000>;
 				};
 			};
 
@@ -880,6 +883,7 @@
 
 				regulator-state-mem {
 					regulator-on-in-suspend;
+					regulator-suspend-microvolt = <3300000>;
 				};
 			};
 
@@ -902,6 +906,7 @@
 
 				regulator-state-mem {
 					regulator-on-in-suspend;
+					regulator-suspend-microvolt = <1800000>;
 				};
 			};
 
@@ -914,6 +919,7 @@
 
 				regulator-state-mem {
 					regulator-off-in-suspend;
+					regulator-suspend-microvolt = <1800000>;
 				};
 			};
 
@@ -926,6 +932,7 @@
 
 				regulator-state-mem {
 					regulator-off-in-suspend;
+					regulator-suspend-microvolt = <1800000>;
 				};
 			};
 
@@ -976,6 +983,7 @@
 
 				regulator-state-mem {
 					regulator-on-in-suspend;
+					regulator-suspend-microvolt = <1800000>;
 				};
 			};
 
@@ -988,6 +996,7 @@
 
 				regulator-state-mem {
 					regulator-on-in-suspend;
+					regulator-suspend-microvolt = <750000>;
 				};
 			};
 
@@ -1000,6 +1009,7 @@
 
 				regulator-state-mem {
 					regulator-off-in-suspend;
+					regulator-suspend-microvolt = <850000>;
 				};
 			};
 
