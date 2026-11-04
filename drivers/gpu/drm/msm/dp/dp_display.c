@@ -546,7 +546,8 @@ static int msm_dp_hpd_unplug_handle(struct msm_dp_display_private *dp)
 	return 0;
 }
 
-static int msm_dp_irq_hpd_handle(struct msm_dp_display_private *dp)
+static int msm_dp_irq_hpd_handle(struct msm_dp_display_private *dp,
+				 bool *port_changed)
 {
 	u32 sink_request;
 	int rc = 0;
@@ -563,9 +564,11 @@ static int msm_dp_irq_hpd_handle(struct msm_dp_display_private *dp)
 	if (!rc) {
 		sink_request = dp->link->sink_request;
 		drm_dbg_dp(dp->drm_dev, "sink_request=%d\n", sink_request);
-		if (sink_request & DS_PORT_STATUS_CHANGED)
+		if (sink_request & DS_PORT_STATUS_CHANGED) {
 			rc = msm_dp_display_process_hpd_high(dp);
-		else
+			if (port_changed)
+				*port_changed = true;
+		} else
 			rc = msm_dp_display_handle_irq_hpd(dp);
 	}
 
@@ -1064,7 +1067,6 @@ static irqreturn_t msm_dp_display_irq_thread(int irq, void *dev_id)
 	irqreturn_t ret = IRQ_NONE;
 	unsigned long flags;
 	u32 hpd_isr_status;
-	int rc;
 	bool was_plugged;
 
 	spin_lock_irqsave(&dp->irq_thread_lock, flags);
@@ -1100,13 +1102,18 @@ static irqreturn_t msm_dp_display_irq_thread(int irq, void *dev_id)
 	}
 
 	if (hpd_isr_status & DP_DP_IRQ_HPD_INT_MASK) {
-		rc = pm_runtime_resume_and_get(&pdev->dev);
-		if (rc)
+		bool port_changed = false;
+
+		if (!pm_runtime_resume_and_get(&pdev->dev)) {
+			msm_dp_irq_hpd_handle(dp, &port_changed);
+			/* A sync put could reach disable_irq() on this very IRQ */
+			pm_runtime_put(&pdev->dev);
+		} else {
 			DRM_ERROR("failed to pm_runtime_resume\n");
-		else
-			msm_dp_irq_hpd_handle(dp);
-		if (!rc)
-			pm_runtime_put_sync(&pdev->dev);
+		}
+
+		if (port_changed)
+			drm_kms_helper_connector_hotplug_event(dp->msm_dp_display.connector);
 	}
 
 	ret = IRQ_HANDLED;
@@ -1658,7 +1665,7 @@ void msm_dp_bridge_hpd_notify(struct drm_bridge *bridge,
 			msm_dp_hpd_unplug_handle(dp);
 			msm_dp_hpd_plug_handle(dp);
 		} else if (hpd_link_status == ISR_IRQ_HPD_PULSE_COUNT) {
-			msm_dp_irq_hpd_handle(dp);
+			msm_dp_irq_hpd_handle(dp, NULL);
 		} else {
 			msm_dp_hpd_plug_handle(dp);
 		}
