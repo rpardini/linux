@@ -65,6 +65,12 @@ properties:
       The array should contain a gpio entry for each PMIC Glink connector, in reg order.
       It is defined that GPIO active level means "CC2" or Reversed/Flipped orientation.
 
+  qcom,no-battery:
+    type: boolean
+    description:
+      No battery is fitted. Skip the battery manager client, which would
+      otherwise expose a battery that the firmware always reports as present.
+
   nvmem-cells:
     minItems: 3
     maxItems: 3
