@@ -7,6 +7,7 @@
 
 #include "iris_core.h"
 #include "iris_firmware.h"
+#include "iris_instance.h"
 #include "iris_state.h"
 #include "iris_vpu_common.h"
 
@@ -30,6 +31,29 @@ void iris_core_deinit(struct iris_core *core)
 
 	if (!ret)
 		pm_runtime_put_sync(core->dev);
+}
+
+/*
+ * Recover from a firmware that stopped responding without raising a system
+ * error: fail all instances and reload the firmware, as for HFI_EVENT_SYS_ERROR.
+ */
+void iris_core_recover(struct iris_core *core)
+{
+	struct iris_inst *instance;
+
+	mutex_lock(&core->lock);
+	if (core->state != IRIS_CORE_INIT) {
+		mutex_unlock(&core->lock);
+		return;
+	}
+
+	dev_err(core->dev, "firmware not responding, reloading\n");
+	core->state = IRIS_CORE_ERROR;
+	list_for_each_entry(instance, &core->instances, list)
+		iris_inst_change_state(instance, IRIS_INST_ERROR);
+	mutex_unlock(&core->lock);
+
+	schedule_delayed_work(&core->sys_error_handler, msecs_to_jiffies(10));
 }
 
 static int iris_wait_for_system_response(struct iris_core *core)

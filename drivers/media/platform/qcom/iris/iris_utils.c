@@ -78,7 +78,12 @@ int iris_wait_for_session_response(struct iris_inst *inst, bool is_flush)
 	ret = wait_for_completion_timeout(done, msecs_to_jiffies(HW_RESPONSE_TIMEOUT_VALUE));
 	mutex_lock(&inst->lock);
 	if (!ret) {
+		/* a session already in error may legitimately get no response */
+		bool recover = inst->state != IRIS_INST_ERROR;
+
 		iris_inst_change_state(inst, IRIS_INST_ERROR);
+		if (recover)
+			iris_core_recover(inst->core);
 		return -ETIMEDOUT;
 	}
 
