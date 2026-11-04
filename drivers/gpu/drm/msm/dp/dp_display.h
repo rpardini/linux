@@ -26,7 +26,8 @@ struct msm_dp {
 	bool psr_supported;
 };
 
-int msm_dp_display_get_modes(struct msm_dp *msm_dp_display);
+const struct drm_edid *msm_dp_display_edid_read(struct msm_dp *msm_dp_display,
+						struct drm_connector *connector);
 bool msm_dp_display_check_video_test(struct msm_dp *msm_dp_display);
 int msm_dp_display_get_test_bpp(struct msm_dp *msm_dp_display);
 void msm_dp_display_signal_audio_start(struct msm_dp *msm_dp_display);

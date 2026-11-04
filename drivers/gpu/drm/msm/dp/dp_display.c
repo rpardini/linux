@@ -55,6 +55,8 @@ struct msm_dp_display_private {
 
 	struct mutex plugged_lock;
 	bool plugged;
+	/* EDID read at plug time, protected by plugged_lock */
+	const struct drm_edid *drm_edid;
 
 	struct drm_device *drm_dev;
 
@@ -312,7 +314,10 @@ static int msm_dp_display_process_hpd_high(struct msm_dp_display_private *dp)
 	msm_dp_link_reset_phy_params_vx_px(dp->link);
 
 end:
-	drm_edid_free(drm_edid);
+	if (drm_edid) {
+		drm_edid_free(dp->drm_edid);
+		dp->drm_edid = drm_edid;
+	}
 	return rc;
 }
 
@@ -480,6 +485,9 @@ static int msm_dp_hpd_unplug_handle(struct msm_dp_display_private *dp)
 	if (!dp->msm_dp_display.is_edp)
 		drm_edid_connector_update(dp->msm_dp_display.connector, NULL);
 
+	drm_edid_free(dp->drm_edid);
+	dp->drm_edid = NULL;
+
 	/* triggered by irq_hdp with sink_count = 0 */
 	if (dp->link->sink_count == 0)
 		msm_dp_display_host_phy_exit(dp);
@@ -541,6 +549,8 @@ static int msm_dp_irq_hpd_handle(struct msm_dp_display_private *dp)
 
 static void msm_dp_display_deinit_sub_modules(struct msm_dp_display_private *dp)
 {
+	drm_edid_free(dp->drm_edid);
+	dp->drm_edid = NULL;
 	msm_dp_audio_put(dp->audio);
 	msm_dp_aux_put(dp->aux);
 }
@@ -816,18 +826,31 @@ enum drm_mode_status msm_dp_display_mode_valid(struct msm_dp *dp,
 	return MODE_OK;
 }
 
-int msm_dp_display_get_modes(struct msm_dp *dp)
+const struct drm_edid *msm_dp_display_edid_read(struct msm_dp *dp,
+						struct drm_connector *connector)
 {
-	struct msm_dp_display_private *msm_dp_display;
+	struct msm_dp_display_private *priv =
+		container_of(dp, struct msm_dp_display_private, msm_dp_display);
+	const struct drm_edid *drm_edid;
+	int ret;
 
-	if (!dp) {
-		DRM_ERROR("invalid params\n");
-		return 0;
+	ret = pm_runtime_resume_and_get(&dp->pdev->dev);
+	if (ret) {
+		DRM_ERROR("failed to pm_runtime_resume\n");
+		goto cached;
 	}
 
-	msm_dp_display = container_of(dp, struct msm_dp_display_private, msm_dp_display);
+	drm_edid = drm_edid_read_ddc(connector, &priv->aux->ddc);
 
-	return drm_edid_connector_add_modes(msm_dp_display->panel->connector);
+	pm_runtime_put_sync(&dp->pdev->dev);
+
+	if (drm_edid)
+		return drm_edid;
+
+cached:
+	/* Keep a lit display's modes across a transient DDC failure */
+	guard(mutex)(&priv->plugged_lock);
+	return priv->drm_edid ? drm_edid_dup(priv->drm_edid) : NULL;
 }
 
 bool msm_dp_display_check_video_test(struct msm_dp *dp)

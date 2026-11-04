@@ -15,31 +15,15 @@
 #include "dp_audio.h"
 #include "dp_drm.h"
 
-/**
- * msm_dp_bridge_get_modes - callback to add drm modes via drm_mode_probed_add()
- * @bridge: Poiner to drm bridge
- * @connector: Pointer to drm connector structure
- * Returns: Number of modes added
- */
-static int msm_dp_bridge_get_modes(struct drm_bridge *bridge, struct drm_connector *connector)
+static const struct drm_edid *msm_dp_bridge_edid_read(struct drm_bridge *bridge,
+						      struct drm_connector *connector)
 {
-	int rc = 0;
-	struct msm_dp *dp;
+	struct msm_dp *dp = to_dp_bridge(bridge)->msm_dp_display;
 
 	if (!connector)
-		return 0;
+		return NULL;
 
-	dp = to_dp_bridge(bridge)->msm_dp_display;
-
-	/* pluggable case assumes EDID is read when HPD */
-	rc = msm_dp_display_get_modes(dp);
-	if (rc <= 0) {
-		DRM_ERROR("failed to get DP sink modes, rc=%d\n", rc);
-		return rc;
-	} else {
-		drm_dbg_dp(connector->dev, "No sink connected\n");
-	}
-	return rc;
+	return msm_dp_display_edid_read(dp, connector);
 }
 
 static void msm_dp_bridge_debugfs_init(struct drm_bridge *bridge, struct dentry *root)
@@ -104,7 +88,7 @@ static const struct drm_bridge_funcs msm_dp_bridge_ops = {
 	.atomic_disable         = msm_dp_bridge_atomic_disable,
 	.atomic_post_disable    = msm_dp_bridge_atomic_post_disable,
 	.mode_valid   = msm_dp_bridge_mode_valid,
-	.get_modes    = msm_dp_bridge_get_modes,
+	.edid_read    = msm_dp_bridge_edid_read,
 	.detect       = msm_dp_bridge_detect,
 	.hpd_enable   = msm_dp_bridge_hpd_enable,
 	.hpd_disable  = msm_dp_bridge_hpd_disable,
@@ -323,7 +307,7 @@ int msm_dp_bridge_init(struct msm_dp *msm_dp_display, struct drm_device *dev,
 			DRM_BRIDGE_OP_DP_AUDIO |
 			DRM_BRIDGE_OP_DETECT |
 			DRM_BRIDGE_OP_HPD |
-			DRM_BRIDGE_OP_MODES;
+			DRM_BRIDGE_OP_EDID;
 		bridge->hdmi_audio_dev = &msm_dp_display->pdev->dev;
 		bridge->hdmi_audio_max_i2s_playback_channels = 8;
 		bridge->hdmi_audio_dai_port = -1;
