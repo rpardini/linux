@@ -248,13 +248,23 @@ const struct iris_platform_data x1p42100_data = {
 	.max_core_mbps = ((7680 * 4320) / 256) * 60,
 };
 
+static const struct iris_firmware_desc iris_vpu20_p4_gen1_desc = {
+	.firmware_data = &iris_hfi_gen1_data,
+	.get_vpu_buffer_size = iris_vpu_buf_size,
+	.fwname = "qcom/vpu/vpu20_p4.mbn",
+};
+
 static const struct iris_firmware_desc iris_vpu20_p4_gen2_s6_desc = {
 	.firmware_data = &iris_hfi_gen2_data,
 	.get_vpu_buffer_size = iris_vpu_buf_size,
 	.fwname = "qcom/vpu/vpu20_p4_gen2_s6.mbn",
 };
 
-/* SC8280XP: SM8250-class VPU2 hardware driven by Gen2 HFI firmware; AV1 omitted since VPU2 cannot decode it. */
+/*
+ * SC8280XP: SM8250-class VPU2 hardware, driven by either Gen2 HFI firmware or
+ * Gen1 OEM-signed firmware (e.g. Lenovo X13s); AV1 omitted since VPU2 cannot
+ * decode it.
+ */
 static const u32 platform_fmts_sc8280xp_dec[] = {
 	[IRIS_FMT_H264] = V4L2_PIX_FMT_H264,
 	[IRIS_FMT_HEVC] = V4L2_PIX_FMT_HEVC,
@@ -303,6 +313,7 @@ static const char * const sc8280xp_opp_clk_table[] = {
 };
 
 const struct iris_platform_data sc8280xp_data = {
+	.firmware_desc_gen1 = &iris_vpu20_p4_gen1_desc,
 	.firmware_desc_gen2 = &iris_vpu20_p4_gen2_s6_desc,
 	.vpu_ops = &iris_vpu2_ops,
 	.icc_tbl = sc8280xp_icc_table,
