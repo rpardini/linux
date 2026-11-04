@@ -23,6 +23,8 @@
 struct simple_bridge_info {
 	const struct drm_bridge_timings *timings;
 	unsigned int connector_type;
+	/* the device only drives HPD while it is powered */
+	bool hpd_needs_power;
 };
 
 struct simple_bridge {
@@ -33,6 +35,7 @@ struct simple_bridge {
 
 	struct regulator	*vdd;
 	struct gpio_desc	*enable;
+	bool			powered;
 };
 
 static inline struct simple_bridge *
@@ -138,6 +141,9 @@ static void simple_bridge_enable(struct drm_bridge *bridge,
 	struct simple_bridge *sbridge = drm_bridge_to_simple_bridge(bridge);
 	int ret;
 
+	if (sbridge->powered)
+		return;
+
 	if (sbridge->vdd) {
 		ret = regulator_enable(sbridge->vdd);
 		if (ret)
@@ -152,10 +158,28 @@ static void simple_bridge_disable(struct drm_bridge *bridge,
 {
 	struct simple_bridge *sbridge = drm_bridge_to_simple_bridge(bridge);
 
+	if (sbridge->powered)
+		return;
+
 	gpiod_set_value_cansleep(sbridge->enable, 0);
 
 	if (sbridge->vdd)
 		regulator_disable(sbridge->vdd);
+}
+
+static void simple_bridge_power_off(void *data)
+{
+	struct simple_bridge *sbridge = data;
+
+	if (!sbridge->powered)
+		return;
+
+	gpiod_set_value_cansleep(sbridge->enable, 0);
+
+	if (sbridge->vdd)
+		regulator_disable(sbridge->vdd);
+
+	sbridge->powered = false;
 }
 
 static const struct drm_bridge_funcs simple_bridge_bridge_funcs = {
@@ -171,6 +195,7 @@ static int simple_bridge_probe(struct platform_device *pdev)
 {
 	struct simple_bridge *sbridge;
 	struct device_node *remote;
+	int ret;
 
 	sbridge = devm_drm_bridge_alloc(&pdev->dev, struct simple_bridge,
 					bridge, &simple_bridge_bridge_funcs);
@@ -195,7 +220,7 @@ static int simple_bridge_probe(struct platform_device *pdev)
 	/* Get the regulator and GPIO resources. */
 	sbridge->vdd = devm_regulator_get_optional(&pdev->dev, "vdd");
 	if (IS_ERR(sbridge->vdd)) {
-		int ret = PTR_ERR(sbridge->vdd);
+		ret = PTR_ERR(sbridge->vdd);
 		if (ret == -EPROBE_DEFER)
 			return -EPROBE_DEFER;
 		sbridge->vdd = NULL;
@@ -207,6 +232,24 @@ static int simple_bridge_probe(struct platform_device *pdev)
 	if (IS_ERR(sbridge->enable))
 		return dev_err_probe(&pdev->dev, PTR_ERR(sbridge->enable),
 				     "Unable to retrieve enable GPIO\n");
+
+	/* Keep the device running for as long as hotplug has to work */
+	if (sbridge->info->hpd_needs_power) {
+		if (sbridge->vdd) {
+			ret = regulator_enable(sbridge->vdd);
+			if (ret)
+				return dev_err_probe(&pdev->dev, ret,
+						     "Failed to enable vdd regulator\n");
+		}
+
+		gpiod_set_value_cansleep(sbridge->enable, 1);
+		sbridge->powered = true;
+
+		ret = devm_add_action_or_reset(&pdev->dev,
+					       simple_bridge_power_off, sbridge);
+		if (ret)
+			return ret;
+	}
 
 	/* Register the bridge. */
 	sbridge->bridge.of_node = pdev->dev.of_node;
@@ -279,6 +322,7 @@ static const struct of_device_id simple_bridge_match[] = {
 		.compatible = "chrontel,ch7218a",
 		.data = &(const struct simple_bridge_info) {
 			.connector_type = DRM_MODE_CONNECTOR_HDMIA,
+			.hpd_needs_power = true,
 		},
 	}, {
 		.compatible = "mstar,tsumu88adt3-lf-1",
