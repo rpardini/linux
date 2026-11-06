@@ -1,6 +1,7 @@
 #!/usr/bin/env bash
-# Check out a topic (id or branch from topics.tsv, or any branch on a fork) on a VM / remote host,
-# either in the main tree or in its own worktree. Creates the main tree first if missing.
+# Check out a topic (id or branch from topics.tsv, or any $PUSH_PREFIX branch on a fork) on a VM /
+# remote host, either in the main tree or in its own worktree. Creates the main tree first if missing.
+# The fork's linuxdev-work/<x> becomes local branch <x> (so b4 branches are b4/* locally, as b4 expects).
 # Never resets an existing local branch; reports ahead/behind instead.
 #
 # Usage: [DRY_RUN=0] scripts/11-vm-checkout.sh <topic-id|branch> [--repo kernel|u-boot] [--worktree [path]]
@@ -9,7 +10,7 @@
 #   --repo          only needed for branches not listed in topics.tsv (default: kernel)
 source "$(dirname "$0")/lib.sh"
 
-key="${1:-}"
+key="$(local_branch "${1:-}")"
 [[ -n "$key" && "$key" != -* ]] || die "usage: $0 <topic-id|branch> [--repo kernel|u-boot] [--worktree [path]]"
 shift
 WORKTREE=0 WT_PATH="" REPO_OPT=""
@@ -45,21 +46,22 @@ fi
 
 # Branch not in topics.tsv: find the first fork (fetch=y remote) that has it.
 if [[ -z "$remote" ]]; then
-	find_remote() { [[ -z "$remote" && "$3" == "y" ]] && g "$repo" ls-remote --exit-code --heads "$1" "$branch" > /dev/null 2>&1 && remote="$1"; return 0; }
+	find_remote() { [[ -z "$remote" && "$3" == "y" ]] && g "$repo" ls-remote --exit-code --heads "$1" "refs/heads/$(remote_branch "$branch")" > /dev/null 2>&1 && remote="$1"; return 0; }
 	each_remote "$repo" find_remote
 	[[ -n "$remote" ]] || die "$branch not found on any fetched remote of $repo"
 fi
 
-info "${id:+$id: }$repo $branch (from $remote)"
-run git -C "$dir" fetch "$remote" "refs/heads/$branch:refs/remotes/$remote/$branch"
+rb="$(remote_branch "$branch")"
+info "${id:+$id: }$repo $branch (from $remote $rb)"
+run git -C "$dir" fetch "$remote" "refs/heads/$rb:refs/remotes/$remote/$rb"
 
 if has_branch "$repo" "$branch"; then
-	if g "$repo" rev-parse -q --verify "refs/remotes/$remote/$branch" > /dev/null; then
-		read -r behind ahead < <(g "$repo" rev-list --left-right --count "refs/remotes/$remote/$branch...refs/heads/$branch")
+	if g "$repo" rev-parse -q --verify "refs/remotes/$remote/$rb" > /dev/null; then
+		read -r behind ahead < <(g "$repo" rev-list --left-right --count "refs/remotes/$remote/$rb...refs/heads/$branch")
 		((ahead || behind)) && warn "local $branch is ahead $ahead / behind $behind of $remote; not touching it"
 	fi
 else
-	run git -C "$dir" branch --track "$branch" "refs/remotes/$remote/$branch"
+	run git -C "$dir" branch --track "$branch" "refs/remotes/$remote/$rb"
 fi
 
 if [[ "$b4" == "y" ]]; then

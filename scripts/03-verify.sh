@@ -1,5 +1,5 @@
 #!/usr/bin/env bash
-# Compare every topics.tsv branch with its remote (one ls-remote per remote). Read-only.
+# Compare every topics.tsv branch with $PUSH_PREFIX<branch> on its remote (one ls-remote per remote). Read-only.
 #   OK          local == remote
 #   AHEAD/BEHIND/DIVERGED  relative to the remote tip (when the remote commit is known locally)
 #   NOT-PUSHED  missing on the remote
@@ -22,7 +22,7 @@ verify_one() {
 	[[ -z "$remote" ]] && return 0
 	local l r
 	l="$(g "$repo" rev-parse -q --verify "refs/heads/$branch" 2> /dev/null || true)"
-	r="$(remote_heads "$repo" "$remote" | awk -v ref="refs/heads/$branch" '$2 == ref { print $1 }')"
+	r="$(remote_heads "$repo" "$remote" | awk -v ref="refs/heads/$(remote_branch "$branch")" '$2 == ref { print $1 }')"
 	if [[ -z "$l" ]]; then
 		state="NO-LOCAL"
 	elif [[ -z "$r" ]]; then

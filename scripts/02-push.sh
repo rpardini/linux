@@ -1,6 +1,6 @@
 #!/usr/bin/env bash
-# Push every topics.tsv branch to its remote (never forced), the b4 sent/* tags, and this status branch.
-# Sets upstream only for branches that don't already track something.
+# Push every topics.tsv branch to its remote as $PUSH_PREFIX<branch> (never forced), the b4 sent/*
+# tags, and this status branch (as ${PUSH_PREFIX}status). Sets each branch's upstream to the pushed ref.
 # Usage: [DRY_RUN=0] [ONLY=regex] scripts/02-push.sh
 source "$(dirname "$0")/lib.sh"
 dry_run_banner
@@ -15,10 +15,10 @@ push_one() {
 		SKIPPED+=("$id")
 		return 0
 	fi
-	local -a u=()
-	g "$repo" rev-parse -q --verify "$branch@{upstream}" > /dev/null 2>&1 || u=(-u)
-	info "$id $branch -> $remote"
-	run git -C "$(repo_dir "$repo")" push ${u[@]+"${u[@]}"} "$remote" "refs/heads/$branch:refs/heads/$branch"
+	local rb
+	rb="$(remote_branch "$branch")"
+	info "$id $branch -> $remote $rb"
+	run git -C "$(repo_dir "$repo")" push -u "$remote" "refs/heads/$branch:refs/heads/$rb"
 }
 
 each_topic push_one
@@ -32,10 +32,8 @@ if [[ -z "$ONLY" ]]; then
 		info "b4 sent/* tags -> rpardini-armbian"
 		run git -C "$(repo_dir u-boot)" push rpardini-armbian 'refs/tags/sent/*:refs/tags/sent/*'
 	fi
-	info "status branch -> rpardini-linux"
-	local_u=()
-	git -C "$STATUS_DIR" rev-parse -q --verify 'status@{upstream}' > /dev/null 2>&1 || local_u=(-u)
-	run git -C "$STATUS_DIR" push ${local_u[@]+"${local_u[@]}"} rpardini-linux refs/heads/status:refs/heads/status
+	info "$STATUS_BRANCH branch -> rpardini-linux $(remote_branch "$STATUS_BRANCH")"
+	run git -C "$STATUS_DIR" push -u rpardini-linux "refs/heads/$STATUS_BRANCH:refs/heads/$(remote_branch "$STATUS_BRANCH")"
 fi
 
 ((${#SKIPPED[@]})) && warn "skipped (missing locally): ${SKIPPED[*]}"

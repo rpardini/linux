@@ -4,7 +4,7 @@
 #
 # Bootstrap on a new host:
 #   mkdir -p ~/linuxdev && cd ~/linuxdev
-#   git clone -b status --single-branch git@github.com:rpardini/linux.git linuxdev-status
+#   git clone -b linuxdev-work/status --single-branch git@github.com:rpardini/linux.git linuxdev-status
 #   DRY_RUN=0 linuxdev-status/scripts/10-vm-clone-main.sh kernel --blobless
 #   DRY_RUN=0 linuxdev-status/scripts/10-vm-clone-main.sh u-boot
 #

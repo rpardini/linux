@@ -6,6 +6,7 @@
 #                  Default: parent of this status worktree.
 #   DRY_RUN        1 (default) = only print mutating commands; 0 = execute them.
 #   ONLY           optional regex; restrict to topic ids matching it (eg. ONLY='^(A8|C1)$').
+#   PUSH_PREFIX    prefix for branches on the forks (default 'linuxdev-work/'): local b4/x <-> remote linuxdev-work/b4/x.
 
 set -euo pipefail
 
@@ -13,6 +14,8 @@ STATUS_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")/.." && pwd)"
 LINUXDEV_ROOT="${LINUXDEV_ROOT:-$(dirname "$STATUS_DIR")}"
 DRY_RUN="${DRY_RUN:-1}"
 ONLY="${ONLY:-}"
+PUSH_PREFIX="${PUSH_PREFIX:-linuxdev-work/}"
+STATUS_BRANCH="status" # local name; pushed as ${PUSH_PREFIX}status
 TOPICS_TSV="$STATUS_DIR/topics.tsv"
 REMOTES_TSV="$STATUS_DIR/remotes.tsv"
 
@@ -79,3 +82,7 @@ each_remote() {
 }
 
 has_branch() { g "$1" rev-parse -q --verify "refs/heads/$2" > /dev/null; }
+
+# remote_branch <local>: name of the branch on the fork.  local_branch <remote>: inverse.
+remote_branch() { echo "${PUSH_PREFIX}$1"; }
+local_branch() { echo "${1#"$PUSH_PREFIX"}"; }
