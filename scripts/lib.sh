@@ -5,7 +5,7 @@
 #   LINUXDEV_ROOT  dir holding the main trees (kernel/, u-boot/) and worktrees.
 #                  Default: parent of this status worktree.
 #   DRY_RUN        1 (default) = only print mutating commands; 0 = execute them.
-#   ONLY           optional regex; restrict to topic ids matching it (eg. ONLY='^(A8|C1)$').
+#   ONLY           optional regex; restrict to topic ids matching it (eg. ONLY='^(K9|U1)$').
 #   PUSH_PREFIX    prefix for branches on the forks (default 'linuxdev-work/'): local b4/x <-> remote linuxdev-work/b4/x.
 
 set -euo pipefail
