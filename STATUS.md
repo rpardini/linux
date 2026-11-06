@@ -6,7 +6,7 @@ Branch-level data the scripts need lives in `topics.tsv` (keep the IDs in sync);
 - Lore, my posts: <https://lore.kernel.org/all/?q=f%3Aricardo%40pardini.net>
 - Forks: kernel `rpardini/linux` (remote `rpardini-linux`), vendor 6.1 `rpardini/armbian-linux-rockchip-rk3588`, u-boot `rpardini/armbian-patched-u-boot` (remote `rpardini-armbian`)
 - Armbian patch paths are relative to `armbian-build/patch/`.
-- Status words: `merged` · `sent vN` · `prepared` (b4 ready, unsent) · `wip` · `armbian-only` · `debug` · `parked` · `drop`
+- Status words: `merged` · `sent vN` · `prepared` (b4 ready, unsent) · `wip` · `armbian-only` · `debug` · `parked` · `landed` · `drop`
 
 Inventory as of 2026-11-06 (kernel v7.3 / u-boot v2026.10).
 
@@ -27,7 +27,7 @@ Inventory as of 2026-11-06 (kernel v7.3 / u-boot v2026.10).
 | A11 | Mixtile Blade 3 rework (fan, Type-C roles, RTL8125 behind ASM1182e, CAN2) | `work/mixtile-blade3-rework` | wip | clean up "claude pass" commits | sits on A4 |
 | A12 | RK3528 TSADC: binding, thermal driver, dtsi, E24C enable | `work/rk3528-tsadc` | wip | b4 prep | picked from README branch AR1 onto v7.3 |
 | A12p | pmdomain/rockchip: dev_err_probe() on probe errors | `work/pmdomain-rockchip-dev-err-probe` | wip | | from AR1; original sat on top of a revert of Bozeman's pmdomain patch |
-| A13m | Radxa E24C mainline DT: USB, EEPROM MACs | `work/radxa-e24c-mainline-dt` | wip | | from AR1/AR2; vendor-kernel twin B6c |
+| A13m | Radxa E24C mainline DT: USB, EEPROM MACs | `work/radxa-e24c-mainline-dt` | wip | | from AR1/AR2; vendor-kernel twin B6c (landed) |
 | A14 | fusb302: drain RX FIFO on TX_SUCCESS/GCRCSENT | `work/fusb302-drain-rx-fifo` | wip | send | Arm: `rockchip64-7.{3,4}/912-*`; DEBUG tracing patch only on AR3 |
 | A15 | drm/rockchip vop2: arm POST_BUF_EMPTY irq after modeset | `work/vop2-post-buf-empty-irq` | wip | test + send | from AR1; **not in Armbian** |
 | A17 | net: stmmac: Phytium DWMAC glue | `work/phytium-stmmac` | wip | | Arm: `uefi-arm64-7.3/0001-*` |
@@ -50,23 +50,27 @@ Inventory as of 2026-11-06 (kernel v7.3 / u-boot v2026.10).
 
 | ID | Topic | Branch | Status | Next | Notes |
 |---|---|---|---|---|---|
-| B1 | mfd/clk rk8xx: fix platform_device_id names | `rk61/rk8xx-platform-device-id-names` | | PR | |
 | B1d | Blade 3 fusb302 PD console tracing | `rk61/blade3-fusb302-pd-debug` | debug | keep | DO NOT UPSTREAM |
-| B2 | Mixtile Edge 2 clkout2 for WiFi; Blade 3 RTL + fan | `rk61/mixtile-edge2-blade3-fixes` | | PR | |
-| B3a | reComputer RK3588: RTL8125 in DT (stable MAC) | `rk61/recomputer-rk3588-stable-mac-rtl` | | PR | |
-| B3b | reComputer RK3588: fan curve | `rk61/recomputer-rk3588-fan-curve` | | PR | |
-| B4a | auxdisplay vk2c21: sysfs brightness | `rk61/vk2c21-brightness` | | PR | needs B4b |
-| B4b | Meko R58X-Pro: VK2C21 auxdisplay driver rework | `rk61/meko-r58x-pro-lcd-rework` | | PR | alt `meko-r58x-pro-LCD-brightness-claude` |
-| B5a | input remotectl rockchip-pwm: prefer channel-3 IRQ | `rk61/remotectl-pwm-irq-fix` | | | later reverted by B5b/B5c — decide |
-| B5b | revert of B5a (rkr7.2) | `rk61/remotectl-pwm-irq-revert-rkr7.2` | | | |
-| B5c | revert of B5a (rkr5.1) | `rk61/remotectl-pwm-irq-revert-rkr5.1` | | | |
-| B6a | mpp: report zero load for idle devices | `rk61/mpp-zero-load-idle` | | PR | |
-| B6b | rk3528: drop pcie2x1 skip-reset-in-config | `rk61/rk3528-pcie-skip-reset` | | PR | |
-| B6c | Radxa E24C: switch labels/LEDs, EEPROM MACs, eth0 alias | `rk61/radxa-e24c-fixes` | | PR | notes `notes/kernel/e24c-fixes-*` |
-| B6d | drop in-tree aic8800 sdio | `rk61/drop-aic8800-sdio` | | PR | |
-| B6e | CM3588: dynamic dclk fix (from FriendlyElec) | `rk61/cm3588-dclk-fix` | | PR | local was ahead 1 of fork |
-| B6f | bcmdhd PCIe + SDIO | `rk61/bcmdhd-pcie-sdio` | | | |
-| B6g | stmmac: no IFF_UNICAST_FLT without address regs (+ dwmac4 UC filter size backport) | `rk61/stmmac-unicast-flt` | | PR; also mainline? | |
+| B6f | bcmdhd: build SDIO and PCIe as two modules | `rk61/bcmdhd-pcie-sdio` | PR draft open | someone else picking it up | |
+
+### Landed in armbian/linux-rockchip (checked 2026-11-06; not migrated)
+
+| ID | Topic | Old local branch | Landed as |
+|---|---|---|---|
+| B1 | mfd/clk rk8xx: platform_device_id names | `nyanmisaka-rk-6.1-rkr7.2-fixes-batch1` | rkr7.2 57b1edc5, a79b3a75 |
+| B2 | Mixtile Edge 2 clkout2; Blade 3 RTL8125 + fan | `rk-6.1-rkr7.2-mixtile-edge2-blade3-fixes` | rkr7.2 7fab4e2c, d3e25dbc, 5aa56286 |
+| B3a | reComputer RK3588: RTL8125 in DT | `rk-6.1-rkr7.2-seeed-rek3588-stable-mac-rtl` | rkr7.2 8a0a8989 |
+| B3b | reComputer RK3588: fan curve | `rk-6.1-rkr7.2-rek3588-fine-tune-fan` | rkr7.2 a2d22aab |
+| B4a | vk2c21: sysfs brightness | `rk-6.1-rkr7.2-vk2c21-brightness` | rkr7.2 5ef479b1 |
+| B4b | Meko R58X-Pro VK2C21 auxdisplay rework | `meko-r58x-pro-LCD-rework` | rkr7.2 f75077c7, 23680736, 0fb7359e, bdbf9f62 |
+| B5 | remotectl rockchip-pwm channel-3 IRQ (landed, then reverted) | `input-remotectl-rockchip-pwm-irq-fix`, `rk-6.1-rkr{5.1,7.2}-pwm_remotectl_3chan_revert` | rkr7.2 3626ff8b + revert 057c0edb; rkr5.1 9d6ab8fb + revert fd9f8236 |
+| B6b | rk3528: drop pcie2x1 skip-reset-in-config | `rk3528_pcie_fix_rkr7.2` | rkr7.2 4375436b |
+| B6c | Radxa E24C: labels/LEDs, EEPROM MACs, eth0 alias | `e24c-fixes` | rkr7.2 428ab271, 7554973e, c5ab76fb, 6b54ea8c |
+| B6d | drop in-tree aic8800 sdio | `rk-6.1-rkr7.2-drop-aic8800-sdio-in-tree` | rkr7.2 e27e16b7 |
+| B6e | CM3588 dynamic dclk fix | `cm3588-backport-dclk-fix-from-fe` | rkr7.2 45f76186 |
+| B6g | stmmac: no IFF_UNICAST_FLT without address regs (+ backport) | `stmmac_unicast_sans_address_registers` | rkr7.2 7a450901, 5ec51316 |
+
+Dropped: B6a `mpp-report-zero-load-for-idle` — not needed on rkr7.2 (Rockchip solved it differently).
 
 ## C. U-Boot
 
@@ -86,7 +90,7 @@ Inventory as of 2026-11-06 (kernel v7.3 / u-boot v2026.10).
 - Snapshots / mirrors: `*-pristine`, `stable-google-*`, `android_*`, `torvalds-master-*`, `linux-6.19.y`, `friendlyelec_*`, `radxa-linux-*`, `collabora-*`, `kwiboo-*`, `flipperdevices-*`, `v6.18.44-openwrt-*`, `odroid-6.17.y-rebased`, u-boot `v20*-pristine`, `master-*`, `rockchip-linux-v5-*`, `kwiboo-denx-*`.
 - Dated integration branches: `rk-6.1-rkr7.2-2026MMDD*`, `rk-6.1-rkr5.1-2026MMDD*`, `nyanmisaka-rk-6.1-rkr7{,.2}`.
 - README branches with nothing on top: `armbian-armsurvivors-*` not listed above (u-boot `radxa-e24c-edge-*`, `mixtile-blade3-edge-2026{0411,0718}`, `radxa-nio-12l-*`).
-- Superseded: `b4/rk3588-dts-rtl-eth-describe-dt-alias-{v5,ALL-BOARDS}`, `v7.2-rc2-add-recomputer-rk3588-devkit-{claude,copilot-FAIL}`, `v7.1-rc4-add-rk3588-npu-all{,-sonnet}`, `rk3576-devkit-rework`, `meko-r58x-pro-LCD-brightness-claude`, `zero2-stuff`, `radxa-zero2-fusb302-*`, `radxa-e24c-26.07`, `rk3588-stable-gmac-of`, `work-genio-mt8195`, `rpardini-armbian-workbranch` (e24c hang debug), `rk-6.1-rkr7.2-fix-arm-32-bits-build-drop-missing-dt` (in armbian already), `backup/*`, `backup-before-mathh-rework`.
+- Superseded: `b4/rk3588-dts-rtl-eth-describe-dt-alias-{v5,ALL-BOARDS}`, `v7.2-rc2-add-recomputer-rk3588-devkit-{claude,copilot-FAIL}`, `v7.1-rc4-add-rk3588-npu-all{,-sonnet}`, `rk3576-devkit-rework`, `meko-r58x-pro-LCD-brightness-claude`, `zero2-stuff`, `radxa-zero2-fusb302-*`, `radxa-e24c-26.07`, `rk3588-stable-gmac-of`, `work-genio-mt8195`, `rpardini-armbian-workbranch` (e24c hang debug), `rk-6.1-rkr7.2-fix-arm-32-bits-build-drop-missing-dt` (in armbian already), the landed B branches listed in section B, `backup/*`, `backup-before-mathh-rework`.
 - Dropped: u-boot `v2026.01-opi5plus` (odroid-sm1 regulator-boot-on).
 
 ## Scripts
