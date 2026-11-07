@@ -7,7 +7,7 @@ Branch-level data the scripts need lives in `topics.tsv` (keep the IDs in sync);
 - Forks: kernel `rpardini/linux` (remote `rpardini-linux`), vendor 6.1 `rpardini/armbian-linux-rockchip-rk3588`, u-boot `rpardini/armbian-patched-u-boot` (remote `rpardini-armbian`)
 - Armbian patch paths are relative to `armbian-build/patch/`.
 - Branch names below are **local** names. On the forks everything lives under `linuxdev-work/`: `b4/x` → `linuxdev-work/b4/x`, `mainline/x` → `linuxdev-work/mainline/x`, `armbian-tree/x` (full Armbian-patched trees) → `linuxdev-work/armbian-tree/x`, `rk61/x` → `linuxdev-work/rk61/x`. `11-vm-checkout.sh` maps them back, so b4 branches stay `b4/*` locally. Pre-existing un-prefixed copies on the forks (old `b4/*`, `pxe-http-boot`, the x13s branch…) are leftovers that can be deleted.
-- Status words: `merged` · `sent vN` · `prepared` (b4 ready, unsent) · `wip` · `armbian-only` · `debug` · `parked` · `landed` · `drop`
+- Status words: `merged` · `sent vN` · `prepared` (b4 ready, unsent) · `wip` · `needs port` (only exists on an Armbian tree; picks do not apply on plain upstream) · `armbian-only` · `debug` · `parked` · `landed` · `drop`
 
 Inventory as of 2026-11-06 (kernel v7.3 / u-boot v2026.10).
 
@@ -26,14 +26,14 @@ Inventory as of 2026-11-06 (kernel v7.3 / u-boot v2026.10).
 | K10 | Seeed reComputer RK3588 Dev Kit (binding + 15 DT patches) | `mainline/recomputer-rk3588-devkit` | wip | b4 prep | includes K11 + PWMv4/counter build fixups underneath; alt attempts `v7.2-rc2-…-claude`, `…-copilot-FAIL` |
 | K11 | Seeed reComputer RK3576 Dev Kit | `mainline/recomputer-rk3576-devkit` | wip | b4 prep | fan patch is `[DO-NOT-MERGE]`; carries `pwm`/`counter` rockchip PWMv4 "device flag accessors" fixups (Armbian-only?) ; alt `rk3576-devkit-rework` |
 | K12 | Mixtile Blade 3 rework (fan, Type-C roles, RTL8125 behind ASM1182e, CAN2) | `mainline/mixtile-blade3-rework` | wip | clean up "claude pass" commits | sits on K4 |
-| K13 | RK3528 TSADC: binding, thermal driver, dtsi, E24C enable | `mainline/rk3528-tsadc` | wip | b4 prep | picked from README branch KA1 onto v7.3 |
-| K14 | pmdomain/rockchip: dev_err_probe() on probe errors | `mainline/pmdomain-rockchip-dev-err-probe` | wip | | from KA1; original sat on top of a revert of Bozeman's pmdomain patch |
-| K15 | Radxa E24C mainline DT: USB, EEPROM MACs | `mainline/radxa-e24c-mainline-dt` | wip | | from KA1/KA2; vendor-kernel twin RK11 (landed) |
+| K13 | RK3528 TSADC: binding, thermal driver, dtsi, E24C enable | — (on KA1; was `mainline/rk3528-tsadc`) | needs port | port onto v7.3, then b4 prep | conflicts in `rockchip_thermal.c` at patch 2/4 (binding applies); picks in `topics.tsv` (commented-out row) |
+| K14 | pmdomain/rockchip: dev_err_probe() on probe errors | — (on KA1; was `mainline/pmdomain-rockchip-dev-err-probe`) | needs port | port onto v7.3 | conflicts in `pm-domains.c`; from KA1; original sat on top of a revert of Bozeman's pmdomain patch |
+| K15 | Radxa E24C mainline DT: USB, EEPROM MACs | — (on KA1/KA2; was `mainline/radxa-e24c-mainline-dt`) | needs port | port onto v7.3 | `rk3528-radxa-e24c.dts` is not in v7.3; from KA1/KA2; vendor-kernel twin RK11 (landed) |
 | K16 | fusb302: drain RX FIFO on TX_SUCCESS/GCRCSENT | `mainline/fusb302-drain-rx-fifo` | wip | send | Arm: `rockchip64-7.{3,4}/912-*`; DEBUG tracing patch only on KA3 |
 | K17 | drm/rockchip vop2: arm POST_BUF_EMPTY irq after modeset | `mainline/vop2-post-buf-empty-irq` | wip | test + send | from KA1; **not in Armbian** |
 | K18 | net: stmmac: Phytium DWMAC glue | `mainline/phytium-stmmac` | wip | | Arm: `uefi-arm64-7.3/0001-*` |
-| K19 | X13s: camera rotation; iris accept Gen1 fw; iris fw reload on hang | `mainline/x13s-iris-camera` | wip | | Arm: `sc8280xp-edge/030{1,3}-*`; notes in `notes/kernel/x13s-*`; Armbian context KA4 |
-| K20 | Sunvell T95Z Plus: DT, IR pull-up, blue remote keytable | `mainline/t95z-plus` | wip | | from KA5 |
+| K19 | X13s: camera rotation; iris accept Gen1 fw; iris fw reload on hang | — (on KA4; was `mainline/x13s-iris-camera`) | needs port | port onto v7.3 | camera rotation applies; iris patches conflict in `iris_platform_vpu3x.c`; Arm: `sc8280xp-edge/030{1,3}-*`; notes in `notes/kernel/x13s-*`; Armbian context KA4 |
+| K20 | Sunvell T95Z Plus: DT, IR pull-up, blue remote keytable | — (on KA5; was `mainline/t95z-plus`) | needs port | port onto v7.3 | `meson-gxm-t95z-plus.dts` is not in v7.3; from KA5 |
 | K21 | rk3588: enable NPU on all remaining boards | `mainline/rk3588-npu-all-boards` | wip | rebase on v7.3, drop what K1 merged | alt `v7.1-rc4-add-rk3588-npu-all{,-sonnet}` |
 | K22 | auxdisplay TM16xx: fix SPI autoload (on Jean-François Lessard's TM16xx v6 series) | `mainline/tm16xx-spi-autoload` | wip | reply on Lessard's thread | branch includes his 6 patches; Arm: `meson64-7.3/general-driver-tm16xx-v6.patch` |
 
@@ -78,7 +78,7 @@ Dropped: `mpp-report-zero-load-for-idle` — not needed on rkr7.2 (Rockchip solv
 | ID | Topic | Branch | Status | Next | Notes |
 |---|---|---|---|---|---|
 | U1 | RK3588 SATA: combphy pipe_con1, ahci READ CAPACITY last LBA, dwc_ahci sata-port PHY, rk3588 on-board SATA | `b4/rk3588-sata-fixes-v2027.01` | prepared (v1) | send | change-id `20261024-rk3588-sata-fixes-v2027-01-892bf10a3512`; Arm: `u-boot/v2026.10/general-*`; notes `notes/u-boot/BLADE3-SATA-REPORT.md` |
-| U2 | tcpm/fusb302: drain RX FIFO, delay BC_LVL; Blade 3 USB-C1 sink-only; Sebastian Reichel's tcpm fixes | `mainline/blade3-fusb302-tcpm` | wip | | Arm: `u-boot/v2026.10/board_mixtile-blade3/020-*`; reports `notes/u-boot/BLADE3-USBPD-REPORT.md`, `Blade3-usbpd-powering-submit.md` |
+| U2 | tcpm/fusb302: drain RX FIFO, delay BC_LVL; Blade 3 USB-C1 sink-only; Sebastian Reichel's tcpm fixes | — (on UA1; was `mainline/blade3-fusb302-tcpm`) | needs port | port onto v2026.10 | `rk3588-mixtile-blade3-u-boot.dtsi` is not in v2026.10; Arm: `u-boot/v2026.10/board_mixtile-blade3/020-*`; reports `notes/u-boot/BLADE3-USBPD-REPORT.md`, `Blade3-usbpd-powering-submit.md` |
 | UA1 | Armbian context for U2 (+DEBUG, + full PD logs "keep forever") | `armbian-tree/blade3-edge-20261022-debug-usbpd` | debug | keep | |
 | U3 | PXE/extlinux over HTTP(S) + docs | `mainline/pxe-http-boot` | wip | b4 prep | Arm: `u-boot/v2026.{07,10}/pxe-over-http-v0.patch`; Armbian context UA2 `armbian-tree/pxe-http-boot` (has DEBUG) |
 | U4 | RK3528: SFC/WDT/VPU/OTP/USB nodes + Radxa E24C board | `mainline/rk3528-e24c` | wip | | on Kwiboo's WIP rk3528; Arm: `u-boot/v2026.07/board_radxa-e24c/` |
