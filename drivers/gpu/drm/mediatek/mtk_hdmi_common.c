@@ -344,6 +344,10 @@ static int mtk_hdmi_dt_parse_pdata(struct mtk_hdmi *hdmi, struct platform_device
 	if (ret)
 		return ret;
 
+	/* Only v1 gets hotplug detection from the MT8173 CEC block */
+	if (!hdmi->conf->ver_conf->has_cec_hpd)
+		return 0;
+
 	ret = mtk_hdmi_get_cec_dev(hdmi, dev, np);
 	if (ret == -EOPNOTSUPP)
 		dev_info(dev, "CEC support unavailable: node not found\n");
@@ -445,6 +449,12 @@ struct mtk_hdmi *mtk_hdmi_common_probe(struct platform_device *pdev)
 	    ver_conf->bridge_funcs->hdmi_clear_avi_infoframe)
 		hdmi->bridge.ops |= DRM_BRIDGE_OP_HDMI |
 				    DRM_BRIDGE_OP_HDMI_SPD_INFOFRAME;
+
+	/* A separate CEC controller gets the physical address via the notifier */
+	if (!ver_conf->has_cec_hpd) {
+		hdmi->bridge.ops |= DRM_BRIDGE_OP_HDMI_CEC_NOTIFIER;
+		hdmi->bridge.hdmi_cec_dev = dev;
+	}
 
 	hdmi->bridge.type = DRM_MODE_CONNECTOR_HDMIA;
 	hdmi->bridge.ddc = hdmi->ddc_adpt;
