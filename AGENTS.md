@@ -52,7 +52,9 @@ Prefer extending these scripts (they share `lib.sh`: `run`, `each_topic`, `topic
 
 ## Kernel / u-boot rules
 
-- AI agents must not add `Signed-off-by`. Use `Assisted-by:` (per kernel docs); the user adds their SoB.
+- AI agents must not add `Signed-off-by` (Documentation/process/coding-assistants.rst). The user adds their own SoB (`git commit --amend -s`) before sending.
+- Don't add `Assisted-by:` either. User, 2026-11-08: the kernel doesn't take it anymore.
+- Sending needs a patatt signing key (B4 Relay). `b4 send` refuses to run without `patatt.signingkey`.
 - Commit messages and cover letters are written in the user's voice. Show the wording to the user before anything is sent.
 - Build in an out-of-tree dir inside the worktree (eg. `O=.build`). The host is arm64, so no cross compile is needed for arm64.
 
