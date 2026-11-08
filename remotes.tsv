@@ -5,6 +5,7 @@ kernel	torvalds	https://github.com/torvalds/linux.git	y
 kernel	mmind	https://git.kernel.org/pub/scm/linux/kernel/git/mmind/linux-rockchip.git	y
 kernel	stable-google	https://kernel.googlesource.com/pub/scm/linux/kernel/git/stable/linux-stable	n
 kernel	linux-next	https://git.kernel.org/pub/scm/linux/kernel/git/next/linux-next.git	n
+kernel	net-next	https://git.kernel.org/pub/scm/linux/kernel/git/netdev/net-next.git	n
 kernel	armbian-linux-rockchip	git@github.com:armbian/linux-rockchip.git	n
 kernel	nyanmisaka-rockchip	git@github.com:nyanmisaka/linux-rockchip.git	n
 kernel	kwiboo-rockchip	https://github.com/Kwiboo/linux-rockchip.git	n

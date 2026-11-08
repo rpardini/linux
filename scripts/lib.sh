@@ -51,11 +51,11 @@ repo_dir() { echo "$LINUXDEV_ROOT/$1"; }
 # g <repo> <git args...>: read-only git in a main tree.
 g() { local r="$1"; shift; git -C "$(repo_dir "$r")" "$@"; }
 
-# each_topic <callback>: calls callback id repo branch source mode base picks remote b4
+# each_topic <callback>: calls callback id repo branch source mode base picks remote b4 slug
 # for every non-comment row of topics.tsv ('-' fields become empty), honoring $ONLY.
 each_topic() {
-	local cb="$1" id repo branch src mode base picks remote b4
-	while IFS=$'\t' read -r id repo branch src mode base picks remote b4; do
+	local cb="$1" id repo branch src mode base picks remote b4 slug
+	while IFS=$'\t' read -r id repo branch src mode base picks remote b4 slug; do
 		[[ -z "$id" || "$id" == \#* ]] && continue
 		[[ -n "$ONLY" && ! "$id" =~ $ONLY ]] && continue
 		[[ "$src" == "-" ]] && src=""
@@ -63,7 +63,8 @@ each_topic() {
 		[[ "$picks" == "-" ]] && picks=""
 		[[ "$remote" == "-" ]] && remote=""
 		[[ "$b4" == "-" ]] && b4=""
-		"$cb" "$id" "$repo" "$branch" "$src" "$mode" "$base" "$picks" "$remote" "$b4"
+		[[ "$slug" == "-" ]] && slug=""
+		"$cb" "$id" "$repo" "$branch" "$src" "$mode" "$base" "$picks" "$remote" "$b4" "$slug"
 	done < "$TOPICS_TSV"
 }
 

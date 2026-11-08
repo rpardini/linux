@@ -1,43 +1,44 @@
-# id	repo	branch	source	mode	base	picks	remote	b4
+# id	repo	branch	source	mode	base	picks	remote	b4	slug
 # repo: kernel|u-boot (dir name of the main tree). mode: keep (branch already canonical) | copy (branch := source tip) | pick (branch := base + cherry-picked picks, oldest first)
-# branch: LOCAL name; pushed as $PUSH_PREFIX<branch> (default linuxdev-work/), eg. b4/x -> linuxdev-work/b4/x. remote: push target remote name (see remotes.tsv). b4: y = restore b4 branch config on checkout. Use '-' for empty fields.
+# branch: LOCAL name; pushed as $PUSH_PREFIX<branch> (default linuxdev-work/), eg. b4/x -> linuxdev-work/b4/x. remote: push target remote name (see remotes.tsv). b4: y = restore b4 branch config on checkout. Use '-' for empty fields. slug: optional short name for worktree dirs (11-vm-checkout.sh --worktree -> <repo>-<slug>; default <repo>-<id>).
 # Rows commented out with #<id>: pick does not apply on plain upstream (depends on Armbian patches); needs a manual port. Picks kept for reference.
-K1	kernel	b4/arm64-dts-rockchip-rk3588-npu-enablements	-	keep	-	-	rpardini-linux	y
-K2	kernel	b4/arm64-dts-amlogic-radxa-zero2-additions	-	keep	-	-	rpardini-linux	y
-K3	kernel	b4/rk3588-dts-rockchip-nanopct6-fix-schematic-names	-	keep	-	-	rpardini-linux	y
-K4	kernel	b4/rk3588-dts-rtl-eth-describe-dt-alias-v6	-	keep	-	-	rpardini-linux	y
-K5	kernel	b4/rk3588-dts-rtl-eth-describe-dt-alias-v6-next	-	keep	-	-	rpardini-linux	y
-K6	kernel	mainline/rk35xx-mac-from-otp	v7.3-rcX-rk35xx-MAC-from-OTP-plus-RTL-DT	copy	-	-	rpardini-linux	-
-K7	kernel	b4/nio-12l-add-i2c-40-pin	-	keep	-	-	rpardini-linux	y
-K8	kernel	mainline/nio-12l-fixes	v7.2-mediatek-nio-12l-fixes	copy	-	-	rpardini-linux	-
-K9	kernel	b4/rk3588-combphy-sata2-6g-v7.3.y	-	keep	-	-	rpardini-linux	y
-K10	kernel	mainline/recomputer-rk3588-devkit	v7.2-add-recomputer-rk3588-devkit	copy	-	-	rpardini-linux	-
-K11	kernel	mainline/recomputer-rk3576-devkit	v7.2-rc2-add-recomputer-rk3576-devkit	copy	-	-	rpardini-linux	-
-K12	kernel	mainline/mixtile-blade3-rework	v7.2-rcX-rework-mixtile-blade3	copy	-	-	rpardini-linux	-
-#K13	kernel	mainline/rk3528-tsadc	-	pick	v7.3	c9b9ecddb12855c3a32c2993183e436aa4b03fc2,a04e8ba8ef8d101d976b8da29249fff928fd164a,fd6f28ece9da7f3ae9f6d0b52ac80140d8cafdd0,9e0b1b348a8e75e1ee70f8692c84094accbab8d2	rpardini-linux	-
-#K14	kernel	mainline/pmdomain-rockchip-dev-err-probe	-	pick	v7.3	ba4c7d41127a1b8a05445d2e220858519c5c3df2	rpardini-linux	-
-#K15	kernel	mainline/radxa-e24c-mainline-dt	-	pick	v7.3	d6a81f50a27e64461fabf816be944ca56a2a49b1,d9c52c7a8a356fe6687b6e509a52bf64585832ac	rpardini-linux	-
-K16	kernel	mainline/fusb302-drain-rx-fifo	-	pick	v7.3	c1970641078dd0ccce3ccecbcc04ceb56ef43c30	rpardini-linux	-
-K17	kernel	mainline/vop2-post-buf-empty-irq	-	pick	v7.3	f4a7f84902bdacca4efdcb930bac5b923f4f76d5	rpardini-linux	-
-K18	kernel	mainline/phytium-stmmac	v7.1-add-phytium-stmmac	copy	-	-	rpardini-linux	-
-#K19	kernel	mainline/x13s-iris-camera	-	pick	v7.3	544a666aaceef205c5f0f7703310cb32549d4482,68ff037234db6858d04bdb0dcb74ff1989038c1e,2f1f6ab852f6966227005b23ef0a6b9b0253ec70	rpardini-linux	-
-#K20	kernel	mainline/t95z-plus	-	pick	v7.3	bf5e1cea52328349e6ee2e7293917d41ab4caa48,c11a06db076f7968a0ef50a6fc6dec0baa197f2a,772f3e77f63326d7cd28f848d6c38b7897e5ad47,3bbfdd11b18c1ded106ba34186204a1456ba0036	rpardini-linux	-
-K21	kernel	mainline/rk3588-npu-all-boards	v7.1-rc4-rk3588-add-npu-all-opus	copy	-	-	rpardini-linux	-
-K22	kernel	mainline/tm16xx-spi-autoload	-	pick	v7.3	1be540cbce71da927e516c89a50c75ecca504aaf,cfc5b0db5dc305597e8dc56b90ca417fa2992dbb,1a2de927687697e8805fd88587649844c6891a2b,f5f6030d9fbdad9e91cb9f187ca21d6023d21e28,6ec51616e81a658a3278faadc11292a729915bcb,4db0b95b207db0c4dcf593e1de814bf08a3d7ec6,039320b80d856da5cc7b1a29cc8cf047ac8af01e	rpardini-linux	-
-K23	kernel	b4/mt8195-cec	-	keep	-	-	rpardini-linux	y
-KA1	kernel	armbian-tree/rockchip64-7.2-20260915	armbian-armsurvivors-rockchip64-7.2-20260915	copy	-	-	rpardini-linux	-
-KA2	kernel	armbian-tree/rockchip64-7.2-20260813-e24c	armbian-armsurvivors-rockchip64-7.2-20260813	copy	-	-	rpardini-linux	-
-KA3	kernel	armbian-tree/rockchip64-7.3-20261022-blade3-fusb302	armbian-armsurvivors-rockchip64-7.3-20261022-blade3-tcpm-fusb302-debug	copy	-	-	rpardini-linux	-
-KA4	kernel	armbian-tree/sc8280xp-7.3-20261104-x13s	armbian-armsurvivors-sc8280xp-7.3-20261104-x13s	copy	-	-	rpardini-linux	-
-KA5	kernel	armbian-tree/meson64-7.2-20260923-t95z	armbian-armsurvivors-meson64-7.2-20260923	copy	-	-	rpardini-linux	-
-RK1	kernel	rk61/blade3-fusb302-pd-debug	nyanmisaka-rk-6.1-rkr7.2-fixes	copy	-	-	rpardini-armbian-linux-rockchip-rk3588	-
-RK2	kernel	rk61/bcmdhd-pcie-sdio	rk-6.1-rkr7.2-20260807-bcmdhd-pcie-sdio	copy	-	-	rpardini-armbian-linux-rockchip-rk3588	-
-U1	u-boot	b4/rk3588-sata-fixes-v2027.01	-	keep	-	-	rpardini-armbian	y
-#U2	u-boot	mainline/blade3-fusb302-tcpm	-	pick	v2026.10	84c8d44cb2cd6c3e13ef225e8e13c4ae8341ec90,e6d3a560de18fd1726b4e156341a6cbae1d87649,d92ab23bb722d9b3386172df9981c637d7e497f1,bf6a39d698d86dd8caf0878adcd4ce0641c583e6,874fd9d3ffd422129b56e2a7c750e615e031139d,1ac98d467912662377b1cf62976e74d029299cb4,1ee6443a60fe163e76c64136aa1a9a68401cb065	rpardini-armbian	-
-UA1	u-boot	armbian-tree/blade3-edge-20261022-debug-usbpd	armbian-armsurvivors-mixtile-blade3-edge-20261022-debug-usbpd	copy	-	-	rpardini-armbian	-
-U3	u-boot	mainline/pxe-http-boot	-	pick	v2026.10	23602a8d62588d8b5f630b62a8da2eca043f8f0c,55ea3698959d2c8d07e85478e37795cbe48704ba,8e868e03d8babdb94a7516f1143bbfe4cb5f9a3e	rpardini-armbian	-
-UA2	u-boot	armbian-tree/pxe-http-boot	pxe-http-boot	copy	-	-	rpardini-armbian	-
-U4	u-boot	mainline/rk3528-e24c	radxa-e24c-26.07-split	copy	-	-	rpardini-armbian	-
-U5	u-boot	mainline/rk3588-stable-gmac-mac	rk3588-stable-gmac-of-wip	copy	-	-	rpardini-armbian	-
-U6	u-boot	mainline/genio-mt8195-nio-12l	work-genio-mt8195-final	copy	-	-	rpardini-armbian	-
-UA3	u-boot	armbian-tree/blade3-vendor-20261022-pd-debug	armbian-armsurvivors-mixtile-blade3-vendor-20261022	copy	-	-	rpardini-armbian	-
+K1	kernel	b4/arm64-dts-rockchip-rk3588-npu-enablements	-	keep	-	-	rpardini-linux	y	-
+K2	kernel	b4/arm64-dts-amlogic-radxa-zero2-additions	-	keep	-	-	rpardini-linux	y	-
+K3	kernel	b4/rk3588-dts-rockchip-nanopct6-fix-schematic-names	-	keep	-	-	rpardini-linux	y	-
+K4	kernel	b4/rk3588-dts-rtl-eth-describe-dt-alias-v6-v7.4	-	keep	-	-	rpardini-linux	y	rk3588-rtl-eth
+K5	kernel	b4/rk3588-dts-rtl-eth-describe-dt-alias-v6-next	-	keep	-	-	rpardini-linux	y	-
+K4b	kernel	b4/dt-bindings-net-realtek-rtl8125	-	keep	-	-	rpardini-linux	y	rtl8125-binding
+K6	kernel	mainline/rk35xx-mac-from-otp	v7.3-rcX-rk35xx-MAC-from-OTP-plus-RTL-DT	copy	-	-	rpardini-linux	-	-
+K7	kernel	b4/nio-12l-add-i2c-40-pin	-	keep	-	-	rpardini-linux	y	-
+K8	kernel	mainline/nio-12l-fixes	v7.2-mediatek-nio-12l-fixes	copy	-	-	rpardini-linux	-	-
+K9	kernel	b4/rk3588-combphy-sata2-6g-v7.3.y	-	keep	-	-	rpardini-linux	y	-
+K10	kernel	mainline/recomputer-rk3588-devkit	v7.2-add-recomputer-rk3588-devkit	copy	-	-	rpardini-linux	-	-
+K11	kernel	mainline/recomputer-rk3576-devkit	v7.2-rc2-add-recomputer-rk3576-devkit	copy	-	-	rpardini-linux	-	-
+K12	kernel	mainline/mixtile-blade3-rework	v7.2-rcX-rework-mixtile-blade3	copy	-	-	rpardini-linux	-	-
+#K13	kernel	mainline/rk3528-tsadc	-	pick	v7.3	c9b9ecddb12855c3a32c2993183e436aa4b03fc2,a04e8ba8ef8d101d976b8da29249fff928fd164a,fd6f28ece9da7f3ae9f6d0b52ac80140d8cafdd0,9e0b1b348a8e75e1ee70f8692c84094accbab8d2	rpardini-linux	-	-
+#K14	kernel	mainline/pmdomain-rockchip-dev-err-probe	-	pick	v7.3	ba4c7d41127a1b8a05445d2e220858519c5c3df2	rpardini-linux	-	-
+#K15	kernel	mainline/radxa-e24c-mainline-dt	-	pick	v7.3	d6a81f50a27e64461fabf816be944ca56a2a49b1,d9c52c7a8a356fe6687b6e509a52bf64585832ac	rpardini-linux	-	-
+K16	kernel	mainline/fusb302-drain-rx-fifo	-	pick	v7.3	c1970641078dd0ccce3ccecbcc04ceb56ef43c30	rpardini-linux	-	-
+K17	kernel	mainline/vop2-post-buf-empty-irq	-	pick	v7.3	f4a7f84902bdacca4efdcb930bac5b923f4f76d5	rpardini-linux	-	-
+K18	kernel	mainline/phytium-stmmac	v7.1-add-phytium-stmmac	copy	-	-	rpardini-linux	-	-
+#K19	kernel	mainline/x13s-iris-camera	-	pick	v7.3	544a666aaceef205c5f0f7703310cb32549d4482,68ff037234db6858d04bdb0dcb74ff1989038c1e,2f1f6ab852f6966227005b23ef0a6b9b0253ec70	rpardini-linux	-	-
+#K20	kernel	mainline/t95z-plus	-	pick	v7.3	bf5e1cea52328349e6ee2e7293917d41ab4caa48,c11a06db076f7968a0ef50a6fc6dec0baa197f2a,772f3e77f63326d7cd28f848d6c38b7897e5ad47,3bbfdd11b18c1ded106ba34186204a1456ba0036	rpardini-linux	-	-
+K21	kernel	mainline/rk3588-npu-all-boards	v7.1-rc4-rk3588-add-npu-all-opus	copy	-	-	rpardini-linux	-	-
+K22	kernel	mainline/tm16xx-spi-autoload	-	pick	v7.3	1be540cbce71da927e516c89a50c75ecca504aaf,cfc5b0db5dc305597e8dc56b90ca417fa2992dbb,1a2de927687697e8805fd88587649844c6891a2b,f5f6030d9fbdad9e91cb9f187ca21d6023d21e28,6ec51616e81a658a3278faadc11292a729915bcb,4db0b95b207db0c4dcf593e1de814bf08a3d7ec6,039320b80d856da5cc7b1a29cc8cf047ac8af01e	rpardini-linux	-	-
+K23	kernel	b4/mt8195-cec	-	keep	-	-	rpardini-linux	y	-
+KA1	kernel	armbian-tree/rockchip64-7.2-20260915	armbian-armsurvivors-rockchip64-7.2-20260915	copy	-	-	rpardini-linux	-	-
+KA2	kernel	armbian-tree/rockchip64-7.2-20260813-e24c	armbian-armsurvivors-rockchip64-7.2-20260813	copy	-	-	rpardini-linux	-	-
+KA3	kernel	armbian-tree/rockchip64-7.3-20261022-blade3-fusb302	armbian-armsurvivors-rockchip64-7.3-20261022-blade3-tcpm-fusb302-debug	copy	-	-	rpardini-linux	-	-
+KA4	kernel	armbian-tree/sc8280xp-7.3-20261104-x13s	armbian-armsurvivors-sc8280xp-7.3-20261104-x13s	copy	-	-	rpardini-linux	-	-
+KA5	kernel	armbian-tree/meson64-7.2-20260923-t95z	armbian-armsurvivors-meson64-7.2-20260923	copy	-	-	rpardini-linux	-	-
+RK1	kernel	rk61/blade3-fusb302-pd-debug	nyanmisaka-rk-6.1-rkr7.2-fixes	copy	-	-	rpardini-armbian-linux-rockchip-rk3588	-	-
+RK2	kernel	rk61/bcmdhd-pcie-sdio	rk-6.1-rkr7.2-20260807-bcmdhd-pcie-sdio	copy	-	-	rpardini-armbian-linux-rockchip-rk3588	-	-
+U1	u-boot	b4/rk3588-sata-fixes-v2027.01	-	keep	-	-	rpardini-armbian	y	-
+#U2	u-boot	mainline/blade3-fusb302-tcpm	-	pick	v2026.10	84c8d44cb2cd6c3e13ef225e8e13c4ae8341ec90,e6d3a560de18fd1726b4e156341a6cbae1d87649,d92ab23bb722d9b3386172df9981c637d7e497f1,bf6a39d698d86dd8caf0878adcd4ce0641c583e6,874fd9d3ffd422129b56e2a7c750e615e031139d,1ac98d467912662377b1cf62976e74d029299cb4,1ee6443a60fe163e76c64136aa1a9a68401cb065	rpardini-armbian	-	-
+UA1	u-boot	armbian-tree/blade3-edge-20261022-debug-usbpd	armbian-armsurvivors-mixtile-blade3-edge-20261022-debug-usbpd	copy	-	-	rpardini-armbian	-	-
+U3	u-boot	mainline/pxe-http-boot	-	pick	v2026.10	23602a8d62588d8b5f630b62a8da2eca043f8f0c,55ea3698959d2c8d07e85478e37795cbe48704ba,8e868e03d8babdb94a7516f1143bbfe4cb5f9a3e	rpardini-armbian	-	-
+UA2	u-boot	armbian-tree/pxe-http-boot	pxe-http-boot	copy	-	-	rpardini-armbian	-	-
+U4	u-boot	mainline/rk3528-e24c	radxa-e24c-26.07-split	copy	-	-	rpardini-armbian	-	-
+U5	u-boot	mainline/rk3588-stable-gmac-mac	rk3588-stable-gmac-of-wip	copy	-	-	rpardini-armbian	-	-
+U6	u-boot	mainline/genio-mt8195-nio-12l	work-genio-mt8195-final	copy	-	-	rpardini-armbian	-	-
+UA3	u-boot	armbian-tree/blade3-vendor-20261022-pd-debug	armbian-armsurvivors-mixtile-blade3-vendor-20261022	copy	-	-	rpardini-armbian	-	-

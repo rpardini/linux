@@ -6,7 +6,7 @@
 #
 # Usage: [DRY_RUN=0] scripts/11-vm-checkout.sh <topic-id|branch> [--repo kernel|u-boot] [--worktree [path]]
 #   default         git switch <branch> in the main tree (refuses if tracked files are dirty)
-#   --worktree      git worktree add <path> <branch>; path defaults to $LINUXDEV_ROOT/<repo>-<id|branch>
+#   --worktree      git worktree add <path> <branch>; path defaults to $LINUXDEV_ROOT/<repo>-<slug|id|branch>
 #   --repo          only needed for branches not listed in topics.tsv (default: kernel)
 source "$(dirname "$0")/lib.sh"
 
@@ -27,10 +27,11 @@ while (($#)); do
 done
 dry_run_banner
 
-id="" repo="" branch="" remote="" b4=""
+id="" repo="" branch="" remote="" b4="" slug=""
 if row="$(topic_row "$key")" && [[ -n "$row" ]]; then
-	IFS=$'\t' read -r id repo branch _ _ _ _ remote b4 <<< "$row"
+	IFS=$'\t' read -r id repo branch _ _ _ _ remote b4 slug <<< "$row"
 	[[ "$remote" == "-" ]] && remote=""
+	[[ "$slug" == "-" ]] && slug=""
 	[[ "$b4" == "-" ]] && b4=""
 else
 	repo="${REPO_OPT:-kernel}" branch="$key"
@@ -69,7 +70,7 @@ if [[ "$b4" == "y" ]]; then
 fi
 
 if ((WORKTREE)); then
-	[[ -n "$WT_PATH" ]] || WT_PATH="$LINUXDEV_ROOT/$repo-${id:-${branch//\//-}}"
+	[[ -n "$WT_PATH" ]] || WT_PATH="$LINUXDEV_ROOT/$repo-${slug:-${id:-${branch//\//-}}}"
 	if [[ -e "$WT_PATH" ]]; then
 		die "$WT_PATH already exists"
 	fi

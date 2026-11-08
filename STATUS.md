@@ -18,7 +18,8 @@ Inventory as of 2026-11-06 (kernel v7.3 / u-boot v2026.10).
 | K1 | rk3588 NPU enablements | `b4/arm64-dts-rockchip-rk3588-npu-enablements` | merged (v2, v6.20/7.0 cycle) | — | change-id `20251230-arm64-dts-rockchip-rk3588-npu-enablements-1e2830d2e7b0` |
 | K2 | Radxa Zero 2: type-C controller, NPU | `b4/arm64-dts-amlogic-radxa-zero2-additions` | merged (v2, v6.20/7.0 cycle) | — | change-id `20260114-arm64-dts-amlogic-radxa-zero2-additions-905549fbed3e` |
 | K3 | NanoPC-T6 regulator names per schematic | `b4/rk3588-dts-rockchip-nanopct6-fix-schematic-names` | merged (v1) | — | change-id `20260603-rk3588-dts-rockchip-nanopct6-fix-schematic-names-a1b8d27f82e7` |
-| K4 | RTL8125 PCIe Ethernet in DT + `realtek,rtl8125` binding (NanoPC-T6, ROCK 5 family/ITX, CM3588-NAS, R5S, R6C) | `b4/rk3588-dts-rtl-eth-describe-dt-alias-v6` (`-v6-next` variant) | sent v5 (2026-09-10); v6 prepared | send v6? | change-id `20260524-rk3588-dts-rtl-eth-describe-dt-alias-c1ed187b7c50`; Arm: `kernel/archive/rockchip64-7.{3,4}/rk3588-1220-…-many-boards.patch`. Old: `-v5`, `-ALL-BOARDS` |
+| K4 | RTL8125 PCIe Ethernet in DT (NanoPC-T6, ROCK 5 family/ITX, CM3588-NAS, R5S, R6C) | `b4/rk3588-dts-rtl-eth-describe-dt-alias-v6-v7.4` | sent v5 (2026-09-10); v6 prepared (v7.4-rc1, binding split out to K4b) | send K4b first, then v6; bus-range on 4 boards still open | change-id `20260524-rk3588-dts-rtl-eth-describe-dt-alias-c1ed187b7c50`; worktree `kernel-rk3588-rtl-eth`; Arm: `kernel/archive/rockchip64-7.{3,4}/rk3588-1220-…-many-boards.patch`; notes `notes/kernel/rk3588-rtl8125-dt.md`; lore `lore/topics/K4` |
+| K4b | dt-bindings: net: `realtek,rtl8125` (split from K4 v5 1/7, Rob's R-b) | `b4/dt-bindings-net-realtek-rtl8125` | prepared (v1, net-next) | review cover, send | change-id `20261108-dt-bindings-net-realtek-rtl8125-991226c1733f`; base net-next/main; worktree `kernel-rtl8125-binding`; notes `notes/kernel/rk3588-rtl8125-dt.md` |
 | K6 | rk35xx MAC addresses from OTP (nvmem cpuid layouts RK3588/RK3568, GMAC + RTL8125 per-board) | `mainline/rk35xx-mac-from-otp` | wip | wait for dep | **On top of K4 and of someone else's nvmem serial#/cpuid series** — track that series; rebase when it lands |
 | K7 | Nio-12L: i2c3 on 40-pin, drop i2c2 drive-strength | `b4/nio-12l-add-i2c-40-pin` | sent v2 (2026-06-24); v3 prepared | ping / resend | change-id `20260624-nio-12l-add-i2c-40-pin-19e0482fd835` |
 | K8 | Nio-12L: UFS lanes, onboard LEDs, ASoC mediatek DAI-link refs (+K7) | `mainline/nio-12l-fixes` | wip | split: DT vs ASoC | Arm: `kernel/archive/genio-7.3/300{3,4}-*` |
@@ -92,7 +93,7 @@ Dropped: `mpp-report-zero-load-for-idle` — not needed on rkr7.2 (Rockchip solv
 - Snapshots / mirrors: `*-pristine`, `stable-google-*`, `android_*`, `torvalds-master-*`, `linux-6.19.y`, `friendlyelec_*`, `radxa-linux-*`, `collabora-*`, `kwiboo-*`, `flipperdevices-*`, `v6.18.44-openwrt-*`, `odroid-6.17.y-rebased`, u-boot `v20*-pristine`, `master-*`, `rockchip-linux-v5-*`, `kwiboo-denx-*`.
 - Dated integration branches: `rk-6.1-rkr7.2-2026MMDD*`, `rk-6.1-rkr5.1-2026MMDD*`, `nyanmisaka-rk-6.1-rkr7{,.2}`.
 - README branches with nothing on top: `armbian-armsurvivors-*` not listed above (u-boot `radxa-e24c-edge-*`, `mixtile-blade3-edge-2026{0411,0718}`, `radxa-nio-12l-*`).
-- Superseded: `b4/rk3588-dts-rtl-eth-describe-dt-alias-{v5,ALL-BOARDS}`, `v7.2-rc2-add-recomputer-rk3588-devkit-{claude,copilot-FAIL}`, `v7.1-rc4-add-rk3588-npu-all{,-sonnet}`, `rk3576-devkit-rework`, `meko-r58x-pro-LCD-brightness-claude`, `zero2-stuff`, `radxa-zero2-fusb302-*`, `radxa-e24c-26.07`, `rk3588-stable-gmac-of`, `work-genio-mt8195`, `rpardini-armbian-workbranch` (e24c hang debug), `rk-6.1-rkr7.2-fix-arm-32-bits-build-drop-missing-dt` (in armbian already), the landed B branches listed in section B, `backup/*`, `backup-before-mathh-rework`.
+- Superseded: `b4/rk3588-dts-rtl-eth-describe-dt-alias-{v5,ALL-BOARDS,v6,v6-next}` (K5 = `-v6-next`, on next-20260910, became K4's `-v6-v7.4`), `v7.2-rc2-add-recomputer-rk3588-devkit-{claude,copilot-FAIL}`, `v7.1-rc4-add-rk3588-npu-all{,-sonnet}`, `rk3576-devkit-rework`, `meko-r58x-pro-LCD-brightness-claude`, `zero2-stuff`, `radxa-zero2-fusb302-*`, `radxa-e24c-26.07`, `rk3588-stable-gmac-of`, `work-genio-mt8195`, `rpardini-armbian-workbranch` (e24c hang debug), `rk-6.1-rkr7.2-fix-arm-32-bits-build-drop-missing-dt` (in armbian already), the landed B branches listed in section B, `backup/*`, `backup-before-mathh-rework`.
 - Dropped: u-boot `v2026.01-opi5plus` (odroid-sm1 regulator-boot-on).
 
 ## Scripts
@@ -104,6 +105,8 @@ On the Mac (`LINUXDEV_ROOT=/Volumes/LinuxDev`, the default here):
 2. `scripts/02-push.sh` — push them as `linuxdev-work/<branch>`, plus b4 `sent/*` tags and this `status` branch (as `linuxdev-work/status`), no force.
 3. `scripts/03-verify.sh` — local vs fork, per topic (read-only).
 
+Anywhere: `scripts/20-lore.sh init|mine|topic <ID>|sashiko <ID>|all <ID>|up` — lore mail via lei + Sashiko reviews into `$LINUXDEV_ROOT/lore` (how-to: `notes/lore-lei.md`). Agent instructions: `AGENTS.md`.
+
 On a VM / remote host:
 ```sh
 mkdir -p ~/linuxdev && cd ~/linuxdev
@@ -111,5 +114,5 @@ git clone -b linuxdev-work/status --single-branch git@github.com:rpardini/linux.
 DRY_RUN=0 linuxdev-status/scripts/10-vm-clone-main.sh kernel --blobless   # main tree ~/linuxdev/kernel
 DRY_RUN=0 linuxdev-status/scripts/10-vm-clone-main.sh u-boot
 DRY_RUN=0 linuxdev-status/scripts/11-vm-checkout.sh K9                    # switch main tree to K9's branch
-DRY_RUN=0 linuxdev-status/scripts/11-vm-checkout.sh U1 --worktree         # ~/linuxdev/u-boot-U1
+DRY_RUN=0 linuxdev-status/scripts/11-vm-checkout.sh U1 --worktree         # ~/linuxdev/u-boot-<slug|U1> (slug column in topics.tsv)
 ```
