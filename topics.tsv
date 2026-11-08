@@ -6,7 +6,6 @@ K1	kernel	b4/arm64-dts-rockchip-rk3588-npu-enablements	-	keep	-	-	rpardini-linux
 K2	kernel	b4/arm64-dts-amlogic-radxa-zero2-additions	-	keep	-	-	rpardini-linux	y	-
 K3	kernel	b4/rk3588-dts-rockchip-nanopct6-fix-schematic-names	-	keep	-	-	rpardini-linux	y	-
 K4	kernel	b4/rk3588-dts-rtl-eth-describe-dt-alias-v6-v7.4	-	keep	-	-	rpardini-linux	y	rk3588-rtl-eth
-K5	kernel	b4/rk3588-dts-rtl-eth-describe-dt-alias-v6-next	-	keep	-	-	rpardini-linux	y	-
 K4b	kernel	b4/dt-bindings-net-realtek-rtl8125	-	keep	-	-	rpardini-linux	y	rtl8125-binding
 K6	kernel	mainline/rk35xx-mac-from-otp	v7.3-rcX-rk35xx-MAC-from-OTP-plus-RTL-DT	copy	-	-	rpardini-linux	-	-
 K7	kernel	b4/nio-12l-add-i2c-40-pin	-	keep	-	-	rpardini-linux	y	-
