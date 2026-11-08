@@ -203,6 +203,10 @@
 	status = "okay";
 };
 
+&cec {
+	status = "okay";
+};
+
 &cpu0 {
 	cpu-supply = <&mt6359_vcore_buck_reg>;
 };
