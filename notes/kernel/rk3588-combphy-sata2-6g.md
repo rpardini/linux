@@ -32,13 +32,10 @@ Only sata2 was tested.
 
 ## Before sending
 
-1. **Signed-off-by** has to be added by the user (AI must not add it, per Documentation/process/coding-assistants.rst):
-   `cd /opt/linuxdev/kernel-rk3588-combphy-sata2-6g && git commit --amend -s --no-edit`
-2. **Signing / B4 Relay** isn't set up on this VM yet (no patatt, GPG or b4 relay config). Copy the Mac setup over:
-   the key (patatt ed25519 or GPG), `patatt.signingkey`, `b4.send-endpoint-web`. Check with `b4 send --dry-run`.
-   The same applies to K4 and K4b. Confirmed: `b4 send -o` stops with "CRITICAL: patatt.signingkey is not set".
-3. `b4 prep --check` passes 1/1. There's no `Assisted-by` (user: the kernel doesn't take it anymore). b4 seems to fill in the SoB when rendering, but add it explicitly anyway.
-4. Run `b4 send --dry-run`, then send.
+1. Signed-off-by: added by the user on 2026-11-08.
+2. Signing: GPG key set up on this VM on 2026-11-08 (see AGENTS.md). `b4 send --dry-run` produces an openpgp-sha256 `X-Developer-Signature`.
+3. `b4 prep --check` passes 1/1. There's no `Assisted-by` (user: the kernel doesn't take it anymore).
+4. The dry-run is OK. Next: force-push the branch (the SoB amend changed its hash), then `b4 send`.
 
 ## Checks run
 
