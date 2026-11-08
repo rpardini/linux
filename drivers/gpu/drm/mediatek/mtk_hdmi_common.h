@@ -138,6 +138,7 @@ struct mtk_hdmi_ver_conf {
 	const char * const *mtk_hdmi_clock_names;
 	int num_clocks;
 	bool interlace_allowed;
+	bool has_cec_hpd;
 };
 
 struct mtk_hdmi_conf {

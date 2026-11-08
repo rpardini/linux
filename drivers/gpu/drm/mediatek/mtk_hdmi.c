@@ -1205,7 +1205,8 @@ static const struct mtk_hdmi_ver_conf mtk_hdmi_v1_ver_conf = {
 	.bridge_funcs = &mtk_hdmi_bridge_funcs,
 	.codec_ops = &mtk_hdmi_audio_codec_ops,
 	.mtk_hdmi_clock_names = mtk_hdmi_clk_names,
-	.num_clocks = ARRAY_SIZE(mtk_hdmi_clk_names)
+	.num_clocks = ARRAY_SIZE(mtk_hdmi_clk_names),
+	.has_cec_hpd = true,
 };
 
 static const struct mtk_hdmi_conf mtk_hdmi_conf_mt2701 = {
