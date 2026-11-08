@@ -1,0 +1,81 @@
+=> version
+U-Boot 2027.01-rc1_armbian-2027.01-rc1-Sdfcf-P22bf-H0438-Vbf6d-Bb936-R448a (Nov 07 2026 - 20:46:08 +0000)
+
+aarch64-linux-gnu-gcc (Debian 14.2.0-19) 14.2.0
+GNU ld (GNU Binutils for Debian) 2.44
+=> scsi info
+Device 0: (0:0) Vendor: SAMSUNG Prod.: KLUEG8U1EA-B0C1 Rev: 0400
+            Type: Hard Disk
+            Capacity: 4.0 MB = 0.0 GB (1024 x 4096)
+Device 1: (0:1) Vendor: SAMSUNG Prod.: KLUEG8U1EA-B0C1 Rev: 0400
+            Type: Hard Disk
+            Capacity: 4.0 MB = 0.0 GB (1024 x 4096)
+Device 2: (0:2) Vendor: SAMSUNG Prod.: KLUEG8U1EA-B0C1 Rev: 0400
+            Type: Hard Disk
+            Capacity: 244064.0 MB = 238.3 GB (62480384 x 4096)
+=> mmc list # rpardini: there isnt emmc on this board
+mmc@11230000: 0
+mmc@11240000: 1
+=> printenv
+arch=arm
+baudrate=921600
+board=mt8195
+board_name=mt8195
+boot_targets=mmc1 scsi mmc0 usb pxe dhcp
+bootcmd=bootflow scan -lb
+bootdelay=2
+cpu=armv8
+fdt_addr_r=0x56000000
+fdtcontroladdr=ffb18f70
+fdtfile=mediatek/mt8395-radxa-nio-12l.dtb
+fdtoverlay_addr_r=0x58000000
+kernel_addr_r=0x44000000
+loadaddr=0x60000000
+pxefile_addr_r=0x43000000
+ramdisk_addr_r=0x64000000
+scriptaddr=0x43000000
+soc=mediatek
+stderr=serial@11001100
+stdin=serial@11001100
+stdout=serial@11001100
+usb_ignorelist=0x1050:*,
+vendor=mediatek
+
+Environment size: 504/8188 bytes
+=> meminfo
+DRAM:  16 GiB
+=> bdinfo
+boot_params = 0x0000000000000000
+DRAM bank   = 0x0000000000000000
+-> start    = 0x0000000040000000
+-> size     = 0x0000000400000000
+flashstart  = 0x0000000000000000
+flashsize   = 0x0000000000000000
+flashoffset = 0x0000000000000000
+baudrate    = 921600 bps
+relocaddr   = 0x00000000fff3a000
+reloc off   = 0x00000000b3f3a000
+Build       = 64-bit
+current eth = unknown
+eth-1addr   = (not set)
+IP addr     = <NULL>
+fdt_blob    = 0x00000000ffb18f70
+lmb_dump_all:
+ memory.count = 0x1
+ memory[0]	[0x40000000-0x43fffffff], 0x400000000 bytes, flags: none
+ reserved.count = 0x8
+ reserved[0]	[0x43200000-0x43dfffff], 0xc00000 bytes, flags: no-map
+ reserved[1]	[0x50000000-0x528fffff], 0x2900000 bytes, flags: no-map
+ reserved[2]	[0x53000000-0x543fffff], 0x1400000 bytes, flags: no-overwrite
+ reserved[3]	[0x54600000-0x547fffff], 0x200000 bytes, flags: no-map
+ reserved[4]	[0x60000000-0x610fffff], 0x1100000 bytes, flags: no-map
+ reserved[5]	[0x62000000-0x633fffff], 0x1400000 bytes, flags: no-overwrite
+ reserved[6]	[0xfeb0d000-0xfeb17fff], 0xb000 bytes, flags: no-notify, no-overwrite
+ reserved[7]	[0xfeb18f60-0x43fffffff], 0x3414e70a0 bytes, flags: no-overwrite
+devicetree  = separate
+arch_number = 0x0000000000000000
+TLB addr    = 0x00000000ffff0000
+irq_sp      = 0x00000000ffb18f60
+sp start    = 0x00000000ffb18f60
+Early malloc usage: 980 / 2000
+=>

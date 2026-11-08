@@ -1,0 +1,50 @@
+=> mmc list
+mmc@11230000: 0
+mmc@11240000: 1
+=> mmc dev 0
+Card did not respond to voltage select! : -110
+=> mmc dev 1
+switch to partitions #0, OK
+mmc1 is current device
+=> mmc info
+Device: mmc@11240000
+Manufacturer ID: 3
+OEM: 5344
+Name: SD64G
+Bus Speed: 50000000
+Mode: SD High Speed (50MHz)
+Rd Block Len: 512
+SD version 3.0
+High Capacity: Yes
+Capacity: 59.5 GiB
+Bus Width: 4-bit
+Erase Group Size: 512 Bytes
+=> scsi list
+scsi - SCSI sub-system
+
+Usage:
+scsi info  - show available SCSI devices
+scsi scan  - (re-)scan SCSI bus
+scsi device [dev] - show or set current device
+scsi part [dev] - print partition table of one or all SCSI devices
+scsi read addr blk# cnt - read `cnt' blocks starting at block `blk#'
+     to memory address `addr'
+scsi write addr blk# cnt - write `cnt' blocks starting at block
+     `blk#' from memory address `addr'
+scsi erase blk# cnt - erase `cnt' blocks starting at block `blk#'
+=> scsi dev 2
+
+Device 2: (0:2) Vendor: SAMSUNG Prod.: KLUEG8U1EA-B0C1 Rev: 0400
+            Type: Hard Disk
+            Capacity: 244064.0 MB = 238.3 GB (62480384 x 4096)
+... is now current device
+=> scsi info
+Device 0: (0:0) Vendor: SAMSUNG Prod.: KLUEG8U1EA-B0C1 Rev: 0400
+            Type: Hard Disk
+            Capacity: 4.0 MB = 0.0 GB (1024 x 4096)
+Device 1: (0:1) Vendor: SAMSUNG Prod.: KLUEG8U1EA-B0C1 Rev: 0400
+            Type: Hard Disk
+            Capacity: 4.0 MB = 0.0 GB (1024 x 4096)
+Device 2: (0:2) Vendor: SAMSUNG Prod.: KLUEG8U1EA-B0C1 Rev: 0400
+            Type: Hard Disk
+            Capacity: 244064.0 MB = 238.3 GB (62480384 x 4096)

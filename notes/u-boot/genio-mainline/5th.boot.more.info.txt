@@ -1,0 +1,96 @@
+NOTICE:  [APUSYS] apusys_init -
+INFO:    BL31: Initializing runtime services
+WARNING: No OPTEE provided by BL2 boot loader, Booting device without OPTEE initialization. SMC`s destined for OPTEE will return SMC_UNK
+ERROR:   Error initializing runtime service opteed_fast
+INFO:    SPM: enable CPC mode
+INFO:    mcdi ready for mcusys-off-idle and system suspend
+INFO:    BL31: Preparing for EL3 exit to normal world
+INFO:    Entry point address = 0x4c000000
+INFO:    SPSR = 0x3c9
+
+
+U-Boot 2027.01-rc1_armbian-2027.01-rc1-Sdfcf-P7913-Hd2eb-Vbf6d-Bb936-R448a (Nov 07 2026 - 23:43:07 +0000)
+
+CPU:   MediaTek MT8195
+Model: Radxa NIO 12L
+DRAM:  16 GiB
+Core:  174 devices, 26 uclasses, devicetree: separate
+WDT:   Started watchdog@10007000 with servicing every 1000ms (60s timeout)
+MMC:   mmc@11240000: 1
+mediatek-ufshci ufshci@11270000: [RX, TX]: gear=[3, 3], lane[1, 1], pwr[FAST MODE, FAST MODE], rate = 2
+Loading Environment from SCSI... OK
+In:    serial@11001100
+Out:   serial@11001100
+Err:   serial@11001100
+Net:   mt8195_power_domain power-controller: power-domain@15: failed to get subsys clk at index 8: -19
+mt8195_power_domain power-controller: failed to add child domain: power-domain@15
+eth0: ethernet@11021000
+Hit any key to stop autoboot: 0
+=> printenv
+arch=arm
+baudrate=921600
+board=mt8195
+board_name=mt8195
+boot_targets=mmc1 scsi mmc0 usb pxe dhcp
+bootcmd=bootflow scan -lb
+bootdelay=2
+cpu=armv8
+ethaddr=12:f3:ae:d1:ac:1e
+fdt_addr_r=0x56000000
+fdtcontroladdr=ffadff30
+fdtfile=mediatek/mt8395-radxa-nio-12l.dtb
+fdtoverlay_addr_r=0x58000000
+kernel_addr_r=0x44000000
+loadaddr=0x44000000
+pxefile_addr_r=0x43000000
+raios=ricardo1
+ramdisk_addr_r=0x64000000
+scriptaddr=0x43000000
+serial#=3cdd6541ee1e
+soc=mediatek
+stderr=serial@11001100
+stdin=serial@11001100
+stdout=serial@11001100
+usb_ignorelist=0x1050:*,
+vendor=mediatek
+
+Environment size: 566/8188 bytes
+=> net list
+eth0 : ethernet@11021000 12:f3:ae:d1:ac:1e active
+=> dhcp
+ethernet@11021000 Waiting for PHY auto negotiation to complete...... done
+DHCP client bound to address 192.168.66.83 (506 ms)
+error: ipaddr_aton
+=> ping 192.168.66.1
+Using ethernet@11021000 device
+host 192.168.66.1 is alive
+=> wget http://ifconfig.me/
+##################################################
+5542 bytes transferred in 1 ms (5.3 MiB/s)
+Bytes transferred = 5542 (15a6 hex)
+=> usb start
+starting USB...
+USB XHCI 1.10
+USB XHCI 1.10
+Bus usb@11290000: 2 USB Device(s) found
+Bus usb@0: 1 USB Device(s) found
+       scanning usb for storage devices... 0 Storage Device(s) found
+=> usb tree
+USB device tree:
+  1  Hub (5 Gb/s, 0mA)
+  |  U-Boot XHCI Host Controller
+  |
+  +-2   (480 Mb/s, 100mA)
+       MediaTek Inc. Wireless_Device 000000000
+
+  1  Hub (5 Gb/s, 0mA)
+     U-Boot XHCI Host Controller
+
+=> ums 0 scsi 2
+UMS: LUN 0, dev scsi 2, hwpart 0, sector 0x0, count 0x3b96000
+CTRL+C - Operation aborted
+=> echo "UMS works: host detected sd 1:0:0:0: [sdc] 62480384 4096-byte logical blocks: (256 GB/238 GiB)"
+UMS works: host detected sd 1:0:0:0: [sdc] 62480384 4096-byte logical blocks: (256 GB/238 GiB)
+=> echo "USB Type-A doesnt work: I've 2 devices plugged in and they don't show"
+USB Type-A doesnt work: Ive 2 devices plugged in and they dont show
+=>

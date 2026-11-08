@@ -9,6 +9,8 @@ kernel	armbian-linux-rockchip	git@github.com:armbian/linux-rockchip.git	n
 kernel	nyanmisaka-rockchip	git@github.com:nyanmisaka/linux-rockchip.git	n
 kernel	kwiboo-rockchip	https://github.com/Kwiboo/linux-rockchip.git	n
 kernel	collabora-mediatek	https://gitlab.collabora.com/mediatek/aiot/linux.git	n
+kernel	mediatek-aiot	https://gitlab.com/mediatek/aiot/bsp/linux.git	n
+kernel	canonical-linux-mtk	https://git.launchpad.net/~canonical-kernel/ubuntu/+source/linux-mtk/+git/jammy	n
 kernel	collabora-rk3588	https://gitlab.collabora.com/hardware-enablement/rockchip-3588/linux.git	n
 kernel	steev	https://github.com/steev/linux.git	n
 kernel	radxa	https://github.com/radxa/kernel.git	n

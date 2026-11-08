@@ -1,0 +1,2198 @@
+root@radxa-nio-12l:~# reboot
+         Stopping session-1.scope - Session 1 of User root...
+         Stopping session-2.scope - Session 2 of User root...
+         Stopping sess[  OK  ] Stopped target nss-lookup.target - Host and Network Name Lookups.
+[  OK  ] Stopped target rpcbind.target - RPC Port Mapper.
+[  OK  ] Stopped target sound.target - Sound Card.
+[  OK  ] Stopped target timers.target - Timer Units.
+[  OK  ] Stopped apt-daily-upgrade.timer - …y apt upgrade and clean activities.
+[  OK  ] Stopped apt-daily.timer - Daily apt download activities.
+[  OK  ] Stopped dpkg-db-backup.timer - Daily dpkg database backup timer.
+[  OK  ] Stopped e2scrub_all.timer - Period…Metadata Check for All Filesystems.
+[  OK  ] Stopped fstrim.timer - Discard unused filesystem blocks once a week.
+[  OK  ] Stopped logrotate.timer - Daily rotation of log files.
+[  OK  ] Stopped man-db.timer - Daily man-db regeneration.
+[  OK  ] Stopped systemd-tmpfiles-clean.tim…y Cleanup of Temporary Directories.
+[  OK  ] Stopped target time-set.target - System Time Set.
+[  OK  ] Stopped target usb-gadget.target - Hardware activated USB gadget.
+[  OK  ] Closed cloud-init-hotplugd.socket - cloud-init hotplug hook socket.
+[  OK  ] Closed lvm2-lvmpolld.socket - LVM2 poll daemon socket.
+[  OK  ] Closed systemd-rfkill.socket - Loa…ll Switch Status /dev/rfkill Watch.
+         Stopping armbian-led-state.service - Armbian leds state...
+         Stopping blk-availability.service - Availability of block devices...
+[  OK  ] Stopped cloud-final.service - Cloud-init: Final Stage.
+[  OK  ] Stopped target multi-user.target - Multi-User System.
+[  OK  ] Stopped target getty.target - Login Prompts.
+[  OK  ] Stopped target machines.target - Containers.
+[  OK  ] Stopped cloud-config.service - Cloud-init: Config Stage.
+[  OK  ] Stopped target cloud-config.target - Cloud-config availability.
+         Stopping cron.service - Regular ba…ground program processing daemon...
+         Stopping getty@tty1.service - Getty on tty1...
+         Stopping libvirt-guests.service - …rt guests suspend/resume service...
+[  OK  ] Stopped lm-sensors.service - Initialize hardware monitoring sensors.
+         Stopping nfs-blkmap.service - pNFS block layout mapping daemon...
+         Stopping serial-getty@ttyS0.service - Serial Getty on ttyS0...
+         Stopping ssh.service - OpenBSD Secure Shell server...
+         Stopping systemd-machined.service …d Container Registration Service...
+         Stopping systemd-networkd-persiste…tent Storage in systemd-networkd...
+         Stopping systemd-random-seed.service - Load/Save OS Random Seed...
+[  OK  ] Stopped systemd-udev-load-credenti…- Load udev Rules from Credentials.
+         Stopping virtlogd.service - libvirt logging daemon...
+[  OK  ] Stopped nfs-blkmap.service - pNFS block layout mapping daemon.
+[  OK  ] Stopped cron.service - Regular background program processing daemon.
+[  OK  ] Stopped systemd-machined.service -…and Container Registration Service.
+[  OK  ] Stopped virtlogd.service - libvirt logging daemon.
+[  OK  ] Stopped ssh.service - OpenBSD Secure Shell server.
+[  OK  ] Stopped getty@tty1.service - Getty on tty1.
+[  OK  ] Stopped armbian-led-state.service - Armbian leds state.
+[  OK  ] Stopped blk-availability.service - Availability of block devices.
+[  OK  ] Stopped systemd-networkd-persisten…istent Storage in systemd-networkd.
+[  OK  ] Stopped systemd-random-seed.service - Load/Save OS Random Seed.
+[  OK  ] Stopped session-4.scope - Session 4 of User root.
+[  OK  ] Stopped session-1.scope - Session 1 of User root.
+[  OK  ] Removed slice system-getty.slice - Slice /system/getty.
+[  OK  ] Stopped target rpc_pipefs.target.
+         Unmounting run-rpc_pipefs.mount - RPC Pipe File System...
+[  OK  ] Stopped serial-getty@ttyS0.service - Serial Getty on ttyS0.
+[  OK  ] Unmounted run-rpc_pipefs.mount - RPC Pipe File System.
+[  OK  ] Stopped session-2.scope - Session 2 of User root.
+[  OK  ] Removed slice system-serial\x2dget…slice - Slice /system/serial-getty.
+[  OK  ] Stopped rc-local.service - /etc/rc.local Compatibility.
+[  OK  ] Stopped target network-online.target - Network is Online.
+[  894.601224] libvirt-guests.sh[2663]: Can't connect to default. Skipping.
+         Stopping systemd-user-sessions.service - Permit User Sessions...
+         Stopping user@0.service - User Manager for UID 0...
+[  OK  ] Stopped libvirt-guests.service - l…virt guests suspend/resume service.
+[  OK  ] Stopped target virt-guest-shutdown…t - libvirt guests shutdown target.
+[  OK  ] Stopped systemd-user-sessions.service - Permit User Sessions.
+[  OK  ] Stopped target network.target - Network.
+[  OK  ] Stopped target remote-fs.target - Remote File Systems.
+[  OK  ] Stopped target remote-fs-pre.targe…reparation for Remote File Systems.
+[  OK  ] Stopped target nfs-client.target - NFS client services.
+         Stopping wpa_supplicant.service - WPA supplicant...
+[  OK  ] Stopped wpa_supplicant.service - WPA supplicant.
+[  OK  ] Stopped user@0.service - User Manager for UID 0.
+         Stopping user-runtime-dir@0.servic…er Runtime Directory /run/user/0...
+[  OK  ] Unmounted run-user-0.mount - /run/user/0.
+[  OK  ] Stopped user-runtime-dir@0.service…User Runtime Directory /run/user/0.
+[  OK  ] Removed slice user-0.slice - User Slice of UID 0.
+         Stopping dbus.service - D-Bus System Message Bus...
+         Stopping systemd-logind.service - User Login Management...
+[  OK  ] Stopped dbus.service - D-Bus System Message Bus.
+[  OK  ] Stopped systemd-logind.service - User Login Management.
+[  OK  ] Stopped target basic.target - Basic System.
+[  OK  ] Stopped target paths.target - Path Units.
+[  OK  ] Stopped systemd-ask-password-conso…equests to Console Directory Watch.
+[  OK  ] Stopped systemd-ask-password-wall.…d Requests to Wall Directory Watch.
+[  OK  ] Stopped target slices.target - Slice Units.
+[  OK  ] Removed slice machine.slice - Virtual Machine and Container Slice.
+[  OK  ] Removed slice user.slice - User and Session Slice.
+[  OK  ] Stopped target sockets.target - Socket Units.
+[  OK  ] Closed dbus.socket - D-Bus System Message Bus Socket.
+[  OK  ] Closed libvirtd-admin.socket - lib…acy monolithic daemon admin socket.
+[  OK  ] Closed libvirtd-ro.socket - libvir…monolithic daemon read-only socket.
+[  OK  ] Closed libvirtd.socket - libvirt legacy monolithic daemon socket.
+[  OK  ] Closed sshd-unix-local.socket - Op…temd-ssh-generator, AF_UNIX Local).
+[  OK  ] Closed systemd-hostnamed.socket - Hostname Service Socket.
+[  OK  ] Closed systemd-importd.socket - Disk Image Download Service Socket.
+[  OK  ] Closed virtlogd-admin.socket - libvirt logging daemon admin socket.
+[  OK  ] Closed virtlogd.socket - libvirt logging daemon socket.
+[  OK  ] Stopped target sysinit.target - System Initialization.
+[  OK  ] Stopped cloud-init-network.service - Cloud-init: Network Stage.
+         Stopping systemd-binfmt.service - Set Up Additional Binary Formats...
+[  OK  ] Stopped systemd-networkd-wait-onli… Wait for Network to be Configured.
+         Stopping systemd-networkd.service - Network Configuration...
+         Stopping systemd-resolved.service - Network Name Resolution...
+         Stopping systemd-timesyncd.service - Network Time Synchronization...
+[  OK  ] Stopped systemd-tmpfiles-setup.ser…reate System Files and Directories.
+[  OK  ] Stopped systemd-resolved.service - Network Name Resolution.
+[  OK  ] Stopped systemd-timesyncd.service - Network Time Synchronization.
+[  OK  ] Stopped systemd-networkd.service - Network Configuration.
+[  OK  ] Stopped systemd-binfmt.service - Set Up Additional Binary Formats.
+[  OK  ] Unset automount proc-sys-fs-binfmt…ormats File System Automount Point.
+[  OK  ] Stopped target local-fs.target - Local File Systems.
+[  OK  ] Stopped target network-pre.target - Preparation for Network.
+[  OK  ] Closed systemd-networkd.socket - Network Service Netlink Socket.
+         Unmounting run-lock.mount - Legacy Locks Directory /run/lock...
+         Unmounting tmp.mount - /tmp...
+[  OK  ] Stopped cloud-init-local.service -…ud-init: Local Stage (pre-network).
+[  OK  ] Stopped systemd-sysctl.service - Apply Kernel Variables.
+[  OK  ] Stopped systemd-modules-load.service - Load Kernel Modules.
+[  OK  ] Unmounted tmp.mount - /tmp.
+[  OK  ] Unmounted run-lock.mount - Legacy Locks Directory /run/lock.
+[  OK  ] Stopped target local-fs-pre.target…Preparation for Local File Systems.
+[  OK  ] Stopped target swap.target - Swaps.
+[  OK  ] Reached target umount.target - Unmount All Filesystems.
+         Stopping lvm2-monitor.service - Mo…ing dmeventd or progress polling...
+[  OK  ] Stopped systemd-remount-fs.service…mount Root and Kernel File Systems.
+[  OK  ] Stopped systemd-tmpfiles-setup-dev…Create Static Device Nodes in /dev.
+[  OK  ] Stopped systemd-tmpfiles-setup-dev…ic Device Nodes in /dev gracefully.
+[  OK  ] Stopped lvm2-monitor.service - Mon…using dmeventd or progress polling.
+[  OK  ] Reached target shutdown.target - System Shutdown.
+[  OK  ] Reached target final.target - Late Shutdown Services.
+[  OK  ] Finished systemd-reboot.service - System Reboot.
+[  OK  ] Reached target reboot.target - System Reboot.
+[  895.375742] watchdog: watchdog0: watchdog did not stop!
+[  895.393946] systemd-shutdown[1]: Using hardware watchdog 'mtk-wdt', version 0, device /dev/watchdog0
+[  895.393970] systemd-shutdown[1]: Watchdog running with a hardware timeout of 10min.
+[  895.409282] systemd-shutdown[1]: Syncing filesystems and block devices.
+[  895.416764] systemd-shutdown[1]: Sending SIGTERM to remaining processes...
+[  895.439478] systemd-journald[376]: Received SIGTERM from PID 1 (systemd-shutdow).
+[  895.461143] systemd-shutdown[1]: Sending SIGKILL to remaining processes...
+[  895.466471] systemd-shutdown[1]: Unmounting file systems.
+[  895.467381] (sd-umount)[2715]: Unmounting '/run/credentials/systemd-journald.service'.
+[  895.469152] (sd-remount)[2716]: Remounting '/' read-only with options 'errors=remount-ro'.
+[  895.479219] EXT4-fs (sdc1): re-mounted f4256ad4-1d31-40d1-939a-557cfd4d94ec ro.
+[  895.483400] systemd-shutdown[1]: All filesystems unmounted.
+[  895.483405] systemd-shutdown[1]: Deactivating swaps.
+[  895.483425] systemd-shutdown[1]: All swaps deactivated.
+[  895.483427] systemd-shutdown[1]: Detaching loop devices.
+[  895.484699] systemd-shutdown[1]: All loop devices detached.
+[  895.484702] systemd-shutdown[1]: Stopping MD devices.
+[  895.484764] systemd-shutdown[1]: All MD devices stopped.
+[  895.484766] systemd-shutdown[1]: Detaching DM devices.
+[  895.484812] systemd-shutdown[1]: All DM devices detached.
+[  895.484814] systemd-shutdown[1]: All filesystems, swaps, loop devices, MD devices and DM devices detached.
+[  895.484817] watchdog: watchdog0: watchdog did not stop!
+[  895.486197] systemd-shutdown[1]: Syncing filesystems and block devices.
+[  895.486930] systemd-shutdown[1]: Rebooting.
+[  895.500430] sd 1:0:0:0: [sdd] Synchronizing SCSI cache
+[  895.699585] sd 0:0:0:2: [sdc] Synchronizing SCSI cache
+[  895.726149] kvm: exiting hardware virtualization
+[  895.726873] reboot: Restarting system
+����������������������������������������������������������������������������������������������������������������������������������������������������������������������������������NOTICE:  BL2: v2.6(release):armbian
+NOTICE:  BL2: Built : 01:15:27, Nov  8 2026
+INFO:    BL2: Doing platform setup
+NOTICE:  WDT: Status = 0x40000000
+NOTICE:  WDT: Last reset was normal software reboot
+PLL init start...
+PLL init Done!
+MTCMOS init Start...
+MTCMOS init Done!
+switch to 26MHz
+ARMPLL_LL switch to OPP 0
+switch to ARMPLL_LL
+ARMPLL_LL_CON2: 0x133b13
+[PMIF] ULPOSC1 K done: 248M, PLL_ULPOSC1_CON0/1/2 0x38a949 0x41000029
+[PMIF] [pmifclkmgr_set_clk] CLK_CFG_9 = 3030100
+[pmifclkmgr_set_spmi_clk] done
+[pmifclkmgr_set_spi_clk] done
+[PMIF] pmif_spmi_force_normal_mode done
+[SPMI] spmi_config_master CLK_CFG_17 = 2000307
+[SPMI] b IOCFG_BM_EH_CFG0 0xfff
+[SPMI] IOCFG_BM_DRV_CFG3 0x12
+[SPMI] IOCFG_BM_EH_CFG0 0x3f
+[SPMI] IOCFG_BM_RSEL_CFG0 0x492
+[SPMI] 667: spmi_read_check next, slvid:6 rdata = 0x2a.
+[SPMI] spmi_read_check done, slvid:6
+[SPMI] non-rcs dly:0, pol:1, sampl:0x1
+[SPMI] 667: spmi_read_check next, slvid:7 rdata = 0x2a.
+[SPMI] spmi_read_check done, slvid:7
+[SPMI] non-rcs dly:0, pol:1, sampl:0x1
+[PWRAP] pwrap_init_preloader
+[PWRAP] is_pwrap_init_done 0
+[PWRAP] pwrap_init start!!!!!!!!!!!!!
+[PWRAP] Reset SPISLV ok
+[PWRAP] Set Read Dummy Cycle ok
+[PWRAP] _pwrap_init_dio ok
+[PWRAP] _pwrap_init_reg_clock ok
+[PWRAP] __pwrap_InitSPISLV ok
+[PWRAP] si_sampling_ck_dly = 0, si_sampling_ck_pol = 0
+[PWRAP] si_sample_ctrl = 0, rdata = d6a9
+[PWRAP] First Valid Sampling Clock Found!!!
+[PWRAP] si_sampling_ck_dly = 0, si_sampling_ck_pol = 1
+[PWRAP] si_sample_ctrl = 20, rdata = 5aa5
+[PWRAP] si_dly = 0, *RG_SPI_CON2 = 0, rdata = 1b27
+[PWRAP] si_dly = 1, *RG_SPI_CON2 = 1, rdata = 1b27
+[PWRAP] si_dly = 2, *RG_SPI_CON2 = 2, rdata = 1b27
+[PWRAP] si_dly = 3, *RG_SPI_CON2 = 3, rdata = 1b27
+[PWRAP] si_dly = 4, *RG_SPI_CON2 = 4, rdata = 1b27
+[PWRAP] si_dly = 5, *RG_SPI_CON2 = 5, rdata = 1b27
+[PWRAP] si_dly = 6, *RG_SPI_CON2 = 6, rdata = 1b27
+[PWRAP] si_dly = 7, *RG_SPI_CON2 = 7, rdata = 1b27
+[PWRAP] Data Boundary is Found !!!
+[PWRAP] si_dly = 8, rdata = 1a65
+[PWRAP] si_sample_ctrl=0x20(before)
+[PWRAP] si_sample_ctrl=0x40(after)(non-FPGA)
+[PWRAP] SI Strobe Calibration For PMIC 0 Done
+[PWRAP] si_sample_ctrl = 40, si_dly = 8
+[PWRAP] _pwrap_init_sistrobe Read Test ok
+[PWRAP] _pwrap_init_sistrobe ok
+[PWRAP] _pwrap_lock_SPISLVReg ok
+[PWRAP] _pwrap_wacs2_write_test ok
+[PWRAP] _pwrap_InitStaUpd ok
+[PWRAP] write MODEM_TEMP_SHARE_CTRL start
+[PWRAP] write MODEM_TEMP_SHARE_CTRL ok
+[PWRAP] MODEM_TEMP_SHARE_CTRL:f0
+[PWRAP] PMIF_SPI_PMIF_MPU_CTRL = 0x34
+[PWRAP] PMIF_SPI_PMIF_PMIC_RGN_0_START = 0x600
+[PWRAP] PMIF_SPI_PMIF_PMIC_RGN_0_END = 0x67e
+[PWRAP] PMIF_SPI_PMIF_PMIC_RGN_0_PER = 0xff3ffffb
+[PWRAP] PMIF_SPI_PMIF_PMIC_RGN_1_START = 0x800
+[PWRAP] PMIF_SPI_PMIF_PMIC_RGN_1_END = 0x13fe
+[PWRAP] PMIF_SPI_PMIF_PMIC_RGN_1_PER = 0xfffcfff8
+[PWRAP] PMIF_SPI_PMIF_PMIC_RGN_2_START = 0x1400
+[PWRAP] PMIF_SPI_PMIF_PMIC_RGN_2_END = 0x207e
+[PWRAP] PMIF_SPI_PMIF_PMIC_RGN_2_PER = 0xfffcfff0
+[PWRAP] PMIF_SPI_PMIF_PMIC_RGN_3_START = 0x2080
+[PWRAP] PMIF_SPI_PMIF_PMIC_RGN_3_END = 0x26fe
+[PWRAP] PMIF_SPI_PMIF_PMIC_RGN_3_PER = 0xfffcff38
+[PWRAP] _pwrap_config_mpu ok
+[PWRAP] start pwrap_read_test
+[PWRAP] rdata=0x5aa5
+[PWRAP] Read Test pass, return_value = 0x0
+[PWRAP] start pwrap_write_test
+[PWRAP] after pwrap_write_test
+[PWRAP] rdata=0xa55a (read back)
+[PWRAP] Write Test pass
+[PWRAP] channel pass
+[PWRAP] REC_CMD0:0x1cbe (The last one adr)
+[PWRAP] REC_WDATA0:0x0 (The last one wdata)
+[PWRAP] REC_CMD1:0x1cbe (The second-last adr)
+[PWRAP] REC_WDATA1:0x1 (The second-last wdata)
+[PWRAP] REC_CMD2:0x1cbe (The third-last adr)
+[PWRAP] REC_WDATA2:0x0 (The third-last wdata)
+[PWRAP] REC_CMD3:0x1cbe (The fourth-last adr)
+[PWRAP] REC_WDATA3:0x1 (The fourth-last wdata)
+[PWRAP] REC_CMD4:0x1cbe (The fifth-last adr)
+[PWRAP] REC_WDATA4:0x0 (The fifth-last wdata)
+[PWRAP] REC_CMD5:0x1cbe (The sixth-last adr)
+[PWRAP] REC_WDATA5:0x1 (The sixth-last wdata)
+[PWRAP] enable spi debug ok
+[PWRAP] clear record command ok
+[PWRAP] PMIC_WRAP_MONITOR_MODE = Logging Mode
+[PWRAP] PMIF_SPI_PMIF_MONITOR_CTRL = 0x5
+[PWRAP] PMIF_SPI_PMIF_MONITOR_TARGET_CHAN_0 = 0x1fbfff
+[PWRAP] PMIF_SPI_PMIF_MONITOR_TARGET_ADDR_0 = 0x0
+[PWRAP] PMIF_SPI_PMIF_MONITOR_TARGET_WDATA_0 = 0x0
+[PWRAP] init pass, ret=0.
+[PMIC] Preloader Start
+[PMIC]  CHIP Code = 0x5920
+[PMIC] POWER_HOLD :0x1
+[PMIC] TOP_RST_STATUS[0x150]=0x48
+[PMIC] PONSTS[0xc]=0x0
+[PMIC] POFFSTS[0xe]=0x400
+[PMIC] PG_SDN_STS0[0x16]=0xffff
+[PMIC] PG_SDN_STS1[0x18]=0xfff8
+[PMIC] OC_SDN_STS0[0x1a]=0x0
+[PMIC] OC_SDN_STS1[0x1c]=0x0
+[PMIC] BUCK_OC_SDN_STATUS[0x1430]=0x0
+[PMIC] BUCK_OC_SDN_EN[0x1440]=0x7ff
+[PMIC] THERMALSTATUS[0x1e]=0x0
+[PMIC] STRUP_CON4[0xa1a]=0x0
+[PMIC] STRUP_CON12[0xa12]=0x3000
+[PMIC] TOP_RST_MISC[0x14a]=0x204
+[PMIC] TOP_CLK_TRIM[0x388]=0x6cc0
+[MT6359] latch VCORE(VGPU11) 750000 uV(0x24)
+[MT6359] latch VPU(VPROC1) 750000 uV(0x24)
+[MT6359] latch VMDLA(VPROC2) 750000 uV(0x24)
+[MT6359] latch VPROC(VCORE) 931250 uV(0x66)
+[MT6359] latch VSRAM_PROC1 1000000 uV(0x78)
+[MT6359] latch VSRAM_PROC2 962500 uV(0x6f)
+[MT6359] latch VSRAM_GPU(VSRAM_OTHERS) 500000 uV(0x0)
+[MT6359] latch VSRAM_APU(VSRAM_MD) 750000 uV(0x3c)
+[PMIC] [pmic_check_rst] AP Watchdog
+[PMIC] just_rst = 0
+[PMIC] [pwrkey_dbg_status] powerkey:0 count=0(ms) g_pwrkey_release=0
+[PMIC] [pmic_wdt_set] TOP_RST_MISC=0x225
+[PMIC] register vsram_others OK
+[PMIC] register vsram_proc1 OK
+[PMIC] register vsram_proc2 OK
+[PMIC] register vsram_md OK
+[PMIC] register vcore OK
+[PMIC] register vproc1 OK
+[PMIC] register vproc2 OK
+[PMIC] register vgpu11 OK
+[PMIC] register vmodem OK
+[PMIC] register vpu OK
+[PMIC] register vio18 OK
+[MT6315] S6 RG_SLV_ID[0x136]=0xb6
+[MT6315] S6 TOP_RST_STATUS[0x129]=0x3
+[MT6315] S6 POFFSTS[0xc]=0x0
+[MT6315] S6 RGS_POFFSTS[0xa0f]=0x0
+[MT6315] S6 PG_SDN_STS0[0xf]=0xf
+[MT6315] S6 OC_SDN_STS0[0x10]=0x0
+[MT6315] S6 BUCK_OC_SDN_STS[0x1416]=0x0
+[MT6315] S6 BUCK_OC_SDN_EN[0x1451]=0x1f
+[MT6315] S6 TOP_RST_MISC[0x126]=0x4
+[MT6315] S7 RG_SLV_ID[0x136]=0xb7
+[MT6315] S7 TOP_RST_STATUS[0x129]=0x3
+[MT6315] S7 POFFSTS[0xc]=0x0
+[MT6315] S7 RGS_POFFSTS[0xa0f]=0x0
+[MT6315] S7 PG_SDN_STS0[0xf]=0xf
+[MT6315] S7 OC_SDN_STS0[0x10]=0x0
+[MT6315] S7 BUCK_OC_SDN_STS[0x1416]=0x0
+[MT6315] S7 BUCK_OC_SDN_EN[0x1451]=0x1f
+[MT6315] S7 TOP_RST_MISC[0x126]=0x4
+[PMIC] register 6315_6 OK
+[MT6315] latch 6315_6 862500 uV(0xcf)
+[PMIC] register 6315_7 OK
+[MT6315] latch 6315_7 687500 uV(0x59)
+[MT6315] S6 set TOP_RST_MISC=0x3
+[MT6315] S7 set TOP_RST_MISC=0x3
+[MT6315] mt6315_spmi_probe done
+[MT6360] mt6360_pmic_i2c_probe
+[MT6360] mt6360_pmic_enable_crc_check: crc_en = 0xc0
+[MT6360] mt6360_pmic_enable_crc_check: no need
+[MT6360] mt6360_pmic_enable_poweroff_sequence: en = 0
+[MT6360] mt6360_set_buck1_fsw
+[MT6360] mt6360_set_sys_short_protect
+[PMIC] register VDRAM1 OK
+[PMIC] register VDRAM2 OK
+[MT6360] mt6360_pmic_init: read 0x26 = 0x0
+[MT6360] mt6360_pmic_i2c_probe: reg[0xdc] = 0x0
+[MT6360] mt6360_pmic_i2c_probe: reg[0xdd] = 0x0
+[MT6360] mt6360_pmic_i2c_probe: reg[0xde] = 0x0
+[MT6360] mt6360_pmic_i2c_probe: reg[0xdf] = 0x0
+[MT6360] mt6360_ldo_i2c_probe
+[MT6360] mt6360_ldo_i2c_probe: done
+[MT6691] MT6691 probe
+[I2C] 359: id=6,addr: 56, transfer error
+[I2C] 365: I2C_ACKERR
+[I2C] 895: write_read 0x10001 bytes fails,ret=-121.
+[PMIC] register VMDDR OK
+[MT6691] probe done
+[HL7593] probe
+[I2C] 359: id=6,addr: 61, transfer error
+[I2C] 365: I2C_ACKERR
+[I2C] 895: write_read 0x10001 bytes fails,ret=-121.
+[I2C] 359: id=6,addr: 61, transfer error
+[I2C] 365: I2C_ACKERR
+[I2C] 895: write_read 0x10001 bytes fails,ret=-121.
+[HL7593] probe fail
+[FAN53526] probe
+[I2C] 359: id=6,addr: 61, transfer error
+[I2C] 365: I2C_ACKERR
+[I2C] 895: write_read 0x10001 bytes fails,ret=-121.
+[I2C] 359: id=6,addr: 61, transfer error
+[I2C] 365: I2C_ACKERR
+[I2C] 895: write_read 0x10001 bytes fails,ret=-121.
+[FAN53526] probe fail
+[PMIC] Init done
+INFO:    UFS LUN0 contains 1024 blocks with 4096-byte size
+INFO:    UFS LUN1 contains 1024 blocks with 4096-byte size
+INFO:    UFS LUN2 contains 62480384 blocks with 4096-byte size
+INFO:    ufs: change power mode success
+WARNING: Failed to access image id=28 (-2)
+NOTICE:  Could NOT find the dramk partition!
+[MEM] libdram version: 315bfaa6eef
+[MEM] init partition address is incorrect !!!
+EMI_MPU_CTRL=0 1st
+EMI_MPU_CTRL=0 2nd
+drm_update_reg: 0, bits: 0x4000, addr: 0x1000d030, val: 0x83f1
+DRM DDR reserve mode FAIL! drm: 30 = 0x83f1
+DDR RESERVE Success 0
+drm_update_reg: 0, bits: 0x2000, addr: 0x1000d030, val: 0x83f1
+drm_update_reg: 0, bits: 0x1000, addr: 0x1000d030, val: 0x83f1
+DOE setting: vcore 0, vdram 0, vddq 0, vmddr 0, vio18 0
+[MT6359] 4 7,1
+[MT6359] 1 7,56
+[MT6691] 1 21,90
+[MT6359] cnvdata 12, n_size 3
+[MT6359] get volt 10, 12, 1800000
+Vio18 = 1800000
+[MT6359] get volt 7, 56, 750000
+Vcore = 750000
+Vdram = 1125000
+Vddq = 600000
+[MT6691] get volt 21, 90, 750000
+vmddr = 750000
+Channel num from auxadc: 4,
+dram_type_auxadc from auxadc: 1,
+voltage from auxadc: 507,
+[MT6359] 1 7,40
+Read voltage for 800, 4
+[MT6359] cnvdata 12, n_size 3
+[MT6359] get volt 10, 12, 1800000
+Vio18 = 1800000
+[MT6359] get volt 7, 40, 650000
+Vcore = 650000
+Vdram = 1125000
+Vddq = 600000
+[MT6691] get volt 21, 90, 750000
+Vmddr = 750000
+[EMI] CEN_CONA(0x3530154),CEN_CONF(0x421000),CEN_CONH(0x88880033),CEN_CONK(0x0),CHN_CONA(0x488005d)
+[MT6359] 1 7,40
+Read voltage for 800, 4
+[MT6359] cnvdata 12, n_size 3
+[MT6359] get volt 10, 12, 1800000
+Vio18 = 1800000
+[MT6359] get volt 7, 40, 650000
+Vcore = 650000
+Vdram = 1125000
+Vddq = 600000
+[MT6691] get volt 21, 90, 750000
+Vmddr = 750000
+[MT6359] get volt 7, 40, 650000
+[MT6359] 1 7,44
+Read voltage for 1200, 2
+[MT6359] cnvdata 12, n_size 3
+[MT6359] get volt 10, 12, 1800000
+Vio18 = 1800000
+[MT6359] get volt 7, 44, 675000
+Vcore = 675000
+Vdram = 1125000
+Vddq = 600000
+[MT6691] get volt 21, 90, 750000
+Vmddr = 750000
+[MT6359] get volt 7, 44, 675000
+[MT6359] 1 7,40
+Read voltage for 600, 5
+[MT6359] cnvdata 12, n_size 3
+[MT6359] get volt 10, 12, 1800000
+Vio18 = 1800000
+[MT6359] get volt 7, 40, 650000
+Vcore = 650000
+Vdram = 1125000
+Vddq = 600000
+[MT6691] get volt 21, 90, 750000
+Vmddr = 750000
+[MT6359] get volt 7, 40, 650000
+[MT6359] 1 7,44
+Read voltage for 933, 3
+[MT6359] cnvdata 12, n_size 3
+[MT6359] get volt 10, 12, 1800000
+Vio18 = 1800000
+[MT6359] get volt 7, 44, 675000
+Vcore = 675000
+Vdram = 1125000
+Vddq = 600000
+[MT6691] get volt 21, 90, 750000
+Vmddr = 750000
+[MT6359] get volt 7, 44, 675000
+[MT6359] 1 7,40
+Read voltage for 400, 6
+[MT6359] cnvdata 12, n_size 3
+[MT6359] get volt 10, 12, 1800000
+Vio18 = 1800000
+[MT6359] get volt 7, 40, 650000
+Vcore = 650000
+Vdram = 1125000
+Vddq = 600000
+[MT6691] get volt 21, 90, 750000
+Vmddr = 750000
+[MT6359] get volt 7, 40, 650000
+[MT6359] 1 7,56
+Read voltage for 2133, 0
+[MT6359] cnvdata 12, n_size 3
+[MT6359] get volt 10, 12, 1800000
+Vio18 = 1800000
+[MT6359] get volt 7, 56, 750000
+Vcore = 750000
+Vdram = 1125000
+Vddq = 600000
+[MT6691] get volt 21, 90, 750000
+Vmddr = 750000
+[MT6359] get volt 7, 56, 750000
+[MT6359] 1 7,48
+Read voltage for 1600, 1
+[MT6359] cnvdata 12, n_size 3
+[MT6359] get volt 10, 12, 1800000
+Vio18 = 1800000
+[MT6359] get volt 7, 48, 700000
+Vcore = 700000
+Vdram = 1125000
+Vddq = 600000
+[MT6691] get volt 21, 90, 750000
+Vmddr = 750000
+[MT6359] get volt 7, 48, 700000
+[MT6359] 1 7,56
+Read voltage for 2133, 0
+[MT6359] cnvdata 12, n_size 3
+[MT6359] get volt 10, 12, 1800000
+Vio18 = 1800000
+[MT6359] get volt 7, 56, 750000
+Vcore = 750000
+Vdram = 1125000
+Vddq = 600000
+[MT6691] get volt 21, 90, 750000
+Vmddr = 750000
+[MT6359] 4 7,0
+[MT6359] 1 7,56
+[MT6359] get volt 7, 56, 750000
+Vcore = 750000
+base init: MT8395 platform
+[MEM] DDR frequency: 4266MHz
+0:dram_rank_size: 0x200000000
+1:dram_rank_size: 0x200000000
+[MEM] Memory size: 0x400000000(16384MB)
+INFO:    BL2: Loading image id 3
+INFO:    Loading image id=3 at address 0x54601000
+INFO:    Image id=3 loaded: 0x54601000 - 0x54660e80
+INFO:    BL2: Loading image id 5
+INFO:    Loading image id=5 at address 0x4c000000
+INFO:    Image id=5 loaded: 0x4c000000 - 0x4c11ce70
+NOTICE:  BL2: Booting BL31
+INFO:    Entry point address = 0x54601000
+INFO:    SPSR = 0x3cd
+NOTICE:  MT8195 bl31_setup
+NOTICE:  BL31: v2.6(release):armbian
+NOTICE:  BL31: Built : 01:15:27, Nov  8 2026
+INFO:    GICv3 without legacy support detected.
+INFO:    ARM GICv3 driver initialized in EL3
+INFO:    Maximum SPI INTID supported: 895
+INFO:    [mt_systimer_init] systimer initialization
+INFO:    [DEVAPC] (INFRA_AO_SYS0)D0_APC_0: 0x4000000
+INFO:    [DEVAPC] (INFRA_AO_SYS0)D0_APC_1: 0x0
+INFO:    [DEVAPC] (INFRA_AO_SYS0)D0_APC_2: 0x40000
+INFO:    [DEVAPC] (INFRA_AO_SYS0)D0_APC_3: 0x0
+INFO:    [DEVAPC] (INFRA_AO_SYS0)D0_APC_4: 0x0
+INFO:    [DEVAPC] (INFRA_AO_SYS0)D1_APC_0: 0xffffffff
+INFO:    [DEVAPC] (INFRA_AO_SYS0)D1_APC_1: 0xffffffff
+INFO:    [DEVAPC] (INFRA_AO_SYS0)D1_APC_2: 0xffffffff
+INFO:    [DEVAPC] (INFRA_AO_SYS0)D1_APC_3: 0xffffffff
+INFO:    [DEVAPC] (INFRA_AO_SYS0)D1_APC_4: 0xffc3fff
+INFO:    [DEVAPC] (INFRA_AO_SYS0)D2_APC_0: 0xffcf00fc
+INFO:    [DEVAPC] (INFRA_AO_SYS0)D2_APC_1: 0xcfcffcff
+INFO:    [DEVAPC] (INFRA_AO_SYS0)D2_APC_2: 0xffffffff
+INFO:    [DEVAPC] (INFRA_AO_SYS0)D2_APC_3: 0x3ffffff
+INFO:    [DEVAPC] (INFRA_AO_SYS0)D2_APC_4: 0xfffcffc
+INFO:    [DEVAPC] (INFRA_AO_SYS0)D3_APC_0: 0xffcfccfc
+INFO:    [DEVAPC] (INFRA_AO_SYS0)D3_APC_1: 0xffffffff
+INFO:    [DEVAPC] (INFRA_AO_SYS0)D3_APC_2: 0xffffffff
+INFO:    [DEVAPC] (INFRA_AO_SYS0)D3_APC_3: 0xffffffff
+INFO:    [DEVAPC] (INFRA_AO_SYS0)D3_APC_4: 0xfffffff
+INFO:    [DEVAPC] (INFRA_AO_SYS0)D4_APC_0: 0xfcfcccff
+INFO:    [DEVAPC] (INFRA_AO_SYS0)D4_APC_1: 0xffffffff
+INFO:    [DEVAPC] (INFRA_AO_SYS0)D4_APC_2: 0xffffffff
+INFO:    [DEVAPC] (INFRA_AO_SYS0)D4_APC_3: 0xffffffff
+INFO:    [DEVAPC] (INFRA_AO_SYS0)D4_APC_4: 0xfffffff
+INFO:    [DEVAPC] (INFRA_AO_SYS0)D5_APC_0: 0xfffffffc
+INFO:    [DEVAPC] (INFRA_AO_SYS0)D5_APC_1: 0xffffffff
+INFO:    [DEVAPC] (INFRA_AO_SYS0)D5_APC_2: 0xffffffff
+INFO:    [DEVAPC] (INFRA_AO_SYS0)D5_APC_3: 0xffffffff
+INFO:    [DEVAPC] (INFRA_AO_SYS0)D5_APC_4: 0xfffffff
+INFO:    [DEVAPC] (INFRA_AO_SYS0)D6_APC_0: 0xffffffff
+INFO:    [DEVAPC] (INFRA_AO_SYS0)D6_APC_1: 0xffffffff
+INFO:    [DEVAPC] (INFRA_AO_SYS0)D6_APC_2: 0xffffffff
+INFO:    [DEVAPC] (INFRA_AO_SYS0)D6_APC_3: 0xffffffff
+INFO:    [DEVAPC] (INFRA_AO_SYS0)D6_APC_4: 0xfffffff
+INFO:    [DEVAPC] (INFRA_AO_SYS0)D7_APC_0: 0xffffffff
+INFO:    [DEVAPC] (INFRA_AO_SYS0)D7_APC_1: 0xffffffff
+INFO:    [DEVAPC] (INFRA_AO_SYS0)D7_APC_2: 0xffffffff
+INFO:    [DEVAPC] (INFRA_AO_SYS0)D7_APC_3: 0xffffffff
+INFO:    [DEVAPC] (INFRA_AO_SYS0)D7_APC_4: 0xfffffff
+INFO:    [DEVAPC] (INFRA_AO_SYS0)D8_APC_0: 0xffffffff
+INFO:    [DEVAPC] (INFRA_AO_SYS0)D8_APC_1: 0xffffffff
+INFO:    [DEVAPC] (INFRA_AO_SYS0)D8_APC_2: 0xffffffff
+INFO:    [DEVAPC] (INFRA_AO_SYS0)D8_APC_3: 0xffffffff
+INFO:    [DEVAPC] (INFRA_AO_SYS0)D8_APC_4: 0xfffffff
+INFO:    [DEVAPC] (INFRA_AO_SYS0)D9_APC_0: 0xffffffff
+INFO:    [DEVAPC] (INFRA_AO_SYS0)D9_APC_1: 0xffffffff
+INFO:    [DEVAPC] (INFRA_AO_SYS0)D9_APC_2: 0xffffffff
+INFO:    [DEVAPC] (INFRA_AO_SYS0)D9_APC_3: 0xffffffff
+INFO:    [DEVAPC] (INFRA_AO_SYS0)D9_APC_4: 0xfffffff
+INFO:    [DEVAPC] (INFRA_AO_SYS0)D10_APC_0: 0xffffffff
+INFO:    [DEVAPC] (INFRA_AO_SYS0)D10_APC_1: 0xffffffff
+INFO:    [DEVAPC] (INFRA_AO_SYS0)D10_APC_2: 0xffffffff
+INFO:    [DEVAPC] (INFRA_AO_SYS0)D10_APC_3: 0xffffffff
+INFO:    [DEVAPC] (INFRA_AO_SYS0)D10_APC_4: 0xfffffff
+INFO:    [DEVAPC] (INFRA_AO_SYS0)D11_APC_0: 0xffffffff
+INFO:    [DEVAPC] (INFRA_AO_SYS0)D11_APC_1: 0xffffffff
+INFO:    [DEVAPC] (INFRA_AO_SYS0)D11_APC_2: 0xffffffff
+INFO:    [DEVAPC] (INFRA_AO_SYS0)D11_APC_3: 0xffffffff
+INFO:    [DEVAPC] (INFRA_AO_SYS0)D11_APC_4: 0xfffffff
+INFO:    [DEVAPC] (INFRA_AO_SYS0)D12_APC_0: 0xffffffff
+INFO:    [DEVAPC] (INFRA_AO_SYS0)D12_APC_1: 0xffffffff
+INFO:    [DEVAPC] (INFRA_AO_SYS0)D12_APC_2: 0xffffffff
+INFO:    [DEVAPC] (INFRA_AO_SYS0)D12_APC_3: 0xffffffff
+INFO:    [DEVAPC] (INFRA_AO_SYS0)D12_APC_4: 0xfffffff
+INFO:    [DEVAPC] (INFRA_AO_SYS0)D13_APC_0: 0xffffffff
+INFO:    [DEVAPC] (INFRA_AO_SYS0)D13_APC_1: 0xffffffff
+INFO:    [DEVAPC] (INFRA_AO_SYS0)D13_APC_2: 0xffffffff
+INFO:    [DEVAPC] (INFRA_AO_SYS0)D13_APC_3: 0xffffffff
+INFO:    [DEVAPC] (INFRA_AO_SYS0)D13_APC_4: 0xfffffff
+INFO:    [DEVAPC] (INFRA_AO_SYS0)D14_APC_0: 0xffffffff
+INFO:    [DEVAPC] (INFRA_AO_SYS0)D14_APC_1: 0xffffffff
+INFO:    [DEVAPC] (INFRA_AO_SYS0)D14_APC_2: 0xffffffff
+INFO:    [DEVAPC] (INFRA_AO_SYS0)D14_APC_3: 0xffffffff
+INFO:    [DEVAPC] (INFRA_AO_SYS0)D14_APC_4: 0xfffffff
+INFO:    [DEVAPC] (INFRA_AO_SYS0)D15_APC_0: 0xffffffff
+INFO:    [DEVAPC] (INFRA_AO_SYS0)D15_APC_1: 0xffffffff
+INFO:    [DEVAPC] (INFRA_AO_SYS0)D15_APC_2: 0xffffffff
+INFO:    [DEVAPC] (INFRA_AO_SYS0)D15_APC_3: 0xffffffff
+INFO:    [DEVAPC] (INFRA_AO_SYS0)D15_APC_4: 0xfffffff
+INFO:    [DEVAPC] (INFRA_AO_SYS1)D0_APC_0: 0x0
+INFO:    [DEVAPC] (INFRA_AO_SYS1)D0_APC_1: 0x0
+INFO:    [DEVAPC] (INFRA_AO_SYS1)D0_APC_2: 0x0
+INFO:    [DEVAPC] (INFRA_AO_SYS1)D0_APC_3: 0x0
+INFO:    [DEVAPC] (INFRA_AO_SYS1)D0_APC_4: 0x0
+INFO:    [DEVAPC] (INFRA_AO_SYS1)D0_APC_5: 0x0
+INFO:    [DEVAPC] (INFRA_AO_SYS1)D0_APC_6: 0x0
+INFO:    [DEVAPC] (INFRA_AO_SYS1)D0_APC_7: 0x0
+INFO:    [DEVAPC] (INFRA_AO_SYS1)D0_APC_8: 0x0
+INFO:    [DEVAPC] (INFRA_AO_SYS1)D0_APC_9: 0x0
+INFO:    [DEVAPC] (INFRA_AO_SYS1)D0_APC_10: 0x0
+INFO:    [DEVAPC] (INFRA_AO_SYS1)D0_APC_11: 0x0
+INFO:    [DEVAPC] (INFRA_AO_SYS1)D0_APC_12: 0x0
+INFO:    [DEVAPC] (INFRA_AO_SYS1)D0_APC_13: 0x0
+INFO:    [DEVAPC] (INFRA_AO_SYS1)D0_APC_14: 0x0
+INFO:    [DEVAPC] (INFRA_AO_SYS1)D0_APC_15: 0x0
+INFO:    [DEVAPC] (INFRA_AO_SYS1)D1_APC_0: 0xffffffff
+INFO:    [DEVAPC] (INFRA_AO_SYS1)D1_APC_1: 0xffffffff
+INFO:    [DEVAPC] (INFRA_AO_SYS1)D1_APC_2: 0xffffffff
+INFO:    [DEVAPC] (INFRA_AO_SYS1)D1_APC_3: 0xffffffff
+INFO:    [DEVAPC] (INFRA_AO_SYS1)D1_APC_4: 0xffffffff
+INFO:    [DEVAPC] (INFRA_AO_SYS1)D1_APC_5: 0xffffffff
+INFO:    [DEVAPC] (INFRA_AO_SYS1)D1_APC_6: 0xffffffff
+INFO:    [DEVAPC] (INFRA_AO_SYS1)D1_APC_7: 0xffffffff
+INFO:    [DEVAPC] (INFRA_AO_SYS1)D1_APC_8: 0xffffffff
+INFO:    [DEVAPC] (INFRA_AO_SYS1)D1_APC_9: 0xffffffff
+INFO:    [DEVAPC] (INFRA_AO_SYS1)D1_APC_10: 0xffffffff
+INFO:    [DEVAPC] (INFRA_AO_SYS1)D1_APC_11: 0xffffffff
+INFO:    [DEVAPC] (INFRA_AO_SYS1)D1_APC_12: 0xffffffff
+INFO:    [DEVAPC] (INFRA_AO_SYS1)D1_APC_13: 0xffffffff
+INFO:    [DEVAPC] (INFRA_AO_SYS1)D1_APC_14: 0xffffffff
+INFO:    [DEVAPC] (INFRA_AO_SYS1)D1_APC_15: 0xffffffff
+INFO:    [DEVAPC] (INFRA_AO_SYS1)D2_APC_0: 0xffffffff
+INFO:    [DEVAPC] (INFRA_AO_SYS1)D2_APC_1: 0xffffffff
+INFO:    [DEVAPC] (INFRA_AO_SYS1)D2_APC_2: 0xffffffff
+INFO:    [DEVAPC] (INFRA_AO_SYS1)D2_APC_3: 0xffffffff
+INFO:    [DEVAPC] (INFRA_AO_SYS1)D2_APC_4: 0xffffffff
+INFO:    [DEVAPC] (INFRA_AO_SYS1)D2_APC_5: 0xffffffff
+INFO:    [DEVAPC] (INFRA_AO_SYS1)D2_APC_6: 0xffffffff
+INFO:    [DEVAPC] (INFRA_AO_SYS1)D2_APC_7: 0xffffffff
+INFO:    [DEVAPC] (INFRA_AO_SYS1)D2_APC_8: 0xffffffff
+INFO:    [DEVAPC] (INFRA_AO_SYS1)D2_APC_9: 0xffffffff
+INFO:    [DEVAPC] (INFRA_AO_SYS1)D2_APC_10: 0xffffffff
+INFO:    [DEVAPC] (INFRA_AO_SYS1)D2_APC_11: 0xffffffff
+INFO:    [DEVAPC] (INFRA_AO_SYS1)D2_APC_12: 0xffffffff
+INFO:    [DEVAPC] (INFRA_AO_SYS1)D2_APC_13: 0xffffffff
+INFO:    [DEVAPC] (INFRA_AO_SYS1)D2_APC_14: 0xffffffff
+INFO:    [DEVAPC] (INFRA_AO_SYS1)D2_APC_15: 0xffffffff
+INFO:    [DEVAPC] (INFRA_AO_SYS1)D3_APC_0: 0xc0000000
+INFO:    [DEVAPC] (INFRA_AO_SYS1)D3_APC_1: 0xfff3fff3
+INFO:    [DEVAPC] (INFRA_AO_SYS1)D3_APC_2: 0xffffffff
+INFO:    [DEVAPC] (INFRA_AO_SYS1)D3_APC_3: 0xffffffff
+INFO:    [DEVAPC] (INFRA_AO_SYS1)D3_APC_4: 0xffffffff
+INFO:    [DEVAPC] (INFRA_AO_SYS1)D3_APC_5: 0xffffffff
+INFO:    [DEVAPC] (INFRA_AO_SYS1)D3_APC_6: 0xffffffff
+INFO:    [DEVAPC] (INFRA_AO_SYS1)D3_APC_7: 0xffffffff
+INFO:    [DEVAPC] (INFRA_AO_SYS1)D3_APC_8: 0xffffffff
+INFO:    [DEVAPC] (INFRA_AO_SYS1)D3_APC_9: 0xffffffff
+INFO:    [DEVAPC] (INFRA_AO_SYS1)D3_APC_10: 0xffffffff
+INFO:    [DEVAPC] (INFRA_AO_SYS1)D3_APC_11: 0xffffffff
+INFO:    [DEVAPC] (INFRA_AO_SYS1)D3_APC_12: 0xffffffff
+INFO:    [DEVAPC] (INFRA_AO_SYS1)D3_APC_13: 0xffffffff
+INFO:    [DEVAPC] (INFRA_AO_SYS1)D3_APC_14: 0xffffffff
+INFO:    [DEVAPC] (INFRA_AO_SYS1)D3_APC_15: 0xffffffff
+INFO:    [DEVAPC] (INFRA_AO_SYS2)D0_APC_0: 0x0
+INFO:    [DEVAPC] (INFRA_AO_SYS2)D0_APC_1: 0x0
+INFO:    [DEVAPC] (INFRA_AO_SYS2)D0_APC_2: 0x0
+INFO:    [DEVAPC] (INFRA_AO_SYS2)D0_APC_3: 0x0
+INFO:    [DEVAPC] (INFRA_AO_SYS2)D0_APC_4: 0x0
+INFO:    [DEVAPC] (INFRA_AO_SYS2)D0_APC_5: 0x0
+INFO:    [DEVAPC] (INFRA_AO_SYS2)D0_APC_6: 0x0
+INFO:    [DEVAPC] (INFRA_AO_SYS2)D0_APC_7: 0x0
+INFO:    [DEVAPC] (INFRA_AO_SYS2)D0_APC_8: 0x0
+INFO:    [DEVAPC] (INFRA_AO_SYS2)D0_APC_9: 0x0
+INFO:    [DEVAPC] (INFRA_AO_SYS2)D0_APC_10: 0x0
+INFO:    [DEVAPC] (INFRA_AO_SYS2)D0_APC_11: 0x0
+INFO:    [DEVAPC] (INFRA_AO_SYS2)D1_APC_0: 0xffffffff
+INFO:    [DEVAPC] (INFRA_AO_SYS2)D1_APC_1: 0xffffffff
+INFO:    [DEVAPC] (INFRA_AO_SYS2)D1_APC_2: 0xffffffff
+INFO:    [DEVAPC] (INFRA_AO_SYS2)D1_APC_3: 0xffffffff
+INFO:    [DEVAPC] (INFRA_AO_SYS2)D1_APC_4: 0xffffffff
+INFO:    [DEVAPC] (INFRA_AO_SYS2)D1_APC_5: 0xffffffff
+INFO:    [DEVAPC] (INFRA_AO_SYS2)D1_APC_6: 0xffffffff
+INFO:    [DEVAPC] (INFRA_AO_SYS2)D1_APC_7: 0xffffffff
+INFO:    [DEVAPC] (INFRA_AO_SYS2)D1_APC_8: 0xffffffff
+INFO:    [DEVAPC] (INFRA_AO_SYS2)D1_APC_9: 0xffffffff
+INFO:    [DEVAPC] (INFRA_AO_SYS2)D1_APC_10: 0xffffffff
+INFO:    [DEVAPC] (INFRA_AO_SYS2)D1_APC_11: 0x3f
+INFO:    [DEVAPC] (INFRA_AO_SYS2)D2_APC_0: 0xffffffff
+INFO:    [DEVAPC] (INFRA_AO_SYS2)D2_APC_1: 0xffffffff
+INFO:    [DEVAPC] (INFRA_AO_SYS2)D2_APC_2: 0xffffffff
+INFO:    [DEVAPC] (INFRA_AO_SYS2)D2_APC_3: 0xffffffff
+INFO:    [DEVAPC] (INFRA_AO_SYS2)D2_APC_4: 0xffffffff
+INFO:    [DEVAPC] (INFRA_AO_SYS2)D2_APC_5: 0xffffffff
+INFO:    [DEVAPC] (INFRA_AO_SYS2)D2_APC_6: 0xffffffff
+INFO:    [DEVAPC] (INFRA_AO_SYS2)D2_APC_7: 0xffffffff
+INFO:    [DEVAPC] (INFRA_AO_SYS2)D2_APC_8: 0xffffffff
+INFO:    [DEVAPC] (INFRA_AO_SYS2)D2_APC_9: 0xffffffff
+INFO:    [DEVAPC] (INFRA_AO_SYS2)D2_APC_10: 0xffffffff
+INFO:    [DEVAPC] (INFRA_AO_SYS2)D2_APC_11: 0x3f
+INFO:    [DEVAPC] (INFRA_AO_SYS2)D3_APC_0: 0xffffffff
+INFO:    [DEVAPC] (INFRA_AO_SYS2)D3_APC_1: 0xffffffff
+INFO:    [DEVAPC] (INFRA_AO_SYS2)D3_APC_2: 0xffffffff
+INFO:    [DEVAPC] (INFRA_AO_SYS2)D3_APC_3: 0xffffffff
+INFO:    [DEVAPC] (INFRA_AO_SYS2)D3_APC_4: 0xffffffff
+INFO:    [DEVAPC] (INFRA_AO_SYS2)D3_APC_5: 0xffffffff
+INFO:    [DEVAPC] (INFRA_AO_SYS2)D3_APC_6: 0xffffffff
+INFO:    [DEVAPC] (INFRA_AO_SYS2)D3_APC_7: 0xffffffff
+INFO:    [DEVAPC] (INFRA_AO_SYS2)D3_APC_8: 0xffffffff
+INFO:    [DEVAPC] (INFRA_AO_SYS2)D3_APC_9: 0xffffffff
+INFO:    [DEVAPC] (INFRA_AO_SYS2)D3_APC_10: 0xffffffff
+INFO:    [DEVAPC] (INFRA_AO_SYS2)D3_APC_11: 0x3f
+INFO:    [DEVAPC] (INFRA_AO)MAS_SEC_0: 0x2
+INFO:    [DEVAPC] (INFRA_AO 0x10030000)DOM_REMAP_0_0: 0xfff43fff
+INFO:    [DEVAPC] (PERI_AO_SYS0)D0_APC_0: 0x1
+INFO:    [DEVAPC] (PERI_AO_SYS0)D0_APC_1: 0x0
+INFO:    [DEVAPC] (PERI_AO_SYS0)D0_APC_2: 0x0
+INFO:    [DEVAPC] (PERI_AO_SYS0)D0_APC_3: 0x0
+INFO:    [DEVAPC] (PERI_AO_SYS0)D1_APC_0: 0xffffffff
+INFO:    [DEVAPC] (PERI_AO_SYS0)D1_APC_1: 0xffffffff
+INFO:    [DEVAPC] (PERI_AO_SYS0)D1_APC_2: 0xffffffff
+INFO:    [DEVAPC] (PERI_AO_SYS0)D1_APC_3: 0xfffffff
+INFO:    [DEVAPC] (PERI_AO_SYS0)D2_APC_0: 0xffffffff
+INFO:    [DEVAPC] (PERI_AO_SYS0)D2_APC_1: 0x3003
+INFO:    [DEVAPC] (PERI_AO_SYS0)D2_APC_2: 0x0
+INFO:    [DEVAPC] (PERI_AO_SYS0)D2_APC_3: 0xfffffc0
+INFO:    [DEVAPC] (PERI_AO_SYS0)D3_APC_0: 0xffffffff
+INFO:    [DEVAPC] (PERI_AO_SYS0)D3_APC_1: 0xffffffff
+INFO:    [DEVAPC] (PERI_AO_SYS0)D3_APC_2: 0xffffffff
+INFO:    [DEVAPC] (PERI_AO_SYS0)D3_APC_3: 0xfffffff
+INFO:    [DEVAPC] (PERI_AO_SYS0)D4_APC_0: 0xffffffff
+INFO:    [DEVAPC] (PERI_AO_SYS0)D4_APC_1: 0xffffffff
+INFO:    [DEVAPC] (PERI_AO_SYS0)D4_APC_2: 0xffffffff
+INFO:    [DEVAPC] (PERI_AO_SYS0)D4_APC_3: 0xfffffff
+INFO:    [DEVAPC] (PERI_AO_SYS0)D5_APC_0: 0xffffffff
+INFO:    [DEVAPC] (PERI_AO_SYS0)D5_APC_1: 0xfffff33f
+INFO:    [DEVAPC] (PERI_AO_SYS0)D5_APC_2: 0xffffffff
+INFO:    [DEVAPC] (PERI_AO_SYS0)D5_APC_3: 0xfffffff
+INFO:    [DEVAPC] (PERI_AO_SYS0)D6_APC_0: 0xffffffff
+INFO:    [DEVAPC] (PERI_AO_SYS0)D6_APC_1: 0xffffffff
+INFO:    [DEVAPC] (PERI_AO_SYS0)D6_APC_2: 0xffffffff
+INFO:    [DEVAPC] (PERI_AO_SYS0)D6_APC_3: 0xfffffff
+INFO:    [DEVAPC] (PERI_AO_SYS0)D7_APC_0: 0xffffffff
+INFO:    [DEVAPC] (PERI_AO_SYS0)D7_APC_1: 0xffffffff
+INFO:    [DEVAPC] (PERI_AO_SYS0)D7_APC_2: 0xffffffff
+INFO:    [DEVAPC] (PERI_AO_SYS0)D7_APC_3: 0xfffffff
+INFO:    [DEVAPC] (PERI_AO_SYS0)D8_APC_0: 0xffffffff
+INFO:    [DEVAPC] (PERI_AO_SYS0)D8_APC_1: 0xffffffff
+INFO:    [DEVAPC] (PERI_AO_SYS0)D8_APC_2: 0xffffffff
+INFO:    [DEVAPC] (PERI_AO_SYS0)D8_APC_3: 0xfffffff
+INFO:    [DEVAPC] (PERI_AO_SYS0)D9_APC_0: 0xffffffff
+INFO:    [DEVAPC] (PERI_AO_SYS0)D9_APC_1: 0xffffffff
+INFO:    [DEVAPC] (PERI_AO_SYS0)D9_APC_2: 0xffffffff
+INFO:    [DEVAPC] (PERI_AO_SYS0)D9_APC_3: 0xfffffff
+INFO:    [DEVAPC] (PERI_AO_SYS0)D10_APC_0: 0xffffffff
+INFO:    [DEVAPC] (PERI_AO_SYS0)D10_APC_1: 0xffffffff
+INFO:    [DEVAPC] (PERI_AO_SYS0)D10_APC_2: 0xffffffff
+INFO:    [DEVAPC] (PERI_AO_SYS0)D10_APC_3: 0xfffffff
+INFO:    [DEVAPC] (PERI_AO_SYS0)D11_APC_0: 0xffffffff
+INFO:    [DEVAPC] (PERI_AO_SYS0)D11_APC_1: 0xffffffff
+INFO:    [DEVAPC] (PERI_AO_SYS0)D11_APC_2: 0xffffffff
+INFO:    [DEVAPC] (PERI_AO_SYS0)D11_APC_3: 0xfffffff
+INFO:    [DEVAPC] (PERI_AO_SYS0)D12_APC_0: 0xffffffff
+INFO:    [DEVAPC] (PERI_AO_SYS0)D12_APC_1: 0xffffffff
+INFO:    [DEVAPC] (PERI_AO_SYS0)D12_APC_2: 0xffffffff
+INFO:    [DEVAPC] (PERI_AO_SYS0)D12_APC_3: 0xfffffff
+INFO:    [DEVAPC] (PERI_AO_SYS0)D13_APC_0: 0xffffffff
+INFO:    [DEVAPC] (PERI_AO_SYS0)D13_APC_1: 0xffffffff
+INFO:    [DEVAPC] (PERI_AO_SYS0)D13_APC_2: 0xffffffff
+INFO:    [DEVAPC] (PERI_AO_SYS0)D13_APC_3: 0xfffffff
+INFO:    [DEVAPC] (PERI_AO_SYS0)D14_APC_0: 0xffffffff
+INFO:    [DEVAPC] (PERI_AO_SYS0)D14_APC_1: 0xffffffff
+INFO:    [DEVAPC] (PERI_AO_SYS0)D14_APC_2: 0xffffffff
+INFO:    [DEVAPC] (PERI_AO_SYS0)D14_APC_3: 0xfffffff
+INFO:    [DEVAPC] (PERI_AO_SYS0)D15_APC_0: 0xffffffff
+INFO:    [DEVAPC] (PERI_AO_SYS0)D15_APC_1: 0xffffffff
+INFO:    [DEVAPC] (PERI_AO_SYS0)D15_APC_2: 0xffffffff
+INFO:    [DEVAPC] (PERI_AO_SYS0)D15_APC_3: 0xfffffff
+INFO:    [DEVAPC] (PERI_AO_SYS1)D0_APC_0: 0x0
+INFO:    [DEVAPC] (PERI_AO_SYS1)D0_APC_1: 0x0
+INFO:    [DEVAPC] (PERI_AO_SYS1)D1_APC_0: 0xffffffff
+INFO:    [DEVAPC] (PERI_AO_SYS1)D1_APC_1: 0x3fff
+INFO:    [DEVAPC] (PERI_AO_SYS1)D2_APC_0: 0xffffffff
+INFO:    [DEVAPC] (PERI_AO_SYS1)D2_APC_1: 0x3fff
+INFO:    [DEVAPC] (PERI_AO_SYS1)D3_APC_0: 0xffffffff
+INFO:    [DEVAPC] (PERI_AO_SYS1)D3_APC_1: 0x3fff
+INFO:    [DEVAPC] (PERI_AO_SYS1)D4_APC_0: 0xf0000ffc
+INFO:    [DEVAPC] (PERI_AO_SYS1)D4_APC_1: 0x3
+INFO:    [DEVAPC] (PERI_AO_SYS1)D5_APC_0: 0xffffffff
+INFO:    [DEVAPC] (PERI_AO_SYS1)D5_APC_1: 0x3fff
+INFO:    [DEVAPC] (PERI_AO_SYS1)D6_APC_0: 0xffffffff
+INFO:    [DEVAPC] (PERI_AO_SYS1)D6_APC_1: 0x3fff
+INFO:    [DEVAPC] (PERI_AO_SYS1)D7_APC_0: 0xffffffff
+INFO:    [DEVAPC] (PERI_AO_SYS1)D7_APC_1: 0x3fff
+INFO:    [DEVAPC] (PERI_AO)MAS_SEC_0: 0x0
+INFO:    [DEVAPC] (PERI2_AO_SYS0)D0_APC_0: 0x1
+INFO:    [DEVAPC] (PERI2_AO_SYS0)D0_APC_1: 0x0
+INFO:    [DEVAPC] (PERI2_AO_SYS0)D0_APC_2: 0x0
+INFO:    [DEVAPC] (PERI2_AO_SYS0)D0_APC_3: 0x0
+INFO:    [DEVAPC] (PERI2_AO_SYS0)D0_APC_4: 0x100
+INFO:    [DEVAPC] (PERI2_AO_SYS0)D0_APC_5: 0x10000000
+INFO:    [DEVAPC] (PERI2_AO_SYS0)D0_APC_6: 0x1400
+INFO:    [DEVAPC] (PERI2_AO_SYS0)D0_APC_7: 0x40000
+INFO:    [DEVAPC] (PERI2_AO_SYS0)D1_APC_0: 0xffffffff
+INFO:    [DEVAPC] (PERI2_AO_SYS0)D1_APC_1: 0xffffffff
+INFO:    [DEVAPC] (PERI2_AO_SYS0)D1_APC_2: 0xffffffff
+INFO:    [DEVAPC] (PERI2_AO_SYS0)D1_APC_3: 0xffffffff
+INFO:    [DEVAPC] (PERI2_AO_SYS0)D1_APC_4: 0xffffffff
+INFO:    [DEVAPC] (PERI2_AO_SYS0)D1_APC_5: 0xffffffff
+INFO:    [DEVAPC] (PERI2_AO_SYS0)D1_APC_6: 0xffffffff
+INFO:    [DEVAPC] (PERI2_AO_SYS0)D1_APC_7: 0xfffff
+INFO:    [DEVAPC] (PERI2_AO_SYS0)D2_APC_0: 0xfffffcff
+INFO:    [DEVAPC] (PERI2_AO_SYS0)D2_APC_1: 0xffffffff
+INFO:    [DEVAPC] (PERI2_AO_SYS0)D2_APC_2: 0xffffffff
+INFO:    [DEVAPC] (PERI2_AO_SYS0)D2_APC_3: 0xffffffff
+INFO:    [DEVAPC] (PERI2_AO_SYS0)D2_APC_4: 0xff3fffff
+INFO:    [DEVAPC] (PERI2_AO_SYS0)D2_APC_5: 0xf3ffffff
+INFO:    [DEVAPC] (PERI2_AO_SYS0)D2_APC_6: 0xfcffffff
+INFO:    [DEVAPC] (PERI2_AO_SYS0)D2_APC_7: 0xffffc
+INFO:    [DEVAPC] (PERI2_AO_SYS0)D3_APC_0: 0xfffffcff
+INFO:    [DEVAPC] (PERI2_AO_SYS0)D3_APC_1: 0xffffffff
+INFO:    [DEVAPC] (PERI2_AO_SYS0)D3_APC_2: 0xffffffff
+INFO:    [DEVAPC] (PERI2_AO_SYS0)D3_APC_3: 0xffffffff
+INFO:    [DEVAPC] (PERI2_AO_SYS0)D3_APC_4: 0xffffffff
+INFO:    [DEVAPC] (PERI2_AO_SYS0)D3_APC_5: 0xffffffff
+INFO:    [DEVAPC] (PERI2_AO_SYS0)D3_APC_6: 0xffffffff
+INFO:    [DEVAPC] (PERI2_AO_SYS0)D3_APC_7: 0xfffff
+INFO:    [DEVAPC] (PERI2_AO_SYS0)D4_APC_0: 0xffffffff
+INFO:    [DEVAPC] (PERI2_AO_SYS0)D4_APC_1: 0xffffffff
+INFO:    [DEVAPC] (PERI2_AO_SYS0)D4_APC_2: 0xffffffff
+INFO:    [DEVAPC] (PERI2_AO_SYS0)D4_APC_3: 0xffffffff
+INFO:    [DEVAPC] (PERI2_AO_SYS0)D4_APC_4: 0xffffffff
+INFO:    [DEVAPC] (PERI2_AO_SYS0)D4_APC_5: 0xffffffff
+INFO:    [DEVAPC] (PERI2_AO_SYS0)D4_APC_6: 0xffffffff
+INFO:    [DEVAPC] (PERI2_AO_SYS0)D4_APC_7: 0xfcfff
+INFO:    [DEVAPC] (PERI2_AO_SYS0)D5_APC_0: 0xfffffcff
+INFO:    [DEVAPC] (PERI2_AO_SYS0)D5_APC_1: 0xffffffff
+INFO:    [DEVAPC] (PERI2_AO_SYS0)D5_APC_2: 0xffffffff
+INFO:    [DEVAPC] (PERI2_AO_SYS0)D5_APC_3: 0xffffffff
+INFO:    [DEVAPC] (PERI2_AO_SYS0)D5_APC_4: 0xffffffff
+INFO:    [DEVAPC] (PERI2_AO_SYS0)D5_APC_5: 0xffffffff
+INFO:    [DEVAPC] (PERI2_AO_SYS0)D5_APC_6: 0xffffffff
+INFO:    [DEVAPC] (PERI2_AO_SYS0)D5_APC_7: 0xfffff
+INFO:    [DEVAPC] (PERI2_AO_SYS0)D6_APC_0: 0xffffffff
+INFO:    [DEVAPC] (PERI2_AO_SYS0)D6_APC_1: 0xffffffff
+INFO:    [DEVAPC] (PERI2_AO_SYS0)D6_APC_2: 0xffffffff
+INFO:    [DEVAPC] (PERI2_AO_SYS0)D6_APC_3: 0xffffffff
+INFO:    [DEVAPC] (PERI2_AO_SYS0)D6_APC_4: 0xffffffff
+INFO:    [DEVAPC] (PERI2_AO_SYS0)D6_APC_5: 0xffffffff
+INFO:    [DEVAPC] (PERI2_AO_SYS0)D6_APC_6: 0xffffffff
+INFO:    [DEVAPC] (PERI2_AO_SYS0)D6_APC_7: 0xfffff
+INFO:    [DEVAPC] (PERI2_AO_SYS0)D7_APC_0: 0xffffffff
+INFO:    [DEVAPC] (PERI2_AO_SYS0)D7_APC_1: 0xffffffff
+INFO:    [DEVAPC] (PERI2_AO_SYS0)D7_APC_2: 0xffffffff
+INFO:    [DEVAPC] (PERI2_AO_SYS0)D7_APC_3: 0xffffffff
+INFO:    [DEVAPC] (PERI2_AO_SYS0)D7_APC_4: 0xffffffff
+INFO:    [DEVAPC] (PERI2_AO_SYS0)D7_APC_5: 0xffffffff
+INFO:    [DEVAPC] (PERI2_AO_SYS0)D7_APC_6: 0xffffffff
+INFO:    [DEVAPC] (PERI2_AO_SYS0)D7_APC_7: 0xfffff
+INFO:    [DEVAPC] (PERI2_AO_SYS0)D8_APC_0: 0xffffffff
+INFO:    [DEVAPC] (PERI2_AO_SYS0)D8_APC_1: 0xffffffff
+INFO:    [DEVAPC] (PERI2_AO_SYS0)D8_APC_2: 0xffffffff
+INFO:    [DEVAPC] (PERI2_AO_SYS0)D8_APC_3: 0xffffffff
+INFO:    [DEVAPC] (PERI2_AO_SYS0)D8_APC_4: 0xffffffff
+INFO:    [DEVAPC] (PERI2_AO_SYS0)D8_APC_5: 0xffffffff
+INFO:    [DEVAPC] (PERI2_AO_SYS0)D8_APC_6: 0xffffffff
+INFO:    [DEVAPC] (PERI2_AO_SYS0)D8_APC_7: 0xfffff
+INFO:    [DEVAPC] (PERI2_AO_SYS0)D9_APC_0: 0xffffffff
+INFO:    [DEVAPC] (PERI2_AO_SYS0)D9_APC_1: 0xffffffff
+INFO:    [DEVAPC] (PERI2_AO_SYS0)D9_APC_2: 0xffffffff
+INFO:    [DEVAPC] (PERI2_AO_SYS0)D9_APC_3: 0xffffffff
+INFO:    [DEVAPC] (PERI2_AO_SYS0)D9_APC_4: 0xffffffff
+INFO:    [DEVAPC] (PERI2_AO_SYS0)D9_APC_5: 0xffffffff
+INFO:    [DEVAPC] (PERI2_AO_SYS0)D9_APC_6: 0xffffffff
+INFO:    [DEVAPC] (PERI2_AO_SYS0)D9_APC_7: 0xfffff
+INFO:    [DEVAPC] (PERI2_AO_SYS0)D10_APC_0: 0xffffffff
+INFO:    [DEVAPC] (PERI2_AO_SYS0)D10_APC_1: 0xffffffff
+INFO:    [DEVAPC] (PERI2_AO_SYS0)D10_APC_2: 0xffffffff
+INFO:    [DEVAPC] (PERI2_AO_SYS0)D10_APC_3: 0xffffffff
+INFO:    [DEVAPC] (PERI2_AO_SYS0)D10_APC_4: 0xffffffff
+INFO:    [DEVAPC] (PERI2_AO_SYS0)D10_APC_5: 0xffffffff
+INFO:    [DEVAPC] (PERI2_AO_SYS0)D10_APC_6: 0xffffffff
+INFO:    [DEVAPC] (PERI2_AO_SYS0)D10_APC_7: 0xfffff
+INFO:    [DEVAPC] (PERI2_AO_SYS0)D11_APC_0: 0xffffffff
+INFO:    [DEVAPC] (PERI2_AO_SYS0)D11_APC_1: 0xffffffff
+INFO:    [DEVAPC] (PERI2_AO_SYS0)D11_APC_2: 0xffffffff
+INFO:    [DEVAPC] (PERI2_AO_SYS0)D11_APC_3: 0xffffffff
+INFO:    [DEVAPC] (PERI2_AO_SYS0)D11_APC_4: 0xffffffff
+INFO:    [DEVAPC] (PERI2_AO_SYS0)D11_APC_5: 0xffffffff
+INFO:    [DEVAPC] (PERI2_AO_SYS0)D11_APC_6: 0xffffffff
+INFO:    [DEVAPC] (PERI2_AO_SYS0)D11_APC_7: 0xfffff
+INFO:    [DEVAPC] (PERI2_AO_SYS0)D12_APC_0: 0xffffffff
+INFO:    [DEVAPC] (PERI2_AO_SYS0)D12_APC_1: 0xffffffff
+INFO:    [DEVAPC] (PERI2_AO_SYS0)D12_APC_2: 0xffffffff
+INFO:    [DEVAPC] (PERI2_AO_SYS0)D12_APC_3: 0xffffffff
+INFO:    [DEVAPC] (PERI2_AO_SYS0)D12_APC_4: 0xffffffff
+INFO:    [DEVAPC] (PERI2_AO_SYS0)D12_APC_5: 0xffffffff
+INFO:    [DEVAPC] (PERI2_AO_SYS0)D12_APC_6: 0xffffffff
+INFO:    [DEVAPC] (PERI2_AO_SYS0)D12_APC_7: 0xfffff
+INFO:    [DEVAPC] (PERI2_AO_SYS0)D13_APC_0: 0xffffffff
+INFO:    [DEVAPC] (PERI2_AO_SYS0)D13_APC_1: 0xffffffff
+INFO:    [DEVAPC] (PERI2_AO_SYS0)D13_APC_2: 0xffffffff
+INFO:    [DEVAPC] (PERI2_AO_SYS0)D13_APC_3: 0xffffffff
+INFO:    [DEVAPC] (PERI2_AO_SYS0)D13_APC_4: 0xffffffff
+INFO:    [DEVAPC] (PERI2_AO_SYS0)D13_APC_5: 0xffffffff
+INFO:    [DEVAPC] (PERI2_AO_SYS0)D13_APC_6: 0xffffffff
+INFO:    [DEVAPC] (PERI2_AO_SYS0)D13_APC_7: 0xfffff
+INFO:    [DEVAPC] (PERI2_AO_SYS0)D14_APC_0: 0xffffffff
+INFO:    [DEVAPC] (PERI2_AO_SYS0)D14_APC_1: 0xffffffff
+INFO:    [DEVAPC] (PERI2_AO_SYS0)D14_APC_2: 0xffffffff
+INFO:    [DEVAPC] (PERI2_AO_SYS0)D14_APC_3: 0xffffffff
+INFO:    [DEVAPC] (PERI2_AO_SYS0)D14_APC_4: 0xffffffff
+INFO:    [DEVAPC] (PERI2_AO_SYS0)D14_APC_5: 0xffffffff
+INFO:    [DEVAPC] (PERI2_AO_SYS0)D14_APC_6: 0xffffffff
+INFO:    [DEVAPC] (PERI2_AO_SYS0)D14_APC_7: 0xfffff
+INFO:    [DEVAPC] (PERI2_AO_SYS0)D15_APC_0: 0xffffffff
+INFO:    [DEVAPC] (PERI2_AO_SYS0)D15_APC_1: 0xffffffff
+INFO:    [DEVAPC] (PERI2_AO_SYS0)D15_APC_2: 0xffffffff
+INFO:    [DEVAPC] (PERI2_AO_SYS0)D15_APC_3: 0xffffffff
+INFO:    [DEVAPC] (PERI2_AO_SYS0)D15_APC_4: 0xffffffff
+INFO:    [DEVAPC] (PERI2_AO_SYS0)D15_APC_5: 0xffffffff
+INFO:    [DEVAPC] (PERI2_AO_SYS0)D15_APC_6: 0xffffffff
+INFO:    [DEVAPC] (PERI2_AO_SYS0)D15_APC_7: 0xfffff
+INFO:    [DEVAPC] (PERI_PAR_AO_SYS0)D0_APC_0: 0x0
+INFO:    [DEVAPC] (PERI_PAR_AO_SYS0)D0_APC_1: 0x0
+INFO:    [DEVAPC] (PERI_PAR_AO_SYS0)D0_APC_2: 0x100400
+INFO:    [DEVAPC] (PERI_PAR_AO_SYS0)D1_APC_0: 0xfffc3fff
+INFO:    [DEVAPC] (PERI_PAR_AO_SYS0)D1_APC_1: 0xffffffff
+INFO:    [DEVAPC] (PERI_PAR_AO_SYS0)D1_APC_2: 0x3ffffff
+INFO:    [DEVAPC] (PERI_PAR_AO_SYS0)D2_APC_0: 0xf3ffffff
+INFO:    [DEVAPC] (PERI_PAR_AO_SYS0)D2_APC_1: 0xfffffcff
+INFO:    [DEVAPC] (PERI_PAR_AO_SYS0)D2_APC_2: 0x3ffcfff
+INFO:    [DEVAPC] (PERI_PAR_AO_SYS0)D3_APC_0: 0xffffffff
+INFO:    [DEVAPC] (PERI_PAR_AO_SYS0)D3_APC_1: 0xffffffff
+INFO:    [DEVAPC] (PERI_PAR_AO_SYS0)D3_APC_2: 0x3ffffff
+INFO:    [DEVAPC] (PERI_PAR_AO_SYS0)D4_APC_0: 0xffffffff
+INFO:    [DEVAPC] (PERI_PAR_AO_SYS0)D4_APC_1: 0xffffffff
+INFO:    [DEVAPC] (PERI_PAR_AO_SYS0)D4_APC_2: 0x3ffffff
+INFO:    [DEVAPC] (PERI_PAR_AO_SYS0)D5_APC_0: 0xffffffff
+INFO:    [DEVAPC] (PERI_PAR_AO_SYS0)D5_APC_1: 0xffffffff
+INFO:    [DEVAPC] (PERI_PAR_AO_SYS0)D5_APC_2: 0x3ffffff
+INFO:    [DEVAPC] (PERI_PAR_AO_SYS0)D6_APC_0: 0xffffffff
+INFO:    [DEVAPC] (PERI_PAR_AO_SYS0)D6_APC_1: 0xffffffff
+INFO:    [DEVAPC] (PERI_PAR_AO_SYS0)D6_APC_2: 0x3ffffff
+INFO:    [DEVAPC] (PERI_PAR_AO_SYS0)D7_APC_0: 0xffffffff
+INFO:    [DEVAPC] (PERI_PAR_AO_SYS0)D7_APC_1: 0xffffffff
+INFO:    [DEVAPC] (PERI_PAR_AO_SYS0)D7_APC_2: 0x3ffffff
+INFO:    [DEVAPC] (PERI_PAR_AO_SYS0)D8_APC_0: 0xffffffff
+INFO:    [DEVAPC] (PERI_PAR_AO_SYS0)D8_APC_1: 0xffffffff
+INFO:    [DEVAPC] (PERI_PAR_AO_SYS0)D8_APC_2: 0x3ffffff
+INFO:    [DEVAPC] (PERI_PAR_AO_SYS0)D9_APC_0: 0xffffffff
+INFO:    [DEVAPC] (PERI_PAR_AO_SYS0)D9_APC_1: 0xffffffff
+INFO:    [DEVAPC] (PERI_PAR_AO_SYS0)D9_APC_2: 0x3ffffff
+INFO:    [DEVAPC] (PERI_PAR_AO_SYS0)D10_APC_0: 0xffffffff
+INFO:    [DEVAPC] (PERI_PAR_AO_SYS0)D10_APC_1: 0xffffffff
+INFO:    [DEVAPC] (PERI_PAR_AO_SYS0)D10_APC_2: 0x3ffffff
+INFO:    [DEVAPC] (PERI_PAR_AO_SYS0)D11_APC_0: 0xffffffff
+INFO:    [DEVAPC] (PERI_PAR_AO_SYS0)D11_APC_1: 0xffffffff
+INFO:    [DEVAPC] (PERI_PAR_AO_SYS0)D11_APC_2: 0x3ffffff
+INFO:    [DEVAPC] (PERI_PAR_AO_SYS0)D12_APC_0: 0xffffffff
+INFO:    [DEVAPC] (PERI_PAR_AO_SYS0)D12_APC_1: 0xffffffff
+INFO:    [DEVAPC] (PERI_PAR_AO_SYS0)D12_APC_2: 0x3ffffff
+INFO:    [DEVAPC] (PERI_PAR_AO_SYS0)D13_APC_0: 0xffffffff
+INFO:    [DEVAPC] (PERI_PAR_AO_SYS0)D13_APC_1: 0xffffffff
+INFO:    [DEVAPC] (PERI_PAR_AO_SYS0)D13_APC_2: 0x3ffffff
+INFO:    [DEVAPC] (PERI_PAR_AO_SYS0)D14_APC_0: 0xffffffff
+INFO:    [DEVAPC] (PERI_PAR_AO_SYS0)D14_APC_1: 0xffffffff
+INFO:    [DEVAPC] (PERI_PAR_AO_SYS0)D14_APC_2: 0x3ffffff
+INFO:    [DEVAPC] (PERI_PAR_AO_SYS0)D15_APC_0: 0xffffffff
+INFO:    [DEVAPC] (PERI_PAR_AO_SYS0)D15_APC_1: 0xffffffff
+INFO:    [DEVAPC] (PERI_PAR_AO_SYS0)D15_APC_2: 0x3ffffff
+INFO:    [DEVAPC] (PERI_PAR_AO)MAS_SEC_0: 0x20001f
+INFO:    [DEVAPC] (DEVAPC_FMEM_AO_BASE 0x10044000)DOM_REMAP_0_0:0xfff43fff
+INFO:    [DEVAPC] (DEVAPC_INFRA2_AO_BASE 0x10228000)DOM_REMAP_0_0:0xfff43fff
+INFO:    [DEVAPC] SCP:0x3 ADSP:0x4 Lock:0x5
+NOTICE:  MT8195 dpm_init
+NOTICE:  mtk_init_mcu: Loaded (and reset) dpm.dm: (66 bytes)
+NOTICE:  mtk_init_mcu: Loaded (and reset) dpm.pm: (13702 bytes)
+NOTICE:  mtk_init_mcu: Loaded (and reset) dpm.dm: (66 bytes)
+NOTICE:  mtk_init_mcu: Loaded (and reset) dpm.pm: (13702 bytes)
+INFO:    md_settle = 24830, settle = 24830
+NOTICE:  SPM: binary array size = 0x9dd
+NOTICE:  SPM: spmfw version: pcm_suspend_v1.0_20210519
+NOTICE:  __spm_kick_im_to_fetch: ptr = 0x94612c40, pmem/dmem words = 0x9c8/0x15
+NOTICE:  mtk_init_mcu: Loaded (and reset) spm_firmware.bin: (10160 bytes)
+INFO:    SPM: spm_init done, spm pc = 0x240
+NOTICE:  MT8195 mcupm_init
+NOTICE:  mtk_init_mcu: Loaded (and reset) mcupm.bin: (122544 bytes)
+NOTICE:  MT8195 sspm_init
+NOTICE:  mtk_init_mcu: Loaded (and reset) sspm.bin: (137348 bytes)
+NOTICE:  MT8195 spm_boot_init
+INFO:    rtc 2sec reboot is not enabled
+NOTICE:  [APUSYS] apusys_init +
+INFO:    apusys_rv_init: enter
+INFO:    [APUAPC] apusys_devapc_init
+INFO:    [APUAPC] vio 0
+INFO:    [APUAPC] apusys_devapc_init done
+INFO:    [APUAPC] set_apusys_ao_apc - SUCCESS!
+INFO:    [APUAPC] D0_APC_0: 0x15555
+INFO:    [APUAPC] D0_APC_1: 0xaaaaaaaa
+INFO:    [APUAPC] D0_APC_2: 0xaaaaaaa
+INFO:    [APUAPC] D0_APC_3: 0xaaaa0000
+INFO:    [APUAPC] D0_APC_4: 0x2aaa
+INFO:    [APUAPC] D1_APC_0: 0xffffffff
+INFO:    [APUAPC] D1_APC_1: 0xffffffff
+INFO:    [APUAPC] D1_APC_2: 0xffffffff
+INFO:    [APUAPC] D1_APC_3: 0xffffffff
+INFO:    [APUAPC] D1_APC_4: 0x3fff
+INFO:    [APUAPC] D2_APC_0: 0xffffffff
+INFO:    [APUAPC] D2_APC_1: 0xffffffff
+INFO:    [APUAPC] D2_APC_2: 0xffffffff
+INFO:    [APUAPC] D2_APC_3: 0xffffffff
+INFO:    [APUAPC] D2_APC_4: 0x3fff
+INFO:    [APUAPC] D3_APC_0: 0xffffffff
+INFO:    [APUAPC] D3_APC_1: 0xffffffff
+INFO:    [APUAPC] D3_APC_2: 0xffffffff
+INFO:    [APUAPC] D3_APC_3: 0xffffffff
+INFO:    [APUAPC] D3_APC_4: 0x3fff
+INFO:    [APUAPC] D4_APC_0: 0xffffffff
+INFO:    [APUAPC] D4_APC_1: 0xffffffff
+INFO:    [APUAPC] D4_APC_2: 0xffffffff
+INFO:    [APUAPC] D4_APC_3: 0xffffffff
+INFO:    [APUAPC] D4_APC_4: 0x3fff
+INFO:    [APUAPC] D5_APC_0: 0x55555555
+INFO:    [APUAPC] D5_APC_1: 0x55555555
+INFO:    [APUAPC] D5_APC_2: 0x55555555
+INFO:    [APUAPC] D5_APC_3: 0x55555555
+INFO:    [APUAPC] D5_APC_4: 0x1555
+INFO:    [APUAPC] D6_APC_0: 0xffffffff
+INFO:    [APUAPC] D6_APC_1: 0xffffffff
+INFO:    [APUAPC] D6_APC_2: 0xffffffff
+INFO:    [APUAPC] D6_APC_3: 0xffffffff
+INFO:    [APUAPC] D6_APC_4: 0x3fff
+INFO:    [APUAPC] D7_APC_0: 0xffffffff
+INFO:    [APUAPC] D7_APC_1: 0xffffffff
+INFO:    [APUAPC] D7_APC_2: 0xffffffff
+INFO:    [APUAPC] D7_APC_3: 0xffffffff
+INFO:    [APUAPC] D7_APC_4: 0x3fff
+INFO:    [APUAPC] D8_APC_0: 0xffffffff
+INFO:    [APUAPC] D8_APC_1: 0xffffffff
+INFO:    [APUAPC] D8_APC_2: 0xffffffff
+INFO:    [APUAPC] D8_APC_3: 0xffffffff
+INFO:    [APUAPC] D8_APC_4: 0x3fff
+INFO:    [APUAPC] D9_APC_0: 0xffffffff
+INFO:    [APUAPC] D9_APC_1: 0xffffffff
+INFO:    [APUAPC] D9_APC_2: 0xffffffff
+INFO:    [APUAPC] D9_APC_3: 0xffffffff
+INFO:    [APUAPC] D9_APC_4: 0x3fff
+INFO:    [APUAPC] D10_APC_0: 0xffffffff
+INFO:    [APUAPC] D10_APC_1: 0xffffffff
+INFO:    [APUAPC] D10_APC_2: 0xffffffff
+INFO:    [APUAPC] D10_APC_3: 0xffffffff
+INFO:    [APUAPC] D10_APC_4: 0x3fff
+INFO:    [APUAPC] D11_APC_0: 0xffffffff
+INFO:    [APUAPC] D11_APC_1: 0xffffffff
+INFO:    [APUAPC] D11_APC_2: 0xffffffff
+INFO:    [APUAPC] D11_APC_3: 0xffffffff
+INFO:    [APUAPC] D11_APC_4: 0x3fff
+INFO:    [APUAPC] D12_APC_0: 0xffffffff
+INFO:    [APUAPC] D12_APC_1: 0xffffffff
+INFO:    [APUAPC] D12_APC_2: 0xffffffff
+INFO:    [APUAPC] D12_APC_3: 0xffffffff
+INFO:    [APUAPC] D12_APC_4: 0x3fff
+INFO:    [APUAPC] D13_APC_0: 0xffffffff
+INFO:    [APUAPC] D13_APC_1: 0xffffffff
+INFO:    [APUAPC] D13_APC_2: 0xffffffff
+INFO:    [APUAPC] D13_APC_3: 0xffffffff
+INFO:    [APUAPC] D13_APC_4: 0x3fff
+INFO:    [APUAPC] D14_APC_0: 0xffffffff
+INFO:    [APUAPC] D14_APC_1: 0xffffffff
+INFO:    [APUAPC] D14_APC_2: 0xffffffff
+INFO:    [APUAPC] D14_APC_3: 0xffffffff
+INFO:    [APUAPC] D14_APC_4: 0x3fff
+INFO:    [APUAPC] D15_APC_0: 0xffffffff
+INFO:    [APUAPC] D15_APC_1: 0xffffffff
+INFO:    [APUAPC] D15_APC_2: 0xffffffff
+INFO:    [APUAPC] D15_APC_3: 0xffffffff
+INFO:    [APUAPC] D15_APC_4: 0x3fff
+INFO:    [APUAPC] APC_CON: 0x4
+INFO:    [APUAPC] set_apusys_noc_dapc - SUCCESS!
+INFO:    [NOCDAPC] D0_APC_0: 0x15555555
+INFO:    [NOCDAPC] D0_APC_1: 0x0
+INFO:    [NOCDAPC] D1_APC_0: 0x3fffffff
+INFO:    [NOCDAPC] D1_APC_1: 0x0
+INFO:    [NOCDAPC] D2_APC_0: 0x3fffffff
+INFO:    [NOCDAPC] D2_APC_1: 0x0
+INFO:    [NOCDAPC] D3_APC_0: 0x3fffffff
+INFO:    [NOCDAPC] D3_APC_1: 0x0
+INFO:    [NOCDAPC] D4_APC_0: 0x3fffffff
+INFO:    [NOCDAPC] D4_APC_1: 0x0
+INFO:    [NOCDAPC] D5_APC_0: 0x15555555
+INFO:    [NOCDAPC] D5_APC_1: 0x0
+INFO:    [NOCDAPC] D6_APC_0: 0x3fffffff
+INFO:    [NOCDAPC] D6_APC_1: 0x0
+INFO:    [NOCDAPC] D7_APC_0: 0x3fffffff
+INFO:    [NOCDAPC] D7_APC_1: 0x0
+INFO:    [NOCDAPC] D8_APC_0: 0x3fffffff
+INFO:    [NOCDAPC] D8_APC_1: 0x0
+INFO:    [NOCDAPC] D9_APC_0: 0x3fffffff
+INFO:    [NOCDAPC] D9_APC_1: 0x0
+INFO:    [NOCDAPC] D10_APC_0: 0x3fffffff
+INFO:    [NOCDAPC] D10_APC_1: 0x0
+INFO:    [NOCDAPC] D11_APC_0: 0x3fffffff
+INFO:    [NOCDAPC] D11_APC_1: 0x0
+INFO:    [NOCDAPC] D12_APC_0: 0x3fffffff
+INFO:    [NOCDAPC] D12_APC_1: 0x0
+INFO:    [NOCDAPC] D13_APC_0: 0x3fffffff
+INFO:    [NOCDAPC] D13_APC_1: 0x0
+INFO:    [NOCDAPC] D14_APC_0: 0x3fffffff
+INFO:    [NOCDAPC] D14_APC_1: 0x0
+INFO:    [NOCDAPC] D15_APC_0: 0x3fffffff
+INFO:    [NOCDAPC] D15_APC_1: 0x0
+INFO:    [NOCDAPC] APC_CON: 0x4
+INFO:    [APUAPC] start_apusys_devapc_ao done
+INFO:    apusys_rv_mbox_mpu_init: 0x190000b0 = 0x1, 0x190000e0 = 0x10a0001
+INFO:    apusys_rv_mbox_mpu_init: 0x190001b0 = 0x1, 0x190001e0 = 0xa0001
+INFO:    apusys_rv_mbox_mpu_init: 0x190002b0 = 0x1, 0x190002e0 = 0xa0001
+INFO:    apusys_rv_mbox_mpu_init: 0x190003b0 = 0x1, 0x190003e0 = 0xa0001
+INFO:    apusys_rv_mbox_mpu_init: 0x190004b0 = 0x10001, 0x190004e0 = 0x1
+INFO:    apusys_rv_mbox_mpu_init: 0x190005b0 = 0x1, 0x190005e0 = 0x60a0001
+INFO:    apusys_rv_mbox_mpu_init: 0x190006b0 = 0x1, 0x190006e0 = 0xa0001
+INFO:    apusys_rv_mbox_mpu_init: 0x190007b0 = 0x1, 0x190007e0 = 0xa0001
+NOTICE:  [APUSYS] apusys_init -
+INFO:    BL31: Initializing runtime services
+WARNING: No OPTEE provided by BL2 boot loader, Booting device without OPTEE initialization. SMC`s destined for OPTEE will return SMC_UNK
+ERROR:   Error initializing runtime service opteed_fast
+INFO:    SPM: enable CPC mode
+INFO:    mcdi ready for mcusys-off-idle and system suspend
+INFO:    BL31: Preparing for EL3 exit to normal world
+INFO:    Entry point address = 0x4c000000
+INFO:    SPSR = 0x3c9
+
+
+U-Boot 2027.01-rc1_armbian-2027.01-rc1-Sdfcf-P4e7a-H23be-Vbf6d-Bb936-R448a (Nov 08 2026 - 01:15:19 +0100)
+
+CPU:   MediaTek MT8195
+Model: Radxa NIO 12L
+DRAM:  16 GiB
+Core:  174 devices, 27 uclasses, devicetree: separate
+WDT:   Started watchdog@10007000 with servicing every 1000ms (60s timeout)
+MMC:   mmc@11240000: 1
+mediatek-ufshci ufshci@11270000: [RX, TX]: gear=[3, 3], lane[1, 1], pwr[FAST MODE, FAST MODE], rate = 2
+Loading Environment from SCSI... OK
+mt8195_power_domain power-controller: power-domain@15: failed to get subsys clk at index 8: -19
+mt8195_power_domain power-controller: failed to add child domain: power-domain@15
+In:    serial@11001100
+Out:   serial@11001100
+Err:   serial@11001100
+Net:   eth0: ethernet@11021000
+Hit any key to stop autoboot: 0
+=>  pci
+BusDevFun  VendorId   DeviceId   Device Class       Sub-Class
+_____________________________________________________________
+00.00.00   0x14c3     0x8195     Bridge device           0x04
+01.00.00   0x1106     0x3483     Serial bus controller   0x03
+=> usb start
+starting USB...
+USB XHCI 1.10
+"Synchronous Abort" handler, esr 0x96000006, far 0x20300000
+elr: 000000004c0596e4 lr : 000000004c0596dc (reloc)
+elr: 00000000fff546e4 lr : 00000000fff546dc
+x0 : 0000000020300000 x1 : 0000000003d00000
+x2 : 00000000ffb12878 x3 : 0000000000000003
+x4 : 0000000000100000 x5 : 0000000000000001
+x6 : 0000000003e00000 x7 : 0000000000000028
+x8 : 00000000fff409a4 x9 : fffffffffffffff0
+x10: 0000000000000002 x11: 000000000000c550
+x12: 00000000ffad999c x13: 00000000ffad9f30
+x14: 00000000fffffffe x15: 0000000000000021
+x16: 00000000fff409a4 x17: 00000000073cde18
+x18: 00000000ffaf8e10 x19: 00000000ffb12c60
+x20: 0000000020300000 x21: 00000000fffdc9f0
+x22: 00000000ffb00e70 x23: 00000000fffd2a93
+x24: 00000000fffe8ebc x25: 0000000000000000
+x26: 0000000000000000 x27: 0000000000000000
+x28: 00000000ffb1ac30 x29: 00000000ffad9b80
+
+Code: 52800201 97ffac37 b40002a0 aa0003f4 (b9400015)
+Resetting CPU ...
+
+resetting ...
+����������������������������������������������������������������������������������������������������������������������������������������������������������������������������������NOTICE:  BL2: v2.6(release):armbian
+NOTICE:  BL2: Built : 01:15:27, Nov  8 2026
+INFO:    BL2: Doing platform setup
+NOTICE:  WDT: Status = 0x40000000
+NOTICE:  WDT: Last reset was normal software reboot
+PLL init start...
+PLL init Done!
+MTCMOS init Start...
+MTCMOS init Done!
+switch to 26MHz
+ARMPLL_LL switch to OPP 0
+switch to ARMPLL_LL
+ARMPLL_LL_CON2: 0x133b13
+[PMIF] ULPOSC1 K done: 248M, PLL_ULPOSC1_CON0/1/2 0x38a949 0x41000029
+[PMIF] [pmifclkmgr_set_clk] CLK_CFG_9 = 3030100
+[pmifclkmgr_set_spmi_clk] done
+[pmifclkmgr_set_spi_clk] done
+[PMIF] pmif_spmi_force_normal_mode done
+[SPMI] spmi_config_master CLK_CFG_17 = 2000307
+[SPMI] b IOCFG_BM_EH_CFG0 0xfff
+[SPMI] IOCFG_BM_DRV_CFG3 0x12
+[SPMI] IOCFG_BM_EH_CFG0 0x3f
+[SPMI] IOCFG_BM_RSEL_CFG0 0x492
+[SPMI] 667: spmi_read_check next, slvid:6 rdata = 0x2a.
+[SPMI] spmi_read_check done, slvid:6
+[SPMI] non-rcs dly:0, pol:1, sampl:0x1
+[SPMI] 667: spmi_read_check next, slvid:7 rdata = 0x2a.
+[SPMI] spmi_read_check done, slvid:7
+[SPMI] non-rcs dly:0, pol:1, sampl:0x1
+[PWRAP] pwrap_init_preloader
+[PWRAP] is_pwrap_init_done 0
+[PWRAP] pwrap_init start!!!!!!!!!!!!!
+[PWRAP] Reset SPISLV ok
+[PWRAP] Set Read Dummy Cycle ok
+[PWRAP] _pwrap_init_dio ok
+[PWRAP] _pwrap_init_reg_clock ok
+[PWRAP] __pwrap_InitSPISLV ok
+[PWRAP] si_sampling_ck_dly = 0, si_sampling_ck_pol = 0
+[PWRAP] si_sample_ctrl = 0, rdata = d6a9
+[PWRAP] First Valid Sampling Clock Found!!!
+[PWRAP] si_sampling_ck_dly = 0, si_sampling_ck_pol = 1
+[PWRAP] si_sample_ctrl = 20, rdata = 5aa5
+[PWRAP] si_dly = 0, *RG_SPI_CON2 = 0, rdata = 1b27
+[PWRAP] si_dly = 1, *RG_SPI_CON2 = 1, rdata = 1b27
+[PWRAP] si_dly = 2, *RG_SPI_CON2 = 2, rdata = 1b27
+[PWRAP] si_dly = 3, *RG_SPI_CON2 = 3, rdata = 1b27
+[PWRAP] si_dly = 4, *RG_SPI_CON2 = 4, rdata = 1b27
+[PWRAP] si_dly = 5, *RG_SPI_CON2 = 5, rdata = 1b27
+[PWRAP] si_dly = 6, *RG_SPI_CON2 = 6, rdata = 1b27
+[PWRAP] si_dly = 7, *RG_SPI_CON2 = 7, rdata = 1b27
+[PWRAP] Data Boundary is Found !!!
+[PWRAP] si_dly = 8, rdata = 1a65
+[PWRAP] si_sample_ctrl=0x20(before)
+[PWRAP] si_sample_ctrl=0x40(after)(non-FPGA)
+[PWRAP] SI Strobe Calibration For PMIC 0 Done
+[PWRAP] si_sample_ctrl = 40, si_dly = 8
+[PWRAP] _pwrap_init_sistrobe Read Test ok
+[PWRAP] _pwrap_init_sistrobe ok
+[PWRAP] _pwrap_lock_SPISLVReg ok
+[PWRAP] _pwrap_wacs2_write_test ok
+[PWRAP] _pwrap_InitStaUpd ok
+[PWRAP] write MODEM_TEMP_SHARE_CTRL start
+[PWRAP] write MODEM_TEMP_SHARE_CTRL ok
+[PWRAP] MODEM_TEMP_SHARE_CTRL:f0
+[PWRAP] PMIF_SPI_PMIF_MPU_CTRL = 0x34
+[PWRAP] PMIF_SPI_PMIF_PMIC_RGN_0_START = 0x600
+[PWRAP] PMIF_SPI_PMIF_PMIC_RGN_0_END = 0x67e
+[PWRAP] PMIF_SPI_PMIF_PMIC_RGN_0_PER = 0xff3ffffb
+[PWRAP] PMIF_SPI_PMIF_PMIC_RGN_1_START = 0x800
+[PWRAP] PMIF_SPI_PMIF_PMIC_RGN_1_END = 0x13fe
+[PWRAP] PMIF_SPI_PMIF_PMIC_RGN_1_PER = 0xfffcfff8
+[PWRAP] PMIF_SPI_PMIF_PMIC_RGN_2_START = 0x1400
+[PWRAP] PMIF_SPI_PMIF_PMIC_RGN_2_END = 0x207e
+[PWRAP] PMIF_SPI_PMIF_PMIC_RGN_2_PER = 0xfffcfff0
+[PWRAP] PMIF_SPI_PMIF_PMIC_RGN_3_START = 0x2080
+[PWRAP] PMIF_SPI_PMIF_PMIC_RGN_3_END = 0x26fe
+[PWRAP] PMIF_SPI_PMIF_PMIC_RGN_3_PER = 0xfffcff38
+[PWRAP] _pwrap_config_mpu ok
+[PWRAP] start pwrap_read_test
+[PWRAP] rdata=0x5aa5
+[PWRAP] Read Test pass, return_value = 0x0
+[PWRAP] start pwrap_write_test
+[PWRAP] after pwrap_write_test
+[PWRAP] rdata=0xa55a (read back)
+[PWRAP] Write Test pass
+[PWRAP] channel pass
+[PWRAP] REC_CMD0:0x1d08 (The last one adr)
+[PWRAP] REC_WDATA0:0x1 (The last one wdata)
+[PWRAP] REC_CMD1:0x1e88 (The second-last adr)
+[PWRAP] REC_WDATA1:0x1 (The second-last wdata)
+[PWRAP] REC_CMD2:0x1d2e (The third-last adr)
+[PWRAP] REC_WDATA2:0x1 (The third-last wdata)
+[PWRAP] REC_CMD3:0x1d88 (The fourth-last adr)
+[PWRAP] REC_WDATA3:0x1 (The fourth-last wdata)
+[PWRAP] REC_CMD4:0x1f2e (The fifth-last adr)
+[PWRAP] REC_WDATA4:0x1 (The fifth-last wdata)
+[PWRAP] REC_CMD5:0x1c64 (The sixth-last adr)
+[PWRAP] REC_WDATA5:0x1 (The sixth-last wdata)
+[PWRAP] enable spi debug ok
+[PWRAP] clear record command ok
+[PWRAP] PMIC_WRAP_MONITOR_MODE = Logging Mode
+[PWRAP] PMIF_SPI_PMIF_MONITOR_CTRL = 0x5
+[PWRAP] PMIF_SPI_PMIF_MONITOR_TARGET_CHAN_0 = 0x1fbfff
+[PWRAP] PMIF_SPI_PMIF_MONITOR_TARGET_ADDR_0 = 0x0
+[PWRAP] PMIF_SPI_PMIF_MONITOR_TARGET_WDATA_0 = 0x0
+[PWRAP] init pass, ret=0.
+[PMIC] Preloader Start
+[PMIC]  CHIP Code = 0x5920
+[PMIC] POWER_HOLD :0x1
+[PMIC] TOP_RST_STATUS[0x150]=0x48
+[PMIC] PONSTS[0xc]=0x0
+[PMIC] POFFSTS[0xe]=0x400
+[PMIC] PG_SDN_STS0[0x16]=0xffff
+[PMIC] PG_SDN_STS1[0x18]=0xfff8
+[PMIC] OC_SDN_STS0[0x1a]=0x0
+[PMIC] OC_SDN_STS1[0x1c]=0x0
+[PMIC] BUCK_OC_SDN_STATUS[0x1430]=0x0
+[PMIC] BUCK_OC_SDN_EN[0x1440]=0x7ff
+[PMIC] THERMALSTATUS[0x1e]=0x0
+[PMIC] STRUP_CON4[0xa1a]=0x0
+[PMIC] STRUP_CON12[0xa12]=0x3000
+[PMIC] TOP_RST_MISC[0x14a]=0x204
+[PMIC] TOP_CLK_TRIM[0x388]=0x6cc0
+[MT6359] latch VCORE(VGPU11) 750000 uV(0x24)
+[MT6359] latch VPU(VPROC1) 750000 uV(0x24)
+[MT6359] latch VMDLA(VPROC2) 750000 uV(0x24)
+[MT6359] latch VPROC(VCORE) 931250 uV(0x66)
+[MT6359] latch VSRAM_PROC1 1000000 uV(0x78)
+[MT6359] latch VSRAM_PROC2 962500 uV(0x6f)
+[MT6359] latch VSRAM_GPU(VSRAM_OTHERS) 500000 uV(0x0)
+[MT6359] latch VSRAM_APU(VSRAM_MD) 750000 uV(0x3c)
+[PMIC] [pmic_check_rst] AP Watchdog
+[PMIC] just_rst = 0
+[PMIC] [pwrkey_dbg_status] powerkey:0 count=0(ms) g_pwrkey_release=0
+[PMIC] [pmic_wdt_set] TOP_RST_MISC=0x225
+[PMIC] register vsram_others OK
+[PMIC] register vsram_proc1 OK
+[PMIC] register vsram_proc2 OK
+[PMIC] register vsram_md OK
+[PMIC] register vcore OK
+[PMIC] register vproc1 OK
+[PMIC] register vproc2 OK
+[PMIC] register vgpu11 OK
+[PMIC] register vmodem OK
+[PMIC] register vpu OK
+[PMIC] register vio18 OK
+[MT6315] S6 RG_SLV_ID[0x136]=0xb6
+[MT6315] S6 TOP_RST_STATUS[0x129]=0x3
+[MT6315] S6 POFFSTS[0xc]=0x0
+[MT6315] S6 RGS_POFFSTS[0xa0f]=0x0
+[MT6315] S6 PG_SDN_STS0[0xf]=0xf
+[MT6315] S6 OC_SDN_STS0[0x10]=0x0
+[MT6315] S6 BUCK_OC_SDN_STS[0x1416]=0x0
+[MT6315] S6 BUCK_OC_SDN_EN[0x1451]=0x1f
+[MT6315] S6 TOP_RST_MISC[0x126]=0x4
+[MT6315] S7 RG_SLV_ID[0x136]=0xb7
+[MT6315] S7 TOP_RST_STATUS[0x129]=0x3
+[MT6315] S7 POFFSTS[0xc]=0x0
+[MT6315] S7 RGS_POFFSTS[0xa0f]=0x0
+[MT6315] S7 PG_SDN_STS0[0xf]=0xf
+[MT6315] S7 OC_SDN_STS0[0x10]=0x0
+[MT6315] S7 BUCK_OC_SDN_STS[0x1416]=0x0
+[MT6315] S7 BUCK_OC_SDN_EN[0x1451]=0x1f
+[MT6315] S7 TOP_RST_MISC[0x126]=0x4
+[PMIC] register 6315_6 OK
+[MT6315] latch 6315_6 750000 uV(0x44)
+[PMIC] register 6315_7 OK
+[MT6315] latch 6315_7 750000 uV(0x44)
+[MT6315] S6 set TOP_RST_MISC=0x3
+[MT6315] S7 set TOP_RST_MISC=0x3
+[MT6315] mt6315_spmi_probe done
+[MT6360] mt6360_pmic_i2c_probe
+[MT6360] mt6360_pmic_enable_crc_check: crc_en = 0xc0
+[MT6360] mt6360_pmic_enable_crc_check: no need
+[MT6360] mt6360_pmic_enable_poweroff_sequence: en = 0
+[MT6360] mt6360_set_buck1_fsw
+[MT6360] mt6360_set_sys_short_protect
+[PMIC] register VDRAM1 OK
+[PMIC] register VDRAM2 OK
+[MT6360] mt6360_pmic_init: read 0x26 = 0x0
+[MT6360] mt6360_pmic_i2c_probe: reg[0xdc] = 0x0
+[MT6360] mt6360_pmic_i2c_probe: reg[0xdd] = 0x0
+[MT6360] mt6360_pmic_i2c_probe: reg[0xde] = 0x0
+[MT6360] mt6360_pmic_i2c_probe: reg[0xdf] = 0x0
+[MT6360] mt6360_ldo_i2c_probe
+[MT6360] mt6360_ldo_i2c_probe: done
+[MT6691] MT6691 probe
+[I2C] 359: id=6,addr: 56, transfer error
+[I2C] 365: I2C_ACKERR
+[I2C] 895: write_read 0x10001 bytes fails,ret=-121.
+[PMIC] register VMDDR OK
+[MT6691] probe done
+[HL7593] probe
+[I2C] 359: id=6,addr: 61, transfer error
+[I2C] 365: I2C_ACKERR
+[I2C] 895: write_read 0x10001 bytes fails,ret=-121.
+[I2C] 359: id=6,addr: 61, transfer error
+[I2C] 365: I2C_ACKERR
+[I2C] 895: write_read 0x10001 bytes fails,ret=-121.
+[HL7593] probe fail
+[FAN53526] probe
+[I2C] 359: id=6,addr: 61, transfer error
+[I2C] 365: I2C_ACKERR
+[I2C] 895: write_read 0x10001 bytes fails,ret=-121.
+[I2C] 359: id=6,addr: 61, transfer error
+[I2C] 365: I2C_ACKERR
+[I2C] 895: write_read 0x10001 bytes fails,ret=-121.
+[FAN53526] probe fail
+[PMIC] Init done
+INFO:    UFS LUN0 contains 1024 blocks with 4096-byte size
+INFO:    UFS LUN1 contains 1024 blocks with 4096-byte size
+INFO:    UFS LUN2 contains 62480384 blocks with 4096-byte size
+INFO:    ufs: change power mode success
+WARNING: Failed to access image id=28 (-2)
+NOTICE:  Could NOT find the dramk partition!
+[MEM] libdram version: 315bfaa6eef
+[MEM] init partition address is incorrect !!!
+EMI_MPU_CTRL=0 1st
+EMI_MPU_CTRL=0 2nd
+drm_update_reg: 0, bits: 0x4000, addr: 0x1000d030, val: 0x83f1
+DRM DDR reserve mode FAIL! drm: 30 = 0x83f1
+DDR RESERVE Success 0
+drm_update_reg: 0, bits: 0x2000, addr: 0x1000d030, val: 0x83f1
+drm_update_reg: 0, bits: 0x1000, addr: 0x1000d030, val: 0x83f1
+DOE setting: vcore 0, vdram 0, vddq 0, vmddr 0, vio18 0
+[MT6359] 4 7,1
+[MT6359] 1 7,56
+[MT6691] 1 21,90
+[MT6359] cnvdata 12, n_size 3
+[MT6359] get volt 10, 12, 1800000
+Vio18 = 1800000
+[MT6359] get volt 7, 56, 750000
+Vcore = 750000
+Vdram = 1125000
+Vddq = 600000
+[MT6691] get volt 21, 90, 750000
+vmddr = 750000
+Channel num from auxadc: 4,
+dram_type_auxadc from auxadc: 1,
+voltage from auxadc: 507,
+[MT6359] 1 7,40
+Read voltage for 800, 4
+[MT6359] cnvdata 12, n_size 3
+[MT6359] get volt 10, 12, 1800000
+Vio18 = 1800000
+[MT6359] get volt 7, 40, 650000
+Vcore = 650000
+Vdram = 1125000
+Vddq = 600000
+[MT6691] get volt 21, 90, 750000
+Vmddr = 750000
+[EMI] CEN_CONA(0x3530154),CEN_CONF(0x421000),CEN_CONH(0x88880033),CEN_CONK(0x0),CHN_CONA(0x488005d)
+[MT6359] 1 7,40
+Read voltage for 800, 4
+[MT6359] cnvdata 12, n_size 3
+[MT6359] get volt 10, 12, 1800000
+Vio18 = 1800000
+[MT6359] get volt 7, 40, 650000
+Vcore = 650000
+Vdram = 1125000
+Vddq = 600000
+[MT6691] get volt 21, 90, 750000
+Vmddr = 750000
+[MT6359] get volt 7, 40, 650000
+[MT6359] 1 7,44
+Read voltage for 1200, 2
+[MT6359] cnvdata 12, n_size 3
+[MT6359] get volt 10, 12, 1800000
+Vio18 = 1800000
+[MT6359] get volt 7, 44, 675000
+Vcore = 675000
+Vdram = 1125000
+Vddq = 600000
+[MT6691] get volt 21, 90, 750000
+Vmddr = 750000
+[MT6359] get volt 7, 44, 675000
+[MT6359] 1 7,40
+Read voltage for 600, 5
+[MT6359] cnvdata 12, n_size 3
+[MT6359] get volt 10, 12, 1800000
+Vio18 = 1800000
+[MT6359] get volt 7, 40, 650000
+Vcore = 650000
+Vdram = 1125000
+Vddq = 600000
+[MT6691] get volt 21, 90, 750000
+Vmddr = 750000
+[MT6359] get volt 7, 40, 650000
+[MT6359] 1 7,44
+Read voltage for 933, 3
+[MT6359] cnvdata 12, n_size 3
+[MT6359] get volt 10, 12, 1800000
+Vio18 = 1800000
+[MT6359] get volt 7, 44, 675000
+Vcore = 675000
+Vdram = 1125000
+Vddq = 600000
+[MT6691] get volt 21, 90, 750000
+Vmddr = 750000
+[MT6359] get volt 7, 44, 675000
+[MT6359] 1 7,40
+Read voltage for 400, 6
+[MT6359] cnvdata 12, n_size 3
+[MT6359] get volt 10, 12, 1800000
+Vio18 = 1800000
+[MT6359] get volt 7, 40, 650000
+Vcore = 650000
+Vdram = 1125000
+Vddq = 600000
+[MT6691] get volt 21, 90, 750000
+Vmddr = 750000
+[MT6359] get volt 7, 40, 650000
+[MT6359] 1 7,56
+Read voltage for 2133, 0
+[MT6359] cnvdata 12, n_size 3
+[MT6359] get volt 10, 12, 1800000
+Vio18 = 1800000
+[MT6359] get volt 7, 56, 750000
+Vcore = 750000
+Vdram = 1125000
+Vddq = 600000
+[MT6691] get volt 21, 90, 750000
+Vmddr = 750000
+[MT6359] get volt 7, 56, 750000
+[MT6359] 1 7,48
+Read voltage for 1600, 1
+[MT6359] cnvdata 12, n_size 3
+[MT6359] get volt 10, 12, 1800000
+Vio18 = 1800000
+[MT6359] get volt 7, 48, 700000
+Vcore = 700000
+Vdram = 1125000
+Vddq = 600000
+[MT6691] get volt 21, 90, 750000
+Vmddr = 750000
+[MT6359] get volt 7, 48, 700000
+[MT6359] 1 7,56
+Read voltage for 2133, 0
+[MT6359] cnvdata 12, n_size 3
+[MT6359] get volt 10, 12, 1800000
+Vio18 = 1800000
+[MT6359] get volt 7, 56, 750000
+Vcore = 750000
+Vdram = 1125000
+Vddq = 600000
+[MT6691] get volt 21, 90, 750000
+Vmddr = 750000
+[MT6359] 4 7,0
+[MT6359] 1 7,56
+[MT6359] get volt 7, 56, 750000
+Vcore = 750000
+base init: MT8395 platform
+[MEM] DDR frequency: 4266MHz
+0:dram_rank_size: 0x200000000
+1:dram_rank_size: 0x200000000
+[MEM] Memory size: 0x400000000(16384MB)
+INFO:    BL2: Loading image id 3
+INFO:    Loading image id=3 at address 0x54601000
+INFO:    Image id=3 loaded: 0x54601000 - 0x54660e80
+INFO:    BL2: Loading image id 5
+INFO:    Loading image id=5 at address 0x4c000000
+INFO:    Image id=5 loaded: 0x4c000000 - 0x4c11ce70
+NOTICE:  BL2: Booting BL31
+INFO:    Entry point address = 0x54601000
+INFO:    SPSR = 0x3cd
+NOTICE:  MT8195 bl31_setup
+NOTICE:  BL31: v2.6(release):armbian
+NOTICE:  BL31: Built : 01:15:27, Nov  8 2026
+INFO:    GICv3 without legacy support detected.
+INFO:    ARM GICv3 driver initialized in EL3
+INFO:    Maximum SPI INTID supported: 895
+INFO:    [mt_systimer_init] systimer initialization
+INFO:    [DEVAPC] (INFRA_AO_SYS0)D0_APC_0: 0x4000000
+INFO:    [DEVAPC] (INFRA_AO_SYS0)D0_APC_1: 0x0
+INFO:    [DEVAPC] (INFRA_AO_SYS0)D0_APC_2: 0x40000
+INFO:    [DEVAPC] (INFRA_AO_SYS0)D0_APC_3: 0x0
+INFO:    [DEVAPC] (INFRA_AO_SYS0)D0_APC_4: 0x0
+INFO:    [DEVAPC] (INFRA_AO_SYS0)D1_APC_0: 0xffffffff
+INFO:    [DEVAPC] (INFRA_AO_SYS0)D1_APC_1: 0xffffffff
+INFO:    [DEVAPC] (INFRA_AO_SYS0)D1_APC_2: 0xffffffff
+INFO:    [DEVAPC] (INFRA_AO_SYS0)D1_APC_3: 0xffffffff
+INFO:    [DEVAPC] (INFRA_AO_SYS0)D1_APC_4: 0xffc3fff
+INFO:    [DEVAPC] (INFRA_AO_SYS0)D2_APC_0: 0xffcf00fc
+INFO:    [DEVAPC] (INFRA_AO_SYS0)D2_APC_1: 0xcfcffcff
+INFO:    [DEVAPC] (INFRA_AO_SYS0)D2_APC_2: 0xffffffff
+INFO:    [DEVAPC] (INFRA_AO_SYS0)D2_APC_3: 0x3ffffff
+INFO:    [DEVAPC] (INFRA_AO_SYS0)D2_APC_4: 0xfffcffc
+INFO:    [DEVAPC] (INFRA_AO_SYS0)D3_APC_0: 0xffcfccfc
+INFO:    [DEVAPC] (INFRA_AO_SYS0)D3_APC_1: 0xffffffff
+INFO:    [DEVAPC] (INFRA_AO_SYS0)D3_APC_2: 0xffffffff
+INFO:    [DEVAPC] (INFRA_AO_SYS0)D3_APC_3: 0xffffffff
+INFO:    [DEVAPC] (INFRA_AO_SYS0)D3_APC_4: 0xfffffff
+INFO:    [DEVAPC] (INFRA_AO_SYS0)D4_APC_0: 0xfcfcccff
+INFO:    [DEVAPC] (INFRA_AO_SYS0)D4_APC_1: 0xffffffff
+INFO:    [DEVAPC] (INFRA_AO_SYS0)D4_APC_2: 0xffffffff
+INFO:    [DEVAPC] (INFRA_AO_SYS0)D4_APC_3: 0xffffffff
+INFO:    [DEVAPC] (INFRA_AO_SYS0)D4_APC_4: 0xfffffff
+INFO:    [DEVAPC] (INFRA_AO_SYS0)D5_APC_0: 0xfffffffc
+INFO:    [DEVAPC] (INFRA_AO_SYS0)D5_APC_1: 0xffffffff
+INFO:    [DEVAPC] (INFRA_AO_SYS0)D5_APC_2: 0xffffffff
+INFO:    [DEVAPC] (INFRA_AO_SYS0)D5_APC_3: 0xffffffff
+INFO:    [DEVAPC] (INFRA_AO_SYS0)D5_APC_4: 0xfffffff
+INFO:    [DEVAPC] (INFRA_AO_SYS0)D6_APC_0: 0xffffffff
+INFO:    [DEVAPC] (INFRA_AO_SYS0)D6_APC_1: 0xffffffff
+INFO:    [DEVAPC] (INFRA_AO_SYS0)D6_APC_2: 0xffffffff
+INFO:    [DEVAPC] (INFRA_AO_SYS0)D6_APC_3: 0xffffffff
+INFO:    [DEVAPC] (INFRA_AO_SYS0)D6_APC_4: 0xfffffff
+INFO:    [DEVAPC] (INFRA_AO_SYS0)D7_APC_0: 0xffffffff
+INFO:    [DEVAPC] (INFRA_AO_SYS0)D7_APC_1: 0xffffffff
+INFO:    [DEVAPC] (INFRA_AO_SYS0)D7_APC_2: 0xffffffff
+INFO:    [DEVAPC] (INFRA_AO_SYS0)D7_APC_3: 0xffffffff
+INFO:    [DEVAPC] (INFRA_AO_SYS0)D7_APC_4: 0xfffffff
+INFO:    [DEVAPC] (INFRA_AO_SYS0)D8_APC_0: 0xffffffff
+INFO:    [DEVAPC] (INFRA_AO_SYS0)D8_APC_1: 0xffffffff
+INFO:    [DEVAPC] (INFRA_AO_SYS0)D8_APC_2: 0xffffffff
+INFO:    [DEVAPC] (INFRA_AO_SYS0)D8_APC_3: 0xffffffff
+INFO:    [DEVAPC] (INFRA_AO_SYS0)D8_APC_4: 0xfffffff
+INFO:    [DEVAPC] (INFRA_AO_SYS0)D9_APC_0: 0xffffffff
+INFO:    [DEVAPC] (INFRA_AO_SYS0)D9_APC_1: 0xffffffff
+INFO:    [DEVAPC] (INFRA_AO_SYS0)D9_APC_2: 0xffffffff
+INFO:    [DEVAPC] (INFRA_AO_SYS0)D9_APC_3: 0xffffffff
+INFO:    [DEVAPC] (INFRA_AO_SYS0)D9_APC_4: 0xfffffff
+INFO:    [DEVAPC] (INFRA_AO_SYS0)D10_APC_0: 0xffffffff
+INFO:    [DEVAPC] (INFRA_AO_SYS0)D10_APC_1: 0xffffffff
+INFO:    [DEVAPC] (INFRA_AO_SYS0)D10_APC_2: 0xffffffff
+INFO:    [DEVAPC] (INFRA_AO_SYS0)D10_APC_3: 0xffffffff
+INFO:    [DEVAPC] (INFRA_AO_SYS0)D10_APC_4: 0xfffffff
+INFO:    [DEVAPC] (INFRA_AO_SYS0)D11_APC_0: 0xffffffff
+INFO:    [DEVAPC] (INFRA_AO_SYS0)D11_APC_1: 0xffffffff
+INFO:    [DEVAPC] (INFRA_AO_SYS0)D11_APC_2: 0xffffffff
+INFO:    [DEVAPC] (INFRA_AO_SYS0)D11_APC_3: 0xffffffff
+INFO:    [DEVAPC] (INFRA_AO_SYS0)D11_APC_4: 0xfffffff
+INFO:    [DEVAPC] (INFRA_AO_SYS0)D12_APC_0: 0xffffffff
+INFO:    [DEVAPC] (INFRA_AO_SYS0)D12_APC_1: 0xffffffff
+INFO:    [DEVAPC] (INFRA_AO_SYS0)D12_APC_2: 0xffffffff
+INFO:    [DEVAPC] (INFRA_AO_SYS0)D12_APC_3: 0xffffffff
+INFO:    [DEVAPC] (INFRA_AO_SYS0)D12_APC_4: 0xfffffff
+INFO:    [DEVAPC] (INFRA_AO_SYS0)D13_APC_0: 0xffffffff
+INFO:    [DEVAPC] (INFRA_AO_SYS0)D13_APC_1: 0xffffffff
+INFO:    [DEVAPC] (INFRA_AO_SYS0)D13_APC_2: 0xffffffff
+INFO:    [DEVAPC] (INFRA_AO_SYS0)D13_APC_3: 0xffffffff
+INFO:    [DEVAPC] (INFRA_AO_SYS0)D13_APC_4: 0xfffffff
+INFO:    [DEVAPC] (INFRA_AO_SYS0)D14_APC_0: 0xffffffff
+INFO:    [DEVAPC] (INFRA_AO_SYS0)D14_APC_1: 0xffffffff
+INFO:    [DEVAPC] (INFRA_AO_SYS0)D14_APC_2: 0xffffffff
+INFO:    [DEVAPC] (INFRA_AO_SYS0)D14_APC_3: 0xffffffff
+INFO:    [DEVAPC] (INFRA_AO_SYS0)D14_APC_4: 0xfffffff
+INFO:    [DEVAPC] (INFRA_AO_SYS0)D15_APC_0: 0xffffffff
+INFO:    [DEVAPC] (INFRA_AO_SYS0)D15_APC_1: 0xffffffff
+INFO:    [DEVAPC] (INFRA_AO_SYS0)D15_APC_2: 0xffffffff
+INFO:    [DEVAPC] (INFRA_AO_SYS0)D15_APC_3: 0xffffffff
+INFO:    [DEVAPC] (INFRA_AO_SYS0)D15_APC_4: 0xfffffff
+INFO:    [DEVAPC] (INFRA_AO_SYS1)D0_APC_0: 0x0
+INFO:    [DEVAPC] (INFRA_AO_SYS1)D0_APC_1: 0x0
+INFO:    [DEVAPC] (INFRA_AO_SYS1)D0_APC_2: 0x0
+INFO:    [DEVAPC] (INFRA_AO_SYS1)D0_APC_3: 0x0
+INFO:    [DEVAPC] (INFRA_AO_SYS1)D0_APC_4: 0x0
+INFO:    [DEVAPC] (INFRA_AO_SYS1)D0_APC_5: 0x0
+INFO:    [DEVAPC] (INFRA_AO_SYS1)D0_APC_6: 0x0
+INFO:    [DEVAPC] (INFRA_AO_SYS1)D0_APC_7: 0x0
+INFO:    [DEVAPC] (INFRA_AO_SYS1)D0_APC_8: 0x0
+INFO:    [DEVAPC] (INFRA_AO_SYS1)D0_APC_9: 0x0
+INFO:    [DEVAPC] (INFRA_AO_SYS1)D0_APC_10: 0x0
+INFO:    [DEVAPC] (INFRA_AO_SYS1)D0_APC_11: 0x0
+INFO:    [DEVAPC] (INFRA_AO_SYS1)D0_APC_12: 0x0
+INFO:    [DEVAPC] (INFRA_AO_SYS1)D0_APC_13: 0x0
+INFO:    [DEVAPC] (INFRA_AO_SYS1)D0_APC_14: 0x0
+INFO:    [DEVAPC] (INFRA_AO_SYS1)D0_APC_15: 0x0
+INFO:    [DEVAPC] (INFRA_AO_SYS1)D1_APC_0: 0xffffffff
+INFO:    [DEVAPC] (INFRA_AO_SYS1)D1_APC_1: 0xffffffff
+INFO:    [DEVAPC] (INFRA_AO_SYS1)D1_APC_2: 0xffffffff
+INFO:    [DEVAPC] (INFRA_AO_SYS1)D1_APC_3: 0xffffffff
+INFO:    [DEVAPC] (INFRA_AO_SYS1)D1_APC_4: 0xffffffff
+INFO:    [DEVAPC] (INFRA_AO_SYS1)D1_APC_5: 0xffffffff
+INFO:    [DEVAPC] (INFRA_AO_SYS1)D1_APC_6: 0xffffffff
+INFO:    [DEVAPC] (INFRA_AO_SYS1)D1_APC_7: 0xffffffff
+INFO:    [DEVAPC] (INFRA_AO_SYS1)D1_APC_8: 0xffffffff
+INFO:    [DEVAPC] (INFRA_AO_SYS1)D1_APC_9: 0xffffffff
+INFO:    [DEVAPC] (INFRA_AO_SYS1)D1_APC_10: 0xffffffff
+INFO:    [DEVAPC] (INFRA_AO_SYS1)D1_APC_11: 0xffffffff
+INFO:    [DEVAPC] (INFRA_AO_SYS1)D1_APC_12: 0xffffffff
+INFO:    [DEVAPC] (INFRA_AO_SYS1)D1_APC_13: 0xffffffff
+INFO:    [DEVAPC] (INFRA_AO_SYS1)D1_APC_14: 0xffffffff
+INFO:    [DEVAPC] (INFRA_AO_SYS1)D1_APC_15: 0xffffffff
+INFO:    [DEVAPC] (INFRA_AO_SYS1)D2_APC_0: 0xffffffff
+INFO:    [DEVAPC] (INFRA_AO_SYS1)D2_APC_1: 0xffffffff
+INFO:    [DEVAPC] (INFRA_AO_SYS1)D2_APC_2: 0xffffffff
+INFO:    [DEVAPC] (INFRA_AO_SYS1)D2_APC_3: 0xffffffff
+INFO:    [DEVAPC] (INFRA_AO_SYS1)D2_APC_4: 0xffffffff
+INFO:    [DEVAPC] (INFRA_AO_SYS1)D2_APC_5: 0xffffffff
+INFO:    [DEVAPC] (INFRA_AO_SYS1)D2_APC_6: 0xffffffff
+INFO:    [DEVAPC] (INFRA_AO_SYS1)D2_APC_7: 0xffffffff
+INFO:    [DEVAPC] (INFRA_AO_SYS1)D2_APC_8: 0xffffffff
+INFO:    [DEVAPC] (INFRA_AO_SYS1)D2_APC_9: 0xffffffff
+INFO:    [DEVAPC] (INFRA_AO_SYS1)D2_APC_10: 0xffffffff
+INFO:    [DEVAPC] (INFRA_AO_SYS1)D2_APC_11: 0xffffffff
+INFO:    [DEVAPC] (INFRA_AO_SYS1)D2_APC_12: 0xffffffff
+INFO:    [DEVAPC] (INFRA_AO_SYS1)D2_APC_13: 0xffffffff
+INFO:    [DEVAPC] (INFRA_AO_SYS1)D2_APC_14: 0xffffffff
+INFO:    [DEVAPC] (INFRA_AO_SYS1)D2_APC_15: 0xffffffff
+INFO:    [DEVAPC] (INFRA_AO_SYS1)D3_APC_0: 0xc0000000
+INFO:    [DEVAPC] (INFRA_AO_SYS1)D3_APC_1: 0xfff3fff3
+INFO:    [DEVAPC] (INFRA_AO_SYS1)D3_APC_2: 0xffffffff
+INFO:    [DEVAPC] (INFRA_AO_SYS1)D3_APC_3: 0xffffffff
+INFO:    [DEVAPC] (INFRA_AO_SYS1)D3_APC_4: 0xffffffff
+INFO:    [DEVAPC] (INFRA_AO_SYS1)D3_APC_5: 0xffffffff
+INFO:    [DEVAPC] (INFRA_AO_SYS1)D3_APC_6: 0xffffffff
+INFO:    [DEVAPC] (INFRA_AO_SYS1)D3_APC_7: 0xffffffff
+INFO:    [DEVAPC] (INFRA_AO_SYS1)D3_APC_8: 0xffffffff
+INFO:    [DEVAPC] (INFRA_AO_SYS1)D3_APC_9: 0xffffffff
+INFO:    [DEVAPC] (INFRA_AO_SYS1)D3_APC_10: 0xffffffff
+INFO:    [DEVAPC] (INFRA_AO_SYS1)D3_APC_11: 0xffffffff
+INFO:    [DEVAPC] (INFRA_AO_SYS1)D3_APC_12: 0xffffffff
+INFO:    [DEVAPC] (INFRA_AO_SYS1)D3_APC_13: 0xffffffff
+INFO:    [DEVAPC] (INFRA_AO_SYS1)D3_APC_14: 0xffffffff
+INFO:    [DEVAPC] (INFRA_AO_SYS1)D3_APC_15: 0xffffffff
+INFO:    [DEVAPC] (INFRA_AO_SYS2)D0_APC_0: 0x0
+INFO:    [DEVAPC] (INFRA_AO_SYS2)D0_APC_1: 0x0
+INFO:    [DEVAPC] (INFRA_AO_SYS2)D0_APC_2: 0x0
+INFO:    [DEVAPC] (INFRA_AO_SYS2)D0_APC_3: 0x0
+INFO:    [DEVAPC] (INFRA_AO_SYS2)D0_APC_4: 0x0
+INFO:    [DEVAPC] (INFRA_AO_SYS2)D0_APC_5: 0x0
+INFO:    [DEVAPC] (INFRA_AO_SYS2)D0_APC_6: 0x0
+INFO:    [DEVAPC] (INFRA_AO_SYS2)D0_APC_7: 0x0
+INFO:    [DEVAPC] (INFRA_AO_SYS2)D0_APC_8: 0x0
+INFO:    [DEVAPC] (INFRA_AO_SYS2)D0_APC_9: 0x0
+INFO:    [DEVAPC] (INFRA_AO_SYS2)D0_APC_10: 0x0
+INFO:    [DEVAPC] (INFRA_AO_SYS2)D0_APC_11: 0x0
+INFO:    [DEVAPC] (INFRA_AO_SYS2)D1_APC_0: 0xffffffff
+INFO:    [DEVAPC] (INFRA_AO_SYS2)D1_APC_1: 0xffffffff
+INFO:    [DEVAPC] (INFRA_AO_SYS2)D1_APC_2: 0xffffffff
+INFO:    [DEVAPC] (INFRA_AO_SYS2)D1_APC_3: 0xffffffff
+INFO:    [DEVAPC] (INFRA_AO_SYS2)D1_APC_4: 0xffffffff
+INFO:    [DEVAPC] (INFRA_AO_SYS2)D1_APC_5: 0xffffffff
+INFO:    [DEVAPC] (INFRA_AO_SYS2)D1_APC_6: 0xffffffff
+INFO:    [DEVAPC] (INFRA_AO_SYS2)D1_APC_7: 0xffffffff
+INFO:    [DEVAPC] (INFRA_AO_SYS2)D1_APC_8: 0xffffffff
+INFO:    [DEVAPC] (INFRA_AO_SYS2)D1_APC_9: 0xffffffff
+INFO:    [DEVAPC] (INFRA_AO_SYS2)D1_APC_10: 0xffffffff
+INFO:    [DEVAPC] (INFRA_AO_SYS2)D1_APC_11: 0x3f
+INFO:    [DEVAPC] (INFRA_AO_SYS2)D2_APC_0: 0xffffffff
+INFO:    [DEVAPC] (INFRA_AO_SYS2)D2_APC_1: 0xffffffff
+INFO:    [DEVAPC] (INFRA_AO_SYS2)D2_APC_2: 0xffffffff
+INFO:    [DEVAPC] (INFRA_AO_SYS2)D2_APC_3: 0xffffffff
+INFO:    [DEVAPC] (INFRA_AO_SYS2)D2_APC_4: 0xffffffff
+INFO:    [DEVAPC] (INFRA_AO_SYS2)D2_APC_5: 0xffffffff
+INFO:    [DEVAPC] (INFRA_AO_SYS2)D2_APC_6: 0xffffffff
+INFO:    [DEVAPC] (INFRA_AO_SYS2)D2_APC_7: 0xffffffff
+INFO:    [DEVAPC] (INFRA_AO_SYS2)D2_APC_8: 0xffffffff
+INFO:    [DEVAPC] (INFRA_AO_SYS2)D2_APC_9: 0xffffffff
+INFO:    [DEVAPC] (INFRA_AO_SYS2)D2_APC_10: 0xffffffff
+INFO:    [DEVAPC] (INFRA_AO_SYS2)D2_APC_11: 0x3f
+INFO:    [DEVAPC] (INFRA_AO_SYS2)D3_APC_0: 0xffffffff
+INFO:    [DEVAPC] (INFRA_AO_SYS2)D3_APC_1: 0xffffffff
+INFO:    [DEVAPC] (INFRA_AO_SYS2)D3_APC_2: 0xffffffff
+INFO:    [DEVAPC] (INFRA_AO_SYS2)D3_APC_3: 0xffffffff
+INFO:    [DEVAPC] (INFRA_AO_SYS2)D3_APC_4: 0xffffffff
+INFO:    [DEVAPC] (INFRA_AO_SYS2)D3_APC_5: 0xffffffff
+INFO:    [DEVAPC] (INFRA_AO_SYS2)D3_APC_6: 0xffffffff
+INFO:    [DEVAPC] (INFRA_AO_SYS2)D3_APC_7: 0xffffffff
+INFO:    [DEVAPC] (INFRA_AO_SYS2)D3_APC_8: 0xffffffff
+INFO:    [DEVAPC] (INFRA_AO_SYS2)D3_APC_9: 0xffffffff
+INFO:    [DEVAPC] (INFRA_AO_SYS2)D3_APC_10: 0xffffffff
+INFO:    [DEVAPC] (INFRA_AO_SYS2)D3_APC_11: 0x3f
+INFO:    [DEVAPC] (INFRA_AO)MAS_SEC_0: 0x2
+INFO:    [DEVAPC] (INFRA_AO 0x10030000)DOM_REMAP_0_0: 0xfff43fff
+INFO:    [DEVAPC] (PERI_AO_SYS0)D0_APC_0: 0x1
+INFO:    [DEVAPC] (PERI_AO_SYS0)D0_APC_1: 0x0
+INFO:    [DEVAPC] (PERI_AO_SYS0)D0_APC_2: 0x0
+INFO:    [DEVAPC] (PERI_AO_SYS0)D0_APC_3: 0x0
+INFO:    [DEVAPC] (PERI_AO_SYS0)D1_APC_0: 0xffffffff
+INFO:    [DEVAPC] (PERI_AO_SYS0)D1_APC_1: 0xffffffff
+INFO:    [DEVAPC] (PERI_AO_SYS0)D1_APC_2: 0xffffffff
+INFO:    [DEVAPC] (PERI_AO_SYS0)D1_APC_3: 0xfffffff
+INFO:    [DEVAPC] (PERI_AO_SYS0)D2_APC_0: 0xffffffff
+INFO:    [DEVAPC] (PERI_AO_SYS0)D2_APC_1: 0x3003
+INFO:    [DEVAPC] (PERI_AO_SYS0)D2_APC_2: 0x0
+INFO:    [DEVAPC] (PERI_AO_SYS0)D2_APC_3: 0xfffffc0
+INFO:    [DEVAPC] (PERI_AO_SYS0)D3_APC_0: 0xffffffff
+INFO:    [DEVAPC] (PERI_AO_SYS0)D3_APC_1: 0xffffffff
+INFO:    [DEVAPC] (PERI_AO_SYS0)D3_APC_2: 0xffffffff
+INFO:    [DEVAPC] (PERI_AO_SYS0)D3_APC_3: 0xfffffff
+INFO:    [DEVAPC] (PERI_AO_SYS0)D4_APC_0: 0xffffffff
+INFO:    [DEVAPC] (PERI_AO_SYS0)D4_APC_1: 0xffffffff
+INFO:    [DEVAPC] (PERI_AO_SYS0)D4_APC_2: 0xffffffff
+INFO:    [DEVAPC] (PERI_AO_SYS0)D4_APC_3: 0xfffffff
+INFO:    [DEVAPC] (PERI_AO_SYS0)D5_APC_0: 0xffffffff
+INFO:    [DEVAPC] (PERI_AO_SYS0)D5_APC_1: 0xfffff33f
+INFO:    [DEVAPC] (PERI_AO_SYS0)D5_APC_2: 0xffffffff
+INFO:    [DEVAPC] (PERI_AO_SYS0)D5_APC_3: 0xfffffff
+INFO:    [DEVAPC] (PERI_AO_SYS0)D6_APC_0: 0xffffffff
+INFO:    [DEVAPC] (PERI_AO_SYS0)D6_APC_1: 0xffffffff
+INFO:    [DEVAPC] (PERI_AO_SYS0)D6_APC_2: 0xffffffff
+INFO:    [DEVAPC] (PERI_AO_SYS0)D6_APC_3: 0xfffffff
+INFO:    [DEVAPC] (PERI_AO_SYS0)D7_APC_0: 0xffffffff
+INFO:    [DEVAPC] (PERI_AO_SYS0)D7_APC_1: 0xffffffff
+INFO:    [DEVAPC] (PERI_AO_SYS0)D7_APC_2: 0xffffffff
+INFO:    [DEVAPC] (PERI_AO_SYS0)D7_APC_3: 0xfffffff
+INFO:    [DEVAPC] (PERI_AO_SYS0)D8_APC_0: 0xffffffff
+INFO:    [DEVAPC] (PERI_AO_SYS0)D8_APC_1: 0xffffffff
+INFO:    [DEVAPC] (PERI_AO_SYS0)D8_APC_2: 0xffffffff
+INFO:    [DEVAPC] (PERI_AO_SYS0)D8_APC_3: 0xfffffff
+INFO:    [DEVAPC] (PERI_AO_SYS0)D9_APC_0: 0xffffffff
+INFO:    [DEVAPC] (PERI_AO_SYS0)D9_APC_1: 0xffffffff
+INFO:    [DEVAPC] (PERI_AO_SYS0)D9_APC_2: 0xffffffff
+INFO:    [DEVAPC] (PERI_AO_SYS0)D9_APC_3: 0xfffffff
+INFO:    [DEVAPC] (PERI_AO_SYS0)D10_APC_0: 0xffffffff
+INFO:    [DEVAPC] (PERI_AO_SYS0)D10_APC_1: 0xffffffff
+INFO:    [DEVAPC] (PERI_AO_SYS0)D10_APC_2: 0xffffffff
+INFO:    [DEVAPC] (PERI_AO_SYS0)D10_APC_3: 0xfffffff
+INFO:    [DEVAPC] (PERI_AO_SYS0)D11_APC_0: 0xffffffff
+INFO:    [DEVAPC] (PERI_AO_SYS0)D11_APC_1: 0xffffffff
+INFO:    [DEVAPC] (PERI_AO_SYS0)D11_APC_2: 0xffffffff
+INFO:    [DEVAPC] (PERI_AO_SYS0)D11_APC_3: 0xfffffff
+INFO:    [DEVAPC] (PERI_AO_SYS0)D12_APC_0: 0xffffffff
+INFO:    [DEVAPC] (PERI_AO_SYS0)D12_APC_1: 0xffffffff
+INFO:    [DEVAPC] (PERI_AO_SYS0)D12_APC_2: 0xffffffff
+INFO:    [DEVAPC] (PERI_AO_SYS0)D12_APC_3: 0xfffffff
+INFO:    [DEVAPC] (PERI_AO_SYS0)D13_APC_0: 0xffffffff
+INFO:    [DEVAPC] (PERI_AO_SYS0)D13_APC_1: 0xffffffff
+INFO:    [DEVAPC] (PERI_AO_SYS0)D13_APC_2: 0xffffffff
+INFO:    [DEVAPC] (PERI_AO_SYS0)D13_APC_3: 0xfffffff
+INFO:    [DEVAPC] (PERI_AO_SYS0)D14_APC_0: 0xffffffff
+INFO:    [DEVAPC] (PERI_AO_SYS0)D14_APC_1: 0xffffffff
+INFO:    [DEVAPC] (PERI_AO_SYS0)D14_APC_2: 0xffffffff
+INFO:    [DEVAPC] (PERI_AO_SYS0)D14_APC_3: 0xfffffff
+INFO:    [DEVAPC] (PERI_AO_SYS0)D15_APC_0: 0xffffffff
+INFO:    [DEVAPC] (PERI_AO_SYS0)D15_APC_1: 0xffffffff
+INFO:    [DEVAPC] (PERI_AO_SYS0)D15_APC_2: 0xffffffff
+INFO:    [DEVAPC] (PERI_AO_SYS0)D15_APC_3: 0xfffffff
+INFO:    [DEVAPC] (PERI_AO_SYS1)D0_APC_0: 0x0
+INFO:    [DEVAPC] (PERI_AO_SYS1)D0_APC_1: 0x0
+INFO:    [DEVAPC] (PERI_AO_SYS1)D1_APC_0: 0xffffffff
+INFO:    [DEVAPC] (PERI_AO_SYS1)D1_APC_1: 0x3fff
+INFO:    [DEVAPC] (PERI_AO_SYS1)D2_APC_0: 0xffffffff
+INFO:    [DEVAPC] (PERI_AO_SYS1)D2_APC_1: 0x3fff
+INFO:    [DEVAPC] (PERI_AO_SYS1)D3_APC_0: 0xffffffff
+INFO:    [DEVAPC] (PERI_AO_SYS1)D3_APC_1: 0x3fff
+INFO:    [DEVAPC] (PERI_AO_SYS1)D4_APC_0: 0xf0000ffc
+INFO:    [DEVAPC] (PERI_AO_SYS1)D4_APC_1: 0x3
+INFO:    [DEVAPC] (PERI_AO_SYS1)D5_APC_0: 0xffffffff
+INFO:    [DEVAPC] (PERI_AO_SYS1)D5_APC_1: 0x3fff
+INFO:    [DEVAPC] (PERI_AO_SYS1)D6_APC_0: 0xffffffff
+INFO:    [DEVAPC] (PERI_AO_SYS1)D6_APC_1: 0x3fff
+INFO:    [DEVAPC] (PERI_AO_SYS1)D7_APC_0: 0xffffffff
+INFO:    [DEVAPC] (PERI_AO_SYS1)D7_APC_1: 0x3fff
+INFO:    [DEVAPC] (PERI_AO)MAS_SEC_0: 0x0
+INFO:    [DEVAPC] (PERI2_AO_SYS0)D0_APC_0: 0x1
+INFO:    [DEVAPC] (PERI2_AO_SYS0)D0_APC_1: 0x0
+INFO:    [DEVAPC] (PERI2_AO_SYS0)D0_APC_2: 0x0
+INFO:    [DEVAPC] (PERI2_AO_SYS0)D0_APC_3: 0x0
+INFO:    [DEVAPC] (PERI2_AO_SYS0)D0_APC_4: 0x100
+INFO:    [DEVAPC] (PERI2_AO_SYS0)D0_APC_5: 0x10000000
+INFO:    [DEVAPC] (PERI2_AO_SYS0)D0_APC_6: 0x1400
+INFO:    [DEVAPC] (PERI2_AO_SYS0)D0_APC_7: 0x40000
+INFO:    [DEVAPC] (PERI2_AO_SYS0)D1_APC_0: 0xffffffff
+INFO:    [DEVAPC] (PERI2_AO_SYS0)D1_APC_1: 0xffffffff
+INFO:    [DEVAPC] (PERI2_AO_SYS0)D1_APC_2: 0xffffffff
+INFO:    [DEVAPC] (PERI2_AO_SYS0)D1_APC_3: 0xffffffff
+INFO:    [DEVAPC] (PERI2_AO_SYS0)D1_APC_4: 0xffffffff
+INFO:    [DEVAPC] (PERI2_AO_SYS0)D1_APC_5: 0xffffffff
+INFO:    [DEVAPC] (PERI2_AO_SYS0)D1_APC_6: 0xffffffff
+INFO:    [DEVAPC] (PERI2_AO_SYS0)D1_APC_7: 0xfffff
+INFO:    [DEVAPC] (PERI2_AO_SYS0)D2_APC_0: 0xfffffcff
+INFO:    [DEVAPC] (PERI2_AO_SYS0)D2_APC_1: 0xffffffff
+INFO:    [DEVAPC] (PERI2_AO_SYS0)D2_APC_2: 0xffffffff
+INFO:    [DEVAPC] (PERI2_AO_SYS0)D2_APC_3: 0xffffffff
+INFO:    [DEVAPC] (PERI2_AO_SYS0)D2_APC_4: 0xff3fffff
+INFO:    [DEVAPC] (PERI2_AO_SYS0)D2_APC_5: 0xf3ffffff
+INFO:    [DEVAPC] (PERI2_AO_SYS0)D2_APC_6: 0xfcffffff
+INFO:    [DEVAPC] (PERI2_AO_SYS0)D2_APC_7: 0xffffc
+INFO:    [DEVAPC] (PERI2_AO_SYS0)D3_APC_0: 0xfffffcff
+INFO:    [DEVAPC] (PERI2_AO_SYS0)D3_APC_1: 0xffffffff
+INFO:    [DEVAPC] (PERI2_AO_SYS0)D3_APC_2: 0xffffffff
+INFO:    [DEVAPC] (PERI2_AO_SYS0)D3_APC_3: 0xffffffff
+INFO:    [DEVAPC] (PERI2_AO_SYS0)D3_APC_4: 0xffffffff
+INFO:    [DEVAPC] (PERI2_AO_SYS0)D3_APC_5: 0xffffffff
+INFO:    [DEVAPC] (PERI2_AO_SYS0)D3_APC_6: 0xffffffff
+INFO:    [DEVAPC] (PERI2_AO_SYS0)D3_APC_7: 0xfffff
+INFO:    [DEVAPC] (PERI2_AO_SYS0)D4_APC_0: 0xffffffff
+INFO:    [DEVAPC] (PERI2_AO_SYS0)D4_APC_1: 0xffffffff
+INFO:    [DEVAPC] (PERI2_AO_SYS0)D4_APC_2: 0xffffffff
+INFO:    [DEVAPC] (PERI2_AO_SYS0)D4_APC_3: 0xffffffff
+INFO:    [DEVAPC] (PERI2_AO_SYS0)D4_APC_4: 0xffffffff
+INFO:    [DEVAPC] (PERI2_AO_SYS0)D4_APC_5: 0xffffffff
+INFO:    [DEVAPC] (PERI2_AO_SYS0)D4_APC_6: 0xffffffff
+INFO:    [DEVAPC] (PERI2_AO_SYS0)D4_APC_7: 0xfcfff
+INFO:    [DEVAPC] (PERI2_AO_SYS0)D5_APC_0: 0xfffffcff
+INFO:    [DEVAPC] (PERI2_AO_SYS0)D5_APC_1: 0xffffffff
+INFO:    [DEVAPC] (PERI2_AO_SYS0)D5_APC_2: 0xffffffff
+INFO:    [DEVAPC] (PERI2_AO_SYS0)D5_APC_3: 0xffffffff
+INFO:    [DEVAPC] (PERI2_AO_SYS0)D5_APC_4: 0xffffffff
+INFO:    [DEVAPC] (PERI2_AO_SYS0)D5_APC_5: 0xffffffff
+INFO:    [DEVAPC] (PERI2_AO_SYS0)D5_APC_6: 0xffffffff
+INFO:    [DEVAPC] (PERI2_AO_SYS0)D5_APC_7: 0xfffff
+INFO:    [DEVAPC] (PERI2_AO_SYS0)D6_APC_0: 0xffffffff
+INFO:    [DEVAPC] (PERI2_AO_SYS0)D6_APC_1: 0xffffffff
+INFO:    [DEVAPC] (PERI2_AO_SYS0)D6_APC_2: 0xffffffff
+INFO:    [DEVAPC] (PERI2_AO_SYS0)D6_APC_3: 0xffffffff
+INFO:    [DEVAPC] (PERI2_AO_SYS0)D6_APC_4: 0xffffffff
+INFO:    [DEVAPC] (PERI2_AO_SYS0)D6_APC_5: 0xffffffff
+INFO:    [DEVAPC] (PERI2_AO_SYS0)D6_APC_6: 0xffffffff
+INFO:    [DEVAPC] (PERI2_AO_SYS0)D6_APC_7: 0xfffff
+INFO:    [DEVAPC] (PERI2_AO_SYS0)D7_APC_0: 0xffffffff
+INFO:    [DEVAPC] (PERI2_AO_SYS0)D7_APC_1: 0xffffffff
+INFO:    [DEVAPC] (PERI2_AO_SYS0)D7_APC_2: 0xffffffff
+INFO:    [DEVAPC] (PERI2_AO_SYS0)D7_APC_3: 0xffffffff
+INFO:    [DEVAPC] (PERI2_AO_SYS0)D7_APC_4: 0xffffffff
+INFO:    [DEVAPC] (PERI2_AO_SYS0)D7_APC_5: 0xffffffff
+INFO:    [DEVAPC] (PERI2_AO_SYS0)D7_APC_6: 0xffffffff
+INFO:    [DEVAPC] (PERI2_AO_SYS0)D7_APC_7: 0xfffff
+INFO:    [DEVAPC] (PERI2_AO_SYS0)D8_APC_0: 0xffffffff
+INFO:    [DEVAPC] (PERI2_AO_SYS0)D8_APC_1: 0xffffffff
+INFO:    [DEVAPC] (PERI2_AO_SYS0)D8_APC_2: 0xffffffff
+INFO:    [DEVAPC] (PERI2_AO_SYS0)D8_APC_3: 0xffffffff
+INFO:    [DEVAPC] (PERI2_AO_SYS0)D8_APC_4: 0xffffffff
+INFO:    [DEVAPC] (PERI2_AO_SYS0)D8_APC_5: 0xffffffff
+INFO:    [DEVAPC] (PERI2_AO_SYS0)D8_APC_6: 0xffffffff
+INFO:    [DEVAPC] (PERI2_AO_SYS0)D8_APC_7: 0xfffff
+INFO:    [DEVAPC] (PERI2_AO_SYS0)D9_APC_0: 0xffffffff
+INFO:    [DEVAPC] (PERI2_AO_SYS0)D9_APC_1: 0xffffffff
+INFO:    [DEVAPC] (PERI2_AO_SYS0)D9_APC_2: 0xffffffff
+INFO:    [DEVAPC] (PERI2_AO_SYS0)D9_APC_3: 0xffffffff
+INFO:    [DEVAPC] (PERI2_AO_SYS0)D9_APC_4: 0xffffffff
+INFO:    [DEVAPC] (PERI2_AO_SYS0)D9_APC_5: 0xffffffff
+INFO:    [DEVAPC] (PERI2_AO_SYS0)D9_APC_6: 0xffffffff
+INFO:    [DEVAPC] (PERI2_AO_SYS0)D9_APC_7: 0xfffff
+INFO:    [DEVAPC] (PERI2_AO_SYS0)D10_APC_0: 0xffffffff
+INFO:    [DEVAPC] (PERI2_AO_SYS0)D10_APC_1: 0xffffffff
+INFO:    [DEVAPC] (PERI2_AO_SYS0)D10_APC_2: 0xffffffff
+INFO:    [DEVAPC] (PERI2_AO_SYS0)D10_APC_3: 0xffffffff
+INFO:    [DEVAPC] (PERI2_AO_SYS0)D10_APC_4: 0xffffffff
+INFO:    [DEVAPC] (PERI2_AO_SYS0)D10_APC_5: 0xffffffff
+INFO:    [DEVAPC] (PERI2_AO_SYS0)D10_APC_6: 0xffffffff
+INFO:    [DEVAPC] (PERI2_AO_SYS0)D10_APC_7: 0xfffff
+INFO:    [DEVAPC] (PERI2_AO_SYS0)D11_APC_0: 0xffffffff
+INFO:    [DEVAPC] (PERI2_AO_SYS0)D11_APC_1: 0xffffffff
+INFO:    [DEVAPC] (PERI2_AO_SYS0)D11_APC_2: 0xffffffff
+INFO:    [DEVAPC] (PERI2_AO_SYS0)D11_APC_3: 0xffffffff
+INFO:    [DEVAPC] (PERI2_AO_SYS0)D11_APC_4: 0xffffffff
+INFO:    [DEVAPC] (PERI2_AO_SYS0)D11_APC_5: 0xffffffff
+INFO:    [DEVAPC] (PERI2_AO_SYS0)D11_APC_6: 0xffffffff
+INFO:    [DEVAPC] (PERI2_AO_SYS0)D11_APC_7: 0xfffff
+INFO:    [DEVAPC] (PERI2_AO_SYS0)D12_APC_0: 0xffffffff
+INFO:    [DEVAPC] (PERI2_AO_SYS0)D12_APC_1: 0xffffffff
+INFO:    [DEVAPC] (PERI2_AO_SYS0)D12_APC_2: 0xffffffff
+INFO:    [DEVAPC] (PERI2_AO_SYS0)D12_APC_3: 0xffffffff
+INFO:    [DEVAPC] (PERI2_AO_SYS0)D12_APC_4: 0xffffffff
+INFO:    [DEVAPC] (PERI2_AO_SYS0)D12_APC_5: 0xffffffff
+INFO:    [DEVAPC] (PERI2_AO_SYS0)D12_APC_6: 0xffffffff
+INFO:    [DEVAPC] (PERI2_AO_SYS0)D12_APC_7: 0xfffff
+INFO:    [DEVAPC] (PERI2_AO_SYS0)D13_APC_0: 0xffffffff
+INFO:    [DEVAPC] (PERI2_AO_SYS0)D13_APC_1: 0xffffffff
+INFO:    [DEVAPC] (PERI2_AO_SYS0)D13_APC_2: 0xffffffff
+INFO:    [DEVAPC] (PERI2_AO_SYS0)D13_APC_3: 0xffffffff
+INFO:    [DEVAPC] (PERI2_AO_SYS0)D13_APC_4: 0xffffffff
+INFO:    [DEVAPC] (PERI2_AO_SYS0)D13_APC_5: 0xffffffff
+INFO:    [DEVAPC] (PERI2_AO_SYS0)D13_APC_6: 0xffffffff
+INFO:    [DEVAPC] (PERI2_AO_SYS0)D13_APC_7: 0xfffff
+INFO:    [DEVAPC] (PERI2_AO_SYS0)D14_APC_0: 0xffffffff
+INFO:    [DEVAPC] (PERI2_AO_SYS0)D14_APC_1: 0xffffffff
+INFO:    [DEVAPC] (PERI2_AO_SYS0)D14_APC_2: 0xffffffff
+INFO:    [DEVAPC] (PERI2_AO_SYS0)D14_APC_3: 0xffffffff
+INFO:    [DEVAPC] (PERI2_AO_SYS0)D14_APC_4: 0xffffffff
+INFO:    [DEVAPC] (PERI2_AO_SYS0)D14_APC_5: 0xffffffff
+INFO:    [DEVAPC] (PERI2_AO_SYS0)D14_APC_6: 0xffffffff
+INFO:    [DEVAPC] (PERI2_AO_SYS0)D14_APC_7: 0xfffff
+INFO:    [DEVAPC] (PERI2_AO_SYS0)D15_APC_0: 0xffffffff
+INFO:    [DEVAPC] (PERI2_AO_SYS0)D15_APC_1: 0xffffffff
+INFO:    [DEVAPC] (PERI2_AO_SYS0)D15_APC_2: 0xffffffff
+INFO:    [DEVAPC] (PERI2_AO_SYS0)D15_APC_3: 0xffffffff
+INFO:    [DEVAPC] (PERI2_AO_SYS0)D15_APC_4: 0xffffffff
+INFO:    [DEVAPC] (PERI2_AO_SYS0)D15_APC_5: 0xffffffff
+INFO:    [DEVAPC] (PERI2_AO_SYS0)D15_APC_6: 0xffffffff
+INFO:    [DEVAPC] (PERI2_AO_SYS0)D15_APC_7: 0xfffff
+INFO:    [DEVAPC] (PERI_PAR_AO_SYS0)D0_APC_0: 0x0
+INFO:    [DEVAPC] (PERI_PAR_AO_SYS0)D0_APC_1: 0x0
+INFO:    [DEVAPC] (PERI_PAR_AO_SYS0)D0_APC_2: 0x100400
+INFO:    [DEVAPC] (PERI_PAR_AO_SYS0)D1_APC_0: 0xfffc3fff
+INFO:    [DEVAPC] (PERI_PAR_AO_SYS0)D1_APC_1: 0xffffffff
+INFO:    [DEVAPC] (PERI_PAR_AO_SYS0)D1_APC_2: 0x3ffffff
+INFO:    [DEVAPC] (PERI_PAR_AO_SYS0)D2_APC_0: 0xf3ffffff
+INFO:    [DEVAPC] (PERI_PAR_AO_SYS0)D2_APC_1: 0xfffffcff
+INFO:    [DEVAPC] (PERI_PAR_AO_SYS0)D2_APC_2: 0x3ffcfff
+INFO:    [DEVAPC] (PERI_PAR_AO_SYS0)D3_APC_0: 0xffffffff
+INFO:    [DEVAPC] (PERI_PAR_AO_SYS0)D3_APC_1: 0xffffffff
+INFO:    [DEVAPC] (PERI_PAR_AO_SYS0)D3_APC_2: 0x3ffffff
+INFO:    [DEVAPC] (PERI_PAR_AO_SYS0)D4_APC_0: 0xffffffff
+INFO:    [DEVAPC] (PERI_PAR_AO_SYS0)D4_APC_1: 0xffffffff
+INFO:    [DEVAPC] (PERI_PAR_AO_SYS0)D4_APC_2: 0x3ffffff
+INFO:    [DEVAPC] (PERI_PAR_AO_SYS0)D5_APC_0: 0xffffffff
+INFO:    [DEVAPC] (PERI_PAR_AO_SYS0)D5_APC_1: 0xffffffff
+INFO:    [DEVAPC] (PERI_PAR_AO_SYS0)D5_APC_2: 0x3ffffff
+INFO:    [DEVAPC] (PERI_PAR_AO_SYS0)D6_APC_0: 0xffffffff
+INFO:    [DEVAPC] (PERI_PAR_AO_SYS0)D6_APC_1: 0xffffffff
+INFO:    [DEVAPC] (PERI_PAR_AO_SYS0)D6_APC_2: 0x3ffffff
+INFO:    [DEVAPC] (PERI_PAR_AO_SYS0)D7_APC_0: 0xffffffff
+INFO:    [DEVAPC] (PERI_PAR_AO_SYS0)D7_APC_1: 0xffffffff
+INFO:    [DEVAPC] (PERI_PAR_AO_SYS0)D7_APC_2: 0x3ffffff
+INFO:    [DEVAPC] (PERI_PAR_AO_SYS0)D8_APC_0: 0xffffffff
+INFO:    [DEVAPC] (PERI_PAR_AO_SYS0)D8_APC_1: 0xffffffff
+INFO:    [DEVAPC] (PERI_PAR_AO_SYS0)D8_APC_2: 0x3ffffff
+INFO:    [DEVAPC] (PERI_PAR_AO_SYS0)D9_APC_0: 0xffffffff
+INFO:    [DEVAPC] (PERI_PAR_AO_SYS0)D9_APC_1: 0xffffffff
+INFO:    [DEVAPC] (PERI_PAR_AO_SYS0)D9_APC_2: 0x3ffffff
+INFO:    [DEVAPC] (PERI_PAR_AO_SYS0)D10_APC_0: 0xffffffff
+INFO:    [DEVAPC] (PERI_PAR_AO_SYS0)D10_APC_1: 0xffffffff
+INFO:    [DEVAPC] (PERI_PAR_AO_SYS0)D10_APC_2: 0x3ffffff
+INFO:    [DEVAPC] (PERI_PAR_AO_SYS0)D11_APC_0: 0xffffffff
+INFO:    [DEVAPC] (PERI_PAR_AO_SYS0)D11_APC_1: 0xffffffff
+INFO:    [DEVAPC] (PERI_PAR_AO_SYS0)D11_APC_2: 0x3ffffff
+INFO:    [DEVAPC] (PERI_PAR_AO_SYS0)D12_APC_0: 0xffffffff
+INFO:    [DEVAPC] (PERI_PAR_AO_SYS0)D12_APC_1: 0xffffffff
+INFO:    [DEVAPC] (PERI_PAR_AO_SYS0)D12_APC_2: 0x3ffffff
+INFO:    [DEVAPC] (PERI_PAR_AO_SYS0)D13_APC_0: 0xffffffff
+INFO:    [DEVAPC] (PERI_PAR_AO_SYS0)D13_APC_1: 0xffffffff
+INFO:    [DEVAPC] (PERI_PAR_AO_SYS0)D13_APC_2: 0x3ffffff
+INFO:    [DEVAPC] (PERI_PAR_AO_SYS0)D14_APC_0: 0xffffffff
+INFO:    [DEVAPC] (PERI_PAR_AO_SYS0)D14_APC_1: 0xffffffff
+INFO:    [DEVAPC] (PERI_PAR_AO_SYS0)D14_APC_2: 0x3ffffff
+INFO:    [DEVAPC] (PERI_PAR_AO_SYS0)D15_APC_0: 0xffffffff
+INFO:    [DEVAPC] (PERI_PAR_AO_SYS0)D15_APC_1: 0xffffffff
+INFO:    [DEVAPC] (PERI_PAR_AO_SYS0)D15_APC_2: 0x3ffffff
+INFO:    [DEVAPC] (PERI_PAR_AO)MAS_SEC_0: 0x20001f
+INFO:    [DEVAPC] (DEVAPC_FMEM_AO_BASE 0x10044000)DOM_REMAP_0_0:0xfff43fff
+INFO:    [DEVAPC] (DEVAPC_INFRA2_AO_BASE 0x10228000)DOM_REMAP_0_0:0xfff43fff
+INFO:    [DEVAPC] SCP:0x3 ADSP:0x4 Lock:0x5
+NOTICE:  MT8195 dpm_init
+NOTICE:  mtk_init_mcu: Loaded (and reset) dpm.dm: (66 bytes)
+NOTICE:  mtk_init_mcu: Loaded (and reset) dpm.pm: (13702 bytes)
+NOTICE:  mtk_init_mcu: Loaded (and reset) dpm.dm: (66 bytes)
+NOTICE:  mtk_init_mcu: Loaded (and reset) dpm.pm: (13702 bytes)
+INFO:    md_settle = 24830, settle = 24830
+NOTICE:  SPM: binary array size = 0x9dd
+NOTICE:  SPM: spmfw version: pcm_suspend_v1.0_20210519
+NOTICE:  __spm_kick_im_to_fetch: ptr = 0x94612c40, pmem/dmem words = 0x9c8/0x15
+NOTICE:  mtk_init_mcu: Loaded (and reset) spm_firmware.bin: (10160 bytes)
+INFO:    SPM: spm_init done, spm pc = 0x240
+NOTICE:  MT8195 mcupm_init
+NOTICE:  mtk_init_mcu: Loaded (and reset) mcupm.bin: (122544 bytes)
+NOTICE:  MT8195 sspm_init
+NOTICE:  mtk_init_mcu: Loaded (and reset) sspm.bin: (137348 bytes)
+NOTICE:  MT8195 spm_boot_init
+INFO:    rtc 2sec reboot is not enabled
+NOTICE:  [APUSYS] apusys_init +
+INFO:    apusys_rv_init: enter
+INFO:    [APUAPC] apusys_devapc_init
+INFO:    [APUAPC] vio 0
+INFO:    [APUAPC] apusys_devapc_init done
+INFO:    [APUAPC] set_apusys_ao_apc - SUCCESS!
+INFO:    [APUAPC] D0_APC_0: 0x15555
+INFO:    [APUAPC] D0_APC_1: 0xaaaaaaaa
+INFO:    [APUAPC] D0_APC_2: 0xaaaaaaa
+INFO:    [APUAPC] D0_APC_3: 0xaaaa0000
+INFO:    [APUAPC] D0_APC_4: 0x2aaa
+INFO:    [APUAPC] D1_APC_0: 0xffffffff
+INFO:    [APUAPC] D1_APC_1: 0xffffffff
+INFO:    [APUAPC] D1_APC_2: 0xffffffff
+INFO:    [APUAPC] D1_APC_3: 0xffffffff
+INFO:    [APUAPC] D1_APC_4: 0x3fff
+INFO:    [APUAPC] D2_APC_0: 0xffffffff
+INFO:    [APUAPC] D2_APC_1: 0xffffffff
+INFO:    [APUAPC] D2_APC_2: 0xffffffff
+INFO:    [APUAPC] D2_APC_3: 0xffffffff
+INFO:    [APUAPC] D2_APC_4: 0x3fff
+INFO:    [APUAPC] D3_APC_0: 0xffffffff
+INFO:    [APUAPC] D3_APC_1: 0xffffffff
+INFO:    [APUAPC] D3_APC_2: 0xffffffff
+INFO:    [APUAPC] D3_APC_3: 0xffffffff
+INFO:    [APUAPC] D3_APC_4: 0x3fff
+INFO:    [APUAPC] D4_APC_0: 0xffffffff
+INFO:    [APUAPC] D4_APC_1: 0xffffffff
+INFO:    [APUAPC] D4_APC_2: 0xffffffff
+INFO:    [APUAPC] D4_APC_3: 0xffffffff
+INFO:    [APUAPC] D4_APC_4: 0x3fff
+INFO:    [APUAPC] D5_APC_0: 0x55555555
+INFO:    [APUAPC] D5_APC_1: 0x55555555
+INFO:    [APUAPC] D5_APC_2: 0x55555555
+INFO:    [APUAPC] D5_APC_3: 0x55555555
+INFO:    [APUAPC] D5_APC_4: 0x1555
+INFO:    [APUAPC] D6_APC_0: 0xffffffff
+INFO:    [APUAPC] D6_APC_1: 0xffffffff
+INFO:    [APUAPC] D6_APC_2: 0xffffffff
+INFO:    [APUAPC] D6_APC_3: 0xffffffff
+INFO:    [APUAPC] D6_APC_4: 0x3fff
+INFO:    [APUAPC] D7_APC_0: 0xffffffff
+INFO:    [APUAPC] D7_APC_1: 0xffffffff
+INFO:    [APUAPC] D7_APC_2: 0xffffffff
+INFO:    [APUAPC] D7_APC_3: 0xffffffff
+INFO:    [APUAPC] D7_APC_4: 0x3fff
+INFO:    [APUAPC] D8_APC_0: 0xffffffff
+INFO:    [APUAPC] D8_APC_1: 0xffffffff
+INFO:    [APUAPC] D8_APC_2: 0xffffffff
+INFO:    [APUAPC] D8_APC_3: 0xffffffff
+INFO:    [APUAPC] D8_APC_4: 0x3fff
+INFO:    [APUAPC] D9_APC_0: 0xffffffff
+INFO:    [APUAPC] D9_APC_1: 0xffffffff
+INFO:    [APUAPC] D9_APC_2: 0xffffffff
+INFO:    [APUAPC] D9_APC_3: 0xffffffff
+INFO:    [APUAPC] D9_APC_4: 0x3fff
+INFO:    [APUAPC] D10_APC_0: 0xffffffff
+INFO:    [APUAPC] D10_APC_1: 0xffffffff
+INFO:    [APUAPC] D10_APC_2: 0xffffffff
+INFO:    [APUAPC] D10_APC_3: 0xffffffff
+INFO:    [APUAPC] D10_APC_4: 0x3fff
+INFO:    [APUAPC] D11_APC_0: 0xffffffff
+INFO:    [APUAPC] D11_APC_1: 0xffffffff
+INFO:    [APUAPC] D11_APC_2: 0xffffffff
+INFO:    [APUAPC] D11_APC_3: 0xffffffff
+INFO:    [APUAPC] D11_APC_4: 0x3fff
+INFO:    [APUAPC] D12_APC_0: 0xffffffff
+INFO:    [APUAPC] D12_APC_1: 0xffffffff
+INFO:    [APUAPC] D12_APC_2: 0xffffffff
+INFO:    [APUAPC] D12_APC_3: 0xffffffff
+INFO:    [APUAPC] D12_APC_4: 0x3fff
+INFO:    [APUAPC] D13_APC_0: 0xffffffff
+INFO:    [APUAPC] D13_APC_1: 0xffffffff
+INFO:    [APUAPC] D13_APC_2: 0xffffffff
+INFO:    [APUAPC] D13_APC_3: 0xffffffff
+INFO:    [APUAPC] D13_APC_4: 0x3fff
+INFO:    [APUAPC] D14_APC_0: 0xffffffff
+INFO:    [APUAPC] D14_APC_1: 0xffffffff
+INFO:    [APUAPC] D14_APC_2: 0xffffffff
+INFO:    [APUAPC] D14_APC_3: 0xffffffff
+INFO:    [APUAPC] D14_APC_4: 0x3fff
+INFO:    [APUAPC] D15_APC_0: 0xffffffff
+INFO:    [APUAPC] D15_APC_1: 0xffffffff
+INFO:    [APUAPC] D15_APC_2: 0xffffffff
+INFO:    [APUAPC] D15_APC_3: 0xffffffff
+INFO:    [APUAPC] D15_APC_4: 0x3fff
+INFO:    [APUAPC] APC_CON: 0x4
+INFO:    [APUAPC] set_apusys_noc_dapc - SUCCESS!
+INFO:    [NOCDAPC] D0_APC_0: 0x15555555
+INFO:    [NOCDAPC] D0_APC_1: 0x0
+INFO:    [NOCDAPC] D1_APC_0: 0x3fffffff
+INFO:    [NOCDAPC] D1_APC_1: 0x0
+INFO:    [NOCDAPC] D2_APC_0: 0x3fffffff
+INFO:    [NOCDAPC] D2_APC_1: 0x0
+INFO:    [NOCDAPC] D3_APC_0: 0x3fffffff
+INFO:    [NOCDAPC] D3_APC_1: 0x0
+INFO:    [NOCDAPC] D4_APC_0: 0x3fffffff
+INFO:    [NOCDAPC] D4_APC_1: 0x0
+INFO:    [NOCDAPC] D5_APC_0: 0x15555555
+INFO:    [NOCDAPC] D5_APC_1: 0x0
+INFO:    [NOCDAPC] D6_APC_0: 0x3fffffff
+INFO:    [NOCDAPC] D6_APC_1: 0x0
+INFO:    [NOCDAPC] D7_APC_0: 0x3fffffff
+INFO:    [NOCDAPC] D7_APC_1: 0x0
+INFO:    [NOCDAPC] D8_APC_0: 0x3fffffff
+INFO:    [NOCDAPC] D8_APC_1: 0x0
+INFO:    [NOCDAPC] D9_APC_0: 0x3fffffff
+INFO:    [NOCDAPC] D9_APC_1: 0x0
+INFO:    [NOCDAPC] D10_APC_0: 0x3fffffff
+INFO:    [NOCDAPC] D10_APC_1: 0x0
+INFO:    [NOCDAPC] D11_APC_0: 0x3fffffff
+INFO:    [NOCDAPC] D11_APC_1: 0x0
+INFO:    [NOCDAPC] D12_APC_0: 0x3fffffff
+INFO:    [NOCDAPC] D12_APC_1: 0x0
+INFO:    [NOCDAPC] D13_APC_0: 0x3fffffff
+INFO:    [NOCDAPC] D13_APC_1: 0x0
+INFO:    [NOCDAPC] D14_APC_0: 0x3fffffff
+INFO:    [NOCDAPC] D14_APC_1: 0x0
+INFO:    [NOCDAPC] D15_APC_0: 0x3fffffff
+INFO:    [NOCDAPC] D15_APC_1: 0x0
+INFO:    [NOCDAPC] APC_CON: 0x4
+INFO:    [APUAPC] start_apusys_devapc_ao done
+INFO:    apusys_rv_mbox_mpu_init: 0x190000b0 = 0x1, 0x190000e0 = 0x10a0001
+INFO:    apusys_rv_mbox_mpu_init: 0x190001b0 = 0x1, 0x190001e0 = 0xa0001
+INFO:    apusys_rv_mbox_mpu_init: 0x190002b0 = 0x1, 0x190002e0 = 0xa0001
+INFO:    apusys_rv_mbox_mpu_init: 0x190003b0 = 0x1, 0x190003e0 = 0xa0001
+INFO:    apusys_rv_mbox_mpu_init: 0x190004b0 = 0x10001, 0x190004e0 = 0x1
+INFO:    apusys_rv_mbox_mpu_init: 0x190005b0 = 0x1, 0x190005e0 = 0x60a0001
+INFO:    apusys_rv_mbox_mpu_init: 0x190006b0 = 0x1, 0x190006e0 = 0xa0001
+INFO:    apusys_rv_mbox_mpu_init: 0x190007b0 = 0x1, 0x190007e0 = 0xa0001
+NOTICE:  [APUSYS] apusys_init -
+INFO:    BL31: Initializing runtime services
+WARNING: No OPTEE provided by BL2 boot loader, Booting device without OPTEE initialization. SMC`s destined for OPTEE will return SMC_UNK
+ERROR:   Error initializing runtime service opteed_fast
+INFO:    SPM: enable CPC mode
+INFO:    mcdi ready for mcusys-off-idle and system suspend
+INFO:    BL31: Preparing for EL3 exit to normal world
+INFO:    Entry point address = 0x4c000000
+INFO:    SPSR = 0x3c9
+
+
+U-Boot 2027.01-rc1_armbian-2027.01-rc1-Sdfcf-P4e7a-H23be-Vbf6d-Bb936-R448a (Nov 08 2026 - 01:15:19 +0100)
+
+CPU:   MediaTek MT8195
+Model: Radxa NIO 12L
+DRAM:  16 GiB
+Core:  174 devices, 27 uclasses, devicetree: separate
+WDT:   Started watchdog@10007000 with servicing every 1000ms (60s timeout)
+MMC:   mmc@11240000: 1
+mediatek-ufshci ufshci@11270000: [RX, TX]: gear=[3, 3], lane[1, 1], pwr[FAST MODE, FAST MODE], rate = 2
+Loading Environment from SCSI... OK
+mt8195_power_domain power-controller: power-domain@15: failed to get subsys clk at index 8: -19
+mt8195_power_domain power-controller: failed to add child domain: power-domain@15
+In:    serial@11001100
+Out:   serial@11001100
+Err:   serial@11001100
+Net:   eth0: ethernet@11021000
+Hit any key to stop autoboot: 0
+=>

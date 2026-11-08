@@ -1,0 +1,128 @@
+...snip....
+INFO:    [APUAPC] D11_APC_1: 0xffffffff
+INFO:    [APUAPC] D11_APC_2: 0xffffffff
+INFO:    [APUAPC] D11_APC_3: 0xffffffff
+INFO:    [APUAPC] D11_APC_4: 0x3fff
+INFO:    [APUAPC] D12_APC_0: 0xffffffff
+INFO:    [APUAPC] D12_APC_1: 0xffffffff
+INFO:    [APUAPC] D12_APC_2: 0xffffffff
+INFO:    [APUAPC] D12_APC_3: 0xffffffff
+INFO:    [APUAPC] D12_APC_4: 0x3fff
+INFO:    [APUAPC] D13_APC_0: 0xffffffff
+INFO:    [APUAPC] D13_APC_1: 0xffffffff
+INFO:    [APUAPC] D13_APC_2: 0xffffffff
+INFO:    [APUAPC] D13_APC_3: 0xffffffff
+INFO:    [APUAPC] D13_APC_4: 0x3fff
+INFO:    [APUAPC] D14_APC_0: 0xffffffff
+INFO:    [APUAPC] D14_APC_1: 0xffffffff
+INFO:    [APUAPC] D14_APC_2: 0xffffffff
+INFO:    [APUAPC] D14_APC_3: 0xffffffff
+INFO:    [APUAPC] D14_APC_4: 0x3fff
+INFO:    [APUAPC] D15_APC_0: 0xffffffff
+INFO:    [APUAPC] D15_APC_1: 0xffffffff
+INFO:    [APUAPC] D15_APC_2: 0xffffffff
+INFO:    [APUAPC] D15_APC_3: 0xffffffff
+INFO:    [APUAPC] D15_APC_4: 0x3fff
+INFO:    [APUAPC] APC_CON: 0x4
+INFO:    [APUAPC] set_apusys_noc_dapc - SUCCESS!
+INFO:    [NOCDAPC] D0_APC_0: 0x15555555
+INFO:    [NOCDAPC] D0_APC_1: 0x0
+INFO:    [NOCDAPC] D1_APC_0: 0x3fffffff
+INFO:    [NOCDAPC] D1_APC_1: 0x0
+INFO:    [NOCDAPC] D2_APC_0: 0x3fffffff
+INFO:    [NOCDAPC] D2_APC_1: 0x0
+INFO:    [NOCDAPC] D3_APC_0: 0x3fffffff
+INFO:    [NOCDAPC] D3_APC_1: 0x0
+INFO:    [NOCDAPC] D4_APC_0: 0x3fffffff
+INFO:    [NOCDAPC] D4_APC_1: 0x0
+INFO:    [NOCDAPC] D5_APC_0: 0x15555555
+INFO:    [NOCDAPC] D5_APC_1: 0x0
+INFO:    [NOCDAPC] D6_APC_0: 0x3fffffff
+INFO:    [NOCDAPC] D6_APC_1: 0x0
+INFO:    [NOCDAPC] D7_APC_0: 0x3fffffff
+INFO:    [NOCDAPC] D7_APC_1: 0x0
+INFO:    [NOCDAPC] D8_APC_0: 0x3fffffff
+INFO:    [NOCDAPC] D8_APC_1: 0x0
+INFO:    [NOCDAPC] D9_APC_0: 0x3fffffff
+INFO:    [NOCDAPC] D9_APC_1: 0x0
+INFO:    [NOCDAPC] D10_APC_0: 0x3fffffff
+INFO:    [NOCDAPC] D10_APC_1: 0x0
+INFO:    [NOCDAPC] D11_APC_0: 0x3fffffff
+INFO:    [NOCDAPC] D11_APC_1: 0x0
+INFO:    [NOCDAPC] D12_APC_0: 0x3fffffff
+INFO:    [NOCDAPC] D12_APC_1: 0x0
+INFO:    [NOCDAPC] D13_APC_0: 0x3fffffff
+INFO:    [NOCDAPC] D13_APC_1: 0x0
+INFO:    [NOCDAPC] D14_APC_0: 0x3fffffff
+INFO:    [NOCDAPC] D14_APC_1: 0x0
+INFO:    [NOCDAPC] D15_APC_0: 0x3fffffff
+INFO:    [NOCDAPC] D15_APC_1: 0x0
+INFO:    [NOCDAPC] APC_CON: 0x4
+INFO:    [APUAPC] start_apusys_devapc_ao done
+INFO:    apusys_rv_mbox_mpu_init: 0x190000b0 = 0x1, 0x190000e0 = 0x10a0001
+INFO:    apusys_rv_mbox_mpu_init: 0x190001b0 = 0x1, 0x190001e0 = 0xa0001
+INFO:    apusys_rv_mbox_mpu_init: 0x190002b0 = 0x1, 0x190002e0 = 0xa0001
+INFO:    apusys_rv_mbox_mpu_init: 0x190003b0 = 0x1, 0x190003e0 = 0xa0001
+INFO:    apusys_rv_mbox_mpu_init: 0x190004b0 = 0x10001, 0x190004e0 = 0x1
+INFO:    apusys_rv_mbox_mpu_init: 0x190005b0 = 0x1, 0x190005e0 = 0x60a0001
+INFO:    apusys_rv_mbox_mpu_init: 0x190006b0 = 0x1, 0x190006e0 = 0xa0001
+INFO:    apusys_rv_mbox_mpu_init: 0x190007b0 = 0x1, 0x190007e0 = 0xa0001
+NOTICE:  [APUSYS] apusys_init -
+INFO:    BL31: Initializing runtime services
+WARNING: No OPTEE provided by BL2 boot loader, Booting device without OPTEE initialization. SMC`s destined for OPTEE will return SMC_UNK
+ERROR:   Error initializing runtime service opteed_fast
+INFO:    SPM: enable CPC mode
+INFO:    mcdi ready for mcusys-off-idle and system suspend
+INFO:    BL31: Preparing for EL3 exit to normal world
+INFO:    Entry point address = 0x4c000000
+INFO:    SPSR = 0x3c9
+
+
+U-Boot 2027.01-rc1_armbian-2027.01-rc1-Sdfcf-Pcfb6-H23be-Vbf6d-Bb936-R448a (Nov 08 2026 - 01:19:17 +0100)
+
+CPU:   MediaTek MT8195
+Model: Radxa NIO 12L
+DRAM:  16 GiB
+Core:  174 devices, 27 uclasses, devicetree: separate
+WDT:   Started watchdog@10007000 with servicing every 1000ms (60s timeout)
+MMC:   mmc@11240000: 1
+mediatek-ufshci ufshci@11270000: [RX, TX]: gear=[3, 3], lane[1, 1], pwr[FAST MODE, FAST MODE], rate = 2
+Loading Environment from SCSI... OK
+mt8195_power_domain power-controller: power-domain@15: failed to get subsys clk at index 8: -19
+mt8195_power_domain power-controller: failed to add child domain: power-domain@15
+In:    serial@11001100
+Out:   serial@11001100
+Err:   serial@11001100
+Net:   eth0: ethernet@11021000
+Hit any key to stop autoboot: 0
+=> pci
+BusDevFun  VendorId   DeviceId   Device Class       Sub-Class
+_____________________________________________________________
+00.00.00   0x14c3     0x8195     Bridge device           0x04
+01.00.00   0x1106     0x3483     Serial bus controller   0x03
+=> usb start
+starting USB...
+USB XHCI 1.10
+USB XHCI 1.00
+XHCI timeout on event type 33...
+Cannot allocate device context to get SLOT_ID
+XHCI timeout on event type 33...
+Cannot allocate device context to get SLOT_ID
+Bus usb@11290000: 2 USB Device(s) found
+Bus xhci_pci: 1 USB Device(s) found
+       scanning usb for storage devices... 0 Storage Device(s) found
+=> usb tree
+USB device tree:
+  1  Hub (5 Gb/s, 0mA)
+  |  U-Boot XHCI Host Controller
+  |
+  +-2   (480 Mb/s, 100mA)
+       MediaTek Inc. Wireless_Device 000000000
+
+  1  Hub (5 Gb/s, 0mA)
+     U-Boot XHCI Host Controller
+
+=> ls usb 0
+** Bad device specification usb 0 **
+Couldn't find partition usb 0
+=>

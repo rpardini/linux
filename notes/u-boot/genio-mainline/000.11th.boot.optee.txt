@@ -1,0 +1,2769 @@
+root@nio-12l-5lxzk-f4x62:~# systemctl reboot
+root@nio-12l-5lxzk-f4x62:~#          Stopping session-1.scope - Session 1 of User root...
+
+         Stopping session-2.scope - Session 2 of User root...
+         Stopping cri-containerd-f35333eb22…fc6f2df1bf7ce69908b8cef00a613002...
+         Stopping cri-containerd-08d59c091f…001d45150fd7a92b4f67f74bd71d1978...
+         Stopping cri-containerd-0bfadcfb3e…5a503d4810d729b67f6f766b15cf499d...
+         Stopping cri-containerd-15fa5d7db3…1a7c6ffdc17377b8f8f84941e5c776f5...
+         Stopping cri-containerd-42542889de…e657f3f18bafa972e447ecec1d9599ae...
+         Stopping cri-containerd-4e74910cf6…fa69c2e2162ab30c97aad6b65e7a00a6...
+         Stopping cri-containerd-742336caa8…58221e256265fb42e6a2ce6f18430c0b...
+         Stopping cri-containerd-a31bf8bb89…841e94d72ee14bac47df78a9694922d7...
+         Stopping cri-containerd-c8eae15851…4782a52945331667a64ad1d02dec06f1...
+[  OK  ] Removed slice system-modprobe.slice - Slice /system/modprobe.
+[  OK  ] Stopped target cloud-init.target - Cloud-init target.
+[  OK  ] Stopped target nss-lookup.target - Host and Network Name Lookups.
+[  OK  ] Stopped target sound.target - Sound Card.
+[  OK  ] Stopped target timers.target - Timer Units.
+[  OK  ] Stopped dpkg-db-backup.timer - Daily dpkg database backup timer.
+[  OK  ] Stopped systemd-tmpfiles-clean.tim…y Cleanup of Temporary Directories.
+[  OK  ] Stopped target usb-gadget.target - Hardware activated USB gadget.
+[  OK  ] Closed cloud-init-hotplugd.socket - cloud-init hotplug hook socket.
+[  OK  ] Closed systemd-rfkill.socket - Loa…ll Switch Status /dev/rfkill Watch.
+[  OK  ] Stopped cloud-final.service - Cloud-init: Final Stage.
+[  OK  ] Stopped target multi-user.target - Multi-User System.
+[  OK  ] Stopped target getty.target - Login Prompts.
+[  OK  ] Stopped target time-sync.target - System Time Synchronized.
+[  OK  ] Stopped target time-set.target - System Time Set.
+         Stopping bird-graceful-shutdown.se…utdown before BIRD/network stops...
+[  OK  ] Stopped captainos-banner.service - CaptainOS Banner.
+[  OK  ] Stopped cloud-config.service - Cloud-init: Config Stage.
+[  OK  ] Stopped target cloud-config.target - Cloud-config availability.
+         Stopping containerd.service - containerd container runtime...
+         Stopping getty@tty1.service - Getty on tty1...
+         Stopping kubelet.service - kubelet: The Kubernetes Node Agent...
+         Stopping polkit.service - Authorization Manager...
+         Stopping rsyslog.service - Remote Syslog Forwarder (rsyslog)...
+         Stopping serial-getty@ttyS0.service - Serial Getty on ttyS0...
+         Stopping ssh.service - OpenBSD Secure Shell server...
+[  OK  ] Stopped systemd-machine-id-commit.… Save Transient machine-id to Disk.
+[  OK  ] Stopped target first-boot-complete.target - First Boot Complete.
+         Stopping systemd-networkd-persiste…tent Storage in systemd-networkd...
+         Stopping systemd-random-seed.service - Load/Save OS Random Seed...
+[  OK  ] Stopped systemd-time-wait-sync.ser…ait Until Kernel Time Synchronized.
+[  OK  ] Stopped systemd-udev-load-credenti…- Load udev Rules from Credentials.
+[  OK  ] Unmounted run-containerd-io.contai…df1bf7ce69908b8cef00a613002/rootfs.
+[  OK  ] Unmounted run-containerd-io.contai…ffdc17377b8f8f84941e5c776f5/rootfs.
+[  OK  ] Unmounted run-containerd-io.contai…d4810d729b67f6f766b15cf499d/rootfs.
+[  OK  ] Unmounted run-containerd-io.contai…e256265fb42e6a2ce6f18430c0b/rootfs.
+[  OK  ] Unmounted run-containerd-io.contai…5150fd7a92b4f67f74bd71d1978/rootfs.
+[  OK  ] Unmounted run-containerd-io.contai…3f18bafa972e447ecec1d9599ae/rootfs.
+[  OK  ] Unmounted run-containerd-io.contai…52945331667a64ad1d02dec06f1/rootfs.
+[  OK  ] Stopped getty@tty1.service - Getty on tty1.
+[  OK  ] Stopped serial-getty@ttyS0.service - Serial Getty on ttyS0.
+[  OK  ] Stopped ssh.service - OpenBSD Secure Shell server.
+[  OK  ] Stopped polkit.service - Authorization Manager.
+[  OK  ] Stopped containerd.service - containerd container runtime.
+[  OK  ] Stopped kubelet.service - kubelet: The Kubernetes Node Agent.
+[  OK  ] Stopped rsyslog.service - Remote Syslog Forwarder (rsyslog).
+[  OK  ] Stopped systemd-networkd-persisten…istent Storage in systemd-networkd.
+[  OK  ] Stopped systemd-random-seed.service - Load/Save OS Random Seed.
+[  OK  ] Stopped cri-containerd-a31bf8bb898…e2841e94d72ee14bac47df78a9694922d7.
+[  OK  ] Stopped cri-containerd-4e74910cf65…d9fa69c2e2162ab30c97aad6b65e7a00a6.
+[  OK  ] Stopped cri-containerd-0bfadcfb3ee…725a503d4810d729b67f6f766b15cf499d.
+[  OK  ] Stopped session-2.scope - Session 2 of User root.
+[  OK  ] Stopped session-1.scope - Session 1 of User root.
+[  OK  ] Stopped cri-containerd-c8eae15851a…334782a52945331667a64ad1d02dec06f1.
+[  OK  ] Stopped cri-containerd-f35333eb22b…80fc6f2df1bf7ce69908b8cef00a613002.
+[  OK  ] Stopped cri-containerd-742336caa89…9958221e256265fb42e6a2ce6f18430c0b.
+[  OK  ] Stopped cri-containerd-42542889de2…82e657f3f18bafa972e447ecec1d9599ae.
+[  OK  ] Stopped cri-containerd-15fa5d7db31…7e1a7c6ffdc17377b8f8f84941e5c776f5.
+[  OK  ] Stopped cri-containerd-08d59c091f7…9c001d45150fd7a92b4f67f74bd71d1978.
+[  OK  ] Removed slice system-getty.slice - Slice /system/getty.
+[  OK  ] Removed slice system-serial\x2dget…slice - Slice /system/serial-getty.
+[  OK  ] Removed slice kubepods-burstable-p…_cf7b_4ecc_a774_32fd711e6b9e.slice.
+[  OK  ] Removed slice kubepods-besteffort-…_db43_4419_8359_1696de5ef3ea.slice.
+[  OK  ] Removed slice kubepods-besteffort-…_311f_4fe7_9613_045e4b7530cd.slice.
+[  OK  ] Removed slice kubepods-besteffort.…ontainer kubepods-besteffort.slice.
+[  OK  ] Removed slice kubepods-burstable-p…_a2ad_46c1_99f5_d71ad99e0a09.slice.
+[  OK  ] Removed slice kubepods-burstable.s…container kubepods-burstable.slice.
+[  OK  ] Removed slice kubepods.slice - libcontainer container kubepods.slice.
+[  OK  ] Stopped sshd-keygen.service - Generate sshd host keys on first boot.
+         Stopping systemd-user-sessions.service - Permit User Sessions...
+         Stopping user@0.service - User Manager for UID 0...
+[  OK  ] Stopped systemd-user-sessions.service - Permit User Sessions.
+[  OK  ] Stopped user@0.service - User Manager for UID 0.
+         Stopping user-runtime-dir@0.servic…er Runtime Directory /run/user/0...
+[  OK  ] Unmounted run-user-0.mount - /run/user/0.
+[  OK  ] Stopped user-runtime-dir@0.service…User Runtime Directory /run/user/0.
+[  OK  ] Removed slice user-0.slice - User Slice of UID 0.
+         Stopping dbus.service - D-Bus System Message Bus...
+         Stopping systemd-logind.service - User Login Management...
+[  OK  ] Stopped dbus.service - D-Bus System Message Bus.
+[  OK  ] Stopped systemd-logind.service - User Login Management.
+[  OK  ] Stopped bird-graceful-shutdown.ser…shutdown before BIRD/network stops.
+[  OK  ] Stopped target network-online.target - Network is Online.
+         Stopping bird.service - BIRD Internet Routing Daemon...
+[  OK  ] Stopped bird.service - BIRD Internet Routing Daemon.
+[  OK  ] Stopped target basic.target - Basic System.
+[  OK  ] Stopped target network.target - Network.
+[  OK  ] Stopped target paths.target - Path Units.
+[  OK  ] Stopped rsyslog-hostname-reload.pa…ostname changes and reload rsyslog.
+[  OK  ] Stopped systemd-ask-password-conso…equests to Console Directory Watch.
+[  OK  ] Stopped systemd-ask-password-wall.…d Requests to Wall Directory Watch.
+[  OK  ] Stopped target slices.target - Slice Units.
+[  OK  ] Removed slice user.slice - User and Session Slice.
+[  OK  ] Stopped target sockets.target - Socket Units.
+[  OK  ] Closed dbus.socket - D-Bus System Message Bus Socket.
+[  OK  ] Closed ssh.socket - OpenBSD Secure Shell server socket.
+[  OK  ] Closed sshd-unix-local.socket - Op…temd-ssh-generator, AF_UNIX Local).
+[  OK  ] Closed systemd-hostnamed.socket - Hostname Service Socket.
+[  OK  ] Stopped target sysinit.target - System Initialization.
+[  OK  ] Stopped cloud-init-network.service - Cloud-init: Network Stage.
+         Stopping systemd-binfmt.service - Set Up Additional Binary Formats...
+[  OK  ] Stopped systemd-networkd-wait-onli… Wait for Network to be Configured.
+         Stopping systemd-networkd.service - Network Configuration...
+         Stopping systemd-resolved.service - Network Name Resolution...
+         Stopping systemd-timesyncd.service - Network Time Synchronization...
+[  OK  ] Stopped systemd-update-done.service - Update is Completed.
+[  OK  ] Stopped ldconfig.service - Rebuild Dynamic Linker Cache.
+[  OK  ] Stopped systemd-journal-catalog-up….service - Rebuild Journal Catalog.
+[  OK  ] Stopped systemd-tmpfiles-setup.ser…reate System Files and Directories.
+[  OK  ] Stopped systemd-binfmt.service - Set Up Additional Binary Formats.
+[  OK  ] Stopped systemd-timesyncd.service - Network Time Synchronization.
+[  OK  ] Stopped systemd-networkd.service - Network Configuration.
+[  OK  ] Stopped systemd-resolved.service - Network Name Resolution.
+[  OK  ] Unset automount proc-sys-fs-binfmt…ormats File System Automount Point.
+[  OK  ] Stopped target local-fs.target - Local File Systems.
+[  OK  ] Stopped target network-pre.target - Preparation for Network.
+[  OK  ] Closed systemd-networkd.socket - Network Service Netlink Socket.
+         Unmounting run-cilium-cgroupv2.mount - /run/cilium/cgroupv2...
+         Unmounting run-containerd-io.conta…45150fd7a92b4f67f74bd71d1978/shm...
+         Unmounting run-containerd-io.conta…6ffdc17377b8f8f84941e5c776f5/shm...
+         Unmounting run-containerd-io.conta…f3f18bafa972e447ecec1d9599ae/shm...
+         Unmounting run-containerd-io.conta…a52945331667a64ad1d02dec06f1/shm...
+         Unmounting run-containerd-io.conta…2162ab30c97aad6b65e7a00a6/rootfs...
+         Unmounting run-containerd-io.conta…72ee14bac47df78a9694922d7/rootfs...
+         Unmounting run-lock.mount - Legacy Locks Directory /run/lock...
+         Unmounting run-netns-cni\x2d3e1ba4…a4b5-bfa2-c339-4b1a-1439032fe555...
+         Unmounting tmp.mount - Temporary Directory /tmp...
+         Unmounting var-lib-kubelet-pods-ad…~projected/kube-api-access-9dlfr...
+         Unmounting var-lib-kubelet-pods-b2…io~projected/clustermesh-secrets...
+         Unmounting var-lib-kubelet-pods-b2…bernetes.io~projected/hubble-tls...
+         Unmounting var-lib-kubelet-pods-b2…~projected/kube-api-access-rs544...
+         Unmounting var-lib-kubelet-pods-bf…~projected/kube-api-access-bsnwv...
+         Unmounting var-lib-kubelet-pods-ef…~projected/kube-api-access-fxcqd...
+[  OK  ] Stopped cloud-init-local.service -…ud-init: Local Stage (pre-network).
+         Stopping nftables.service - nftables...
+[  OK  ] Stopped systemd-growfs-root.service - Grow Root File System.
+[  OK  ] Stopped systemd-network-generator.…ork Units from Kernel Command Line.
+[  OK  ] Stopped systemd-sysctl.service - Apply Kernel Variables.
+[  OK  ] Stopped systemd-modules-load.service - Load Kernel Modules.
+[  OK  ] Unmounted run-cilium-cgroupv2.mount - /run/cilium/cgroupv2.
+[  OK  ] Unmounted run-containerd-io.contai…1d45150fd7a92b4f67f74bd71d1978/shm.
+[  OK  ] Unmounted run-containerd-io.contai…7c6ffdc17377b8f8f84941e5c776f5/shm.
+[  OK  ] Unmounted run-containerd-io.contai…57f3f18bafa972e447ecec1d9599ae/shm.
+[  OK  ] Unmounted run-containerd-io.contai…82a52945331667a64ad1d02dec06f1/shm.
+[  OK  ] Unmounted run-containerd-io.contai…2e2162ab30c97aad6b65e7a00a6/rootfs.
+[  OK  ] Unmounted run-containerd-io.contai…4d72ee14bac47df78a9694922d7/rootfs.
+[  OK  ] Unmounted run-lock.mount - Legacy Locks Directory /run/lock.
+[  OK  ] Unmounted run-netns-cni\x2d3e1ba4b…1ba4b5-bfa2-c339-4b1a-1439032fe555.
+[  OK  ] Unmounted tmp.mount - Temporary Directory /tmp.
+[  OK  ] Unmounted var-lib-kubelet-pods-ad2…io~projected/kube-api-access-9dlfr.
+[  OK  ] Unmounted var-lib-kubelet-pods-b20…s.io~projected/clustermesh-secrets.
+[  OK  ] Unmounted var-lib-kubelet-pods-b20…kubernetes.io~projected/hubble-tls.
+[  OK  ] Unmounted var-lib-kubelet-pods-b20…io~projected/kube-api-access-rs544.
+[  OK  ] Unmounted var-lib-kubelet-pods-bf7…io~projected/kube-api-access-bsnwv.
+[  OK  ] Unmounted var-lib-kubelet-pods-ef6…io~projected/kube-api-access-fxcqd.
+[  OK  ] Stopped nftables.service - nftables.
+[  OK  ] Stopped target local-fs-pre.target…Preparation for Local File Systems.
+[  OK  ] Stopped target swap.target - Swaps.
+[  OK  ] Reached target umount.target - Unmount All Filesystems.
+[  OK  ] Stopped systemd-tmpfiles-setup-dev…Create Static Device Nodes in /dev.
+[  OK  ] Stopped systemd-sysusers.service - Create System Users.
+[  OK  ] Stopped systemd-remount-fs.service…mount Root and Kernel File Systems.
+[  OK  ] Stopped systemd-tmpfiles-setup-dev…ic Device Nodes in /dev gracefully.
+[  OK  ] Reached target shutdown.target - System Shutdown.
+[  OK  ] Reached target final.target - Late Shutdown Services.
+[  OK  ] Finished systemd-reboot.service - System Reboot.
+[  OK  ] Reached target reboot.target - System Reboot.
+[ 6761.325021] watchdog: watchdog0: watchdog did not stop!
+[ 6761.480890] watchdog: watchdog0: watchdog did not stop!
+[ 6761.677993] reboot: Restarting system
+����������������������������������������������������������������������������������������������������������������������������������������������������������������������������������NOTICE:  BL2: v2.6(release):armbian
+NOTICE:  BL2: Built : 15:10:01, Nov  8 2026
+INFO:    BL2: Doing platform setup
+NOTICE:  WDT: Status = 0x40000000
+NOTICE:  WDT: Last reset was normal software reboot
+PLL init start...
+PLL init Done!
+MTCMOS init Start...
+MTCMOS init Done!
+switch to 26MHz
+ARMPLL_LL switch to OPP 0
+switch to ARMPLL_LL
+ARMPLL_LL_CON2: 0x133b13
+[PMIF] ULPOSC1 K done: 248M, PLL_ULPOSC1_CON0/1/2 0x38a949 0x41000029
+[PMIF] [pmifclkmgr_set_clk] CLK_CFG_9 = 3030100
+[pmifclkmgr_set_spmi_clk] done
+[pmifclkmgr_set_spi_clk] done
+[PMIF] pmif_spmi_force_normal_mode done
+[SPMI] spmi_config_master CLK_CFG_17 = 2000307
+[SPMI] b IOCFG_BM_EH_CFG0 0xfff
+[SPMI] IOCFG_BM_DRV_CFG3 0x12
+[SPMI] IOCFG_BM_EH_CFG0 0x3f
+[SPMI] IOCFG_BM_RSEL_CFG0 0x492
+[SPMI] 667: spmi_read_check next, slvid:6 rdata = 0x2a.
+[SPMI] spmi_read_check done, slvid:6
+[SPMI] non-rcs dly:0, pol:1, sampl:0x1
+[SPMI] 667: spmi_read_check next, slvid:7 rdata = 0x2a.
+[SPMI] spmi_read_check done, slvid:7
+[SPMI] non-rcs dly:0, pol:1, sampl:0x1
+[PWRAP] pwrap_init_preloader
+[PWRAP] is_pwrap_init_done 0
+[PWRAP] pwrap_init start!!!!!!!!!!!!!
+[PWRAP] Reset SPISLV ok
+[PWRAP] Set Read Dummy Cycle ok
+[PWRAP] _pwrap_init_dio ok
+[PWRAP] _pwrap_init_reg_clock ok
+[PWRAP] __pwrap_InitSPISLV ok
+[PWRAP] si_sampling_ck_dly = 0, si_sampling_ck_pol = 0
+[PWRAP] si_sample_ctrl = 0, rdata = d6a9
+[PWRAP] First Valid Sampling Clock Found!!!
+[PWRAP] si_sampling_ck_dly = 0, si_sampling_ck_pol = 1
+[PWRAP] si_sample_ctrl = 20, rdata = 5aa5
+[PWRAP] si_dly = 0, *RG_SPI_CON2 = 0, rdata = 1b27
+[PWRAP] si_dly = 1, *RG_SPI_CON2 = 1, rdata = 1b27
+[PWRAP] si_dly = 2, *RG_SPI_CON2 = 2, rdata = 1b27
+[PWRAP] si_dly = 3, *RG_SPI_CON2 = 3, rdata = 1b27
+[PWRAP] si_dly = 4, *RG_SPI_CON2 = 4, rdata = 1b27
+[PWRAP] si_dly = 5, *RG_SPI_CON2 = 5, rdata = 1b27
+[PWRAP] si_dly = 6, *RG_SPI_CON2 = 6, rdata = 1b27
+[PWRAP] si_dly = 7, *RG_SPI_CON2 = 7, rdata = 1b27
+[PWRAP] Data Boundary is Found !!!
+[PWRAP] si_dly = 8, rdata = 1a65
+[PWRAP] si_sample_ctrl=0x20(before)
+[PWRAP] si_sample_ctrl=0x40(after)(non-FPGA)
+[PWRAP] SI Strobe Calibration For PMIC 0 Done
+[PWRAP] si_sample_ctrl = 40, si_dly = 8
+[PWRAP] _pwrap_init_sistrobe Read Test ok
+[PWRAP] _pwrap_init_sistrobe ok
+[PWRAP] _pwrap_lock_SPISLVReg ok
+[PWRAP] _pwrap_wacs2_write_test ok
+[PWRAP] _pwrap_InitStaUpd ok
+[PWRAP] write MODEM_TEMP_SHARE_CTRL start
+[PWRAP] write MODEM_TEMP_SHARE_CTRL ok
+[PWRAP] MODEM_TEMP_SHARE_CTRL:f0
+[PWRAP] PMIF_SPI_PMIF_MPU_CTRL = 0x34
+[PWRAP] PMIF_SPI_PMIF_PMIC_RGN_0_START = 0x600
+[PWRAP] PMIF_SPI_PMIF_PMIC_RGN_0_END = 0x67e
+[PWRAP] PMIF_SPI_PMIF_PMIC_RGN_0_PER = 0xff3ffffb
+[PWRAP] PMIF_SPI_PMIF_PMIC_RGN_1_START = 0x800
+[PWRAP] PMIF_SPI_PMIF_PMIC_RGN_1_END = 0x13fe
+[PWRAP] PMIF_SPI_PMIF_PMIC_RGN_1_PER = 0xfffcfff8
+[PWRAP] PMIF_SPI_PMIF_PMIC_RGN_2_START = 0x1400
+[PWRAP] PMIF_SPI_PMIF_PMIC_RGN_2_END = 0x207e
+[PWRAP] PMIF_SPI_PMIF_PMIC_RGN_2_PER = 0xfffcfff0
+[PWRAP] PMIF_SPI_PMIF_PMIC_RGN_3_START = 0x2080
+[PWRAP] PMIF_SPI_PMIF_PMIC_RGN_3_END = 0x26fe
+[PWRAP] PMIF_SPI_PMIF_PMIC_RGN_3_PER = 0xfffcff38
+[PWRAP] _pwrap_config_mpu ok
+[PWRAP] start pwrap_read_test
+[PWRAP] rdata=0x5aa5
+[PWRAP] Read Test pass, return_value = 0x0
+[PWRAP] start pwrap_write_test
+[PWRAP] after pwrap_write_test
+[PWRAP] rdata=0xa55a (read back)
+[PWRAP] Write Test pass
+[PWRAP] channel pass
+[PWRAP] REC_CMD0:0x1cbe (The last one adr)
+[PWRAP] REC_WDATA0:0x0 (The last one wdata)
+[PWRAP] REC_CMD1:0x152c (The second-last adr)
+[PWRAP] REC_WDATA1:0x1f (The second-last wdata)
+[PWRAP] REC_CMD2:0x1b44 (The third-last adr)
+[PWRAP] REC_WDATA2:0x30 (The third-last wdata)
+[PWRAP] REC_CMD3:0x1b44 (The fourth-last adr)
+[PWRAP] REC_WDATA3:0x2f (The fourth-last wdata)
+[PWRAP] REC_CMD4:0x152c (The fifth-last adr)
+[PWRAP] REC_WDATA4:0x1e (The fifth-last wdata)
+[PWRAP] REC_CMD5:0x1b46 (The sixth-last adr)
+[PWRAP] REC_WDATA5:0x33 (The sixth-last wdata)
+[PWRAP] enable spi debug ok
+[PWRAP] clear record command ok
+[PWRAP] PMIC_WRAP_MONITOR_MODE = Logging Mode
+[PWRAP] PMIF_SPI_PMIF_MONITOR_CTRL = 0x5
+[PWRAP] PMIF_SPI_PMIF_MONITOR_TARGET_CHAN_0 = 0x1fbfff
+[PWRAP] PMIF_SPI_PMIF_MONITOR_TARGET_ADDR_0 = 0x0
+[PWRAP] PMIF_SPI_PMIF_MONITOR_TARGET_WDATA_0 = 0x0
+[PWRAP] init pass, ret=0.
+[PMIC] Preloader Start
+[PMIC]  CHIP Code = 0x5920
+[PMIC] POWER_HOLD :0x1
+[PMIC] TOP_RST_STATUS[0x150]=0x48
+[PMIC] PONSTS[0xc]=0x0
+[PMIC] POFFSTS[0xe]=0x400
+[PMIC] PG_SDN_STS0[0x16]=0xffff
+[PMIC] PG_SDN_STS1[0x18]=0xfff8
+[PMIC] OC_SDN_STS0[0x1a]=0x0
+[PMIC] OC_SDN_STS1[0x1c]=0x0
+[PMIC] BUCK_OC_SDN_STATUS[0x1430]=0x0
+[PMIC] BUCK_OC_SDN_EN[0x1440]=0x7ff
+[PMIC] THERMALSTATUS[0x1e]=0x0
+[PMIC] STRUP_CON4[0xa1a]=0x0
+[PMIC] STRUP_CON12[0xa12]=0x3000
+[PMIC] TOP_RST_MISC[0x14a]=0x204
+[PMIC] TOP_CLK_TRIM[0x388]=0x6cc0
+[MT6359] latch VCORE(VGPU11) 750000 uV(0x24)
+[MT6359] latch VPU(VPROC1) 750000 uV(0x24)
+[MT6359] latch VMDLA(VPROC2) 750000 uV(0x24)
+[MT6359] latch VPROC(VCORE) 700000 uV(0x10)
+[MT6359] latch VSRAM_PROC1 800000 uV(0x28)
+[MT6359] latch VSRAM_PROC2 818750 uV(0x2a)
+[MT6359] latch VSRAM_GPU(VSRAM_OTHERS) 500000 uV(0x0)
+[MT6359] latch VSRAM_APU(VSRAM_MD) 750000 uV(0x3c)
+[PMIC] [pmic_check_rst] AP Watchdog
+[PMIC] just_rst = 0
+[PMIC] [pwrkey_dbg_status] powerkey:0 count=0(ms) g_pwrkey_release=0
+[PMIC] [pmic_wdt_set] TOP_RST_MISC=0x225
+[PMIC] register vsram_others OK
+[PMIC] register vsram_proc1 OK
+[PMIC] register vsram_proc2 OK
+[PMIC] register vsram_md OK
+[PMIC] register vcore OK
+[PMIC] register vproc1 OK
+[PMIC] register vproc2 OK
+[PMIC] register vgpu11 OK
+[PMIC] register vmodem OK
+[PMIC] register vpu OK
+[PMIC] register vio18 OK
+[MT6315] S6 RG_SLV_ID[0x136]=0xb6
+[MT6315] S6 TOP_RST_STATUS[0x129]=0x3
+[MT6315] S6 POFFSTS[0xc]=0x0
+[MT6315] S6 RGS_POFFSTS[0xa0f]=0x0
+[MT6315] S6 PG_SDN_STS0[0xf]=0xf
+[MT6315] S6 OC_SDN_STS0[0x10]=0x0
+[MT6315] S6 BUCK_OC_SDN_STS[0x1416]=0x0
+[MT6315] S6 BUCK_OC_SDN_EN[0x1451]=0x1f
+[MT6315] S6 TOP_RST_MISC[0x126]=0x4
+[MT6315] S7 RG_SLV_ID[0x136]=0xb7
+[MT6315] S7 TOP_RST_STATUS[0x129]=0x3
+[MT6315] S7 POFFSTS[0xc]=0x0
+[MT6315] S7 RGS_POFFSTS[0xa0f]=0x0
+[MT6315] S7 PG_SDN_STS0[0xf]=0xf
+[MT6315] S7 OC_SDN_STS0[0x10]=0x0
+[MT6315] S7 BUCK_OC_SDN_STS[0x1416]=0x0
+[MT6315] S7 BUCK_OC_SDN_EN[0x1451]=0x1f
+[MT6315] S7 TOP_RST_MISC[0x126]=0x4
+[PMIC] register 6315_6 OK
+[MT6315] latch 6315_6 718750 uV(0x4a)
+[PMIC] register 6315_7 OK
+[MT6315] latch 6315_7 687500 uV(0x59)
+[MT6315] S6 set TOP_RST_MISC=0x3
+[MT6315] S7 set TOP_RST_MISC=0x3
+[MT6315] mt6315_spmi_probe done
+[MT6360] mt6360_pmic_i2c_probe
+[MT6360] mt6360_pmic_enable_crc_check: crc_en = 0xc0
+[MT6360] mt6360_pmic_enable_crc_check: no need
+[MT6360] mt6360_pmic_enable_poweroff_sequence: en = 0
+[MT6360] mt6360_set_buck1_fsw
+[MT6360] mt6360_set_sys_short_protect
+[PMIC] register VDRAM1 OK
+[PMIC] register VDRAM2 OK
+[MT6360] mt6360_pmic_init: read 0x26 = 0x0
+[MT6360] mt6360_pmic_i2c_probe: reg[0xdc] = 0x0
+[MT6360] mt6360_pmic_i2c_probe: reg[0xdd] = 0x0
+[MT6360] mt6360_pmic_i2c_probe: reg[0xde] = 0x0
+[MT6360] mt6360_pmic_i2c_probe: reg[0xdf] = 0x0
+[MT6360] mt6360_ldo_i2c_probe
+[MT6360] mt6360_ldo_i2c_probe: done
+[MT6691] MT6691 probe
+[I2C] 359: id=6,addr: 56, transfer error
+[I2C] 365: I2C_ACKERR
+[I2C] 895: write_read 0x10001 bytes fails,ret=-121.
+[PMIC] register VMDDR OK
+[MT6691] probe done
+[HL7593] probe
+[I2C] 359: id=6,addr: 61, transfer error
+[I2C] 365: I2C_ACKERR
+[I2C] 895: write_read 0x10001 bytes fails,ret=-121.
+[I2C] 359: id=6,addr: 61, transfer error
+[I2C] 365: I2C_ACKERR
+[I2C] 895: write_read 0x10001 bytes fails,ret=-121.
+[HL7593] probe fail
+[FAN53526] probe
+[I2C] 359: id=6,addr: 61, transfer error
+[I2C] 365: I2C_ACKERR
+[I2C] 895: write_read 0x10001 bytes fails,ret=-121.
+[I2C] 359: id=6,addr: 61, transfer error
+[I2C] 365: I2C_ACKERR
+[I2C] 895: write_read 0x10001 bytes fails,ret=-121.
+[FAN53526] probe fail
+[PMIC] Init done
+INFO:    UFS LUN0 contains 1024 blocks with 4096-byte size
+INFO:    UFS LUN1 contains 1024 blocks with 4096-byte size
+INFO:    UFS LUN2 contains 62480384 blocks with 4096-byte size
+INFO:    ufs: change power mode success
+WARNING: Failed to access image id=28 (-2)
+NOTICE:  Could NOT find the dramk partition!
+[MEM] libdram version: 315bfaa6eef
+[MEM] init partition address is incorrect !!!
+EMI_MPU_CTRL=0 1st
+EMI_MPU_CTRL=0 2nd
+drm_update_reg: 0, bits: 0x4000, addr: 0x1000d030, val: 0x83f1
+DRM DDR reserve mode FAIL! drm: 30 = 0x83f1
+DDR RESERVE Success 0
+drm_update_reg: 0, bits: 0x2000, addr: 0x1000d030, val: 0x83f1
+drm_update_reg: 0, bits: 0x1000, addr: 0x1000d030, val: 0x83f1
+DOE setting: vcore 0, vdram 0, vddq 0, vmddr 0, vio18 0
+[MT6359] 4 7,1
+[MT6359] 1 7,56
+[MT6691] 1 21,90
+[MT6359] cnvdata 12, n_size 3
+[MT6359] get volt 10, 12, 1800000
+Vio18 = 1800000
+[MT6359] get volt 7, 56, 750000
+Vcore = 750000
+Vdram = 1125000
+Vddq = 600000
+[MT6691] get volt 21, 90, 750000
+vmddr = 750000
+Channel num from auxadc: 4,
+dram_type_auxadc from auxadc: 1,
+voltage from auxadc: 507,
+[MT6359] 1 7,40
+Read voltage for 800, 4
+[MT6359] cnvdata 12, n_size 3
+[MT6359] get volt 10, 12, 1800000
+Vio18 = 1800000
+[MT6359] get volt 7, 40, 650000
+Vcore = 650000
+Vdram = 1125000
+Vddq = 600000
+[MT6691] get volt 21, 90, 750000
+Vmddr = 750000
+[EMI] CEN_CONA(0x3530154),CEN_CONF(0x421000),CEN_CONH(0x88880033),CEN_CONK(0x0),CHN_CONA(0x488005d)
+[MT6359] 1 7,40
+Read voltage for 800, 4
+[MT6359] cnvdata 12, n_size 3
+[MT6359] get volt 10, 12, 1800000
+Vio18 = 1800000
+[MT6359] get volt 7, 40, 650000
+Vcore = 650000
+Vdram = 1125000
+Vddq = 600000
+[MT6691] get volt 21, 90, 750000
+Vmddr = 750000
+[MT6359] get volt 7, 40, 650000
+[MT6359] 1 7,44
+Read voltage for 1200, 2
+[MT6359] cnvdata 12, n_size 3
+[MT6359] get volt 10, 12, 1800000
+Vio18 = 1800000
+[MT6359] get volt 7, 44, 675000
+Vcore = 675000
+Vdram = 1125000
+Vddq = 600000
+[MT6691] get volt 21, 90, 750000
+Vmddr = 750000
+[MT6359] get volt 7, 44, 675000
+[MT6359] 1 7,40
+Read voltage for 600, 5
+[MT6359] cnvdata 12, n_size 3
+[MT6359] get volt 10, 12, 1800000
+Vio18 = 1800000
+[MT6359] get volt 7, 40, 650000
+Vcore = 650000
+Vdram = 1125000
+Vddq = 600000
+[MT6691] get volt 21, 90, 750000
+Vmddr = 750000
+[MT6359] get volt 7, 40, 650000
+[MT6359] 1 7,44
+Read voltage for 933, 3
+[MT6359] cnvdata 12, n_size 3
+[MT6359] get volt 10, 12, 1800000
+Vio18 = 1800000
+[MT6359] get volt 7, 44, 675000
+Vcore = 675000
+Vdram = 1125000
+Vddq = 600000
+[MT6691] get volt 21, 90, 750000
+Vmddr = 750000
+[MT6359] get volt 7, 44, 675000
+[MT6359] 1 7,40
+Read voltage for 400, 6
+[MT6359] cnvdata 12, n_size 3
+[MT6359] get volt 10, 12, 1800000
+Vio18 = 1800000
+[MT6359] get volt 7, 40, 650000
+Vcore = 650000
+Vdram = 1125000
+Vddq = 600000
+[MT6691] get volt 21, 90, 750000
+Vmddr = 750000
+[MT6359] get volt 7, 40, 650000
+[MT6359] 1 7,56
+Read voltage for 2133, 0
+[MT6359] cnvdata 12, n_size 3
+[MT6359] get volt 10, 12, 1800000
+Vio18 = 1800000
+[MT6359] get volt 7, 56, 750000
+Vcore = 750000
+Vdram = 1125000
+Vddq = 600000
+[MT6691] get volt 21, 90, 750000
+Vmddr = 750000
+[MT6359] get volt 7, 56, 750000
+[MT6359] 1 7,48
+Read voltage for 1600, 1
+[MT6359] cnvdata 12, n_size 3
+[MT6359] get volt 10, 12, 1800000
+Vio18 = 1800000
+[MT6359] get volt 7, 48, 700000
+Vcore = 700000
+Vdram = 1125000
+Vddq = 600000
+[MT6691] get volt 21, 90, 750000
+Vmddr = 750000
+[MT6359] get volt 7, 48, 700000
+[MT6359] 1 7,56
+Read voltage for 2133, 0
+[MT6359] cnvdata 12, n_size 3
+[MT6359] get volt 10, 12, 1800000
+Vio18 = 1800000
+[MT6359] get volt 7, 56, 750000
+Vcore = 750000
+Vdram = 1125000
+Vddq = 600000
+[MT6691] get volt 21, 90, 750000
+Vmddr = 750000
+[MT6359] 4 7,0
+[MT6359] 1 7,56
+[MT6359] get volt 7, 56, 750000
+Vcore = 750000
+base init: MT8395 platform
+[MEM] DDR frequency: 4266MHz
+0:dram_rank_size: 0x200000000
+1:dram_rank_size: 0x200000000
+[MEM] Memory size: 0x400000000(16384MB)
+INFO:    BL2: Loading image id 3
+INFO:    Loading image id=3 at address 0x54601000
+INFO:    Image id=3 loaded: 0x54601000 - 0x54660e80
+INFO:    BL2: Loading image id 4
+INFO:    Loading image id=4 at address 0x431fffe4
+INFO:    Image id=4 loaded: 0x431fffe4 - 0x4325f790
+INFO:    BL2: Loading image id 5
+INFO:    Loading image id=5 at address 0x4c000000
+INFO:    Image id=5 loaded: 0x4c000000 - 0x4c11e9f8
+NOTICE:  BL2: Booting BL31
+INFO:    Entry point address = 0x54601000
+INFO:    SPSR = 0x3cd
+NOTICE:  MT8195 bl31_setup
+NOTICE:  BL31: v2.6(release):armbian
+NOTICE:  BL31: Built : 15:10:02, Nov  8 2026
+INFO:    GICv3 without legacy support detected.
+INFO:    ARM GICv3 driver initialized in EL3
+INFO:    Maximum SPI INTID supported: 895
+INFO:    [mt_systimer_init] systimer initialization
+INFO:    [DEVAPC] (INFRA_AO_SYS0)D0_APC_0: 0x4000000
+INFO:    [DEVAPC] (INFRA_AO_SYS0)D0_APC_1: 0x0
+INFO:    [DEVAPC] (INFRA_AO_SYS0)D0_APC_2: 0x40000
+INFO:    [DEVAPC] (INFRA_AO_SYS0)D0_APC_3: 0x0
+INFO:    [DEVAPC] (INFRA_AO_SYS0)D0_APC_4: 0x0
+INFO:    [DEVAPC] (INFRA_AO_SYS0)D1_APC_0: 0xffffffff
+INFO:    [DEVAPC] (INFRA_AO_SYS0)D1_APC_1: 0xffffffff
+INFO:    [DEVAPC] (INFRA_AO_SYS0)D1_APC_2: 0xffffffff
+INFO:    [DEVAPC] (INFRA_AO_SYS0)D1_APC_3: 0xffffffff
+INFO:    [DEVAPC] (INFRA_AO_SYS0)D1_APC_4: 0xffc3fff
+INFO:    [DEVAPC] (INFRA_AO_SYS0)D2_APC_0: 0xffcf00fc
+INFO:    [DEVAPC] (INFRA_AO_SYS0)D2_APC_1: 0xcfcffcff
+INFO:    [DEVAPC] (INFRA_AO_SYS0)D2_APC_2: 0xffffffff
+INFO:    [DEVAPC] (INFRA_AO_SYS0)D2_APC_3: 0x3ffffff
+INFO:    [DEVAPC] (INFRA_AO_SYS0)D2_APC_4: 0xfffcffc
+INFO:    [DEVAPC] (INFRA_AO_SYS0)D3_APC_0: 0xffcfccfc
+INFO:    [DEVAPC] (INFRA_AO_SYS0)D3_APC_1: 0xffffffff
+INFO:    [DEVAPC] (INFRA_AO_SYS0)D3_APC_2: 0xffffffff
+INFO:    [DEVAPC] (INFRA_AO_SYS0)D3_APC_3: 0xffffffff
+INFO:    [DEVAPC] (INFRA_AO_SYS0)D3_APC_4: 0xfffffff
+INFO:    [DEVAPC] (INFRA_AO_SYS0)D4_APC_0: 0xfcfcccff
+INFO:    [DEVAPC] (INFRA_AO_SYS0)D4_APC_1: 0xffffffff
+INFO:    [DEVAPC] (INFRA_AO_SYS0)D4_APC_2: 0xffffffff
+INFO:    [DEVAPC] (INFRA_AO_SYS0)D4_APC_3: 0xffffffff
+INFO:    [DEVAPC] (INFRA_AO_SYS0)D4_APC_4: 0xfffffff
+INFO:    [DEVAPC] (INFRA_AO_SYS0)D5_APC_0: 0xfffffffc
+INFO:    [DEVAPC] (INFRA_AO_SYS0)D5_APC_1: 0xffffffff
+INFO:    [DEVAPC] (INFRA_AO_SYS0)D5_APC_2: 0xffffffff
+INFO:    [DEVAPC] (INFRA_AO_SYS0)D5_APC_3: 0xffffffff
+INFO:    [DEVAPC] (INFRA_AO_SYS0)D5_APC_4: 0xfffffff
+INFO:    [DEVAPC] (INFRA_AO_SYS0)D6_APC_0: 0xffffffff
+INFO:    [DEVAPC] (INFRA_AO_SYS0)D6_APC_1: 0xffffffff
+INFO:    [DEVAPC] (INFRA_AO_SYS0)D6_APC_2: 0xffffffff
+INFO:    [DEVAPC] (INFRA_AO_SYS0)D6_APC_3: 0xffffffff
+INFO:    [DEVAPC] (INFRA_AO_SYS0)D6_APC_4: 0xfffffff
+INFO:    [DEVAPC] (INFRA_AO_SYS0)D7_APC_0: 0xffffffff
+INFO:    [DEVAPC] (INFRA_AO_SYS0)D7_APC_1: 0xffffffff
+INFO:    [DEVAPC] (INFRA_AO_SYS0)D7_APC_2: 0xffffffff
+INFO:    [DEVAPC] (INFRA_AO_SYS0)D7_APC_3: 0xffffffff
+INFO:    [DEVAPC] (INFRA_AO_SYS0)D7_APC_4: 0xfffffff
+INFO:    [DEVAPC] (INFRA_AO_SYS0)D8_APC_0: 0xffffffff
+INFO:    [DEVAPC] (INFRA_AO_SYS0)D8_APC_1: 0xffffffff
+INFO:    [DEVAPC] (INFRA_AO_SYS0)D8_APC_2: 0xffffffff
+INFO:    [DEVAPC] (INFRA_AO_SYS0)D8_APC_3: 0xffffffff
+INFO:    [DEVAPC] (INFRA_AO_SYS0)D8_APC_4: 0xfffffff
+INFO:    [DEVAPC] (INFRA_AO_SYS0)D9_APC_0: 0xffffffff
+INFO:    [DEVAPC] (INFRA_AO_SYS0)D9_APC_1: 0xffffffff
+INFO:    [DEVAPC] (INFRA_AO_SYS0)D9_APC_2: 0xffffffff
+INFO:    [DEVAPC] (INFRA_AO_SYS0)D9_APC_3: 0xffffffff
+INFO:    [DEVAPC] (INFRA_AO_SYS0)D9_APC_4: 0xfffffff
+INFO:    [DEVAPC] (INFRA_AO_SYS0)D10_APC_0: 0xffffffff
+INFO:    [DEVAPC] (INFRA_AO_SYS0)D10_APC_1: 0xffffffff
+INFO:    [DEVAPC] (INFRA_AO_SYS0)D10_APC_2: 0xffffffff
+INFO:    [DEVAPC] (INFRA_AO_SYS0)D10_APC_3: 0xffffffff
+INFO:    [DEVAPC] (INFRA_AO_SYS0)D10_APC_4: 0xfffffff
+INFO:    [DEVAPC] (INFRA_AO_SYS0)D11_APC_0: 0xffffffff
+INFO:    [DEVAPC] (INFRA_AO_SYS0)D11_APC_1: 0xffffffff
+INFO:    [DEVAPC] (INFRA_AO_SYS0)D11_APC_2: 0xffffffff
+INFO:    [DEVAPC] (INFRA_AO_SYS0)D11_APC_3: 0xffffffff
+INFO:    [DEVAPC] (INFRA_AO_SYS0)D11_APC_4: 0xfffffff
+INFO:    [DEVAPC] (INFRA_AO_SYS0)D12_APC_0: 0xffffffff
+INFO:    [DEVAPC] (INFRA_AO_SYS0)D12_APC_1: 0xffffffff
+INFO:    [DEVAPC] (INFRA_AO_SYS0)D12_APC_2: 0xffffffff
+INFO:    [DEVAPC] (INFRA_AO_SYS0)D12_APC_3: 0xffffffff
+INFO:    [DEVAPC] (INFRA_AO_SYS0)D12_APC_4: 0xfffffff
+INFO:    [DEVAPC] (INFRA_AO_SYS0)D13_APC_0: 0xffffffff
+INFO:    [DEVAPC] (INFRA_AO_SYS0)D13_APC_1: 0xffffffff
+INFO:    [DEVAPC] (INFRA_AO_SYS0)D13_APC_2: 0xffffffff
+INFO:    [DEVAPC] (INFRA_AO_SYS0)D13_APC_3: 0xffffffff
+INFO:    [DEVAPC] (INFRA_AO_SYS0)D13_APC_4: 0xfffffff
+INFO:    [DEVAPC] (INFRA_AO_SYS0)D14_APC_0: 0xffffffff
+INFO:    [DEVAPC] (INFRA_AO_SYS0)D14_APC_1: 0xffffffff
+INFO:    [DEVAPC] (INFRA_AO_SYS0)D14_APC_2: 0xffffffff
+INFO:    [DEVAPC] (INFRA_AO_SYS0)D14_APC_3: 0xffffffff
+INFO:    [DEVAPC] (INFRA_AO_SYS0)D14_APC_4: 0xfffffff
+INFO:    [DEVAPC] (INFRA_AO_SYS0)D15_APC_0: 0xffffffff
+INFO:    [DEVAPC] (INFRA_AO_SYS0)D15_APC_1: 0xffffffff
+INFO:    [DEVAPC] (INFRA_AO_SYS0)D15_APC_2: 0xffffffff
+INFO:    [DEVAPC] (INFRA_AO_SYS0)D15_APC_3: 0xffffffff
+INFO:    [DEVAPC] (INFRA_AO_SYS0)D15_APC_4: 0xfffffff
+INFO:    [DEVAPC] (INFRA_AO_SYS1)D0_APC_0: 0x0
+INFO:    [DEVAPC] (INFRA_AO_SYS1)D0_APC_1: 0x0
+INFO:    [DEVAPC] (INFRA_AO_SYS1)D0_APC_2: 0x0
+INFO:    [DEVAPC] (INFRA_AO_SYS1)D0_APC_3: 0x0
+INFO:    [DEVAPC] (INFRA_AO_SYS1)D0_APC_4: 0x0
+INFO:    [DEVAPC] (INFRA_AO_SYS1)D0_APC_5: 0x0
+INFO:    [DEVAPC] (INFRA_AO_SYS1)D0_APC_6: 0x0
+INFO:    [DEVAPC] (INFRA_AO_SYS1)D0_APC_7: 0x0
+INFO:    [DEVAPC] (INFRA_AO_SYS1)D0_APC_8: 0x0
+INFO:    [DEVAPC] (INFRA_AO_SYS1)D0_APC_9: 0x0
+INFO:    [DEVAPC] (INFRA_AO_SYS1)D0_APC_10: 0x0
+INFO:    [DEVAPC] (INFRA_AO_SYS1)D0_APC_11: 0x0
+INFO:    [DEVAPC] (INFRA_AO_SYS1)D0_APC_12: 0x0
+INFO:    [DEVAPC] (INFRA_AO_SYS1)D0_APC_13: 0x0
+INFO:    [DEVAPC] (INFRA_AO_SYS1)D0_APC_14: 0x0
+INFO:    [DEVAPC] (INFRA_AO_SYS1)D0_APC_15: 0x0
+INFO:    [DEVAPC] (INFRA_AO_SYS1)D1_APC_0: 0xffffffff
+INFO:    [DEVAPC] (INFRA_AO_SYS1)D1_APC_1: 0xffffffff
+INFO:    [DEVAPC] (INFRA_AO_SYS1)D1_APC_2: 0xffffffff
+INFO:    [DEVAPC] (INFRA_AO_SYS1)D1_APC_3: 0xffffffff
+INFO:    [DEVAPC] (INFRA_AO_SYS1)D1_APC_4: 0xffffffff
+INFO:    [DEVAPC] (INFRA_AO_SYS1)D1_APC_5: 0xffffffff
+INFO:    [DEVAPC] (INFRA_AO_SYS1)D1_APC_6: 0xffffffff
+INFO:    [DEVAPC] (INFRA_AO_SYS1)D1_APC_7: 0xffffffff
+INFO:    [DEVAPC] (INFRA_AO_SYS1)D1_APC_8: 0xffffffff
+INFO:    [DEVAPC] (INFRA_AO_SYS1)D1_APC_9: 0xffffffff
+INFO:    [DEVAPC] (INFRA_AO_SYS1)D1_APC_10: 0xffffffff
+INFO:    [DEVAPC] (INFRA_AO_SYS1)D1_APC_11: 0xffffffff
+INFO:    [DEVAPC] (INFRA_AO_SYS1)D1_APC_12: 0xffffffff
+INFO:    [DEVAPC] (INFRA_AO_SYS1)D1_APC_13: 0xffffffff
+INFO:    [DEVAPC] (INFRA_AO_SYS1)D1_APC_14: 0xffffffff
+INFO:    [DEVAPC] (INFRA_AO_SYS1)D1_APC_15: 0xffffffff
+INFO:    [DEVAPC] (INFRA_AO_SYS1)D2_APC_0: 0xffffffff
+INFO:    [DEVAPC] (INFRA_AO_SYS1)D2_APC_1: 0xffffffff
+INFO:    [DEVAPC] (INFRA_AO_SYS1)D2_APC_2: 0xffffffff
+INFO:    [DEVAPC] (INFRA_AO_SYS1)D2_APC_3: 0xffffffff
+INFO:    [DEVAPC] (INFRA_AO_SYS1)D2_APC_4: 0xffffffff
+INFO:    [DEVAPC] (INFRA_AO_SYS1)D2_APC_5: 0xffffffff
+INFO:    [DEVAPC] (INFRA_AO_SYS1)D2_APC_6: 0xffffffff
+INFO:    [DEVAPC] (INFRA_AO_SYS1)D2_APC_7: 0xffffffff
+INFO:    [DEVAPC] (INFRA_AO_SYS1)D2_APC_8: 0xffffffff
+INFO:    [DEVAPC] (INFRA_AO_SYS1)D2_APC_9: 0xffffffff
+INFO:    [DEVAPC] (INFRA_AO_SYS1)D2_APC_10: 0xffffffff
+INFO:    [DEVAPC] (INFRA_AO_SYS1)D2_APC_11: 0xffffffff
+INFO:    [DEVAPC] (INFRA_AO_SYS1)D2_APC_12: 0xffffffff
+INFO:    [DEVAPC] (INFRA_AO_SYS1)D2_APC_13: 0xffffffff
+INFO:    [DEVAPC] (INFRA_AO_SYS1)D2_APC_14: 0xffffffff
+INFO:    [DEVAPC] (INFRA_AO_SYS1)D2_APC_15: 0xffffffff
+INFO:    [DEVAPC] (INFRA_AO_SYS1)D3_APC_0: 0xc0000000
+INFO:    [DEVAPC] (INFRA_AO_SYS1)D3_APC_1: 0xfff3fff3
+INFO:    [DEVAPC] (INFRA_AO_SYS1)D3_APC_2: 0xffffffff
+INFO:    [DEVAPC] (INFRA_AO_SYS1)D3_APC_3: 0xffffffff
+INFO:    [DEVAPC] (INFRA_AO_SYS1)D3_APC_4: 0xffffffff
+INFO:    [DEVAPC] (INFRA_AO_SYS1)D3_APC_5: 0xffffffff
+INFO:    [DEVAPC] (INFRA_AO_SYS1)D3_APC_6: 0xffffffff
+INFO:    [DEVAPC] (INFRA_AO_SYS1)D3_APC_7: 0xffffffff
+INFO:    [DEVAPC] (INFRA_AO_SYS1)D3_APC_8: 0xffffffff
+INFO:    [DEVAPC] (INFRA_AO_SYS1)D3_APC_9: 0xffffffff
+INFO:    [DEVAPC] (INFRA_AO_SYS1)D3_APC_10: 0xffffffff
+INFO:    [DEVAPC] (INFRA_AO_SYS1)D3_APC_11: 0xffffffff
+INFO:    [DEVAPC] (INFRA_AO_SYS1)D3_APC_12: 0xffffffff
+INFO:    [DEVAPC] (INFRA_AO_SYS1)D3_APC_13: 0xffffffff
+INFO:    [DEVAPC] (INFRA_AO_SYS1)D3_APC_14: 0xffffffff
+INFO:    [DEVAPC] (INFRA_AO_SYS1)D3_APC_15: 0xffffffff
+INFO:    [DEVAPC] (INFRA_AO_SYS2)D0_APC_0: 0x0
+INFO:    [DEVAPC] (INFRA_AO_SYS2)D0_APC_1: 0x0
+INFO:    [DEVAPC] (INFRA_AO_SYS2)D0_APC_2: 0x0
+INFO:    [DEVAPC] (INFRA_AO_SYS2)D0_APC_3: 0x0
+INFO:    [DEVAPC] (INFRA_AO_SYS2)D0_APC_4: 0x0
+INFO:    [DEVAPC] (INFRA_AO_SYS2)D0_APC_5: 0x0
+INFO:    [DEVAPC] (INFRA_AO_SYS2)D0_APC_6: 0x0
+INFO:    [DEVAPC] (INFRA_AO_SYS2)D0_APC_7: 0x0
+INFO:    [DEVAPC] (INFRA_AO_SYS2)D0_APC_8: 0x0
+INFO:    [DEVAPC] (INFRA_AO_SYS2)D0_APC_9: 0x0
+INFO:    [DEVAPC] (INFRA_AO_SYS2)D0_APC_10: 0x0
+INFO:    [DEVAPC] (INFRA_AO_SYS2)D0_APC_11: 0x0
+INFO:    [DEVAPC] (INFRA_AO_SYS2)D1_APC_0: 0xffffffff
+INFO:    [DEVAPC] (INFRA_AO_SYS2)D1_APC_1: 0xffffffff
+INFO:    [DEVAPC] (INFRA_AO_SYS2)D1_APC_2: 0xffffffff
+INFO:    [DEVAPC] (INFRA_AO_SYS2)D1_APC_3: 0xffffffff
+INFO:    [DEVAPC] (INFRA_AO_SYS2)D1_APC_4: 0xffffffff
+INFO:    [DEVAPC] (INFRA_AO_SYS2)D1_APC_5: 0xffffffff
+INFO:    [DEVAPC] (INFRA_AO_SYS2)D1_APC_6: 0xffffffff
+INFO:    [DEVAPC] (INFRA_AO_SYS2)D1_APC_7: 0xffffffff
+INFO:    [DEVAPC] (INFRA_AO_SYS2)D1_APC_8: 0xffffffff
+INFO:    [DEVAPC] (INFRA_AO_SYS2)D1_APC_9: 0xffffffff
+INFO:    [DEVAPC] (INFRA_AO_SYS2)D1_APC_10: 0xffffffff
+INFO:    [DEVAPC] (INFRA_AO_SYS2)D1_APC_11: 0x3f
+INFO:    [DEVAPC] (INFRA_AO_SYS2)D2_APC_0: 0xffffffff
+INFO:    [DEVAPC] (INFRA_AO_SYS2)D2_APC_1: 0xffffffff
+INFO:    [DEVAPC] (INFRA_AO_SYS2)D2_APC_2: 0xffffffff
+INFO:    [DEVAPC] (INFRA_AO_SYS2)D2_APC_3: 0xffffffff
+INFO:    [DEVAPC] (INFRA_AO_SYS2)D2_APC_4: 0xffffffff
+INFO:    [DEVAPC] (INFRA_AO_SYS2)D2_APC_5: 0xffffffff
+INFO:    [DEVAPC] (INFRA_AO_SYS2)D2_APC_6: 0xffffffff
+INFO:    [DEVAPC] (INFRA_AO_SYS2)D2_APC_7: 0xffffffff
+INFO:    [DEVAPC] (INFRA_AO_SYS2)D2_APC_8: 0xffffffff
+INFO:    [DEVAPC] (INFRA_AO_SYS2)D2_APC_9: 0xffffffff
+INFO:    [DEVAPC] (INFRA_AO_SYS2)D2_APC_10: 0xffffffff
+INFO:    [DEVAPC] (INFRA_AO_SYS2)D2_APC_11: 0x3f
+INFO:    [DEVAPC] (INFRA_AO_SYS2)D3_APC_0: 0xffffffff
+INFO:    [DEVAPC] (INFRA_AO_SYS2)D3_APC_1: 0xffffffff
+INFO:    [DEVAPC] (INFRA_AO_SYS2)D3_APC_2: 0xffffffff
+INFO:    [DEVAPC] (INFRA_AO_SYS2)D3_APC_3: 0xffffffff
+INFO:    [DEVAPC] (INFRA_AO_SYS2)D3_APC_4: 0xffffffff
+INFO:    [DEVAPC] (INFRA_AO_SYS2)D3_APC_5: 0xffffffff
+INFO:    [DEVAPC] (INFRA_AO_SYS2)D3_APC_6: 0xffffffff
+INFO:    [DEVAPC] (INFRA_AO_SYS2)D3_APC_7: 0xffffffff
+INFO:    [DEVAPC] (INFRA_AO_SYS2)D3_APC_8: 0xffffffff
+INFO:    [DEVAPC] (INFRA_AO_SYS2)D3_APC_9: 0xffffffff
+INFO:    [DEVAPC] (INFRA_AO_SYS2)D3_APC_10: 0xffffffff
+INFO:    [DEVAPC] (INFRA_AO_SYS2)D3_APC_11: 0x3f
+INFO:    [DEVAPC] (INFRA_AO)MAS_SEC_0: 0x2
+INFO:    [DEVAPC] (INFRA_AO 0x10030000)DOM_REMAP_0_0: 0xfff43fff
+INFO:    [DEVAPC] (PERI_AO_SYS0)D0_APC_0: 0x1
+INFO:    [DEVAPC] (PERI_AO_SYS0)D0_APC_1: 0x0
+INFO:    [DEVAPC] (PERI_AO_SYS0)D0_APC_2: 0x0
+INFO:    [DEVAPC] (PERI_AO_SYS0)D0_APC_3: 0x0
+INFO:    [DEVAPC] (PERI_AO_SYS0)D1_APC_0: 0xffffffff
+INFO:    [DEVAPC] (PERI_AO_SYS0)D1_APC_1: 0xffffffff
+INFO:    [DEVAPC] (PERI_AO_SYS0)D1_APC_2: 0xffffffff
+INFO:    [DEVAPC] (PERI_AO_SYS0)D1_APC_3: 0xfffffff
+INFO:    [DEVAPC] (PERI_AO_SYS0)D2_APC_0: 0xffffffff
+INFO:    [DEVAPC] (PERI_AO_SYS0)D2_APC_1: 0x3003
+INFO:    [DEVAPC] (PERI_AO_SYS0)D2_APC_2: 0x0
+INFO:    [DEVAPC] (PERI_AO_SYS0)D2_APC_3: 0xfffffc0
+INFO:    [DEVAPC] (PERI_AO_SYS0)D3_APC_0: 0xffffffff
+INFO:    [DEVAPC] (PERI_AO_SYS0)D3_APC_1: 0xffffffff
+INFO:    [DEVAPC] (PERI_AO_SYS0)D3_APC_2: 0xffffffff
+INFO:    [DEVAPC] (PERI_AO_SYS0)D3_APC_3: 0xfffffff
+INFO:    [DEVAPC] (PERI_AO_SYS0)D4_APC_0: 0xffffffff
+INFO:    [DEVAPC] (PERI_AO_SYS0)D4_APC_1: 0xffffffff
+INFO:    [DEVAPC] (PERI_AO_SYS0)D4_APC_2: 0xffffffff
+INFO:    [DEVAPC] (PERI_AO_SYS0)D4_APC_3: 0xfffffff
+INFO:    [DEVAPC] (PERI_AO_SYS0)D5_APC_0: 0xffffffff
+INFO:    [DEVAPC] (PERI_AO_SYS0)D5_APC_1: 0xfffff33f
+INFO:    [DEVAPC] (PERI_AO_SYS0)D5_APC_2: 0xffffffff
+INFO:    [DEVAPC] (PERI_AO_SYS0)D5_APC_3: 0xfffffff
+INFO:    [DEVAPC] (PERI_AO_SYS0)D6_APC_0: 0xffffffff
+INFO:    [DEVAPC] (PERI_AO_SYS0)D6_APC_1: 0xffffffff
+INFO:    [DEVAPC] (PERI_AO_SYS0)D6_APC_2: 0xffffffff
+INFO:    [DEVAPC] (PERI_AO_SYS0)D6_APC_3: 0xfffffff
+INFO:    [DEVAPC] (PERI_AO_SYS0)D7_APC_0: 0xffffffff
+INFO:    [DEVAPC] (PERI_AO_SYS0)D7_APC_1: 0xffffffff
+INFO:    [DEVAPC] (PERI_AO_SYS0)D7_APC_2: 0xffffffff
+INFO:    [DEVAPC] (PERI_AO_SYS0)D7_APC_3: 0xfffffff
+INFO:    [DEVAPC] (PERI_AO_SYS0)D8_APC_0: 0xffffffff
+INFO:    [DEVAPC] (PERI_AO_SYS0)D8_APC_1: 0xffffffff
+INFO:    [DEVAPC] (PERI_AO_SYS0)D8_APC_2: 0xffffffff
+INFO:    [DEVAPC] (PERI_AO_SYS0)D8_APC_3: 0xfffffff
+INFO:    [DEVAPC] (PERI_AO_SYS0)D9_APC_0: 0xffffffff
+INFO:    [DEVAPC] (PERI_AO_SYS0)D9_APC_1: 0xffffffff
+INFO:    [DEVAPC] (PERI_AO_SYS0)D9_APC_2: 0xffffffff
+INFO:    [DEVAPC] (PERI_AO_SYS0)D9_APC_3: 0xfffffff
+INFO:    [DEVAPC] (PERI_AO_SYS0)D10_APC_0: 0xffffffff
+INFO:    [DEVAPC] (PERI_AO_SYS0)D10_APC_1: 0xffffffff
+INFO:    [DEVAPC] (PERI_AO_SYS0)D10_APC_2: 0xffffffff
+INFO:    [DEVAPC] (PERI_AO_SYS0)D10_APC_3: 0xfffffff
+INFO:    [DEVAPC] (PERI_AO_SYS0)D11_APC_0: 0xffffffff
+INFO:    [DEVAPC] (PERI_AO_SYS0)D11_APC_1: 0xffffffff
+INFO:    [DEVAPC] (PERI_AO_SYS0)D11_APC_2: 0xffffffff
+INFO:    [DEVAPC] (PERI_AO_SYS0)D11_APC_3: 0xfffffff
+INFO:    [DEVAPC] (PERI_AO_SYS0)D12_APC_0: 0xffffffff
+INFO:    [DEVAPC] (PERI_AO_SYS0)D12_APC_1: 0xffffffff
+INFO:    [DEVAPC] (PERI_AO_SYS0)D12_APC_2: 0xffffffff
+INFO:    [DEVAPC] (PERI_AO_SYS0)D12_APC_3: 0xfffffff
+INFO:    [DEVAPC] (PERI_AO_SYS0)D13_APC_0: 0xffffffff
+INFO:    [DEVAPC] (PERI_AO_SYS0)D13_APC_1: 0xffffffff
+INFO:    [DEVAPC] (PERI_AO_SYS0)D13_APC_2: 0xffffffff
+INFO:    [DEVAPC] (PERI_AO_SYS0)D13_APC_3: 0xfffffff
+INFO:    [DEVAPC] (PERI_AO_SYS0)D14_APC_0: 0xffffffff
+INFO:    [DEVAPC] (PERI_AO_SYS0)D14_APC_1: 0xffffffff
+INFO:    [DEVAPC] (PERI_AO_SYS0)D14_APC_2: 0xffffffff
+INFO:    [DEVAPC] (PERI_AO_SYS0)D14_APC_3: 0xfffffff
+INFO:    [DEVAPC] (PERI_AO_SYS0)D15_APC_0: 0xffffffff
+INFO:    [DEVAPC] (PERI_AO_SYS0)D15_APC_1: 0xffffffff
+INFO:    [DEVAPC] (PERI_AO_SYS0)D15_APC_2: 0xffffffff
+INFO:    [DEVAPC] (PERI_AO_SYS0)D15_APC_3: 0xfffffff
+INFO:    [DEVAPC] (PERI_AO_SYS1)D0_APC_0: 0x0
+INFO:    [DEVAPC] (PERI_AO_SYS1)D0_APC_1: 0x0
+INFO:    [DEVAPC] (PERI_AO_SYS1)D1_APC_0: 0xffffffff
+INFO:    [DEVAPC] (PERI_AO_SYS1)D1_APC_1: 0x3fff
+INFO:    [DEVAPC] (PERI_AO_SYS1)D2_APC_0: 0xffffffff
+INFO:    [DEVAPC] (PERI_AO_SYS1)D2_APC_1: 0x3fff
+INFO:    [DEVAPC] (PERI_AO_SYS1)D3_APC_0: 0xffffffff
+INFO:    [DEVAPC] (PERI_AO_SYS1)D3_APC_1: 0x3fff
+INFO:    [DEVAPC] (PERI_AO_SYS1)D4_APC_0: 0xf0000ffc
+INFO:    [DEVAPC] (PERI_AO_SYS1)D4_APC_1: 0x3
+INFO:    [DEVAPC] (PERI_AO_SYS1)D5_APC_0: 0xffffffff
+INFO:    [DEVAPC] (PERI_AO_SYS1)D5_APC_1: 0x3fff
+INFO:    [DEVAPC] (PERI_AO_SYS1)D6_APC_0: 0xffffffff
+INFO:    [DEVAPC] (PERI_AO_SYS1)D6_APC_1: 0x3fff
+INFO:    [DEVAPC] (PERI_AO_SYS1)D7_APC_0: 0xffffffff
+INFO:    [DEVAPC] (PERI_AO_SYS1)D7_APC_1: 0x3fff
+INFO:    [DEVAPC] (PERI_AO)MAS_SEC_0: 0x0
+INFO:    [DEVAPC] (PERI2_AO_SYS0)D0_APC_0: 0x1
+INFO:    [DEVAPC] (PERI2_AO_SYS0)D0_APC_1: 0x0
+INFO:    [DEVAPC] (PERI2_AO_SYS0)D0_APC_2: 0x0
+INFO:    [DEVAPC] (PERI2_AO_SYS0)D0_APC_3: 0x0
+INFO:    [DEVAPC] (PERI2_AO_SYS0)D0_APC_4: 0x100
+INFO:    [DEVAPC] (PERI2_AO_SYS0)D0_APC_5: 0x10000000
+INFO:    [DEVAPC] (PERI2_AO_SYS0)D0_APC_6: 0x1400
+INFO:    [DEVAPC] (PERI2_AO_SYS0)D0_APC_7: 0x40000
+INFO:    [DEVAPC] (PERI2_AO_SYS0)D1_APC_0: 0xffffffff
+INFO:    [DEVAPC] (PERI2_AO_SYS0)D1_APC_1: 0xffffffff
+INFO:    [DEVAPC] (PERI2_AO_SYS0)D1_APC_2: 0xffffffff
+INFO:    [DEVAPC] (PERI2_AO_SYS0)D1_APC_3: 0xffffffff
+INFO:    [DEVAPC] (PERI2_AO_SYS0)D1_APC_4: 0xffffffff
+INFO:    [DEVAPC] (PERI2_AO_SYS0)D1_APC_5: 0xffffffff
+INFO:    [DEVAPC] (PERI2_AO_SYS0)D1_APC_6: 0xffffffff
+INFO:    [DEVAPC] (PERI2_AO_SYS0)D1_APC_7: 0xfffff
+INFO:    [DEVAPC] (PERI2_AO_SYS0)D2_APC_0: 0xfffffcff
+INFO:    [DEVAPC] (PERI2_AO_SYS0)D2_APC_1: 0xffffffff
+INFO:    [DEVAPC] (PERI2_AO_SYS0)D2_APC_2: 0xffffffff
+INFO:    [DEVAPC] (PERI2_AO_SYS0)D2_APC_3: 0xffffffff
+INFO:    [DEVAPC] (PERI2_AO_SYS0)D2_APC_4: 0xff3fffff
+INFO:    [DEVAPC] (PERI2_AO_SYS0)D2_APC_5: 0xf3ffffff
+INFO:    [DEVAPC] (PERI2_AO_SYS0)D2_APC_6: 0xfcffffff
+INFO:    [DEVAPC] (PERI2_AO_SYS0)D2_APC_7: 0xffffc
+INFO:    [DEVAPC] (PERI2_AO_SYS0)D3_APC_0: 0xfffffcff
+INFO:    [DEVAPC] (PERI2_AO_SYS0)D3_APC_1: 0xffffffff
+INFO:    [DEVAPC] (PERI2_AO_SYS0)D3_APC_2: 0xffffffff
+INFO:    [DEVAPC] (PERI2_AO_SYS0)D3_APC_3: 0xffffffff
+INFO:    [DEVAPC] (PERI2_AO_SYS0)D3_APC_4: 0xffffffff
+INFO:    [DEVAPC] (PERI2_AO_SYS0)D3_APC_5: 0xffffffff
+INFO:    [DEVAPC] (PERI2_AO_SYS0)D3_APC_6: 0xffffffff
+INFO:    [DEVAPC] (PERI2_AO_SYS0)D3_APC_7: 0xfffff
+INFO:    [DEVAPC] (PERI2_AO_SYS0)D4_APC_0: 0xffffffff
+INFO:    [DEVAPC] (PERI2_AO_SYS0)D4_APC_1: 0xffffffff
+INFO:    [DEVAPC] (PERI2_AO_SYS0)D4_APC_2: 0xffffffff
+INFO:    [DEVAPC] (PERI2_AO_SYS0)D4_APC_3: 0xffffffff
+INFO:    [DEVAPC] (PERI2_AO_SYS0)D4_APC_4: 0xffffffff
+INFO:    [DEVAPC] (PERI2_AO_SYS0)D4_APC_5: 0xffffffff
+INFO:    [DEVAPC] (PERI2_AO_SYS0)D4_APC_6: 0xffffffff
+INFO:    [DEVAPC] (PERI2_AO_SYS0)D4_APC_7: 0xfcfff
+INFO:    [DEVAPC] (PERI2_AO_SYS0)D5_APC_0: 0xfffffcff
+INFO:    [DEVAPC] (PERI2_AO_SYS0)D5_APC_1: 0xffffffff
+INFO:    [DEVAPC] (PERI2_AO_SYS0)D5_APC_2: 0xffffffff
+INFO:    [DEVAPC] (PERI2_AO_SYS0)D5_APC_3: 0xffffffff
+INFO:    [DEVAPC] (PERI2_AO_SYS0)D5_APC_4: 0xffffffff
+INFO:    [DEVAPC] (PERI2_AO_SYS0)D5_APC_5: 0xffffffff
+INFO:    [DEVAPC] (PERI2_AO_SYS0)D5_APC_6: 0xffffffff
+INFO:    [DEVAPC] (PERI2_AO_SYS0)D5_APC_7: 0xfffff
+INFO:    [DEVAPC] (PERI2_AO_SYS0)D6_APC_0: 0xffffffff
+INFO:    [DEVAPC] (PERI2_AO_SYS0)D6_APC_1: 0xffffffff
+INFO:    [DEVAPC] (PERI2_AO_SYS0)D6_APC_2: 0xffffffff
+INFO:    [DEVAPC] (PERI2_AO_SYS0)D6_APC_3: 0xffffffff
+INFO:    [DEVAPC] (PERI2_AO_SYS0)D6_APC_4: 0xffffffff
+INFO:    [DEVAPC] (PERI2_AO_SYS0)D6_APC_5: 0xffffffff
+INFO:    [DEVAPC] (PERI2_AO_SYS0)D6_APC_6: 0xffffffff
+INFO:    [DEVAPC] (PERI2_AO_SYS0)D6_APC_7: 0xfffff
+INFO:    [DEVAPC] (PERI2_AO_SYS0)D7_APC_0: 0xffffffff
+INFO:    [DEVAPC] (PERI2_AO_SYS0)D7_APC_1: 0xffffffff
+INFO:    [DEVAPC] (PERI2_AO_SYS0)D7_APC_2: 0xffffffff
+INFO:    [DEVAPC] (PERI2_AO_SYS0)D7_APC_3: 0xffffffff
+INFO:    [DEVAPC] (PERI2_AO_SYS0)D7_APC_4: 0xffffffff
+INFO:    [DEVAPC] (PERI2_AO_SYS0)D7_APC_5: 0xffffffff
+INFO:    [DEVAPC] (PERI2_AO_SYS0)D7_APC_6: 0xffffffff
+INFO:    [DEVAPC] (PERI2_AO_SYS0)D7_APC_7: 0xfffff
+INFO:    [DEVAPC] (PERI2_AO_SYS0)D8_APC_0: 0xffffffff
+INFO:    [DEVAPC] (PERI2_AO_SYS0)D8_APC_1: 0xffffffff
+INFO:    [DEVAPC] (PERI2_AO_SYS0)D8_APC_2: 0xffffffff
+INFO:    [DEVAPC] (PERI2_AO_SYS0)D8_APC_3: 0xffffffff
+INFO:    [DEVAPC] (PERI2_AO_SYS0)D8_APC_4: 0xffffffff
+INFO:    [DEVAPC] (PERI2_AO_SYS0)D8_APC_5: 0xffffffff
+INFO:    [DEVAPC] (PERI2_AO_SYS0)D8_APC_6: 0xffffffff
+INFO:    [DEVAPC] (PERI2_AO_SYS0)D8_APC_7: 0xfffff
+INFO:    [DEVAPC] (PERI2_AO_SYS0)D9_APC_0: 0xffffffff
+INFO:    [DEVAPC] (PERI2_AO_SYS0)D9_APC_1: 0xffffffff
+INFO:    [DEVAPC] (PERI2_AO_SYS0)D9_APC_2: 0xffffffff
+INFO:    [DEVAPC] (PERI2_AO_SYS0)D9_APC_3: 0xffffffff
+INFO:    [DEVAPC] (PERI2_AO_SYS0)D9_APC_4: 0xffffffff
+INFO:    [DEVAPC] (PERI2_AO_SYS0)D9_APC_5: 0xffffffff
+INFO:    [DEVAPC] (PERI2_AO_SYS0)D9_APC_6: 0xffffffff
+INFO:    [DEVAPC] (PERI2_AO_SYS0)D9_APC_7: 0xfffff
+INFO:    [DEVAPC] (PERI2_AO_SYS0)D10_APC_0: 0xffffffff
+INFO:    [DEVAPC] (PERI2_AO_SYS0)D10_APC_1: 0xffffffff
+INFO:    [DEVAPC] (PERI2_AO_SYS0)D10_APC_2: 0xffffffff
+INFO:    [DEVAPC] (PERI2_AO_SYS0)D10_APC_3: 0xffffffff
+INFO:    [DEVAPC] (PERI2_AO_SYS0)D10_APC_4: 0xffffffff
+INFO:    [DEVAPC] (PERI2_AO_SYS0)D10_APC_5: 0xffffffff
+INFO:    [DEVAPC] (PERI2_AO_SYS0)D10_APC_6: 0xffffffff
+INFO:    [DEVAPC] (PERI2_AO_SYS0)D10_APC_7: 0xfffff
+INFO:    [DEVAPC] (PERI2_AO_SYS0)D11_APC_0: 0xffffffff
+INFO:    [DEVAPC] (PERI2_AO_SYS0)D11_APC_1: 0xffffffff
+INFO:    [DEVAPC] (PERI2_AO_SYS0)D11_APC_2: 0xffffffff
+INFO:    [DEVAPC] (PERI2_AO_SYS0)D11_APC_3: 0xffffffff
+INFO:    [DEVAPC] (PERI2_AO_SYS0)D11_APC_4: 0xffffffff
+INFO:    [DEVAPC] (PERI2_AO_SYS0)D11_APC_5: 0xffffffff
+INFO:    [DEVAPC] (PERI2_AO_SYS0)D11_APC_6: 0xffffffff
+INFO:    [DEVAPC] (PERI2_AO_SYS0)D11_APC_7: 0xfffff
+INFO:    [DEVAPC] (PERI2_AO_SYS0)D12_APC_0: 0xffffffff
+INFO:    [DEVAPC] (PERI2_AO_SYS0)D12_APC_1: 0xffffffff
+INFO:    [DEVAPC] (PERI2_AO_SYS0)D12_APC_2: 0xffffffff
+INFO:    [DEVAPC] (PERI2_AO_SYS0)D12_APC_3: 0xffffffff
+INFO:    [DEVAPC] (PERI2_AO_SYS0)D12_APC_4: 0xffffffff
+INFO:    [DEVAPC] (PERI2_AO_SYS0)D12_APC_5: 0xffffffff
+INFO:    [DEVAPC] (PERI2_AO_SYS0)D12_APC_6: 0xffffffff
+INFO:    [DEVAPC] (PERI2_AO_SYS0)D12_APC_7: 0xfffff
+INFO:    [DEVAPC] (PERI2_AO_SYS0)D13_APC_0: 0xffffffff
+INFO:    [DEVAPC] (PERI2_AO_SYS0)D13_APC_1: 0xffffffff
+INFO:    [DEVAPC] (PERI2_AO_SYS0)D13_APC_2: 0xffffffff
+INFO:    [DEVAPC] (PERI2_AO_SYS0)D13_APC_3: 0xffffffff
+INFO:    [DEVAPC] (PERI2_AO_SYS0)D13_APC_4: 0xffffffff
+INFO:    [DEVAPC] (PERI2_AO_SYS0)D13_APC_5: 0xffffffff
+INFO:    [DEVAPC] (PERI2_AO_SYS0)D13_APC_6: 0xffffffff
+INFO:    [DEVAPC] (PERI2_AO_SYS0)D13_APC_7: 0xfffff
+INFO:    [DEVAPC] (PERI2_AO_SYS0)D14_APC_0: 0xffffffff
+INFO:    [DEVAPC] (PERI2_AO_SYS0)D14_APC_1: 0xffffffff
+INFO:    [DEVAPC] (PERI2_AO_SYS0)D14_APC_2: 0xffffffff
+INFO:    [DEVAPC] (PERI2_AO_SYS0)D14_APC_3: 0xffffffff
+INFO:    [DEVAPC] (PERI2_AO_SYS0)D14_APC_4: 0xffffffff
+INFO:    [DEVAPC] (PERI2_AO_SYS0)D14_APC_5: 0xffffffff
+INFO:    [DEVAPC] (PERI2_AO_SYS0)D14_APC_6: 0xffffffff
+INFO:    [DEVAPC] (PERI2_AO_SYS0)D14_APC_7: 0xfffff
+INFO:    [DEVAPC] (PERI2_AO_SYS0)D15_APC_0: 0xffffffff
+INFO:    [DEVAPC] (PERI2_AO_SYS0)D15_APC_1: 0xffffffff
+INFO:    [DEVAPC] (PERI2_AO_SYS0)D15_APC_2: 0xffffffff
+INFO:    [DEVAPC] (PERI2_AO_SYS0)D15_APC_3: 0xffffffff
+INFO:    [DEVAPC] (PERI2_AO_SYS0)D15_APC_4: 0xffffffff
+INFO:    [DEVAPC] (PERI2_AO_SYS0)D15_APC_5: 0xffffffff
+INFO:    [DEVAPC] (PERI2_AO_SYS0)D15_APC_6: 0xffffffff
+INFO:    [DEVAPC] (PERI2_AO_SYS0)D15_APC_7: 0xfffff
+INFO:    [DEVAPC] (PERI_PAR_AO_SYS0)D0_APC_0: 0x0
+INFO:    [DEVAPC] (PERI_PAR_AO_SYS0)D0_APC_1: 0x0
+INFO:    [DEVAPC] (PERI_PAR_AO_SYS0)D0_APC_2: 0x100400
+INFO:    [DEVAPC] (PERI_PAR_AO_SYS0)D1_APC_0: 0xfffc3fff
+INFO:    [DEVAPC] (PERI_PAR_AO_SYS0)D1_APC_1: 0xffffffff
+INFO:    [DEVAPC] (PERI_PAR_AO_SYS0)D1_APC_2: 0x3ffffff
+INFO:    [DEVAPC] (PERI_PAR_AO_SYS0)D2_APC_0: 0xf3ffffff
+INFO:    [DEVAPC] (PERI_PAR_AO_SYS0)D2_APC_1: 0xfffffcff
+INFO:    [DEVAPC] (PERI_PAR_AO_SYS0)D2_APC_2: 0x3ffcfff
+INFO:    [DEVAPC] (PERI_PAR_AO_SYS0)D3_APC_0: 0xffffffff
+INFO:    [DEVAPC] (PERI_PAR_AO_SYS0)D3_APC_1: 0xffffffff
+INFO:    [DEVAPC] (PERI_PAR_AO_SYS0)D3_APC_2: 0x3ffffff
+INFO:    [DEVAPC] (PERI_PAR_AO_SYS0)D4_APC_0: 0xffffffff
+INFO:    [DEVAPC] (PERI_PAR_AO_SYS0)D4_APC_1: 0xffffffff
+INFO:    [DEVAPC] (PERI_PAR_AO_SYS0)D4_APC_2: 0x3ffffff
+INFO:    [DEVAPC] (PERI_PAR_AO_SYS0)D5_APC_0: 0xffffffff
+INFO:    [DEVAPC] (PERI_PAR_AO_SYS0)D5_APC_1: 0xffffffff
+INFO:    [DEVAPC] (PERI_PAR_AO_SYS0)D5_APC_2: 0x3ffffff
+INFO:    [DEVAPC] (PERI_PAR_AO_SYS0)D6_APC_0: 0xffffffff
+INFO:    [DEVAPC] (PERI_PAR_AO_SYS0)D6_APC_1: 0xffffffff
+INFO:    [DEVAPC] (PERI_PAR_AO_SYS0)D6_APC_2: 0x3ffffff
+INFO:    [DEVAPC] (PERI_PAR_AO_SYS0)D7_APC_0: 0xffffffff
+INFO:    [DEVAPC] (PERI_PAR_AO_SYS0)D7_APC_1: 0xffffffff
+INFO:    [DEVAPC] (PERI_PAR_AO_SYS0)D7_APC_2: 0x3ffffff
+INFO:    [DEVAPC] (PERI_PAR_AO_SYS0)D8_APC_0: 0xffffffff
+INFO:    [DEVAPC] (PERI_PAR_AO_SYS0)D8_APC_1: 0xffffffff
+INFO:    [DEVAPC] (PERI_PAR_AO_SYS0)D8_APC_2: 0x3ffffff
+INFO:    [DEVAPC] (PERI_PAR_AO_SYS0)D9_APC_0: 0xffffffff
+INFO:    [DEVAPC] (PERI_PAR_AO_SYS0)D9_APC_1: 0xffffffff
+INFO:    [DEVAPC] (PERI_PAR_AO_SYS0)D9_APC_2: 0x3ffffff
+INFO:    [DEVAPC] (PERI_PAR_AO_SYS0)D10_APC_0: 0xffffffff
+INFO:    [DEVAPC] (PERI_PAR_AO_SYS0)D10_APC_1: 0xffffffff
+INFO:    [DEVAPC] (PERI_PAR_AO_SYS0)D10_APC_2: 0x3ffffff
+INFO:    [DEVAPC] (PERI_PAR_AO_SYS0)D11_APC_0: 0xffffffff
+INFO:    [DEVAPC] (PERI_PAR_AO_SYS0)D11_APC_1: 0xffffffff
+INFO:    [DEVAPC] (PERI_PAR_AO_SYS0)D11_APC_2: 0x3ffffff
+INFO:    [DEVAPC] (PERI_PAR_AO_SYS0)D12_APC_0: 0xffffffff
+INFO:    [DEVAPC] (PERI_PAR_AO_SYS0)D12_APC_1: 0xffffffff
+INFO:    [DEVAPC] (PERI_PAR_AO_SYS0)D12_APC_2: 0x3ffffff
+INFO:    [DEVAPC] (PERI_PAR_AO_SYS0)D13_APC_0: 0xffffffff
+INFO:    [DEVAPC] (PERI_PAR_AO_SYS0)D13_APC_1: 0xffffffff
+INFO:    [DEVAPC] (PERI_PAR_AO_SYS0)D13_APC_2: 0x3ffffff
+INFO:    [DEVAPC] (PERI_PAR_AO_SYS0)D14_APC_0: 0xffffffff
+INFO:    [DEVAPC] (PERI_PAR_AO_SYS0)D14_APC_1: 0xffffffff
+INFO:    [DEVAPC] (PERI_PAR_AO_SYS0)D14_APC_2: 0x3ffffff
+INFO:    [DEVAPC] (PERI_PAR_AO_SYS0)D15_APC_0: 0xffffffff
+INFO:    [DEVAPC] (PERI_PAR_AO_SYS0)D15_APC_1: 0xffffffff
+INFO:    [DEVAPC] (PERI_PAR_AO_SYS0)D15_APC_2: 0x3ffffff
+INFO:    [DEVAPC] (PERI_PAR_AO)MAS_SEC_0: 0x20001f
+INFO:    [DEVAPC] (DEVAPC_FMEM_AO_BASE 0x10044000)DOM_REMAP_0_0:0xfff43fff
+INFO:    [DEVAPC] (DEVAPC_INFRA2_AO_BASE 0x10228000)DOM_REMAP_0_0:0xfff43fff
+INFO:    [DEVAPC] SCP:0x3 ADSP:0x4 Lock:0x5
+NOTICE:  MT8195 dpm_init
+NOTICE:  mtk_init_mcu: Loaded (and reset) dpm.dm: (66 bytes)
+NOTICE:  mtk_init_mcu: Loaded (and reset) dpm.pm: (13702 bytes)
+NOTICE:  mtk_init_mcu: Loaded (and reset) dpm.dm: (66 bytes)
+NOTICE:  mtk_init_mcu: Loaded (and reset) dpm.pm: (13702 bytes)
+INFO:    md_settle = 24830, settle = 24830
+NOTICE:  SPM: binary array size = 0x9dd
+NOTICE:  SPM: spmfw version: pcm_suspend_v1.0_20210519
+NOTICE:  __spm_kick_im_to_fetch: ptr = 0x94612c40, pmem/dmem words = 0x9c8/0x15
+NOTICE:  mtk_init_mcu: Loaded (and reset) spm_firmware.bin: (10160 bytes)
+INFO:    SPM: spm_init done, spm pc = 0x240
+NOTICE:  MT8195 mcupm_init
+NOTICE:  mtk_init_mcu: Loaded (and reset) mcupm.bin: (122544 bytes)
+NOTICE:  MT8195 sspm_init
+NOTICE:  mtk_init_mcu: Loaded (and reset) sspm.bin: (137348 bytes)
+NOTICE:  MT8195 spm_boot_init
+INFO:    rtc 2sec reboot is not enabled
+NOTICE:  [APUSYS] apusys_init +
+INFO:    apusys_rv_init: enter
+INFO:    [APUAPC] apusys_devapc_init
+INFO:    [APUAPC] vio 0
+INFO:    [APUAPC] apusys_devapc_init done
+INFO:    [APUAPC] set_apusys_ao_apc - SUCCESS!
+INFO:    [APUAPC] D0_APC_0: 0x15555
+INFO:    [APUAPC] D0_APC_1: 0xaaaaaaaa
+INFO:    [APUAPC] D0_APC_2: 0xaaaaaaa
+INFO:    [APUAPC] D0_APC_3: 0xaaaa0000
+INFO:    [APUAPC] D0_APC_4: 0x2aaa
+INFO:    [APUAPC] D1_APC_0: 0xffffffff
+INFO:    [APUAPC] D1_APC_1: 0xffffffff
+INFO:    [APUAPC] D1_APC_2: 0xffffffff
+INFO:    [APUAPC] D1_APC_3: 0xffffffff
+INFO:    [APUAPC] D1_APC_4: 0x3fff
+INFO:    [APUAPC] D2_APC_0: 0xffffffff
+INFO:    [APUAPC] D2_APC_1: 0xffffffff
+INFO:    [APUAPC] D2_APC_2: 0xffffffff
+INFO:    [APUAPC] D2_APC_3: 0xffffffff
+INFO:    [APUAPC] D2_APC_4: 0x3fff
+INFO:    [APUAPC] D3_APC_0: 0xffffffff
+INFO:    [APUAPC] D3_APC_1: 0xffffffff
+INFO:    [APUAPC] D3_APC_2: 0xffffffff
+INFO:    [APUAPC] D3_APC_3: 0xffffffff
+INFO:    [APUAPC] D3_APC_4: 0x3fff
+INFO:    [APUAPC] D4_APC_0: 0xffffffff
+INFO:    [APUAPC] D4_APC_1: 0xffffffff
+INFO:    [APUAPC] D4_APC_2: 0xffffffff
+INFO:    [APUAPC] D4_APC_3: 0xffffffff
+INFO:    [APUAPC] D4_APC_4: 0x3fff
+INFO:    [APUAPC] D5_APC_0: 0x55555555
+INFO:    [APUAPC] D5_APC_1: 0x55555555
+INFO:    [APUAPC] D5_APC_2: 0x55555555
+INFO:    [APUAPC] D5_APC_3: 0x55555555
+INFO:    [APUAPC] D5_APC_4: 0x1555
+INFO:    [APUAPC] D6_APC_0: 0xffffffff
+INFO:    [APUAPC] D6_APC_1: 0xffffffff
+INFO:    [APUAPC] D6_APC_2: 0xffffffff
+INFO:    [APUAPC] D6_APC_3: 0xffffffff
+INFO:    [APUAPC] D6_APC_4: 0x3fff
+INFO:    [APUAPC] D7_APC_0: 0xffffffff
+INFO:    [APUAPC] D7_APC_1: 0xffffffff
+INFO:    [APUAPC] D7_APC_2: 0xffffffff
+INFO:    [APUAPC] D7_APC_3: 0xffffffff
+INFO:    [APUAPC] D7_APC_4: 0x3fff
+INFO:    [APUAPC] D8_APC_0: 0xffffffff
+INFO:    [APUAPC] D8_APC_1: 0xffffffff
+INFO:    [APUAPC] D8_APC_2: 0xffffffff
+INFO:    [APUAPC] D8_APC_3: 0xffffffff
+INFO:    [APUAPC] D8_APC_4: 0x3fff
+INFO:    [APUAPC] D9_APC_0: 0xffffffff
+INFO:    [APUAPC] D9_APC_1: 0xffffffff
+INFO:    [APUAPC] D9_APC_2: 0xffffffff
+INFO:    [APUAPC] D9_APC_3: 0xffffffff
+INFO:    [APUAPC] D9_APC_4: 0x3fff
+INFO:    [APUAPC] D10_APC_0: 0xffffffff
+INFO:    [APUAPC] D10_APC_1: 0xffffffff
+INFO:    [APUAPC] D10_APC_2: 0xffffffff
+INFO:    [APUAPC] D10_APC_3: 0xffffffff
+INFO:    [APUAPC] D10_APC_4: 0x3fff
+INFO:    [APUAPC] D11_APC_0: 0xffffffff
+INFO:    [APUAPC] D11_APC_1: 0xffffffff
+INFO:    [APUAPC] D11_APC_2: 0xffffffff
+INFO:    [APUAPC] D11_APC_3: 0xffffffff
+INFO:    [APUAPC] D11_APC_4: 0x3fff
+INFO:    [APUAPC] D12_APC_0: 0xffffffff
+INFO:    [APUAPC] D12_APC_1: 0xffffffff
+INFO:    [APUAPC] D12_APC_2: 0xffffffff
+INFO:    [APUAPC] D12_APC_3: 0xffffffff
+INFO:    [APUAPC] D12_APC_4: 0x3fff
+INFO:    [APUAPC] D13_APC_0: 0xffffffff
+INFO:    [APUAPC] D13_APC_1: 0xffffffff
+INFO:    [APUAPC] D13_APC_2: 0xffffffff
+INFO:    [APUAPC] D13_APC_3: 0xffffffff
+INFO:    [APUAPC] D13_APC_4: 0x3fff
+INFO:    [APUAPC] D14_APC_0: 0xffffffff
+INFO:    [APUAPC] D14_APC_1: 0xffffffff
+INFO:    [APUAPC] D14_APC_2: 0xffffffff
+INFO:    [APUAPC] D14_APC_3: 0xffffffff
+INFO:    [APUAPC] D14_APC_4: 0x3fff
+INFO:    [APUAPC] D15_APC_0: 0xffffffff
+INFO:    [APUAPC] D15_APC_1: 0xffffffff
+INFO:    [APUAPC] D15_APC_2: 0xffffffff
+INFO:    [APUAPC] D15_APC_3: 0xffffffff
+INFO:    [APUAPC] D15_APC_4: 0x3fff
+INFO:    [APUAPC] APC_CON: 0x4
+INFO:    [APUAPC] set_apusys_noc_dapc - SUCCESS!
+INFO:    [NOCDAPC] D0_APC_0: 0x15555555
+INFO:    [NOCDAPC] D0_APC_1: 0x0
+INFO:    [NOCDAPC] D1_APC_0: 0x3fffffff
+INFO:    [NOCDAPC] D1_APC_1: 0x0
+INFO:    [NOCDAPC] D2_APC_0: 0x3fffffff
+INFO:    [NOCDAPC] D2_APC_1: 0x0
+INFO:    [NOCDAPC] D3_APC_0: 0x3fffffff
+INFO:    [NOCDAPC] D3_APC_1: 0x0
+INFO:    [NOCDAPC] D4_APC_0: 0x3fffffff
+INFO:    [NOCDAPC] D4_APC_1: 0x0
+INFO:    [NOCDAPC] D5_APC_0: 0x15555555
+INFO:    [NOCDAPC] D5_APC_1: 0x0
+INFO:    [NOCDAPC] D6_APC_0: 0x3fffffff
+INFO:    [NOCDAPC] D6_APC_1: 0x0
+INFO:    [NOCDAPC] D7_APC_0: 0x3fffffff
+INFO:    [NOCDAPC] D7_APC_1: 0x0
+INFO:    [NOCDAPC] D8_APC_0: 0x3fffffff
+INFO:    [NOCDAPC] D8_APC_1: 0x0
+INFO:    [NOCDAPC] D9_APC_0: 0x3fffffff
+INFO:    [NOCDAPC] D9_APC_1: 0x0
+INFO:    [NOCDAPC] D10_APC_0: 0x3fffffff
+INFO:    [NOCDAPC] D10_APC_1: 0x0
+INFO:    [NOCDAPC] D11_APC_0: 0x3fffffff
+INFO:    [NOCDAPC] D11_APC_1: 0x0
+INFO:    [NOCDAPC] D12_APC_0: 0x3fffffff
+INFO:    [NOCDAPC] D12_APC_1: 0x0
+INFO:    [NOCDAPC] D13_APC_0: 0x3fffffff
+INFO:    [NOCDAPC] D13_APC_1: 0x0
+INFO:    [NOCDAPC] D14_APC_0: 0x3fffffff
+INFO:    [NOCDAPC] D14_APC_1: 0x0
+INFO:    [NOCDAPC] D15_APC_0: 0x3fffffff
+INFO:    [NOCDAPC] D15_APC_1: 0x0
+INFO:    [NOCDAPC] APC_CON: 0x4
+INFO:    [APUAPC] start_apusys_devapc_ao done
+INFO:    apusys_rv_mbox_mpu_init: 0x190000b0 = 0x1, 0x190000e0 = 0x10a0001
+INFO:    apusys_rv_mbox_mpu_init: 0x190001b0 = 0x1, 0x190001e0 = 0xa0001
+INFO:    apusys_rv_mbox_mpu_init: 0x190002b0 = 0x1, 0x190002e0 = 0xa0001
+INFO:    apusys_rv_mbox_mpu_init: 0x190003b0 = 0x1, 0x190003e0 = 0xa0001
+INFO:    apusys_rv_mbox_mpu_init: 0x190004b0 = 0x10001, 0x190004e0 = 0x1
+INFO:    apusys_rv_mbox_mpu_init: 0x190005b0 = 0x1, 0x190005e0 = 0x60a0001
+INFO:    apusys_rv_mbox_mpu_init: 0x190006b0 = 0x1, 0x190006e0 = 0xa0001
+INFO:    apusys_rv_mbox_mpu_init: 0x190007b0 = 0x1, 0x190007e0 = 0xa0001
+NOTICE:  [APUSYS] apusys_init -
+INFO:    BL31: Initializing runtime services
+INFO:    SPM: enable CPC mode
+INFO:    mcdi ready for mcusys-off-idle and system suspend
+INFO:    BL31: Initializing BL32
+I/TC:
+I/TC: OP-TEE version: ab5d0acf (gcc version 14.2.0 (Debian 14.2.0-19)) #1 Sun Nov  8 14:10:00 UTC 2026 aarch64
+I/TC: WARNING: This OP-TEE configuration might be insecure!
+I/TC: WARNING: Please check https://optee.readthedocs.io/en/latest/architecture/porting_guidelines.html
+I/TC: Primary CPU initializing
+...
+I/TC: Primary CPU switching to normal world boot
+INFO:    BL31: Preparing for EL3 exit to normal world
+INFO:    Entry point address = 0x4c000000
+INFO:    SPSR = 0x3c9
+
+
+U-Boot 2027.01-rc1_armbian-2027.01-rc1-Sdfcf-Pd8b4-H8c4e-Vbf6d-Bb936-R448a (Nov 08 2026 - 15:09:52 +0100)
+
+CPU:   MediaTek MT8195
+Model: Radxa NIO 12L
+DRAM:  16 GiB
+Core:  175 devices, 28 uclasses, devicetree: separate
+WDT:   Started watchdog@10007000 with servicing every 1000ms (60s timeout)
+MMC:   mmc@11240000: 1
+mediatek-ufshci ufshci@11270000: [RX, TX]: gear=[3, 3], lane[1, 1], pwr[FAST MODE, FAST MODE], rate = 2
+Loading Environment from SCSI... OK
+mt8195_power_domain power-controller: power-domain@15: failed to get subsys clk at index 8: -19
+mt8195_power_domain power-controller: failed to add child domain: power-domain@15
+In:    serial@11001100
+Out:   serial@11001100
+Err:   serial@11001100
+Net:   eth0: ethernet@11021000
+Hit any key to stop autoboot: 0
+=> dm tree
+ Class     Seq    Probed  Driver                Name
+-----------------------------------------------------------
+ root          0  [ + ]   root_driver           root_driver
+ clk           0  [   ]   fixed_factor_clock    |-- fixed-factor-clock-13m
+ clk           1  [ + ]   fixed_clock           |-- oscillator-26m
+ clk           2  [   ]   fixed_clock           |-- oscillator-32k
+ firmware      0  [   ]   psci                  |-- psci
+ simple_bus    0  [ + ]   simple_bus            |-- soc
+ clk           3  [ + ]   mt8195-clk            |   |-- syscon@10000000
+ clk           4  [ + ]   mt8195-clk            |   |-- syscon@10001000
+ syscon        6  [ + ]   syscon                |   |   `-- syscon@10001000
+ syscon        0  [   ]   syscon                |   |-- syscon@10003000
+ pinctrl       0  [ + ]   mt8195_pinctrl        |   |-- pinctrl@10005000
+ gpio          0  [ + ]   mediatek_gpio         |   |   |-- mediatek_gpio
+ pinconfig     0  [   ]   pinconfig             |   |   |-- audio-default-pins
+ pinconfig     1  [   ]   pinconfig             |   |   |   `-- pins-cmd-dat
+ pinconfig     2  [   ]   pinconfig             |   |   |-- dsi0-backlight-pins
+ pinconfig     3  [   ]   pinconfig             |   |   |   `-- pins-backlight-en
+ pinconfig     4  [ + ]   pinconfig             |   |   |-- eth-default-pins
+ pinconfig     5  [   ]   pinconfig             |   |   |   |-- pins-cc
+ pinconfig     6  [   ]   pinconfig             |   |   |   |-- pins-mdio
+ pinconfig     7  [   ]   pinconfig             |   |   |   |-- pins-power
+ pinconfig     8  [   ]   pinconfig             |   |   |   |-- pins-rst
+ pinconfig     9  [   ]   pinconfig             |   |   |   |-- pins-rxd
+ pinconfig    10  [   ]   pinconfig             |   |   |   `-- pins-txd
+ pinconfig    11  [   ]   pinconfig             |   |   |-- eth-sleep-pins
+ pinconfig    12  [   ]   pinconfig             |   |   |   |-- pins-cc
+ pinconfig    13  [   ]   pinconfig             |   |   |   |-- pins-mdio
+ pinconfig    14  [   ]   pinconfig             |   |   |   |-- pins-rxd
+ pinconfig    15  [   ]   pinconfig             |   |   |   `-- pins-txd
+ pinconfig    16  [   ]   pinconfig             |   |   |-- gpio-keys-pins
+ pinconfig    17  [   ]   pinconfig             |   |   |   `-- pins
+ pinconfig    18  [   ]   pinconfig             |   |   |-- gpio-leds-pins
+ pinconfig    19  [   ]   pinconfig             |   |   |   `-- pins
+ pinconfig    20  [   ]   pinconfig             |   |   |-- hdmi-vreg-pins
+ pinconfig    21  [   ]   pinconfig             |   |   |   `-- pins-pwr
+ pinconfig    22  [   ]   pinconfig             |   |   |-- hdmi-pins
+ pinconfig    23  [   ]   pinconfig             |   |   |   |-- pins-hotplug
+ pinconfig    24  [   ]   pinconfig             |   |   |   |-- pins-ddc
+ pinconfig    25  [   ]   pinconfig             |   |   |   `-- pins-cec
+ pinconfig    26  [   ]   pinconfig             |   |   |-- i2c2-pins
+ pinconfig    27  [   ]   pinconfig             |   |   |   `-- pins-bus
+ pinconfig    28  [   ]   pinconfig             |   |   |-- i2c3-pins
+ pinconfig    29  [   ]   pinconfig             |   |   |   `-- pins-bus
+ pinconfig    30  [   ]   pinconfig             |   |   |-- i2c4-pins
+ pinconfig    31  [   ]   pinconfig             |   |   |   `-- pins-bus
+ pinconfig    32  [   ]   pinconfig             |   |   |-- i2c6-pins
+ pinconfig    33  [   ]   pinconfig             |   |   |   `-- pins
+ pinconfig    34  [   ]   pinconfig             |   |   |-- mmc0-default-pins
+ pinconfig    35  [   ]   pinconfig             |   |   |   |-- pins-clk
+ pinconfig    36  [   ]   pinconfig             |   |   |   |-- pins-cmd-dat
+ pinconfig    37  [   ]   pinconfig             |   |   |   `-- pins-rst
+ pinconfig    38  [   ]   pinconfig             |   |   |-- mmc0-uhs-pins
+ pinconfig    39  [   ]   pinconfig             |   |   |   |-- pins-clk
+ pinconfig    40  [   ]   pinconfig             |   |   |   |-- pins-cmd-dat
+ pinconfig    41  [   ]   pinconfig             |   |   |   |-- pins-ds
+ pinconfig    42  [   ]   pinconfig             |   |   |   `-- pins-rst
+ pinconfig    43  [ + ]   pinconfig             |   |   |-- mmc1-default-pins
+ pinconfig    44  [   ]   pinconfig             |   |   |   |-- pins-clk
+ pinconfig    45  [   ]   pinconfig             |   |   |   `-- pins-cmd-dat
+ pinconfig    46  [ + ]   pinconfig             |   |   |-- mmc1-detect-pins
+ pinconfig    47  [   ]   pinconfig             |   |   |   `-- pins-insert
+ pinconfig    48  [   ]   pinconfig             |   |   |-- mt6360-pins
+ pinconfig    49  [   ]   pinconfig             |   |   |   `-- pins-irq
+ pinconfig    50  [   ]   pinconfig             |   |   |-- panel-pins
+ pinconfig    51  [   ]   pinconfig             |   |   |   `-- pins-rst
+ pinconfig    52  [ + ]   pinconfig             |   |   |-- pcie0-default-pins
+ pinconfig    53  [   ]   pinconfig             |   |   |   `-- pins-bus
+ pinconfig    54  [   ]   pinconfig             |   |   |-- pcie1-default-pins
+ pinconfig    55  [   ]   pinconfig             |   |   |   `-- pins-bus
+ pinconfig    56  [   ]   pinconfig             |   |   |-- pwm0-pins
+ pinconfig    57  [   ]   pinconfig             |   |   |   `-- pins-disp-pwm
+ pinconfig    58  [   ]   pinconfig             |   |   |-- spi1-default-pins
+ pinconfig    59  [   ]   pinconfig             |   |   |   `-- pins-bus
+ pinconfig    60  [   ]   pinconfig             |   |   |-- spi2-default-pins
+ pinconfig    61  [   ]   pinconfig             |   |   |   `-- pins-bus
+ pinconfig    62  [   ]   pinconfig             |   |   |-- touch-pins
+ pinconfig    63  [   ]   pinconfig             |   |   |   |-- pins-touch-int
+ pinconfig    64  [   ]   pinconfig             |   |   |   `-- pins-touch-rst
+ pinconfig    65  [ + ]   pinconfig             |   |   |-- uart0-pins
+ pinconfig    66  [   ]   pinconfig             |   |   |   `-- pins-bus
+ pinconfig    67  [   ]   pinconfig             |   |   |-- uart1-pins
+ pinconfig    68  [   ]   pinconfig             |   |   |   `-- pins-bus
+ pinconfig    69  [   ]   pinconfig             |   |   |-- usb3p0-default-pins
+ pinconfig    70  [   ]   pinconfig             |   |   |   `-- pins-vbus
+ pinconfig    71  [   ]   pinconfig             |   |   |-- usb2p0-default-pins
+ pinconfig    72  [   ]   pinconfig             |   |   |   |-- pins-iddig
+ pinconfig    73  [   ]   pinconfig             |   |   |   `-- pins-vbus
+ pinconfig    74  [ + ]   pinconfig             |   |   `-- wifi-vreg-pins
+ pinconfig    75  [   ]   pinconfig             |   |       |-- pins-wifi-pmu-en
+ pinconfig    76  [   ]   pinconfig             |   |       `-- pins-wifi-vreg-en
+ syscon        1  [ + ]   syscon                |   |-- syscon@10006000
+ power_doma    0  [ + ]   mt8195_power_domain   |   |   `-- power-controller
+ watchdog      0  [ + ]   mtk_wdt               |   |-- watchdog@10007000
+ clk           5  [ + ]   mt8195-clk            |   |-- syscon@1000c000
+ pmic          0  [ + ]   mtk_pwrap             |   |-- pwrap@10024000
+ regulator     0  [ + ]   mt6359_regulator      |   |   |-- buck_vs1
+ regulator     1  [ + ]   mt6359_regulator      |   |   |-- buck_vgpu11
+ regulator     2  [   ]   mt6359_regulator      |   |   |-- buck_vmodem
+ regulator     3  [ + ]   mt6359_regulator      |   |   |-- buck_vpu
+ regulator     4  [ + ]   mt6359_regulator      |   |   |-- buck_vcore
+ regulator     5  [ + ]   mt6359_regulator      |   |   |-- buck_vs2
+ regulator     6  [   ]   mt6359_regulator      |   |   |-- buck_vpa
+ regulator     7  [ + ]   mt6359_regulator      |   |   |-- buck_vproc2
+ regulator     8  [ + ]   mt6359_regulator      |   |   |-- buck_vproc1
+ regulator     9  [   ]   mt6359_regulator      |   |   |-- buck_vcore_sshub
+ regulator    10  [   ]   mt6359_regulator      |   |   |-- buck_vgpu11_sshub
+ regulator    11  [   ]   mt6359_regulator      |   |   |-- ldo_vaud18
+ regulator    12  [   ]   mt6359_regulator      |   |   |-- ldo_vsim1
+ regulator    13  [   ]   mt6359_regulator      |   |   |-- ldo_vibr
+ regulator    14  [ + ]   mt6359_regulator      |   |   |-- ldo_vrf12
+ regulator    15  [   ]   mt6359_regulator      |   |   |-- ldo_vusb
+ regulator    16  [ + ]   mt6359_regulator      |   |   |-- ldo_vsram_proc2
+ regulator    17  [ + ]   mt6359_regulator      |   |   |-- ldo_vio18
+ regulator    18  [ + ]   mt6359_regulator      |   |   |-- ldo_vcamio
+ regulator    19  [   ]   mt6359_regulator      |   |   |-- ldo_vcn18
+ regulator    20  [   ]   mt6359_regulator      |   |   |-- ldo_vfe28
+ regulator    21  [   ]   mt6359_regulator      |   |   |-- ldo_vcn13
+ regulator    22  [   ]   mt6359_regulator      |   |   |-- ldo_vcn33_1
+ regulator    23  [   ]   mt6359_regulator      |   |   |-- ldo_vaux18
+ regulator    24  [   ]   mt6359_regulator      |   |   |-- ldo_vsram_others
+ regulator    25  [   ]   mt6359_regulator      |   |   |-- ldo_vefuse
+ regulator    26  [ + ]   mt6359_regulator      |   |   |-- ldo_vxo22
+ regulator    27  [   ]   mt6359_regulator      |   |   |-- ldo_vrfck
+ regulator    28  [   ]   mt6359_regulator      |   |   |-- ldo_vrfck_1
+ regulator    29  [   ]   mt6359_regulator      |   |   |-- ldo_vbif28
+ regulator    30  [ + ]   mt6359_regulator      |   |   |-- ldo_vio28
+ regulator    31  [   ]   mt6359_regulator      |   |   |-- ldo_vemc
+ regulator    32  [   ]   mt6359_regulator      |   |   |-- ldo_vemc_1
+ regulator    33  [   ]   mt6359_regulator      |   |   |-- ldo_vcn33_2
+ regulator    34  [ + ]   mt6359_regulator      |   |   |-- ldo_va12
+ regulator    35  [   ]   mt6359_regulator      |   |   |-- ldo_va09
+ regulator    36  [   ]   mt6359_regulator      |   |   |-- ldo_vrf18
+ regulator    37  [ + ]   mt6359_regulator      |   |   |-- ldo_vsram_md
+ regulator    38  [   ]   mt6359_regulator      |   |   |-- ldo_vufs
+ regulator    39  [ + ]   mt6359_regulator      |   |   |-- ldo_vm18
+ regulator    40  [ + ]   mt6359_regulator      |   |   |-- ldo_vbbck
+ regulator    41  [ + ]   mt6359_regulator      |   |   |-- ldo_vsram_proc1
+ regulator    42  [   ]   mt6359_regulator      |   |   |-- ldo_vsim2
+ regulator    43  [   ]   mt6359_regulator      |   |   `-- ldo_vsram_others_sshub
+ serial        0  [ + ]   serial_mtk            |   |-- serial@11001100
+ serial        1  [   ]   serial_mtk            |   |-- serial@11001200
+ clk           6  [ + ]   mt8195-clk            |   |-- syscon@11003000
+ ethernet      0  [ + ]   eth_eqos              |   |-- ethernet@11021000
+ bootdev       0  [   ]   eth_bootdev           |   |   `-- ethernet@11021000.bootdev
+ nop           0  [   ]   mtu3                  |   |-- usb@11201000
+ usb_gadget    0  [   ]   mtu3-peripheral       |   |   `-- usb@11201000
+ mmc           1  [ + ]   mtk_sd                |   |-- mmc@11240000
+ blk           0  [   ]   mmc_blk               |   |   |-- mmc@11240000.blk
+ bootdev       1  [   ]   mmc_bootdev           |   |   `-- mmc@11240000.bootdev
+ ufs           0  [ + ]   mediatek-ufshci       |   |-- ufshci@11270000
+ scsi          0  [ + ]   ufs_scsi              |   |   `-- ufs_scsi
+ blk           1  [ + ]   scsi_blk              |   |       |-- ufs_scsi.id0lun0
+ bootdev       2  [   ]   scsi_bootdev          |   |       |-- ufs_scsi.id0lun0.bootdev
+ blk           2  [ + ]   scsi_blk              |   |       |-- ufs_scsi.id0lun1
+ bootdev       3  [   ]   scsi_bootdev          |   |       |-- ufs_scsi.id0lun1.bootdev
+ blk           3  [ + ]   scsi_blk              |   |       |-- ufs_scsi.id0lun2
+ partition     0  [ + ]   blk_partition         |   |       |   `-- ufs_scsi.id0lun2:1
+ bootdev       4  [   ]   scsi_bootdev          |   |       `-- ufs_scsi.id0lun2.bootdev
+ usb           0  [   ]   xhci-mtk              |   |-- usb@11290000
+ pci           0  [ + ]   pcie_mediatek_gen3    |   |-- pcie@112f0000
+ pci           1  [ + ]   pci_bridge_drv        |   |   `-- pci_0:0.0
+ usb           1  [   ]   xhci_pci              |   |       `-- xhci_pci
+ phy           0  [   ]   mtk-tphy              |   |-- t-phy@11c40000
+ phy           1  [   ]   mtk-tphy              |   |-- t-phy@11e30000
+ phy           2  [   ]   mtk-tphy              |   |-- t-phy@11e40000
+ phy           3  [ + ]   mtk-pcie-phy          |   |-- phy@11e80000
+ phy           4  [ + ]   mtk-ufs_phy           |   |-- ufs-phy@11fa0000
+ syscon        2  [   ]   syscon                |   |-- syscon@14000000
+ syscon        3  [   ]   syscon                |   |-- syscon@14f00000
+ syscon        4  [   ]   syscon                |   |-- syscon@1c01a000
+ syscon        5  [   ]   syscon                |   `-- syscon@1c100000
+ nop           1  [   ]   gpio_led_wrap         |-- leds
+ led           0  [   ]   gpio_led              |   |-- led-0
+ led           1  [   ]   gpio_led              |   `-- led-1
+ regulator    44  [ + ]   regulator_fixed       |-- regulator-wifi-3v3-en
+ regulator    45  [ + ]   regulator_fixed       |-- regulator-vsys
+ regulator    46  [ + ]   regulator_fixed       |-- regulator-vsys-buck
+ regulator    47  [ + ]   regulator_fixed       |-- regulator-vcc5v0-sys
+ tee           0  [ + ]   optee                 |-- optee
+ bootstd       0  [   ]   bootstd_drv           |-- bootstd
+ bootmeth      0  [   ]   bootmeth_extlinux     |   |-- extlinux
+ bootmeth      1  [   ]   bootmeth_script       |   |-- script
+ bootmeth      2  [   ]   bootmeth_efi_mgr      |   |-- efi_mgr
+ bootmeth      3  [   ]   bootmeth_efi          |   |-- efi
+ bootmeth      4  [   ]   bootmeth_pxe          |   |-- pxe
+ bootmeth      5  [   ]   vbe_simple            |   `-- vbe_simple
+ efi           0  [   ]   EFI block driver      `-- efi
+=> boot
+Scanning for bootflows in all bootdevs
+Seq  Method       State   Uclass    Part  Name                      Filename
+---  -----------  ------  --------  ----  ------------------------  ----------------
+Scanning global bootmeth 'efi_mgr':
+Cannot persist EFI variables without system partition
+  0  efi_mgr      ready   (none)       0  <NULL>
+** Booting bootflow '<NULL>' with efi_mgr
+Loading Boot0000 'mmc 1' failed
+Loading Boot0001 'scsi 0' failed
+Loading Boot0002 'scsi 1' failed
+Loading Boot0003 'scsi 2' failed
+EFI boot manager: Cannot load any image
+Boot failed (err=-2)
+Scanning bootdev 'ethernet@11021000.bootdev':
+PXEHTTP-DBG: read_bootflow dev=pxe pxefile_addr_r=0x43000000
+ethernet@11021000 Waiting for PHY auto negotiation to complete...... done
+DHCP client bound to address 192.168.66.83 (507 ms)
+PXEHTTP-DBG: dhcp_run ret=0 bootfile='http://192.168.76.140:7080/tftp/'
+PXEHTTP-DBG: pxe_get_base pxe_url='(unset)' bootfile='http://192.168.76.140:7080/tftp/'
+PXEHTTP-DBG: transport=HTTP base='http://192.168.76.140:7080/tftp/'
+PXEHTTP-DBG: base URL ends in '/', probing pxelinux.cfg/
+missing environment variable: pxeuuid
+Retrieving file: http://192.168.76.140:7080/tftp/pxelinux.cfg/01-12-f3-ae-d1-ac-1e
+PXEHTTP-DBG: do_get_http url='http://192.168.76.140:7080/tftp/pxelinux.cfg/01-12-f3-ae-d1-ac-1e' addr=43000000 type=49
+##################################################
+HTTP server error 403
+PXEHTTP-DBG: wget_request ret=-5 status=403 file_size=0
+Retrieving file: http://192.168.76.140:7080/tftp/pxelinux.cfg/C0A84253
+PXEHTTP-DBG: do_get_http url='http://192.168.76.140:7080/tftp/pxelinux.cfg/C0A84253' addr=43000000 type=49
+##################################################
+HTTP server error 404
+PXEHTTP-DBG: wget_request ret=-5 status=404 file_size=0
+Retrieving file: http://192.168.76.140:7080/tftp/pxelinux.cfg/C0A8425
+PXEHTTP-DBG: do_get_http url='http://192.168.76.140:7080/tftp/pxelinux.cfg/C0A8425' addr=43000000 type=49
+##################################################
+HTTP server error 404
+PXEHTTP-DBG: wget_request ret=-5 status=404 file_size=0
+Retrieving file: http://192.168.76.140:7080/tftp/pxelinux.cfg/C0A842
+PXEHTTP-DBG: do_get_http url='http://192.168.76.140:7080/tftp/pxelinux.cfg/C0A842' addr=43000000 type=49
+##################################################
+HTTP server error 404
+PXEHTTP-DBG: wget_request ret=-5 status=404 file_size=0
+Retrieving file: http://192.168.76.140:7080/tftp/pxelinux.cfg/C0A84
+PXEHTTP-DBG: do_get_http url='http://192.168.76.140:7080/tftp/pxelinux.cfg/C0A84' addr=43000000 type=49
+##################################################
+HTTP server error 404
+PXEHTTP-DBG: wget_request ret=-5 status=404 file_size=0
+Retrieving file: http://192.168.76.140:7080/tftp/pxelinux.cfg/C0A8
+PXEHTTP-DBG: do_get_http url='http://192.168.76.140:7080/tftp/pxelinux.cfg/C0A8' addr=43000000 type=49
+##################################################
+HTTP server error 404
+PXEHTTP-DBG: wget_request ret=-5 status=404 file_size=0
+Retrieving file: http://192.168.76.140:7080/tftp/pxelinux.cfg/C0A
+PXEHTTP-DBG: do_get_http url='http://192.168.76.140:7080/tftp/pxelinux.cfg/C0A' addr=43000000 type=49
+##################################################
+HTTP server error 404
+PXEHTTP-DBG: wget_request ret=-5 status=404 file_size=0
+Retrieving file: http://192.168.76.140:7080/tftp/pxelinux.cfg/C0
+PXEHTTP-DBG: do_get_http url='http://192.168.76.140:7080/tftp/pxelinux.cfg/C0' addr=43000000 type=49
+##################################################
+HTTP server error 404
+PXEHTTP-DBG: wget_request ret=-5 status=404 file_size=0
+Retrieving file: http://192.168.76.140:7080/tftp/pxelinux.cfg/C
+PXEHTTP-DBG: do_get_http url='http://192.168.76.140:7080/tftp/pxelinux.cfg/C' addr=43000000 type=49
+##################################################
+HTTP server error 404
+PXEHTTP-DBG: wget_request ret=-5 status=404 file_size=0
+Retrieving file: http://192.168.76.140:7080/tftp/pxelinux.cfg/default-arm-mediatek-mt8195
+PXEHTTP-DBG: do_get_http url='http://192.168.76.140:7080/tftp/pxelinux.cfg/default-arm-mediatek-mt8195' addr=43000000 type=49
+##################################################
+HTTP server error 404
+PXEHTTP-DBG: wget_request ret=-5 status=404 file_size=0
+Retrieving file: http://192.168.76.140:7080/tftp/pxelinux.cfg/default-arm-mediatek
+PXEHTTP-DBG: do_get_http url='http://192.168.76.140:7080/tftp/pxelinux.cfg/default-arm-mediatek' addr=43000000 type=49
+##################################################
+HTTP server error 404
+PXEHTTP-DBG: wget_request ret=-5 status=404 file_size=0
+Retrieving file: http://192.168.76.140:7080/tftp/pxelinux.cfg/default-arm
+PXEHTTP-DBG: do_get_http url='http://192.168.76.140:7080/tftp/pxelinux.cfg/default-arm' addr=43000000 type=49
+##################################################
+HTTP server error 404
+PXEHTTP-DBG: wget_request ret=-5 status=404 file_size=0
+Retrieving file: http://192.168.76.140:7080/tftp/pxelinux.cfg/default
+PXEHTTP-DBG: do_get_http url='http://192.168.76.140:7080/tftp/pxelinux.cfg/default' addr=43000000 type=49
+##################################################
+HTTP server error 404
+PXEHTTP-DBG: wget_request ret=-5 status=404 file_size=0
+PXEHTTP-DBG: pxe_get FAILED (no config found)
+PXEHTTP-DBG: pxe_get ret=-2 bootdir='
+' size=4289558584
+Scanning bootdev 'mmc@11240000.bootdev':
+scanning bus for devices...
+  Device 0: (0:0) Vendor: SAMSUNG Prod.: KLUEG8U1EA-B0C1 Rev: 0400
+            Type: Hard Disk
+            Capacity: 4.0 MB = 0.0 GB (1024 x 4096)
+  Device 1: (0:1) Vendor: SAMSUNG Prod.: KLUEG8U1EA-B0C1 Rev: 0400
+            Type: Hard Disk
+            Capacity: 4.0 MB = 0.0 GB (1024 x 4096)
+  Device 2: (0:2) Vendor: SAMSUNG Prod.: KLUEG8U1EA-B0C1 Rev: 0400
+            Type: Hard Disk
+            Capacity: 244064.0 MB = 238.3 GB (62480384 x 4096)
+Scanning bootdev 'ufs_scsi.id0lun0.bootdev':
+Scanning bootdev 'ufs_scsi.id0lun1.bootdev':
+Scanning bootdev 'ufs_scsi.id0lun2.bootdev':
+  1  extlinux     ready   scsi         1  ufs_scsi.id0lun2.bootdev. /boot/extlinux/extlinux.conf
+** Booting bootflow 'ufs_scsi.id0lun2.bootdev.part_1' with extlinux
+Kubernetes (CAPT) node disk image, Trixie for Mediatek Genio 64-bit ARM machines
+1:	captainos
+Enter choice: 1:	captainos
+Retrieving file: /boot/vmlinuz-7.3.3-edge-genio
+Retrieving file: /boot/initrd.img-7.3.3-edge-genio
+append: root=PARTLABEL=root rw
+Retrieving file: /usr/lib/linux-image-7.3.3-edge-genio/mediatek/mt8395-radxa-nio-12l.dtb
+## Flattened Device Tree blob at 56000000
+   Booting using the fdt blob at 0x56000000
+Working FDT set to 56000000
+   Loading Ramdisk to fdc45000, end fe7ff9c2 ... OK
+   Loading Device Tree to 00000000fea7a000, end 00000000fea9ae86 ... OK
+Working FDT set to fea7a000
+[image_setup_libfdt] called
+[image_setup_libfdt] calling fdt_fixup_ethernet
+[fdt_fixup_ethernet] called
+[fdt_fixup_ethernet] alias #0: name='dp-intf0', path='/soc/dp-intf@1c015000'
+[fdt_fixup_ethernet] alias #1: name='dp-intf1', path='/soc/dp-intf@1c113000'
+[fdt_fixup_ethernet] alias #2: name='dpi1', path='/soc/dpi@1c112000'
+[fdt_fixup_ethernet] alias #3: name='gce0', path='/soc/mailbox@10320000'
+[fdt_fixup_ethernet] alias #4: name='gce1', path='/soc/mailbox@10330000'
+[fdt_fixup_ethernet] alias #5: name='hdmi0', path='/soc/hdmi-tx@1c300000'
+[fdt_fixup_ethernet] alias #6: name='ethdr0', path='/soc/hdr-engine@1c114000'
+[fdt_fixup_ethernet] alias #7: name='mutex0', path='/soc/mutex@1c016000'
+[fdt_fixup_ethernet] alias #8: name='mutex1', path='/soc/mutex@1c101000'
+[fdt_fixup_ethernet] alias #9: name='merge1', path='/soc/vpp-merge@1c10c000'
+[fdt_fixup_ethernet] alias #10: name='merge2', path='/soc/vpp-merge@1c10d000'
+[fdt_fixup_ethernet] alias #11: name='merge3', path='/soc/vpp-merge@1c10e000'
+[fdt_fixup_ethernet] alias #12: name='merge4', path='/soc/vpp-merge@1c10f000'
+[fdt_fixup_ethernet] alias #13: name='merge5', path='/soc/vpp-merge@1c110000'
+[fdt_fixup_ethernet] alias #14: name='vdo1-rdma0', path='/soc/dma-controller@1c104000'
+[fdt_fixup_ethernet] alias #15: name='vdo1-rdma1', path='/soc/dma-controller@1c105000'
+[fdt_fixup_ethernet] alias #16: name='vdo1-rdma2', path='/soc/dma-controller@1c106000'
+[fdt_fixup_ethernet] alias #17: name='vdo1-rdma3', path='/soc/dma-controller@1c107000'
+[fdt_fixup_ethernet] alias #18: name='vdo1-rdma4', path='/soc/dma-controller@1c108000'
+[fdt_fixup_ethernet] alias #19: name='vdo1-rdma5', path='/soc/dma-controller@1c109000'
+[fdt_fixup_ethernet] alias #20: name='vdo1-rdma6', path='/soc/dma-controller@1c10a000'
+[fdt_fixup_ethernet] alias #21: name='vdo1-rdma7', path='/soc/dma-controller@1c10b000'
+[fdt_fixup_ethernet] alias #22: name='ethernet0', path='/soc/ethernet@11021000'
+[fdt_fixup_ethernet] env var for alias 'ethernet0' is 'ethaddr', value='12:f3:ae:d1:ac:1e'
+[fdt_fixup_ethernet] Patching node '/soc/ethernet@11021000' (offset 33472) with MAC 12:f3:ae:d1:ac:1e
+[fdt_fixup_ethernet] alias #23: name='i2c0', path='/soc/i2c@11e02000'
+[fdt_fixup_ethernet] alias #24: name='i2c1', path='/soc/i2c@11e03000'
+[fdt_fixup_ethernet] alias #25: name='i2c2', path='/soc/i2c@11e04000'
+[fdt_fixup_ethernet] alias #26: name='i2c3', path='/soc/i2c@11e00000'
+[fdt_fixup_ethernet] alias #27: name='i2c4', path='/soc/i2c@11e01000'
+[fdt_fixup_ethernet] alias #28: name='mmc0', path='/soc/mmc@11230000'
+[fdt_fixup_ethernet] alias #29: name='mmc1', path='/soc/mmc@11240000'
+[fdt_fixup_ethernet] alias #30: name='serial0', path='/soc/serial@11001100'
+[fdt_fixup_ethernet] alias #31: name='serial1', path='/soc/serial@11001200'
+[fdt_fixup_ethernet] alias #32: name='spi0', path='/soc/spi@11010000'
+[fdt_fixup_ethernet] alias #33: name='spi1', path='/soc/spi@11012000'
+[fdt_fixup_ethernet] SUMMARY: aliases found=34, attempted=1, skipped=0, patched=1
+
+Starting kernel ...
+
+I/TC: Secondary CPU 1 initializing
+I/TC: Secondary CPU 1 switching to normal world boot
+I/TC: Secondary CPU 2 initializing
+I/TC: Secondary CPU 2 switching to normal world boot
+I/TC: Secondary CPU 3 initializing
+I/TC: Secondary CPU 3 switching to normal world boot
+I/TC: Secondary CPU 4 initializing
+I/TC: Secondary CPU 4 switching to normal world boot
+I/TC: Secondary CPU 5 initializing
+I/TC: Secondary CPU 5 switching to normal world boot
+I/TC: Secondary CPU 6 initializing
+I/TC: Secondary CPU 6 switching to normal world boot
+I/TC: Secondary CPU 7 initializing
+I/TC: Secondary CPU 7 switching to normal world boot
+[    0.000000] Booting Linux on physical CPU 0x0000000000 [0x412fd050]
+[    0.000000] Linux version 7.3.3-edge-genio (build@armbian) (aarch64-linux-gnu-gcc (Debian 14.2.0-19) 14.2.0, GNU ld (GNU Binutils for Debian) 2.44) #1 SMP PREEMPT_DYNAMIC Fri Nov  6 18:18:30 UTC 2026
+[    0.000000] KASLR disabled due to lack of seed
+[    0.000000] Machine model: Radxa NIO 12L
+[    0.000000] efi: UEFI not found.
+[    0.000000] OF: reserved mem: 0x0000000043200000..0x0000000043dfffff (12288 KiB) nomap non-reusable optee@43200000
+[    0.000000] Reserved memory: created DMA memory pool at 0x0000000050000000, size 41984 KiB
+[    0.000000] OF: reserved mem: initialized node memory@50000000, compatible id shared-dma-pool
+[    0.000000] OF: reserved mem: 0x0000000050000000..0x00000000528fffff (41984 KiB) nomap non-reusable memory@50000000
+[    0.000000] Reserved memory: created DMA memory pool at 0x0000000053000000, size 20480 KiB
+[    0.000000] OF: reserved mem: initialized node memory@53000000, compatible id shared-dma-pool
+[    0.000000] OF: reserved mem: 0x0000000053000000..0x00000000543fffff (20480 KiB) map non-reusable memory@53000000
+[    0.000000] OF: reserved mem: 0x0000000054600000..0x00000000547fffff (2048 KiB) nomap non-reusable memory@54600000
+[    0.000000] Reserved memory: created DMA memory pool at 0x0000000060000000, size 15360 KiB
+[    0.000000] OF: reserved mem: initialized node memory@60000000, compatible id shared-dma-pool
+[    0.000000] OF: reserved mem: 0x0000000060000000..0x0000000060efffff (15360 KiB) nomap non-reusable memory@60000000
+[    0.000000] Reserved memory: created DMA memory pool at 0x0000000060f00000, size 1024 KiB
+[    0.000000] OF: reserved mem: initialized node memory@60f00000, compatible id shared-dma-pool
+[    0.000000] OF: reserved mem: 0x0000000060f00000..0x0000000060ffffff (1024 KiB) nomap non-reusable memory@60f00000
+[    0.000000] Reserved memory: created DMA memory pool at 0x0000000061000000, size 1024 KiB
+[    0.000000] OF: reserved mem: initialized node memory@61000000, compatible id shared-dma-pool
+[    0.000000] OF: reserved mem: 0x0000000061000000..0x00000000610fffff (1024 KiB) nomap non-reusable memory@61000000
+[    0.000000] Reserved memory: created DMA memory pool at 0x0000000062000000, size 20480 KiB
+[    0.000000] OF: reserved mem: initialized node memory@62000000, compatible id shared-dma-pool
+[    0.000000] OF: reserved mem: 0x0000000062000000..0x00000000633fffff (20480 KiB) map non-reusable memory@62000000
+[    0.000000] NUMA: Faking a node at [mem 0x0000000040000000-0x000000043fffffff]
+[    0.000000] NODE_DATA(0) allocated [mem 0x43df69a80-0x43df6c8ff]
+[    0.000000] cma: Reserved 32 MiB at 0x00000000fbc00000
+[    0.000000] psci: probing for conduit method from DT.
+[    0.000000] psci: PSCIv1.1 detected in firmware.
+[    0.000000] psci: Using standard PSCI v0.2 function IDs
+[    0.000000] psci: Trusted OS migration not required
+[    0.000000] psci: SMC Calling Convention v1.2
+[    0.000000] Zone ranges:
+[    0.000000]   DMA      [mem 0x0000000040000000-0x00000000ffffffff]
+[    0.000000]   DMA32    empty
+[    0.000000]   Normal   [mem 0x0000000100000000-0x000000043fffffff]
+[    0.000000] Movable zone start for each node
+[    0.000000] Early memory node ranges
+[    0.000000]   node   0: [mem 0x0000000040000000-0x00000000431fffff]
+[    0.000000]   node   0: [mem 0x0000000043200000-0x0000000043dfffff]
+[    0.000000]   node   0: [mem 0x0000000043e00000-0x000000004fffffff]
+[    0.000000]   node   0: [mem 0x0000000050000000-0x00000000528fffff]
+[    0.000000]   node   0: [mem 0x0000000052900000-0x00000000545fffff]
+[    0.000000]   node   0: [mem 0x0000000054600000-0x00000000547fffff]
+[    0.000000]   node   0: [mem 0x0000000054800000-0x000000005fffffff]
+[    0.000000]   node   0: [mem 0x0000000060000000-0x00000000610fffff]
+[    0.000000]   node   0: [mem 0x0000000061100000-0x000000043fffffff]
+[    0.000000] Initmem setup node 0 [mem 0x0000000040000000-0x000000043fffffff]
+[    0.000000] percpu: Embedded 36 pages/cpu s109784 r8192 d29480 u147456
+[    0.000000] Detected VIPT I-cache on CPU0
+[    0.000000] CPU features: detected: GICv3 CPU interface
+[    0.000000] CPU features: detected: Virtualization Host Extensions
+[    0.000000] CPU features: detected: Broken broadcast TLBI completion
+[    0.000000] CPU features: detected: ARM errata 1165522, 1319367, or 1530923
+[    0.000000] alternatives: applying boot alternatives
+[    0.000000] Kernel command line: root=PARTLABEL=root rw
+[    0.000000] printk: log buffer data + meta data: 262144 + 917504 = 1179648 bytes
+[    0.000000] Dentry cache hash table entries: 2097152 (order: 12, 16777216 bytes, linear)
+[    0.000000] Inode-cache hash table entries: 1048576 (order: 11, 8388608 bytes, linear)
+[    0.000000] software IO TLB: area num 8.
+[    0.000000] software IO TLB: mapped [mem 0x00000000f7c00000-0x00000000fbc00000] (64MB)
+[    0.000000] Fallback order for Node 0: 0
+[    0.000000] Built 1 zonelists, mobility grouping on.  Total pages: 4194304
+[    0.000000] Policy zone: Normal
+[    0.000000] mem auto-init: stack:off, heap alloc:off, heap free:off
+[    0.000000] SLUB: HWalign=64, Order=0-3, MinObjects=0, CPUs=8, Nodes=1
+[    0.000000] ftrace: allocating 73163 entries in 288 pages
+[    0.000000] ftrace: allocated 288 pages with 2 groups
+[    0.000000] Dynamic Preempt: full
+[    0.000000] rcu: Preemptible hierarchical RCU implementation.
+[    0.000000] rcu: 	RCU priority boosting: priority 1 delay 500 ms.
+[    0.000000] 	Trampoline variant of Tasks RCU enabled.
+[    0.000000] 	Rude variant of Tasks RCU enabled.
+[    0.000000] 	Tracing variant of Tasks RCU enabled.
+[    0.000000] rcu: RCU calculated value of scheduler-enlistment delay is 100 jiffies.
+[    0.000000] RCU Tasks: Setting shift to 3 and lim to 1 rcu_task_cb_adjust=1 rcu_task_cpu_ids=8.
+[    0.000000] RCU Tasks Rude: Setting shift to 3 and lim to 1 rcu_task_cb_adjust=1 rcu_task_cpu_ids=8.
+[    0.000000] NR_IRQS: 64, nr_irqs: 64, preallocated irqs: 0
+[    0.000000] GICv3: GIC: Using split EOI/Deactivate mode
+[    0.000000] GICv3: 864 SPIs implemented
+[    0.000000] GICv3: 0 Extended SPIs implemented
+[    0.000000] Root IRQ handler: gic_handle_irq
+[    0.000000] GICv3: GICv3 features: 16 PPIs
+[    0.000000] GICv3: GICD_CTLR.DS=0, SCR_EL3.FIQ=1
+[    0.000000] GICv3: CPU0: found redistributor 0 region 0:0x000000000c040000
+[    0.000000] GICv3: GIC: PPI partition interrupt-partition-0[0] { /cpus/cpu@0[0] /cpus/cpu@100[1] /cpus/cpu@200[2] /cpus/cpu@300[3] }
+[    0.000000] GICv3: GIC: PPI partition interrupt-partition-1[1] { /cpus/cpu@400[4] /cpus/cpu@500[5] /cpus/cpu@600[6] /cpus/cpu@700[7] }
+[    0.000000] rcu: 	Offload RCU callbacks from CPUs: 0-7.
+[    0.000000] rcu: srcu_init: Setting srcu_struct sizes based on contention.
+[    0.000000] clocksource: jiffies: mask: 0xffffffff max_cycles: 0xffffffff, max_idle_ns: 1911260446275000 ns
+[    0.000000] arch_timer: [Firmware Bug]: VHE-capable CPU without EL2 virtual timer interrupt
+[    0.000000] arch_timer: cp15 timer running at 13.00MHz (hyp-phys).
+[    0.000000] clocksource: arch_sys_counter: mask: 0xffffffffffffff max_cycles: 0x2ff89eacb, max_idle_ns: 440795202429 ns
+[    0.000000] sched_clock: 56 bits at 13MHz, resolution 76ns, wraps every 4398046511101ns
+[    0.000820] Console: colour dummy device 80x25
+[    0.000830] printk: legacy console [tty0] enabled
+[    0.001767] Calibrating delay loop (skipped), value calculated using timer frequency.. 26.00 BogoMIPS (lpj=13000)
+[    0.001785] pid_max: default: 32768 minimum: 301
+[    0.004726] landlock: Up and running.
+[    0.004737] Yama: becoming mindful.
+[    0.004753] LoadPin: ready to pin (currently not enforcing)
+[    0.004776] SELinux:  Initializing.
+[    0.007304] LSM support for eBPF active
+[    0.008028] Mount-cache hash table entries: 32768 (order: 6, 262144 bytes, linear)
+[    0.008062] Mountpoint-cache hash table entries: 32768 (order: 6, 262144 bytes, linear)
+[    0.008788] VFS: Finished mounting rootfs on nullfs
+[    0.012271] rcu: Hierarchical SRCU implementation.
+[    0.012283] rcu: 	Max phase no-delay instances is 400.
+[    0.012713] Timer migration: 1 hierarchy levels; 8 children per group; 1 crossnode level
+[    0.013497] EFI services will not be available.
+[    0.013856] smp: Bringing up secondary CPUs ...
+[    0.015530] Detected VIPT I-cache on CPU1
+[    0.015659] GICv3: CPU1: found redistributor 100 region 0:0x000000000c060000
+[    0.015689] CPU1: Booted secondary processor 0x0000000100 [0x412fd050]
+[    0.017838] Detected VIPT I-cache on CPU2
+[    0.017947] GICv3: CPU2: found redistributor 200 region 0:0x000000000c080000
+[    0.017966] CPU2: Booted secondary processor 0x0000000200 [0x412fd050]
+[    0.019930] Detected VIPT I-cache on CPU3
+[    0.020038] GICv3: CPU3: found redistributor 300 region 0:0x000000000c0a0000
+[    0.020055] CPU3: Booted secondary processor 0x0000000300 [0x412fd050]
+[    0.022173] CPU features: detected: Spectre-v4
+[    0.022181] CPU features: detected: Spectre-BHB
+[    0.022186] CPU features: detected: SSBS not fully self-synchronizing
+[    0.022189] Detected PIPT I-cache on CPU4
+[    0.022273] GICv3: CPU4: found redistributor 400 region 0:0x000000000c0c0000
+[    0.022290] CPU4: Booted secondary processor 0x0000000400 [0x411fd410]
+[    0.024257] Detected PIPT I-cache on CPU5
+[    0.024348] GICv3: CPU5: found redistributor 500 region 0:0x000000000c0e0000
+[    0.024366] CPU5: Booted secondary processor 0x0000000500 [0x411fd410]
+[    0.026397] Detected PIPT I-cache on CPU6
+[    0.026488] GICv3: CPU6: found redistributor 600 region 0:0x000000000c100000
+[    0.026505] CPU6: Booted secondary processor 0x0000000600 [0x411fd410]
+[    0.028440] Detected PIPT I-cache on CPU7
+[    0.028531] GICv3: CPU7: found redistributor 700 region 0:0x000000000c120000
+[    0.028548] CPU7: Booted secondary processor 0x0000000700 [0x411fd410]
+[    0.028636] smp: Brought up 1 node, 8 CPUs
+[    0.028902] SMP: Total of 8 processors activated.
+[    0.028919] CPU: All CPU(s) started at EL2
+[    0.028932] CPU features: detected: 32-bit EL0 Support
+[    0.028946] CPU features: detected: Data cache clean to the PoU not required for I/D coherence
+[    0.028966] CPU features: detected: Common not Private translations
+[    0.028981] CPU features: detected: CRC32 instructions
+[    0.028999] CPU features: detected: RCpc load-acquire (LDAPR)
+[    0.029014] CPU features: detected: LSE atomic instructions
+[    0.029030] CPU features: detected: Privileged Access Never
+[    0.029044] CPU features: detected: PMUv3
+[    0.029056] CPU features: detected: RAS Extension Support
+[    0.029072] CPU features: detected: XNX
+[    0.029086] CPU features: detected: Speculative Store Bypassing Safe (SSBS)
+[    0.029184] alternatives: applying system-wide alternatives
+[    0.036079] CPU features: detected: ICV_DIR_EL1 trapping
+[    0.036103] CPU features: detected: Hardware dirty bit management on CPU4-7
+[    0.036829] Memory: 16169240K/16777216K available (24384K kernel code, 4058K rwdata, 19560K rodata, 3200K init, 696K bss, 566624K reserved, 32768K cma-reserved)
+[    0.040978] devtmpfs: initialized
+[    0.049653] posixtimers hash table entries: 4096 (order: 4, 65536 bytes, linear)
+[    0.049723] futex hash table entries: 2048 (131072 bytes on 1 NUMA nodes, total 128 KiB, linear).
+[    0.049881] 19728 pages in range for non-PLT usage
+[    0.049884] 511248 pages in range for PLT usage
+[    0.050789] DMI: not present or invalid.
+[    0.052535] NET: Registered PF_NETLINK/PF_ROUTE protocol family
+[    0.053026] DMA: preallocated 2048 KiB GFP_KERNEL pool for atomic allocations
+[    0.053180] DMA: preallocated 2048 KiB GFP_KERNEL|GFP_DMA pool for atomic allocations
+[    0.053208] audit: initializing netlink subsys (disabled)
+[    0.053349] audit: type=2000 audit(0.046:1): state=initialized audit_enabled=0 res=1
+[    0.086625] thermal_sys: Registered thermal governor 'step_wise'
+[    0.086632] thermal_sys: Registered thermal governor 'user_space'
+[    0.086642] thermal_sys: Registered thermal governor 'power_allocator'
+[    0.086678] cpuidle: using governor ladder
+[    0.086694] cpuidle: using governor menu
+[    0.086783] hw-breakpoint: found 6 breakpoint and 4 watchpoint registers.
+[    0.086905] ASID allocator initialised with 65536 entries
+[    0.087546] Serial: AMBA PL011 UART driver
+[    0.092601] /soc/interrupt-controller@c000000: Fixed dependency cycle(s) with /soc/interrupt-controller@c000000
+[    0.092789] /soc/i2c@11d01000/pmic@34/typec/connector: Fixed dependency cycle(s) with /soc/usb@11201000
+[    0.092805] /soc/usb@11201000: Fixed dependency cycle(s) with /soc/i2c@11d01000/pmic@34/typec/connector
+[    0.092913] /soc/i2c@11e02000/typec-mux@48: Fixed dependency cycle(s) with /soc/i2c@11d01000/pmic@34/typec/connector
+[    0.092929] /soc/i2c@11d01000/pmic@34/typec/connector: Fixed dependency cycle(s) with /soc/i2c@11e02000/typec-mux@48
+[    0.093185] /soc/rdma@1c002000: Fixed dependency cycle(s) with /soc/ovl@1c000000
+[    0.093196] /soc/ovl@1c000000: Fixed dependency cycle(s) with /soc/rdma@1c002000
+[    0.093217] /soc/color@1c003000: Fixed dependency cycle(s) with /soc/rdma@1c002000
+[    0.093227] /soc/rdma@1c002000: Fixed dependency cycle(s) with /soc/color@1c003000
+[    0.093255] /soc/ccorr@1c004000: Fixed dependency cycle(s) with /soc/color@1c003000
+[    0.093266] /soc/color@1c003000: Fixed dependency cycle(s) with /soc/ccorr@1c004000
+[    0.093287] /soc/aal@1c005000: Fixed dependency cycle(s) with /soc/ccorr@1c004000
+[    0.093297] /soc/ccorr@1c004000: Fixed dependency cycle(s) with /soc/aal@1c005000
+[    0.093318] /soc/gamma@1c006000: Fixed dependency cycle(s) with /soc/aal@1c005000
+[    0.093329] /soc/aal@1c005000: Fixed dependency cycle(s) with /soc/gamma@1c006000
+[    0.093350] /soc/dither@1c007000: Fixed dependency cycle(s) with /soc/gamma@1c006000
+[    0.093360] /soc/gamma@1c006000: Fixed dependency cycle(s) with /soc/dither@1c007000
+[    0.093421] /soc/dpi@1c112000: Fixed dependency cycle(s) with /soc/syscon@1c100000
+[    0.093430] /soc/vpp-merge@1c110000: Fixed dependency cycle(s) with /soc/dpi@1c112000
+[    0.093438] /soc/vpp-merge@1c110000: Fixed dependency cycle(s) with /soc/syscon@1c100000
+[    0.093447] /soc/hdr-engine@1c114000: Fixed dependency cycle(s) with /soc/vpp-merge@1c110000
+[    0.093456] /soc/hdr-engine@1c114000: Fixed dependency cycle(s) with /soc/syscon@1c100000
+[    0.093464] /soc/syscon@1c100000: Fixed dependency cycle(s) with /soc/hdr-engine@1c114000
+[    0.093622] /soc/dpi@1c112000: Fixed dependency cycle(s) with /soc/vpp-merge@1c110000
+[    0.093635] /soc/vpp-merge@1c110000: Fixed dependency cycle(s) with /soc/hdr-engine@1c114000
+[    0.093651] /soc/hdmi-tx@1c300000: Fixed dependency cycle(s) with /soc/dpi@1c112000
+[    0.093663] /soc/dpi@1c112000: Fixed dependency cycle(s) with /soc/hdmi-tx@1c300000
+[    0.101464] /soc/pcie@112f0000: Fixed dependency cycle(s) with /soc/pcie@112f0000/interrupt-controller
+[    0.101632] /soc/pcie@112f8000: Fixed dependency cycle(s) with /soc/pcie@112f8000/interrupt-controller
+[    0.117032] /connector: Fixed dependency cycle(s) with /soc/hdmi-tx@1c300000
+[    0.117049] /soc/hdmi-tx@1c300000: Fixed dependency cycle(s) with /connector
+[    0.122620] HugeTLB: registered 1.00 GiB page size, pre-allocated 0 pages
+[    0.122633] HugeTLB: 0 KiB vmemmap can be freed for a 1.00 GiB page
+[    0.122640] HugeTLB: registered 32.0 MiB page size, pre-allocated 0 pages
+[    0.122645] HugeTLB: 0 KiB vmemmap can be freed for a 32.0 MiB page
+[    0.122650] HugeTLB: registered 2.00 MiB page size, pre-allocated 0 pages
+[    0.122654] HugeTLB: 0 KiB vmemmap can be freed for a 2.00 MiB page
+[    0.122659] HugeTLB: registered 64.0 KiB page size, pre-allocated 0 pages
+[    0.122663] HugeTLB: 0 KiB vmemmap can be freed for a 64.0 KiB page
+[    0.129057] iommu: Default domain type: Translated
+[    0.129067] iommu: DMA domain TLB invalidation policy: strict mode
+[    0.130417] SCSI subsystem initialized
+[    0.130647] usbcore: registered new interface driver usbfs
+[    0.130669] usbcore: registered new interface driver hub
+[    0.130686] usbcore: registered new device driver usb
+[    0.130996] mc: Linux media interface: v0.10
+[    0.131021] videodev: Linux video capture interface: v2.00
+[    0.131049] pps_core: LinuxPPS API ver. 1 registered
+[    0.131054] pps_core: Software ver. 5.3.6 - Copyright 2005-2007 Rodolfo Giometti <giometti@linux.it>
+[    0.131063] PTP clock support registered
+[    0.131096] EDAC MC: Ver: 3.0.0
+[    0.131297] scmi_core: SCMI protocol bus registered
+[    0.132667] FPGA manager framework
+[    0.132785] Advanced Linux Sound Architecture Driver Initialized.
+[    0.133226] NetLabel: Initializing
+[    0.133234] NetLabel:  domain hash size = 128
+[    0.133238] NetLabel:  protocols = UNLABELED CIPSOv4 CALIPSO
+[    0.133266] NetLabel:  unlabeled traffic allowed by default
+[    0.133580] vgaarb: loaded
+[    0.133785] clocksource: Switched to clocksource arch_sys_counter
+[    0.135096] VFS: Disk quotas dquot_6.6.0
+[    0.135223] VFS: Dquot-cache hash table entries: 512 (4096 bytes)
+[    0.140756] NET: Registered PF_INET protocol family
+[    0.140981] IP idents hash table entries: 262144 (order: 9, 2097152 bytes, linear)
+[    0.148074] tcp_listen_portaddr_hash hash table entries: 8192 (order: 5, 131072 bytes, linear)
+[    0.148124] Table-perturb hash table entries: 65536 (order: 6, 262144 bytes, linear)
+[    0.148141] TCP established hash table entries: 131072 (order: 8, 1048576 bytes, linear)
+[    0.148337] TCP bind hash table entries: 65536 (order: 9, 2097152 bytes, linear)
+[    0.149005] TCP: Hash tables configured (established 131072 bind 65536)
+[    0.149236] MPTCP token hash table entries: 16384 (order: 7, 393216 bytes, linear)
+[    0.149358] UDP hash table entries: 8192 (order: 7, 524288 bytes, linear)
+[    0.149653] NET: Registered PF_UNIX/PF_LOCAL protocol family
+[    0.150095] RPC: Registered named UNIX socket transport module.
+[    0.150106] RPC: Registered udp transport module.
+[    0.150110] RPC: Registered tcp transport module.
+[    0.150114] RPC: Registered tcp-with-tls transport module.
+[    0.150118] RPC: Registered tcp NFSv4.1 backchannel transport module.
+[    0.150129] PCI: CLS 0 bytes, default 64
+[    0.150314] Unpacking initramfs...
+[    0.160602] kvm [1]: nv: 571 coarse grained trap handlers
+[    0.160901] kvm [1]: nv: 710 fine grained trap handlers
+[    0.161077] kvm [1]: IPA Size Limit: 40 bits
+[    0.161095] kvm [1]: GICv3: no GICV resource entry
+[    0.161101] kvm [1]: disabling GICv2 emulation
+[    0.161132] kvm [1]: GIC system register CPU interface enabled
+[    0.161150] kvm [1]: vgic interrupt IRQ9
+[    0.161175] kvm [1]: VHE mode initialized successfully
+[    0.162515] Initialise system trusted keyrings
+[    0.162737] workingset: timestamp_bits=42 (anon: 37) max_order=22 bucket_order=0 (anon: 0)
+[    0.168190] squashfs: version 4.0 (2009/01/31) Phillip Lougher
+[    0.169823] NFS: Registering the id_resolver key type
+[    0.169852] Key type id_resolver registered
+[    0.169857] Key type id_legacy registered
+[    0.169918] nfs4filelayout_init: NFSv4 File Layout Driver Registering...
+[    0.169924] nfs4flexfilelayout_init: NFSv4 Flexfile Layout Driver Registering...
+[    0.170254] 9p: Installing v9fs 9p2000 file system support
+[    0.170935] cryptd: max_cpu_qlen set to 1000
+[    0.193207] Key type asymmetric registered
+[    0.193217] Asymmetric key parser 'x509' registered
+[    0.193222] Asymmetric key parser 'pkcs8' registered
+[    0.193279] Block layer SCSI generic (bsg) driver version 0.4 loaded (major 240)
+[    0.193430] io scheduler mq-deadline registered
+[    0.193436] io scheduler kyber registered
+[    0.466342] Freeing initrd memory: 12008K
+[    0.474802] ledtrig-cpu: registered to indicate activity on CPUs
+[    0.487235] cannot find "mediatek,mt8195-fhctl"
+[    0.498253] /soc/pwrap@10024000/pmic: Fixed dependency cycle(s) with /soc/pwrap@10024000/pmic/regulators/buck_vs2
+[    0.498281] /soc/pwrap@10024000/pmic: Fixed dependency cycle(s) with /soc/pwrap@10024000/pmic/regulators/buck_vs1
+[    0.501686] mtk-socinfo mtk-socinfo.0.auto: MediaTek Genio 1200 (MT8395) SoC detected.
+[    0.507331] Serial: 8250/16550 driver, 4 ports, IRQ sharing enabled
+[    0.529015] 11001100.serial: ttyS0 MMIO32:0x0000000011001100 (irq = 254, base_baud = 1625000) is a ST16650V2
+[    0.529181] printk: console [ttyS0] enabled
+[    0.549813] 11001200.serial: ttyS1 MMIO32:0x0000000011001200 (irq = 255, base_baud = 1625000) is a ST16650V2
+[    0.567765] loop: module loaded
+[    0.568645] megasas: 07.734.00.00-rc1
+[    0.574612] tun: Universal TUN/TAP device driver, 1.6
+[    0.575453] thunder_xcv, ver 1.0
+[    0.575487] thunder_bgx, ver 1.0
+[    0.575528] nicpf, ver 1.0
+[    0.576157] e1000: Intel(R) PRO/1000 Network Driver
+[    0.576165] e1000: Copyright (c) 1999-2006 Intel Corporation.
+[    0.576192] e1000e: Intel(R) PRO/1000 Network Driver
+[    0.576197] e1000e: Copyright(c) 1999 - 2015 Intel Corporation.
+[    0.576233] igb: Intel(R) Gigabit Ethernet Network Driver
+[    0.576238] igb: Copyright (c) 2007-2014 Intel Corporation.
+[    0.576264] igbvf: Intel(R) Gigabit Virtual Function Network Driver
+[    0.576269] igbvf: Copyright (c) 2009 - 2012 Intel Corporation.
+[    0.576293] sky2: driver version 1.30
+[    0.576925] PPP generic driver version 2.4.2
+[    0.577028] PPP MPPE Compression module registered
+[    0.577221] VFIO - User Level meta-driver version: 0.3
+[    0.580493] usbcore: registered new interface driver cdc_acm
+[    0.580502] cdc_acm: USB Abstract Control Model driver for USB modems and ISDN adapters
+[    0.580627] usbcore: registered new interface driver uas
+[    0.580668] usbcore: registered new interface driver usb-storage
+[    0.580845] usbcore: registered new device driver onboard-usb-dev
+[    0.584573] i2c_dev: i2c /dev entries driver
+[    0.590923] mt6360-adc: Failed to locate of_node [id: -2]
+[    0.591365] platform mt6360-chg.4.auto: DMA mask not set
+[    0.591631] mt6360-led: Failed to locate of_node [id: -2]
+[    0.592233] platform mt6360-tcpc.7.auto: DMA mask not set
+[    0.592808] mt6360-tcpc mt6360-tcpc.7.auto: Failed to register tcpci port
+[    0.622925] mtk-lvts-thermal 1100b000.thermal-sensor: golden temp=60
+[    0.629574] mtk-lvts-thermal 11278000.thermal-sensor: golden temp=60
+[    0.635907] mtk-wdt 10007000.watchdog: Watchdog enabled (timeout=31 sec, nowayout=0)
+[    0.636590] softdog: initialized. soft_noboot=0 soft_margin=60 sec soft_panic=0 (nowayout=0)
+[    0.636601] softdog:              soft_reboot_cmd=<not set> soft_active_on_boot=0
+[    0.639474] mtk-msdc 11240000.mmc: Got CD GPIO
+[    0.641631] SMCCC: SOC_ID: ID = jep106:0426:8195 Revision = 0x00000000
+[    0.641845] hid: raw HID events driver (C) Jiri Kosina
+[    0.642244] SPI driver goodix-spi-hid has no spi_device_id for goodix,gt7986u-spifw
+[    0.642437] usbcore: registered new interface driver usbhid
+[    0.642445] usbhid: USB HID core driver
+[    0.645021] mtk-scp 10500000.scp: assigned reserved memory node memory@50000000
+[    0.646612] remoteproc remoteproc0: scp is available
+[    0.646743] remoteproc remoteproc0: Direct firmware load for mediatek/mt8195/scp.img failed with error -2
+[    0.646757] LoadPin: firmware old-api-pinning-ignored obj=<unknown> pid=89 cmdline=""
+[    0.646769] remoteproc remoteproc0: powering up scp
+[    0.646847] remoteproc remoteproc0: Direct firmware load for mediatek/mt8195/scp.img failed with error -2
+[    0.646856] LoadPin: firmware old-api-pinning-ignored obj=<unknown> pid=89 cmdline=""
+[    0.646864] remoteproc remoteproc0: request_firmware failed: -2
+[    0.652307] hw perfevents: enabled with armv8_cortex_a55 PMU driver, 7 (0,8000003f) counters available
+[    0.653120] hw perfevents: enabled with armv8_cortex_a78 PMU driver, 7 (0,8000003f) counters available
+[    0.654054] watchdog: NMI not fully supported
+[    0.654062] watchdog: Hard watchdog permanently disabled
+[    0.654231] optee: probing for conduit method.
+[    0.654258] optee: revision 3.19 (00000000ab5d0acf)
+[    0.654276] optee: dynamic shared memory is enabled
+[    0.654817] optee: initialized driver
+[    0.657059] NET: Registered PF_INET6 protocol family
+[    0.658177] Segment Routing with IPv6
+[    0.658207] In-situ OAM (IOAM) with IPv6
+[    0.658242] NET: Registered PF_PACKET protocol family
+[    0.658249] PFKEY is deprecated and scheduled to be removed in 2027, please contact the netdev mailing list
+[    0.658258] NET: Registered PF_KEY protocol family
+[    0.658280] bridge: filtering via arp/ip/ip6tables is no longer available by default. Update your scripts to load br_netfilter if you need this.
+[    0.658608] 9pnet: Installing 9P2000 support
+[    0.658653] Key type dns_resolver registered
+[    0.669860] registered taskstats version 1
+[    0.673865] Loading compiled-in X.509 certificates
+[    0.681705] Demotion targets for Node 0: null
+[    0.681959] Key type .fscrypt registered
+[    0.681969] Key type fscrypt-provisioning registered
+[    0.682209] Key type encrypted registered
+[    0.691090] vmch_pmu: Bringing 3000000uV into 3300000-3300000uV
+[    0.700494] mt6360 5-0034: Failed to create device link (0x180) with supplier regulator-vsys-buck for /soc/i2c@11d01000/pmic@34/regulator
+[    0.702422] mediatek-hdmi-phy 11d5f000.hdmi-phy: Using default TX DRV impedance: 4.2k/36
+[    0.707215] mediatek-drm mediatek-drm.9.auto: Adding component match for /soc/ovl@1c000000
+[    0.707286] mediatek-drm mediatek-drm.9.auto: Adding component match for /soc/rdma@1c002000
+[    0.707329] mediatek-drm mediatek-drm.9.auto: Adding component match for /soc/color@1c003000
+[    0.707369] mediatek-drm mediatek-drm.9.auto: Adding component match for /soc/ccorr@1c004000
+[    0.707408] mediatek-drm mediatek-drm.9.auto: Adding component match for /soc/aal@1c005000
+[    0.707448] mediatek-drm mediatek-drm.9.auto: Adding component match for /soc/gamma@1c006000
+[    0.707624] mediatek-drm mediatek-drm.9.auto: Adding component match for /soc/merge@1c014000
+[    0.710199] mediatek-disp-ovl-adaptor mediatek-disp-ovl-adaptor.12.auto: Failed to get id. type: 2, alias: -19
+[    0.710212] mediatek-disp-ovl-adaptor mediatek-disp-ovl-adaptor.12.auto: Skipping unknown component /soc/merge@1c014000
+[    0.710473] mediatek-disp-ovl-adaptor mediatek-disp-ovl-adaptor.12.auto: Failed to get id. type: 2, alias: 5
+[    0.710481] mediatek-disp-ovl-adaptor mediatek-disp-ovl-adaptor.12.auto: Skipping unknown component /soc/vpp-merge@1c110000
+[    0.712713] mediatek-drm mediatek-drm.11.auto: Adding component match for /soc/vpp-merge@1c110000
+[    0.712755] mediatek-drm mediatek-drm.11.auto: Adding component match for /soc/dpi@1c112000
+[    0.721667] mt6397-rtc mt6359-rtc: registered as rtc0
+[    0.722151] mt6397-rtc mt6359-rtc: setting system clock to 2026-11-08T14:14:06 UTC (1794147246)
+[    0.723043] input: mtk-pmic-keys as /devices/platform/soc/10024000.pwrap/10024000.pwrap:pmic/mt6359-keys/input/input0
+[    0.723304] mt6359-accdet: Failed to locate of_node [id: -1]
+[    0.724332] mtu3 11201000.usb: failed to get vusb33
+[    0.724836] mtu3 112a1000.usb: failed to get vusb33
+[    0.725826] mt6360-tcpc mt6360-tcpc.7.auto: Failed to register tcpci port
+[    0.737176] vcn33_2: Bringing 3500000uV into 3300000-3300000uV
+[    0.787088] cpu cpu0: EM: created perf domain
+[    0.789114] cpu cpu4: EM: created perf domain
+[    0.791831] ufshcd-mtk 11270000.ufshci: find ti,syscon-reset fail
+[    0.791859] ufshcd-mtk 11270000.ufshci: phys node found
+[    0.792802] ufshcd-mtk 11270000.ufshci: ufshcd_populate_vreg: Unable to find vdd-hba-supply regulator, assuming enabled
+[    0.792813] ufshcd-mtk 11270000.ufshci: ufshcd_populate_vreg: unable to find vcc-max-microamp
+[    0.792818] ufshcd-mtk 11270000.ufshci: ufshcd_populate_vreg: Unable to find vccq-supply regulator, assuming enabled
+[    0.792823] ufshcd-mtk 11270000.ufshci: ufshcd_populate_vreg: unable to find vccq2-max-microamp
+[    0.793014] ufshcd-mtk 11270000.ufshci: caps: 0x100
+[    0.793045] ufshcd-mtk 11270000.ufshci: Failed to get reset control hci_rst: -2
+[    0.793050] ufshcd-mtk 11270000.ufshci: Failed to get reset control unipro_rst: -2
+[    0.793053] ufshcd-mtk 11270000.ufshci: Failed to get reset control crypto_rst: -2
+[    0.793056] ufshcd-mtk 11270000.ufshci: Failed to get reset control mphy_rst: -2
+[    0.793060] ufshcd-mtk 11270000.ufshci: clk "ufs" present
+[    0.793062] ufshcd-mtk 11270000.ufshci: clk "ufs_aes" present
+[    0.793064] ufshcd-mtk 11270000.ufshci: clk "ufs_tick" present
+[    0.793067] ufshcd-mtk 11270000.ufshci: clk "unipro_sysclk" present
+[    0.793069] ufshcd-mtk 11270000.ufshci: clk "unipro_tick" present
+[    0.793071] ufshcd-mtk 11270000.ufshci: clk "unipro_mp_bclk" present
+[    0.793073] ufshcd-mtk 11270000.ufshci: clk "ufs_tx_symbol" present
+[    0.793076] ufshcd-mtk 11270000.ufshci: clk "ufs_mem_sub" present
+[    0.793078] ufshcd-mtk 11270000.ufshci: ufs_mtk_init_clocks: Clk-scaling not ready. Feature disabled.
+[    0.793103] ufshcd-mtk 11270000.ufshci: legacy IP version - 0x20160706, is legacy : 1
+[    0.793419] mtk-msdc 11240000.mmc: Got CD GPIO
+[    0.810586] ufshcd-mtk 11270000.ufshci: device reset done
+[    0.810713] ufshcd-mtk 11270000.ufshci: ufs_mtk_crypto_enable: crypto enable failed, err: 18446744073709551615
+[    0.811424] scsi host0: ufshcd
+[    0.824871] mtk-msdc 11230000.mmc: msdc_track_cmd_data: cmd=1 arg=00000000; host->error=0x00000002
+[    0.857526] mtk-msdc 11230000.mmc: msdc_track_cmd_data: cmd=1 arg=00000000; host->error=0x00000002
+[    0.881053] ufshcd-mtk 11270000.ufshci: dme-set: attr-id 0x15d4 val 0x3 failed 0 retries
+[    0.882415] mmc1: host does not support reading read-only switch, assuming write-enable
+[    0.884921] scsi 0:0:0:49488: Well-known LUN    SAMSUNG  KLUEG8U1EA-B0C1  0400 PQ: 0 ANSI: 6
+[    0.887946] scsi 0:0:0:49476: Well-known LUN    SAMSUNG  KLUEG8U1EA-B0C1  0400 PQ: 0 ANSI: 6
+[    0.890323] scsi 0:0:0:49456: Well-known LUN    SAMSUNG  KLUEG8U1EA-B0C1  0400 PQ: 0 ANSI: 6
+[    0.890795] mtk-msdc 11230000.mmc: msdc_track_cmd_data: cmd=1 arg=00000000; host->error=0x00000002
+[    0.891133] mmc1: Host Software Queue enabled
+[    0.891153] mmc1: new UHS-I speed SDR104 SDXC card at address aaaa
+[    0.891834] mmcblk1: mmc1:aaaa SD64G 59.5 GiB
+[    0.892095] bus_add_device: cannot add device 'ufs_rpmb0' to unregistered bus 'ufs_rpmb'
+[    0.892123] ufshcd-mtk 11270000.ufshci: Failed to register UFS RPMB device 0
+[    0.892538] scsi 0:0:0:0: Direct-Access     SAMSUNG  KLUEG8U1EA-B0C1  0400 PQ: 0 ANSI: 6
+[    0.894605] scsi 0:0:0:1: Direct-Access     SAMSUNG  KLUEG8U1EA-B0C1  0400 PQ: 0 ANSI: 6
+[    0.894737]  mmcblk1: p1
+[    0.895602] mediatek-drm-hdmi-v2 1c300000.hdmi-tx: error -EOPNOTSUPP: Failed to find CEC node
+[    0.895611] mediatek-drm-hdmi-v2 1c300000.hdmi-tx: CEC support unavailable: node not found
+[    0.895873] scsi 0:0:0:2: Direct-Access     SAMSUNG  KLUEG8U1EA-B0C1  0400 PQ: 0 ANSI: 6
+[    0.896142] mediatek-drm-hdmi-v2 1c300000.hdmi-tx: Enabling runtime PM for inactive device with active children
+[    0.897116] panfrost 13000000.gpu: clock rate = 700000092
+[    0.897407] sd 0:0:0:0: [sda] 1024 4096-byte logical blocks: (4.19 MB/4.00 MiB)
+[    0.897518] sd 0:0:0:0: [sda] Write Protect is off
+[    0.897734] sd 0:0:0:0: [sda] Write cache: enabled, read cache: enabled, supports DPO and FUA
+[    0.897816] sd 0:0:0:0: [sda] Preferred minimum I/O size 8192 bytes
+[    0.897830] sd 0:0:0:0: [sda] Optimal transfer size 8192 bytes
+[    0.897835] sd 0:0:0:1: [sdb] 1024 4096-byte logical blocks: (4.19 MB/4.00 MiB)
+[    0.897870] panfrost 13000000.gpu: [drm:panfrost_devfreq_init] Failed to register cooling device
+[    0.897908] sd 0:0:0:1: [sdb] Write Protect is off
+[    0.897910] panfrost 13000000.gpu: mali-g57 id 0x9093 major 0x0 minor 0x1 status 0x0
+[    0.897916] panfrost 13000000.gpu: features: 00000000,000019f7, issues: 00000001,80000400
+[    0.897920] panfrost 13000000.gpu: Features: L2:0x07120206 Shader:0x00000000 Tiler:0x00000809 Mem:0x301 MMU:0x00002830 AS:0xff JS:0x7
+[    0.897925] panfrost 13000000.gpu: shader_present=0x50045 l2_present=0x1
+[    0.897983] sd 0:0:0:1: [sdb] Write cache: enabled, read cache: enabled, supports DPO and FUA
+[    0.898000] sd 0:0:0:2: [sdc] 62480384 4096-byte logical blocks: (256 GB/238 GiB)
+[    0.898014] sd 0:0:0:1: [sdb] Preferred minimum I/O size 8192 bytes
+[    0.898017] sd 0:0:0:1: [sdb] Optimal transfer size 8192 bytes
+[    0.898042] sd 0:0:0:2: [sdc] Write Protect is off
+[    0.898263] sd 0:0:0:2: [sdc] Write cache: enabled, read cache: enabled, supports DPO and FUA
+[    0.898332] sd 0:0:0:2: [sdc] Preferred minimum I/O size 8192 bytes
+[    0.898347] sd 0:0:0:2: [sdc] Optimal transfer size 8192 bytes
+[    0.899372] panfrost 13000000.gpu: [drm] Using Transparent Hugepage
+[    0.900309] [drm] Initialized panfrost 1.6.0 for 13000000.gpu on minor 0
+[    0.900837] dwmac-mediatek 11021000.ethernet: IRQ eth_wake_irq not found
+[    0.900844] dwmac-mediatek 11021000.ethernet: IRQ sfty not found
+[    0.900897] dwmac-mediatek 11021000.ethernet: Cannot get CSR clock
+[    0.901191] dwmac-mediatek 11021000.ethernet: User ID: 0x11, Synopsys ID: 0x51
+[    0.901202] dwmac-mediatek 11021000.ethernet: 	DWMAC4/5
+[    0.901207] dwmac-mediatek 11021000.ethernet: DMA HW capability register supported
+[    0.901210] dwmac-mediatek 11021000.ethernet: Active PHY interface: RGMII (1)
+[    0.901213] dwmac-mediatek 11021000.ethernet: RX Checksum Offload Engine supported
+[    0.901216] dwmac-mediatek 11021000.ethernet: TX Checksum insertion supported
+[    0.901219] dwmac-mediatek 11021000.ethernet: Wake-Up On Lan supported
+[    0.901247] dwmac-mediatek 11021000.ethernet: Enabled L3L4 Flow TC (entries=4)
+[    0.901250] dwmac-mediatek 11021000.ethernet: Enabled RFS Flow TC (entries=10)
+[    0.901253] dwmac-mediatek 11021000.ethernet: TSO supported
+[    0.901256] dwmac-mediatek 11021000.ethernet: SPH feature enabled
+[    0.901258] dwmac-mediatek 11021000.ethernet: Using 35/40 bits DMA host/device width
+[    0.925091] mtk-msdc 11230000.mmc: msdc_track_cmd_data: cmd=1 arg=00000000; host->error=0x00000002
+[    0.926647] mmc0: Failed to initialize a non-removable card
+[    0.939601] sd 0:0:0:0: [sda] Attached SCSI disk
+[    0.946024] sd 0:0:0:1: [sdb] Attached SCSI disk
+[    0.956923]  sdc: sdc1
+[    0.957115] sd 0:0:0:2: [sdc] Attached SCSI disk
+[    1.040737] mtu3 11201000.usb: uwk - reg:0x400, version:103
+[    1.040976] mtu3 11201000.usb: dr_mode: 3, drd: auto
+[    1.041002] mtu3 11201000.usb: u2p_dis_msk: 0, u3p_dis_msk: 0
+[    1.041252] mtu3 11201000.usb: usb3-drd: 1
+[    1.041393] mtu3 11201000.usb: irq 333
+[    1.041441] mtu3 11201000.usb: IP version 0x1006(U3 IP)
+[    1.041465] mtu3 11201000.usb: max_speed: super-speed-plus
+[    1.041620] mtu3 11201000.usb: fifosz/epnum: Tx=0x4000/8, Rx=0x4000/8
+[    1.041669] mtu3 11201000.usb: dma mask: 36 bits
+[    1.046181] xhci-mtk 11200000.usb: supply vusb33 not found, using dummy regulator
+[    1.047046] xhci-mtk 11200000.usb: xHCI Host Controller
+[    1.047098] xhci-mtk 11200000.usb: new USB bus registered, assigned bus number 1
+[    1.047301] xhci-mtk 11200000.usb: hcc params 0x01400f99 hci version 0x110 quirks 0x0000000000200010
+[    1.047387] xhci-mtk 11200000.usb: irq 334, io mem 0x11200000
+[    1.047627] xhci-mtk 11200000.usb: xHCI Host Controller
+[    1.047668] xhci-mtk 11200000.usb: new USB bus registered, assigned bus number 2
+[    1.047708] xhci-mtk 11200000.usb: Host supports USB 3.2 Enhanced SuperSpeed
+[    1.047845] usb usb1: New USB device found, idVendor=1d6b, idProduct=0002, bcdDevice= 7.03
+[    1.048131] usb usb1: New USB device strings: Mfr=3, Product=2, SerialNumber=1
+[    1.048170] usb usb1: Product: xHCI Host Controller
+[    1.048196] usb usb1: Manufacturer: Linux 7.3.3-edge-genio xhci-hcd
+[    1.048224] usb usb1: SerialNumber: 11200000.usb
+[    1.049285] hub 1-0:1.0: USB hub found
+[    1.049368] hub 1-0:1.0: 1 port detected
+[    1.050067] usb usb2: We don't know the algorithms for LPM for this host, disabling LPM.
+[    1.050107] usb usb2: New USB device found, idVendor=1d6b, idProduct=0003, bcdDevice= 7.03
+[    1.050375] usb usb2: New USB device strings: Mfr=3, Product=2, SerialNumber=1
+[    1.050413] usb usb2: Product: xHCI Host Controller
+[    1.050440] usb usb2: Manufacturer: Linux 7.3.3-edge-genio xhci-hcd
+[    1.050467] usb usb2: SerialNumber: 11200000.usb
+[    1.051324] hub 2-0:1.0: USB hub found
+[    1.051405] hub 2-0:1.0: 1 port detected
+[    1.052033] mtu3 11201000.usb: xHCI platform device register success...
+[    1.054881] mtu3 112a1000.usb: uwk - reg:0x400, version:105
+[    1.055128] mtu3 112a1000.usb: dr_mode: 3, drd: auto
+[    1.055160] mtu3 112a1000.usb: u2p_dis_msk: 0, u3p_dis_msk: 0
+[    1.055409] mtu3 112a1000.usb: usb3-drd: 0
+[    1.055530] mtu3 112a1000.usb: irq 335
+[    1.055619] mtu3 112a1000.usb: IP version 0x1006(U2 IP)
+[    1.055650] mtu3 112a1000.usb: max_speed: high-speed
+[    1.055681] mtu3 112a1000.usb: fifosz/epnum: Tx=0x2000/8, Rx=0x2000/8
+[    1.055727] mtu3 112a1000.usb: dma mask: 36 bits
+[    1.059577] xhci-mtk 112a0000.usb: supply vusb33 not found, using dummy regulator
+[    1.060346] xhci-mtk 112a0000.usb: xHCI Host Controller
+[    1.060395] xhci-mtk 112a0000.usb: new USB bus registered, assigned bus number 3
+[    1.060524] xhci-mtk 112a0000.usb: USB0 root hub has no ports
+[    1.060564] xhci-mtk 112a0000.usb: hcc params 0x01400f99 hci version 0x110 quirks 0x0000000000200010
+[    1.060640] xhci-mtk 112a0000.usb: irq 336, io mem 0x112a0000
+[    1.060950] usb usb3: New USB device found, idVendor=1d6b, idProduct=0002, bcdDevice= 7.03
+[    1.061239] usb usb3: New USB device strings: Mfr=3, Product=2, SerialNumber=1
+[    1.061278] usb usb3: Product: xHCI Host Controller
+[    1.061304] usb usb3: Manufacturer: Linux 7.3.3-edge-genio xhci-hcd
+[    1.061332] usb usb3: SerialNumber: 112a0000.usb
+[    1.062225] hub 3-0:1.0: USB hub found
+[    1.062312] hub 3-0:1.0: 1 port detected
+[    1.062919] mtu3 112a1000.usb: xHCI platform device register success...
+[    1.103177] mtk-pcie-gen3 112f0000.pcie: host bridge /soc/pcie@112f0000 ranges:
+[    1.103252] mtk-pcie-gen3 112f0000.pcie:       IO 0x0020000000..0x00201fffff -> 0x0020000000
+[    1.103288] mtk-pcie-gen3 112f0000.pcie:      MEM 0x0020200000..0x0023ffffff -> 0x0020200000
+[    1.103752] mtk-pcie-gen3 112f8000.pcie: host bridge /soc/pcie@112f8000 ranges:
+[    1.103879] mtk-pcie-gen3 112f8000.pcie:       IO 0x0024000000..0x00241fffff -> 0x0024000000
+[    1.103899] mtk-pcie-gen3 112f8000.pcie:      MEM 0x0024200000..0x0027ffffff -> 0x0024200000
+[    1.104502]  SVSB_GPU_LOW: svs_init02_isr_handler: VOP74~30:0x1e1f1f20~0x21222324, DC:0x00000000
+[    1.104567]  SVSB_GPU_HIGH: svs_init02_isr_handler: VOP74~30:0x2b2c2d2f~0x30323334, DC:0x00000000
+[    1.111026] xhci-mtk 11290000.usb: uwk - reg:0x400, version:104
+[    1.111425] xhci-mtk 11290000.usb: xHCI Host Controller
+[    1.111447] xhci-mtk 11290000.usb: new USB bus registered, assigned bus number 4
+[    1.111536] xhci-mtk 11290000.usb: hcc params 0x01400f99 hci version 0x110 quirks 0x0000000020200010
+[    1.111597] xhci-mtk 11290000.usb: irq 340, io mem 0x11290000
+[    1.111731] xhci-mtk 11290000.usb: xHCI Host Controller
+[    1.111747] xhci-mtk 11290000.usb: new USB bus registered, assigned bus number 5
+[    1.111762] xhci-mtk 11290000.usb: Host supports USB 3.2 Enhanced SuperSpeed
+[    1.111836] usb usb4: New USB device found, idVendor=1d6b, idProduct=0002, bcdDevice= 7.03
+[    1.111945] usb usb4: New USB device strings: Mfr=3, Product=2, SerialNumber=1
+[    1.111959] usb usb4: Product: xHCI Host Controller
+[    1.111968] usb usb4: Manufacturer: Linux 7.3.3-edge-genio xhci-hcd
+[    1.111977] usb usb4: SerialNumber: 11290000.usb
+[    1.112438] hub 4-0:1.0: USB hub found
+[    1.112475] hub 4-0:1.0: 1 port detected
+[    1.112736] usb usb5: We don't know the algorithms for LPM for this host, disabling LPM.
+[    1.112751] usb usb5: New USB device found, idVendor=1d6b, idProduct=0003, bcdDevice= 7.03
+[    1.112877] usb usb5: New USB device strings: Mfr=3, Product=2, SerialNumber=1
+[    1.112892] usb usb5: Product: xHCI Host Controller
+[    1.112901] usb usb5: Manufacturer: Linux 7.3.3-edge-genio xhci-hcd
+[    1.112910] usb usb5: SerialNumber: 11290000.usb
+[    1.113310] hub 5-0:1.0: USB hub found
+[    1.113344] hub 5-0:1.0: 1 port detected
+[    1.130121] platform 14001000.dma-controller: Adding to iommu group 0
+[    1.130282] platform 14009000.display: Adding to iommu group 0
+[    1.130382] platform 1400c000.dma-controller: Adding to iommu group 0
+[    1.130532] platform 14f0a000.dma-controller: Adding to iommu group 0
+[    1.130771] platform 14f25000.dma-controller: Adding to iommu group 0
+[    1.130985] platform soc:jpeg-encoder@1a030000: Adding to iommu group 1
+[    1.131164] platform 1c105000.dma-controller: Adding to iommu group 2
+[    1.131287] platform 1c107000.dma-controller: Adding to iommu group 2
+[    1.131407] platform 1c109000.dma-controller: Adding to iommu group 2
+[    1.131513] platform 1c10b000.dma-controller: Adding to iommu group 2
+[    1.131612] platform 1c114000.hdr-engine: Adding to iommu group 2
+[    1.132140] mtk-iommu 14018000.iommu: bound 1c019000.larb (ops mtk_smi_larb_component_ops)
+[    1.132168] mtk-iommu 14018000.iommu: bound 1c103000.larb (ops mtk_smi_larb_component_ops)
+[    1.132185] mtk-iommu 14018000.iommu: bound 14013000.larb (ops mtk_smi_larb_component_ops)
+[    1.132200] mtk-iommu 14018000.iommu: bound 14f03000.larb (ops mtk_smi_larb_component_ops)
+[    1.132217] mtk-iommu 14018000.iommu: bound 14e05000.larb (ops mtk_smi_larb_component_ops)
+[    1.132233] mtk-iommu 14018000.iommu: bound 15340000.larb (ops mtk_smi_larb_component_ops)
+[    1.132249] mtk-iommu 14018000.iommu: bound 16002000.larb (ops mtk_smi_larb_component_ops)
+[    1.132265] mtk-iommu 14018000.iommu: bound 16012000.larb (ops mtk_smi_larb_component_ops)
+[    1.132281] mtk-iommu 14018000.iommu: bound 17201000.larb (ops mtk_smi_larb_component_ops)
+[    1.132297] mtk-iommu 14018000.iommu: bound 1b010000.larb (ops mtk_smi_larb_component_ops)
+[    1.132313] mtk-iommu 14018000.iommu: bound 1803e000.larb (ops mtk_smi_larb_component_ops)
+[    1.132329] mtk-iommu 14018000.iommu: bound 1800e000.larb (ops mtk_smi_larb_component_ops)
+[    1.132345] mtk-iommu 14018000.iommu: bound 16142000.larb (ops mtk_smi_larb_component_ops)
+[    1.132362] mtk-iommu 14018000.iommu: bound 16014000.larb (ops mtk_smi_larb_component_ops)
+[    1.133557] platform 14f08000.dma-controller: Adding to iommu group 0
+[    1.133727] platform 14f09000.dma-controller: Adding to iommu group 0
+[    1.133934] platform 14f1f000.display: Adding to iommu group 0
+[    1.134057] platform 14f23000.dma-controller: Adding to iommu group 0
+[    1.134167] platform 14f24000.dma-controller: Adding to iommu group 0
+[    1.134314] platform 18000000.video-codec: Adding to iommu group 1
+[    1.134454] platform 1a020000.video-codec: Adding to iommu group 1
+[    1.134576] platform soc:jpeg-decoder@1a040000: Adding to iommu group 1
+[    1.134709] platform 1c000000.ovl: Adding to iommu group 2
+[    1.134856] platform 1c002000.rdma: Adding to iommu group 2
+[    1.134989] platform 1c104000.dma-controller: Adding to iommu group 2
+[    1.135101] platform 1c106000.dma-controller: Adding to iommu group 2
+[    1.135219] platform 1c108000.dma-controller: Adding to iommu group 2
+[    1.135331] platform 1c10a000.dma-controller: Adding to iommu group 2
+[    1.135422] mtk-iommu 1c01f000.iommu: bound 1c018000.larb (ops mtk_smi_larb_component_ops)
+[    1.135445] mtk-iommu 1c01f000.iommu: bound 1c102000.larb (ops mtk_smi_larb_component_ops)
+[    1.135460] mtk-iommu 1c01f000.iommu: bound 14f02000.larb (ops mtk_smi_larb_component_ops)
+[    1.135475] mtk-iommu 1c01f000.iommu: bound 14e04000.larb (ops mtk_smi_larb_component_ops)
+[    1.135489] mtk-iommu 1c01f000.iommu: bound 15001000.larb (ops mtk_smi_larb_component_ops)
+�f����xf���x�f��~��憆�����f�����x�������f�~��f��`����x������������~���f�f����f�����f�����f��`�f���f�怂[    1.135518] mtk-iommu 1c01f000.iommu: bound 15230000.larb (ops mtk_smi_larb_component_ops)
+[    1.135532] mtk-iommu 1c01f000.iommu: bound 16001000.larb (ops mtk_smi_larb_component_ops)
+[    1.135546] mtk-iommu 1c01f000.iommu: bound 16013000.larb (ops mtk_smi_larb_component_ops)
+[    1.135561] mtk-iommu 1c01f000.iommu: bound 1a010000.larb (ops mtk_smi_larb_component_ops)
+[    1.135575] mtk-iommu 1c01f000.iommu: bound 1802e000.larb (ops mtk_smi_larb_component_ops)
+[    1.135589] mtk-iommu 1c01f000.iommu: bound 1800d000.larb (ops mtk_smi_larb_component_ops)
+[    1.135604] mtk-iommu 1c01f000.iommu: bound 16141000.larb (ops mtk_smi_larb_component_ops)
+[    1.135618] mtk-iommu 1c01f000.iommu: bound 16015000.larb (ops mtk_smi_larb_component_ops)
+[    1.137578] mediatek-drm mediatek-drm.9.auto: bound 1c000000.ovl (ops mtk_disp_ovl_component_ops)
+[    1.137603] mediatek-drm mediatek-drm.9.auto: bound 1c002000.rdma (ops mtk_disp_rdma_component_ops)
+[    1.137619] mediatek-drm mediatek-drm.9.auto: bound 1c003000.color (ops mtk_disp_color_component_ops)
+[    1.137636] mediatek-drm mediatek-drm.9.auto: bound 1c004000.ccorr (ops mtk_disp_ccorr_component_ops)
+[    1.137652] mediatek-drm mediatek-drm.9.auto: bound 1c005000.aal (ops mtk_disp_aal_component_ops)
+[    1.137668] mediatek-drm mediatek-drm.9.auto: bound 1c006000.gamma (ops mtk_disp_gamma_component_ops)
+[    1.137685] mediatek-drm mediatek-drm.9.auto: bound 1c014000.merge (ops mtk_disp_merge_component_ops)
+[    1.141336] mediatek-disp-ovl-adaptor mediatek-disp-ovl-adaptor.12.auto: bound 1c104000.dma-controller (ops mtk_mdp_rdma_component_ops)
+[    1.141360] mediatek-disp-ovl-adaptor mediatek-disp-ovl-adaptor.12.auto: bound 1c105000.dma-controller (ops mtk_mdp_rdma_component_ops)
+[    1.141377] mediatek-disp-ovl-adaptor mediatek-disp-ovl-adaptor.12.auto: bound 1c106000.dma-controller (ops mtk_mdp_rdma_component_ops)
+[    1.141394] mediatek-disp-ovl-adaptor mediatek-disp-ovl-adaptor.12.auto: bound 1c107000.dma-controller (ops mtk_mdp_rdma_component_ops)
+[    1.141410] mediatek-disp-ovl-adaptor mediatek-disp-ovl-adaptor.12.auto: bound 1c108000.dma-controller (ops mtk_mdp_rdma_component_ops)
+[    1.141426] mediatek-disp-ovl-adaptor mediatek-disp-ovl-adaptor.12.auto: bound 1c109000.dma-controller (ops mtk_mdp_rdma_component_ops)
+[    1.141442] mediatek-disp-ovl-adaptor mediatek-disp-ovl-adaptor.12.auto: bound 1c10a000.dma-controller (ops mtk_mdp_rdma_component_ops)
+[    1.141457] mediatek-disp-ovl-adaptor mediatek-disp-ovl-adaptor.12.auto: bound 1c10b000.dma-controller (ops mtk_mdp_rdma_component_ops)
+[    1.141473] mediatek-disp-ovl-adaptor mediatek-disp-ovl-adaptor.12.auto: bound 1c10c000.vpp-merge (ops mtk_disp_merge_component_ops)
+[    1.141491] mediatek-disp-ovl-adaptor mediatek-disp-ovl-adaptor.12.auto: bound 1c10d000.vpp-merge (ops mtk_disp_merge_component_ops)
+[    1.141508] mediatek-disp-ovl-adaptor mediatek-disp-ovl-adaptor.12.auto: bound 1c10e000.vpp-merge (ops mtk_disp_merge_component_ops)
+[    1.141525] mediatek-disp-ovl-adaptor mediatek-disp-ovl-adaptor.12.auto: bound 1c10f000.vpp-merge (ops mtk_disp_merge_component_ops)
+[    1.141541] mediatek-disp-ovl-adaptor mediatek-disp-ovl-adaptor.12.auto: bound 1c114000.hdr-engine (ops mtk_ethdr_component_ops)
+[    1.142283] platform 1a040000.jpgdec: Adding to iommu group 1
+[    1.143117] platform 1a050000.jpgdec: Adding to iommu group 1
+[    1.143908] platform 1b040000.jpgdec: Adding to iommu group 1
+[    1.145059] mtk-jpeg soc:jpeg-decoder@1a040000: mtk-jpeg-dec device registered as /dev/video0 (81,0)
+[    1.147118] platform 1a030000.jpgenc: Adding to iommu group 1
+[    1.147917] platform 1b030000.jpgenc: Adding to iommu group 1
+[    1.148976] mtk-jpeg soc:jpeg-encoder@1a030000: mtk-jpeg-enc device registered as /dev/video1 (81,1)
+[    1.151401] platform 18002000.video-codec: Adding to iommu group 1
+[    1.152278] platform 18010000.video-codec: Adding to iommu group 1
+[    1.153173] platform 18025000.video-codec: Adding to iommu group 1
+[    1.159083] mtk-mdp3 14001000.dma-controller: Driver registered as /dev/video4
+[    1.163930] mediatek-drm mediatek-drm.9.auto: bound 1c000000.ovl (ops mtk_disp_ovl_component_ops)
+[    1.163973] mediatek-drm mediatek-drm.9.auto: bound 1c002000.rdma (ops mtk_disp_rdma_component_ops)
+[    1.163988] mediatek-drm mediatek-drm.9.auto: bound 1c003000.color (ops mtk_disp_color_component_ops)
+[    1.164019] mediatek-drm mediatek-drm.9.auto: bound 1c004000.ccorr (ops mtk_disp_ccorr_component_ops)
+[    1.164036] mediatek-drm mediatek-drm.9.auto: bound 1c005000.aal (ops mtk_disp_aal_component_ops)
+[    1.164052] mediatek-drm mediatek-drm.9.auto: bound 1c006000.gamma (ops mtk_disp_gamma_component_ops)
+[    1.164068] mediatek-drm mediatek-drm.9.auto: bound 1c014000.merge (ops mtk_disp_merge_component_ops)
+[    1.164085] mediatek-drm mediatek-drm.11.auto: bound mediatek-disp-ovl-adaptor.12.auto (ops mtk_disp_ovl_adaptor_comp_ops)
+[    1.164102] mediatek-drm mediatek-drm.11.auto: bound 1c110000.vpp-merge (ops mtk_disp_merge_component_ops)
+[    1.164329] mediatek-drm mediatek-drm.11.auto: bound 1c112000.dpi (ops mtk_dpi_component_ops)
+[    1.164353] mediatek-drm mediatek-drm.9.auto: Not creating crtc 0 because component 8 is disabled or missing
+[    1.165463] [drm] Initialized mediatek 1.0.0 for mediatek-drm.9.auto on minor 1
+[    1.165532] mediatek-drm mediatek-drm.9.auto: [drm] Cannot find any crtc or sizes
+[    1.165756] mediatek-drm mediatek-drm.9.auto: [drm] Cannot find any crtc or sizes
+[    1.165967] input: gpio-keys as /devices/platform/gpio-keys/input/input1
+[    1.166506] clk: Disabling unused clocks
+[    1.166959] PM: genpd: Disabling unused power domains
+[    1.166988] ALSA device list:
+[    1.166991]   No soundcards found.
+[    1.226020] mtk-pcie-gen3 112f8000.pcie: PCI host bridge to bus 0000:00
+[    1.226041] pci_bus 0000:00: root bus resource [bus 00-ff]
+[    1.226058] pci_bus 0000:00: root bus resource [io  0x200000-0x3fffff] (bus address [0x24000000-0x241fffff])
+[    1.226075] pci_bus 0000:00: root bus resource [mem 0x24200000-0x27ffffff]
+[    1.226126] pci 0000:00:00.0: [14c3:8195] type 01 class 0x060400 PCIe Root Port
+[    1.226163] pci 0000:00:00.0: BAR 0 [mem 0x00000000-0x00003fff 64bit pref]
+[    1.226179] pci 0000:00:00.0: PCI bridge to [bus 00]
+[    1.226195] pci 0000:00:00.0:   bridge window [io  0x0000-0x0fff]
+[    1.226210] pci 0000:00:00.0:   bridge window [mem 0x00000000-0x000fffff]
+[    1.226231] pci 0000:00:00.0:   bridge window [mem 0x00000000-0x000fffff 64bit pref]
+[    1.226308] pci 0000:00:00.0: supports D1 D2
+[    1.226320] pci 0000:00:00.0: PME# supported from D0 D1 D2 D3hot D3cold
+[    1.226637] pci 0000:00:00.0: Adding to iommu group 3
+[    1.230685] pci 0000:00:00.0: bridge configuration invalid ([bus 00-00]), reconfiguring
+[    1.230833] pci 0000:01:00.0: [14c3:7961] type 00 class 0x028000 PCIe Endpoint
+[    1.230922] pci 0000:01:00.0: BAR 0 [mem 0x00000000-0x000fffff 64bit pref]
+[    1.230941] pci 0000:01:00.0: BAR 2 [mem 0x00000000-0x00003fff 64bit pref]
+[    1.230958] pci 0000:01:00.0: BAR 4 [mem 0x00000000-0x00000fff 64bit pref]
+[    1.231097] pci 0000:01:00.0: supports D1 D2
+[    1.231108] pci 0000:01:00.0: PME# supported from D0 D1 D2 D3hot D3cold
+[    1.231427] pci 0000:01:00.0: Adding to iommu group 3
+[    1.233828] pci 0000:01:00.0: ASPM: default states L0s L1
+[    1.233923] pci_bus 0000:01: busn_res: [bus 01-ff] end is updated to 01
+[    1.233959] pci 0000:00:00.0: bridge window [mem 0x24200000-0x243fffff 64bit pref]: assigned
+[    1.233979] pci 0000:00:00.0: BAR 0 [mem 0x24400000-0x24403fff 64bit pref]: assigned
+[    1.234007] pci 0000:01:00.0: BAR 0 [mem 0x24200000-0x242fffff 64bit pref]: assigned
+[    1.234059] pci 0000:01:00.0: BAR 2 [mem 0x24300000-0x24303fff 64bit pref]: assigned
+[    1.234110] pci 0000:01:00.0: BAR 4 [mem 0x24304000-0x24304fff 64bit pref]: assigned
+[    1.234161] pci 0000:00:00.0: PCI bridge to [bus 01]
+[    1.234179] pci 0000:00:00.0:   bridge window [mem 0x24200000-0x243fffff 64bit pref]
+[    1.234200] pci_bus 0000:00: resource 4 [io  0x200000-0x3fffff]
+[    1.234213] pci_bus 0000:00: resource 5 [mem 0x24200000-0x27ffffff]
+[    1.234227] pci_bus 0000:01: resource 2 [mem 0x24200000-0x243fffff 64bit pref]
+[    1.234447] pcieport 0000:00:00.0: enabling device (0000 -> 0002)
+[    1.236331] pcieport 0000:00:00.0: PME: Signaling with IRQ 353
+[    1.236758] pcieport 0000:00:00.0: AER: enabled with IRQ 353
+[    1.251978] mtk-pcie-gen3 112f0000.pcie: PCI host bridge to bus 0001:00
+[    1.252007] pci_bus 0001:00: root bus resource [bus 00-ff]
+[    1.252029] pci_bus 0001:00: root bus resource [io  0x0000-0x1fffff] (bus address [0x20000000-0x201fffff])
+[    1.252054] pci_bus 0001:00: root bus resource [mem 0x20200000-0x23ffffff]
+[    1.252107] pci 0001:00:00.0: [14c3:8195] type 01 class 0x060400 PCIe Root Port
+[    1.252151] pci 0001:00:00.0: BAR 0 [mem 0x00000000-0x00003fff 64bit pref]
+[    1.252174] pci 0001:00:00.0: PCI bridge to [bus 00]
+[    1.252195] pci 0001:00:00.0:   bridge window [io  0x0000-0x0fff]
+[    1.252216] pci 0001:00:00.0:   bridge window [mem 0x00000000-0x000fffff]
+[    1.252246] pci 0001:00:00.0:   bridge window [mem 0x00000000-0x000fffff 64bit pref]
+[    1.252338] pci 0001:00:00.0: supports D1 D2
+[    1.252355] pci 0001:00:00.0: PME# supported from D0 D1 D2 D3hot D3cold
+[    1.252667] pci 0001:00:00.0: Adding to iommu group 3
+[    1.258913] pci 0001:00:00.0: bridge configuration invalid ([bus 00-00]), reconfiguring
+[    1.259081] pci 0001:01:00.0: [1106:3483] type 00 class 0x0c0330 PCIe Endpoint
+[    1.259181] pci 0001:01:00.0: BAR 0 [mem 0x00000000-0x00000fff 64bit]
+[    1.259310] pci 0001:01:00.0: PME# supported from D0 D3hot D3cold
+[    1.259394] pci 0001:01:00.0: 2.000 Gb/s available PCIe bandwidth, limited by 2.5 GT/s PCIe x1 link at 0001:00:00.0 (capable of 4.000 Gb/s with 5.0 GT/s PCIe x1 link)
+[    1.259662] pci 0001:01:00.0: Adding to iommu group 3
+[    1.259734] pci_bus 0001:01: busn_res: [bus 01-ff] end is updated to 01
+[    1.259775] pci 0001:00:00.0: bridge window [mem 0x20200000-0x202fffff]: assigned
+[    1.259818] pci 0001:00:00.0: BAR 0 [mem 0x20300000-0x20303fff 64bit pref]: assigned
+[    1.259854] pci 0001:01:00.0: BAR 0 [mem 0x20200000-0x20200fff 64bit]: assigned
+[    1.259892] pci 0001:00:00.0: PCI bridge to [bus 01]
+[    1.259913] pci 0001:00:00.0:   bridge window [mem 0x20200000-0x202fffff]
+[    1.259939] pci_bus 0001:00: resource 4 [io  0x0000-0x1fffff]
+[    1.259958] pci_bus 0001:00: resource 5 [mem 0x20200000-0x23ffffff]
+[    1.259977] pci_bus 0001:01: resource 1 [mem 0x20200000-0x202fffff]
+[    1.260164] pcieport 0001:00:00.0: enabling device (0000 -> 0002)
+[    1.262917] pcieport 0001:00:00.0: PME: Signaling with IRQ 355
+[    1.263405] pcieport 0001:00:00.0: AER: enabled with IRQ 355
+[    1.263691] pci 0001:01:00.0: enabling device (0000 -> 0002)
+[    1.264042] xhci_hcd 0001:01:00.0: xHCI Host Controller
+[    1.264102] xhci_hcd 0001:01:00.0: new USB bus registered, assigned bus number 6
+[    1.264875] xhci_hcd 0001:01:00.0: hcc params 0x002841ea hci version 0x100 quirks 0x0000200000000890
+[    1.265629] xhci_hcd 0001:01:00.0: xHCI Host Controller
+[    1.265664] xhci_hcd 0001:01:00.0: new USB bus registered, assigned bus number 7
+[    1.265698] xhci_hcd 0001:01:00.0: Host supports USB 3.0 SuperSpeed
+[    1.265803] usb usb6: New USB device found, idVendor=1d6b, idProduct=0002, bcdDevice= 7.03
+[    1.266032] usb usb6: New USB device strings: Mfr=3, Product=2, SerialNumber=1
+[    1.266062] usb usb6: Product: xHCI Host Controller
+[    1.266083] usb usb6: Manufacturer: Linux 7.3.3-edge-genio xhci-hcd
+[    1.266104] usb usb6: SerialNumber: 0001:01:00.0
+[    1.266825] hub 6-0:1.0: USB hub found
+[    1.266899] hub 6-0:1.0: 1 port detected
+[    1.267451] usb usb7: New USB device found, idVendor=1d6b, idProduct=0003, bcdDevice= 7.03
+[    1.267715] usb usb7: New USB device strings: Mfr=3, Product=2, SerialNumber=1
+[    1.267750] usb usb7: Product: xHCI Host Controller
+[    1.267774] usb usb7: Manufacturer: Linux 7.3.3-edge-genio xhci-hcd
+[    1.267817] usb usb7: SerialNumber: 0001:01:00.0
+[    1.268579] hub 7-0:1.0: USB hub found
+[    1.268659] hub 7-0:1.0: 4 ports detected
+[    1.271505] Freeing unused kernel memory: 3200K
+[    1.271582] Run /init as init process
+Loading, please wait...
+Starting systemd-udevd version 257.13-1~deb13u1
+[    1.503832] usb 6-1: new high-speed USB device number 2 using xhci_hcd
+[    1.503898] usb 4-1: new high-speed USB device number 2 using xhci-mtk
+[    1.627583] usb 4-1: New USB device found, idVendor=0e8d, idProduct=7961, bcdDevice= 1.00
+[    1.627971] usb 6-1: New USB device found, idVendor=2109, idProduct=3431, bcdDevice= 4.20
+[    1.629227] usb 4-1: New USB device strings: Mfr=5, Product=6, SerialNumber=7
+[    1.629268] usb 4-1: Product: Wireless_Device
+[    1.629367] usb 4-1: Manufacturer: MediaTek Inc.
+[    1.629396] usb 4-1: SerialNumber: 000000000
+[    1.629854] usb 6-1: New USB device strings: Mfr=0, Product=1, SerialNumber=0
+[    1.629893] usb 6-1: Product: USB2.0 Hub
+[    1.632953] hub 6-1:1.0: USB hub found
+[    1.633236] hub 6-1:1.0: 4 ports detected
+[    1.672818] random: crng init done
+[    1.696879] dwmac-mediatek 11021000.ethernet end0: renamed from eth0
+[    1.740556] usb 7-3: new SuperSpeed USB device number 2 using xhci_hcd
+[    1.751562] usb 7-3: New USB device found, idVendor=0781, idProduct=5588, bcdDevice= 1.00
+[    1.755507] usb 7-3: New USB device strings: Mfr=2, Product=3, SerialNumber=1
+[    1.755539] usb 7-3: Product: USB Extreme Pro
+[    1.755548] usb 7-3: Manufacturer: SanDisk
+[    1.755556] usb 7-3: SerialNumber: 133116796170
+[    1.757883] usb-storage 7-3:1.0: USB Mass Storage device detected
+[    1.758327] scsi host1: usb-storage 7-3:1.0
+Begin: Loading essential drivers ... done.
+Begin: Running /scripts/init-premount ... done.
+Begin: Mounting root file system ... Begin: Running /scripts/local-top ... done.
+Begin: Running /scripts/local-premount ... done.
+Warning: fsck not present, so skipping root file system
+[    1.908820] usb 6-1.2: new high-speed USB device number 3 using xhci_hcd
+[    1.909700] EXT4-fs (sdc1): mounted filesystem 52e27b06-e019-4731-8428-c684561c5f0c r/w with ordered data mode. Quota mode: none.
+done.
+Begin: Running /scripts/local-bottom ... done.
+Begin: Running /scripts/init-bottom ... done.
+[    1.981966] usb 6-1.2: New USB device found, idVendor=534d, idProduct=2109, bcdDevice=21.00
+[    1.984993] usb 6-1.2: New USB device strings: Mfr=1, Product=2, SerialNumber=0
+[    1.985002] usb 6-1.2: Product: USB3. 0 capture
+[    1.985006] usb 6-1.2: Manufacturer: MACROSILICON
+[    1.987498] hid-generic 0003:534D:2109.0001: hiddev96,hidraw0: USB HID v1.10 Device [MACROSILICON USB3. 0 capture] on usb-0001:01:00.0-1.2/input4
+SELinux:  Could not open policy file <= /etc/selinux/default/policy/policy.35:  No such file or directory
+[    2.083002] LoadPin: sdc1 (8:33): writable
+[    2.083057] LoadPin: kernel-module pinned obj="/usr/lib/modules/7.3.3-edge-genio/kernel/net/netfilter/x_tables.ko" pid=1 cmdline="/sbin/init"
+[    2.116872] systemd[1]: systemd 257.13-1~deb13u1 running in system mode (+PAM +AUDIT +SELINUX +APPARMOR +IMA +IPE +SMACK +SECCOMP +GCRYPT -GNUTLS +OPENSSL +ACL +BLKID +CURL +ELFUTILS +FIDO2 +IDN2 -IDN +IPTC +KMOD +LIBCRYPTSETUP +LIBCRYPTSETUP_PLUGINS +LIBFDISK +PCRE2 +PWQUALITY +P11KIT +QRENCODE +TPM2 +BZIP2 +LZ4 +XZ +ZLIB +ZSTD +BPF_FRAMEWORK +BTF -XKBCOMMON -UTMP +SYSVINIT +LIBARCHIVE)
+[    2.116923] systemd[1]: Detected architecture arm64.
+
+Welcome to CaptainOS Kubernetes node (Cluster API Provider Tinkerbell), disk image (Debian GNU/Linux 13 (trixie))!
+
+[    2.127209] systemd[1]: Hostname set to <nio-12l-5lxzk-f4x62>.
+[    2.323267] systemd[1]: bpf-restrict-fs: LSM BPF program attached
+[    2.524327] systemd[1]: Queued start job for default target multi-user.target.
+[  OK      2.528521] systemd[1]: Created slice system-getty.slice - Slice /system/getty.
+0m] Created slice system-getty.slice - Slice /system/getty.
+[  OK  ] Created slice syste[    2.532401] systemd[1]: Created slice system-modprobe.slice - Slice /system/modprobe.
+m-modprobe.slice - Slice /system/modprobe.
+[  OK  ] Created slice system-serial\x2dget�[    2.535184] systemd[1]: Created slice system-serial\x2dgetty.slice - Slice /system/serial-getty.
+��slice - Slice /system/serial-getty.
+[  OK      2.539476] systemd[1]: Created slice user.slice - User and Session Slice.
+0m] Created slice user.slice - User and Session Slice.
+[  OK  ] Started systemd-ask-password-conso�[    2.542939] systemd[1]: Started systemd-ask-password-console.path - Dispatch Password Requests to Console Directory Watch.
+��equests to Console Directory Watch.
+[  OK  ] Started systemd-ask-password-wall.�[    2.547971] systemd[1]: Started systemd-ask-password-wall.path - Forward Password Requests to Wall Directory Watch.
+��d Requests to Wall Directory Watch.
+[  OK  ] Set up automount pr[    2.553265] systemd[1]: Set up automount proc-sys-fs-binfmt_misc.automount - Arbitrary Executable File Formats File System Automount Point.
+oc-sys-fs-binfm…ormats File System Automount Point.
+         Expecting device dev-ttyS0.device - /dev/t[    2.557974] systemd[1]: Expecting device dev-ttyS0.device - /dev/ttyS0...
+tyS0...
+[  OK  ] Reached target slic[    2.560114] systemd[1]: Reached target slices.target - Slice Units.
+es.target - Slice Units.
+[  OK  ] Reached targ[    2.562333] systemd[1]: Reached target swap.target - Swaps.
+et swap.target - Swaps.
+[  OK  ] Listening on system[    2.567337] systemd[1]: Listening on systemd-creds.socket - Credential Encryption/Decryption.
+d-creds.socket - Credential Encryption/Decryption.
+[  OK  ] Listening on systemd-initctl.socke…- initctl [    2.570940] systemd[1]: Listening on systemd-initctl.socket - initctl Compatibility Named Pipe.
+Compatibility Named Pipe.
+[  OK  ] Listening on system[    2.575346] systemd[1]: Listening on systemd-journald-audit.socket - Journal Audit Socket.
+d-journald-audit.socket - Journal Audit Socket.
+[  OK  ] Listening on systemd-journald-dev-�[    2.579056] systemd[1]: Listening on systemd-journald-dev-log.socket - Journal Socket (/dev/log).
+��socket - Journal Socket (/dev/log).
+[  OK  ] Listening on system[    2.583151] systemd[1]: Listening on systemd-journald.socket - Journal Sockets.
+d-journald.socket - Journal Sockets.
+[    2.585771] systemd[1]: Listening on systemd-networkd.socket - Network Service Netlink Socket.
+[  OK  ] Listening on systemd-networkd.socket - Network Service Netlink Socket.
+[  OK  ] Listening on system[    2.589928] systemd[1]: systemd-pcrextend.socket - TPM PCR Measurements skipped, unmet condition check ConditionSecurity=measured-uki
+[    2.589983] systemd[1]: systemd-pcrlock.socket - Make TPM PCR Policy skipped, unmet condition check ConditionSecurity=measured-uki
+[    2.590133] systemd[1]: Listening on systemd-udevd-control.socket - udev Control Socket.
+d-udevd-control.socket - udev Control Socket.
+[  OK  ] Listening on systemd-udevd-kernel.s[    2.597100] systemd[1]: Listening on systemd-udevd-kernel.socket - udev Kernel Socket.
+ocket - udev Kernel Socket.
+         Mounting dev-hugepages.mount - Huge Pages [    2.603180] systemd[1]: Mounting dev-hugepages.mount - Huge Pages File System...
+File System...
+         Mounting dev-mqueue.mount - POSIX Message Queue File System...
+[    2.606830] systemd[1]: Mounting dev-mqueue.mount - POSIX Message Queue File System...
+         Mounting run-l[    2.611498] systemd[1]: Mounting run-lock.mount - Legacy Locks Directory /run/lock...
+ock.mount - Legacy Locks Directory /run/lock...
+         Mounting sys-kernel-debug.moun[    2.617236] systemd[1]: Mounting sys-kernel-debug.mount - Kernel Debug File System...
+t - Kernel Debug File System...
+         Mountin[    2.622564] systemd[1]: Mounting sys-kernel-tracing.mount - Kernel Trace File System...
+g sys-kernel-tracing.mount - Kernel Trace File System...
+         Mountin[    2.628569] systemd[1]: Mounting tmp.mount - Temporary Directory /tmp...
+g tmp.mount - Temporary Directory /tmp...
+         Startin[    2.633565] systemd[1]: Starting kmod-static-nodes.service - Create List of Static Device Nodes...
+g kmod-static-nodes.service…eate List of Static Device Nodes...
+         Starting modpr[    2.637393] systemd[1]: Starting modprobe@configfs.service - Load Kernel Module configfs...
+obe@configfs.service - Load Kernel Module configfs...
+[    2.643003] systemd[1]: Starting modprobe@drm.service - Load Kernel Module drm...
+
+         Starting modprobe@efi_pstore.s[    2.647335] systemd[1]: Starting modprobe@efi_pstore.service - Load Kernel Module efi_pstore...
+ervi… - Load Kernel Module efi_pstore...
+         Starting modpr[    2.652493] systemd[1]: Starting modprobe@fuse.service - Load Kernel Module fuse...
+obe@fuse.service - Load Kernel Module fuse...
+         Starting nftab[    2.657439] systemd[1]: Starting nftables.service - nftables...
+les.service - nftables...
+[    2.661937] systemd[1]: systemd-fsck-root.service - File System Check on Root Device skipped, unmet condition check ConditionPathIsReadWrite=!/
+[    2.662003] systemd[1]: systemd-hibernate-clear.service - Clear Stale Hibernate Storage Info skipped, unmet condition check ConditionPathExists=/sys/firmware/efi/efivars/HibernateLocation-8cf2644b-4b0b-428f-9387-6d876050dc67
+         Starting systemd-journald.service - Journa[    2.670083] systemd[1]: Starting systemd-journald.service - Journal Service...
+l Service...
+[    2.673444] fuse: init (API version 7.46)
+         Starting syste[    2.676444] systemd[1]: Starting systemd-modules-load.service - Load Kernel Modules...
+md-modules-load.service - Load Kernel Modules...
+         Starting syste[    2.681455] systemd[1]: Starting systemd-network-generator.service - Generate Network Units from Kernel Command Line...
+md-network-generator…k Units from Kernel Command Line...
+[    2.685943] systemd[1]: systemd-pcrmachine.service - TPM PCR Machine ID Measurement skipped, unmet condition check ConditionSecurity=measured-uki
+         Startin[    2.687524] systemd[1]: Starting systemd-remount-fs.service - Remount Root and Kernel File Systems...
+g systemd-remount-fs.servic…unt Root and Kernel File Systems...
+[    2.689947] systemd[1]: Starting systemd-time-wait-sync.service - Wait Until Kernel Time Synchronized...
+         Starting systemd-time-wait-sync.se…t Unt[    2.692225] systemd[1]: systemd-tpm2-setup-early.service - Early TPM SRK Setup skipped, unmet condition check ConditionSecurity=measured-uki
+il Kernel Time S[    2.693844] systemd[1]: Starting systemd-udev-load-credentials.service - Load udev Rules from Credentials...
+ynchronized...
+         Starting systemd-udev-load-credent…Load udev Rules from Credentials...
+         Starting syste[    2.704506] systemd[1]: Starting systemd-udev-trigger.service - Coldplug All udev Devices...
+md-udev-trigger.service - Coldplug All udev Devices...
+[  OK  ] Mounted     2.711468] systemd[1]: Mounted dev-hugepages.mount - Huge Pages File System.
+1;39mdev-hugepages.mount - Huge Pages File System.
+[    2.713607] systemd-journald[346]: Collecting audit messages is enabled.
+[  OK  ] Mounted dev-mqueue.[    2.716333] systemd[1]: Mounted dev-mqueue.mount - POSIX Message Queue File System.
+mount - POSIX Message Queue File System.
+[  OK  ] Mounted run-lock.mount - Legacy[    2.720096] systemd[1]: Mounted run-lock.mount - Legacy Locks Directory /run/lock.
+ Locks Directory /run/lock.
+[    2.722692] Bridge firewalling registered
+[  OK  ] Mounted sys-kernel-debug.mount [    2.724070] systemd[1]: Mounted sys-kernel-debug.mount - Kernel Debug File System.
+- Kernel Debug File System.
+[  OK  ] Mounted sys-kernel-tracing.mount    2.728059] systemd[1]: Mounted sys-kernel-tracing.mount - Kernel Trace File System.
+m - Kernel Trace File System.
+[    2.732024] systemd[1]: Mounted tmp.mount - Temporary Directory /tmp.
+
+[  OK  ] Finished kmod-static-nodes.service…Create List of Static Device Nodes.
+[    2.735273] systemd[1]: Finished kmod-static-nodes.service - Create List of Static Device Nodes.
+[    2.736952] EXT4-fs (sdc1): re-mounted 52e27b06-e019-4731-8428-c684561c5f0c.
+[    2.738094] audit: type=1130 audit(1794147248.515:2): pid=1 uid=0 auid=4294967295 ses=4294967295 subj=kernel msg='unit=kmod-static-nodes comm="systemd" exe="/usr/lib/systemd/systemd" hostname=? addr=? terminal=? res=success'
+[    2.738955] systemd[1]: modprobe@configfs.service: Deactivated successfully.
+[    2.739237] systemd[1]: Finished modprobe@configfs.service - Load Kernel Module configfs.
+[  OK  ] Finished modprobe@configfs.service - Load Kernel Module configfs.
+[    2.744680] audit: type=1130 audit(1794147248.521:3): pid=1 uid=0 auid=4294967295 ses=4294967295 subj=kernel msg='unit=modprobe@configfs comm="systemd" exe="/usr/lib/systemd/systemd" hostname=? addr=? terminal=? res=success'
+[    2.744694] audit: type=1131 audit(1794147248.521:4): pid=1 uid=0 auid=4294967295 ses=4294967295 subj=kernel msg='unit=modprobe@configfs comm="systemd" exe="/usr/lib/systemd/systemd" hostname=? addr=? terminal=? res=success'
+[    2.745132] systemd[1]: modprobe@drm.service: Deactivated successfully.
+[    2.745400] systemd[1]: Finished modprobe@drm.service - Load Kernel Module drm.
+[  OK  ] Finished modprobe@drm.service - Load Kernel Module drm.
+[    2.753243] audit: type=1130 audit(1794147248.530:5): pid=1 uid=0 auid=4294967295 ses=4294967295 subj=kernel msg='unit=modprobe@drm comm="systemd" exe="/usr/lib/systemd/systemd" hostname=? addr=? terminal=? res=success'
+[    2.753256] audit: type=1131 audit(1794147248.530:6): pid=1 uid=0 auid=4294967295 ses=4294967295 subj=kernel msg='unit=modprobe@drm comm="systemd" exe="/usr/lib/systemd/systemd" hostname=? addr=? terminal=? res=success'
+[    2.754080] systemd[1]: modprobe@efi_pstore.service: Deactivated successfully.
+[    2.754715] systemd[1]: Finished modprobe@efi_pstore.service - Load Kernel Module efi_pstore.
+[  OK  ] Finished modprobe@efi_pstore.service - Load Kernel Module efi_pstore.
+[    2.764035] audit: type=1130 audit(1794147248.541:7): pid=1 uid=0 auid=4294967295 ses=4294967295 subj=kernel msg='unit=modprobe@efi_pstore comm="systemd" exe="/usr/lib/systemd/systemd" hostname=? addr=? terminal=? res=success'
+[    2.764066] audit: type=1131 audit(1794147248.541:8): pid=1 uid=0 auid=4294967295 ses=4294967295 subj=kernel msg='unit=modprobe@efi_pstore comm="systemd" exe="/usr/lib/systemd/systemd" hostname=? addr=? terminal=? res=success'
+[    2.764372] systemd[1]: modprobe@fuse.service: Deactivated successfully.
+[    2.764636] systemd[1]: Finished modprobe@fuse.service - Load Kernel Module fuse.
+[  OK  ] Finished modprobe@fuse.service - Load Kernel Module fuse.
+[    2.774965] audit: type=1130 audit(1794147248.552:9): pid=1 uid=0 auid=4294967295 ses=4294967295 subj=kernel msg='unit=modprobe@fuse comm="systemd" exe="/usr/lib/systemd/systemd" hostname=? addr=? terminal=? res=success'
+[    2.774995] audit: type=1131 audit(1794147248.552:10): pid=1 uid=0 auid=4294967295 ses=4294967295 subj=kernel msg='unit=modprobe@fuse comm="systemd" exe="/usr/lib/systemd/systemd" hostname=? addr=? terminal=? res=success'
+[    2.775386] systemd[1]: Finished nftables.service - nftables.
+[  OK  ] Finished nftables.service - nftables.
+[  OK  ] Finished     2.784472] systemd[1]: Finished systemd-modules-load.service - Load Kernel Modules.
+;1;39msystemd-modules-load.service - Load Kernel Modules.
+[  OK  ] Finished     2.789478] systemd[1]: Finished systemd-network-generator.service - Generate Network Units from Kernel Command Line.
+;1;39msystemd-network-generator…ork Units from Kernel Command Line.
+[    2.792012] scsi 1:0:0:0: Direct-Access     SanDisk  Extreme Pro      0    PQ: 0 ANSI: 6
+[    2.793497] sd 1:0:0:0: [sdd] 250085376 512-byte logical blocks: (128 GB/119 GiB)
+[    2.794355] sd 1:0:0:0: [sdd] Write Protect is off
+[    2.795129] sd 1:0:0:0: [sdd] Write cache: enabled, read cache: enabled, doesn't support DPO or FUA
+[    2.796742] systemd[1]: Finished systemd-remount-fs.service - Remount Root and Kernel File Systems.
+[  OK  ] Finished systemd-remount-fs.servic…mount Root and Kernel File Systems.
+[  OK      2.801699] systemd[1]: Finished systemd-udev-load-credentials.service - Load udev Rules from Credentials.
+0m] Finished systemd-udev-load-credent…- Load udev Rules from Credentials.
+         Mounting sys-fs-fuse-connections.mount - FUSE Control File[    2.809907] systemd[1]: Mounting sys-fs-fuse-connections.mount - FUSE Control File System...
+ System...
+         Mountin[    2.815252] sd 1:0:0:0: [sdd] Attached SCSI removable disk
+[    2.815623] systemd[1]: Mounting sys-kernel-config.mount - Kernel Configuration File System...
+g sys-kernel-config.mount - Kernel Configuration File System...
+         Starting cloud[    2.822520] systemd[1]: Starting cloud-init-main.service - Cloud-init: Single Process...
+-init-main.service - Cloud-init: Single Process...
+[    2.827710] systemd[1]: Starting systemd-growfs-root.service - Grow Root File System...
+         Starting systemd-growfs-root.service - Grow Root File System...
+[    2.831672] systemd[1]: systemd-hwdb-update.service - Rebuild Hardware Database skipped, unmet condition check ConditionNeedsUpdate=/etc
+[    2.831748] systemd[1]: systemd-pcrlock-file-system.service - Lock File Systems to TPM PCR Policy skipped, unmet condition check ConditionSecurity=measured-uki
+[    2.831775] systemd[1]: systemd-pcrlock-machine-id.service - Lock Machine ID to TPM PCR Policy skipped, unmet condition check ConditionSecurity=measured-uki
+         Startin[    2.831845] systemd[1]: systemd-pstore.service - Platform Persistent Storage Archival skipped, unmet condition check ConditionDirectoryNotEmpty=/sys/fs/pstore
+g syste[    2.835003] systemd[1]: Starting systemd-random-seed.service - Load/Save OS Random Seed...
+md-random-seed.service - Load/Save OS Random Seed...
+         Starting syste[    2.843540] systemd[1]: Starting systemd-sysctl.service - Apply Kernel Variables...
+md-sysctl.service - Apply Kernel Variables...
+[    2.845101] systemd[1]: Starting systemd-tmpfiles-setup-dev-early.service - Create Static Device Nodes in /dev gracefully...
+         Starting systemd-tmpfiles-setup-de… Device Nodes in /dev gracefully...
+[    2.851901] systemd[1]: systemd-tpm2-setup.service - TPM SRK Setup skipped, unmet condition check ConditionSecurity=measured-uki
+[    2.851950] EXT4-fs (sdc1): resizing filesystem from 62480095 to 62480095 blocks
+[  OK      2.851954] systemd[1]: systemd-pcrlock-firmware-code.service - Lock Firmware Code to TPM PCR Policy skipped, unmet condition check ConditionSecurity=measured-uki
+0m] Started     2.851975] systemd[1]: systemd-pcrlock-firmware-config.service - Lock Firmware Configuration to TPM PCR Policy skipped, unmet condition check ConditionSecurity=measured-uki
+1;39msystemd-jou[    2.851992] systemd[1]: systemd-pcrlock-secureboot-authority.service - Lock UEFI SecureBoot Authority to TPM PCR Policy skipped, unmet condition check ConditionSecurity=measured-uki
+rnald.service    2.852009] systemd[1]: systemd-pcrlock-secureboot-policy.service - Lock UEFI SecureBoot Policy to TPM PCR Policy skipped, unmet condition check ConditionSecurity=measured-uki
+m - Journal Serv[    2.852053] systemd[1]: systemd-pcrlock-make-policy.service - Make TPM PCR Policy skipped, unmet condition check ConditionSecurity=measured-uki
+ice.
+[ [    2.853410] systemd[1]: Started systemd-journald.service - Journal Service.
+ OK  ] Mounted sys-fs-fuse-connections.mount - FUSE Control File System.
+[  OK  ] Mounted sys-kernel-config.mount - Kernel Configuration File System.
+[  OK  ] Finished systemd-growfs-root.service - Grow Root File System.
+[  OK  ] Finished systemd-random-seed.service - Load/Save OS Random Seed.
+[  OK  ] Finished systemd-sysctl.service - Apply Kernel Variables.
+         Starting systemd-journal-flush.ser…sh Journal to Persistent Storage...
+[  OK  ] Finished systemd-tmpfiles-setup-de…ic Device Nodes in /dev gracefully.
+         Starting systemd-resolved.service - Network Name Resolution...
+         Starting systemd-timesyncd.service - Network Time Synchronization...
+         Starting systemd-tmpfiles-setup-de…eate Static Device Nodes in /dev...
+[  OK  ] Finished systemd-journal-flush.ser…lush Journal to Persistent Storage.
+[  OK  ] Finished systemd-tmpfiles-setup-de…Create Static Device Nodes in /dev.
+[  OK  ] Reached target local-fs-pre.target…Preparation for Local File Systems.
+[  OK  ] Reached target local-fs.target - Local File Systems.
+[  OK  ] Listening on systemd-sysext.socket… System Extension Image Management.
+         Starting systemd-binfmt.service - Set Up Additional Binary Formats...
+         Starting systemd-tmpfiles-setup.se…ate System Files and Directories...
+         Starting systemd-udevd.service - R…ager for Device Events and Files...
+[  OK  ] Started systemd-timesyncd.service - Network Time Synchronization.
+[  OK  ] Reached target time-set.target - System Time Set.
+[  OK  ] Finished systemd-udev-trigger.service - Coldplug All udev Devices.
+[  OK  ] Started systemd-resolved.service - Network Name Resolution.
+[  OK  ] Reached target nss-lookup.target - Host and Network Name Lookups.
+[  OK  ] Finished systemd-tmpfiles-setup.se…reate System Files and Directories.
+[  OK  ] Started systemd-udevd.service - Ru…anager for Device Events and Files.
+[  OK  ] Found device dev-ttyS0.device - /dev/ttyS0.
+[  OK  ] Reached target usb-gadget.target - Hardware activated USB gadget.
+[  OK  ] Listening on systemd-rfkill.socket…ll Switch Status /dev/rfkill Watch.
+         Starting systemd-rfkill.service - Load/Save RF Kill Switch Status...
+[  OK  ] Started systemd-rfkill.service - Load/Save RF Kill Switch Status.
+[  OK  ] Reached target bluetooth.target - Bluetooth Support.
+[  OK  ] Reached target sound.target - Sound Card.
+[  OK  ] Stopped target bluetooth.target - Bluetooth Support.
+[  OK  ] Started cloud-init-main.service - Cloud-init: Single Process.
+         Starting cloud-init-local.service …-init: Local Stage (pre-network)...
+         Mounting proc-sys-fs-binfmt_misc.m…cutable File Formats File System...
+[  OK  ] Mounted proc-sys-fs-binfmt_misc.mo…xecutable File Formats File System.
+[  OK  ] Finished systemd-binfmt.service - Set Up Additional Binary Formats.
+[    3.838847] cloud-init[473]: Cloud-init v. 25.1.4 running 'init-local' at Sun, 08 Nov 2026 14:14:09 +0000. Up 3.76 seconds.
+[  OK  ] Reached target bluetooth.target - Bluetooth Support.
+[  OK  ] Stopped target bluetooth.target - Bluetooth Support.
+[    3.920402] sh[463]: Completed socket interaction for boot stage local
+[  OK  ] Finished cloud-init-local.service …ud-init: Local Stage (pre-network).
+[  OK  ] Reached target network-pre.target - Preparation for Network.
+         Starting systemd-networkd.service - Network Configuration...
+[  OK  ] Started systemd-networkd.service - Network Configuration.
+[  OK  ] Reached target network.target - Network.
+         Starting systemd-networkd-persiste…tent Storage in systemd-networkd...
+         Starting systemd-networkd-wait-onl…ait for Network to be Configured...
+[  OK  ] Finished systemd-networkd-persiste…istent Storage in systemd-networkd.
+[  OK  ] Reached target bluetooth.target - Bluetooth Support.
+[  OK  ] Stopped target bluetooth.target - Bluetooth Support.
+[  OK  ] Reached target bluetooth.target - Bluetooth Support.
+[  OK  ] Stopped target bluetooth.target - Bluetooth Support.
+[  OK  ] Reached target bluetooth.target - Bluetooth Support.
+[  OK  ] Stopped target bluetooth.target - Bluetooth Support.
+[  OK  ] Reached target bluetooth.target - Bluetooth Support.
+[  OK  ] Stopped target bluetooth.target - Bluetooth Support.
+[  OK  ] Reached target bluetooth.target - Bluetooth Support.
+[  OK  ] Stopped target bluetooth.target - Bluetooth Support.
+[  OK  ] Reached target bluetooth.target - Bluetooth Support.
+[  OK  ] Stopped target bluetooth.target - Bluetooth Support.
+[  OK  ] Reached target bluetooth.target - Bluetooth Support.
+[  OK  ] Stopped target bluetooth.target - Bluetooth Support.
+[  OK  ] Reached target bluetooth.target - Bluetooth Support.
+[  OK  ] Stopped target bluetooth.target - Bluetooth Support.
+[  OK  ] Reached target bluetooth.target - Bluetooth Support.
+[  OK  ] Stopped target bluetooth.target - Bluetooth Support.
+[  OK  ] Reached target bluetooth.target - Bluetooth Support.
+[  OK  ] Stopped target bluetooth.target - Bluetooth Support.
+[  OK  ] Reached target bluetooth.target - Bluetooth Support.
+[  OK  ] Stopped target bluetooth.target - Bluetooth Support.
+[  OK  ] Reached target bluetooth.target - Bluetooth Support.
+[  OK  ] Stopped target bluetooth.target - Bluetooth Support.
+[  OK  ] Reached target bluetooth.target - Bluetooth Support.
+[  OK  ] Stopped target bluetooth.target - Bluetooth Support.
+[  OK  ] Reached target bluetooth.target - Bluetooth Support.
+[  OK  ] Stopped target bluetooth.target - Bluetooth Support.
+[  OK  ] Reached target bluetooth.target - Bluetooth Support.
+[  OK  ] Stopped target bluetooth.target - Bluetooth Support.
+[  OK  ] Reached target bluetooth.target - Bluetooth Support.
+[  OK  ] Stopped target bluetooth.target - Bluetooth Support.
+[  OK  ] Reached target bluetooth.target - Bluetooth Support.
+[  OK  ] Stopped target bluetooth.target - Bluetooth Support.
+[  OK  ] Reached target bluetooth.target - Bluetooth Support.
+[  OK  ] Stopped target bluetooth.target - Bluetooth Support.
+[  OK  ] Reached target bluetooth.target - Bluetooth Support.
+[  OK  ] Stopped target bluetooth.target - Bluetooth Support.
+[  OK  ] Reached target bluetooth.target - Bluetooth Support.
+[  OK  ] Stopped target bluetooth.target - Bluetooth Support.
+[  OK  ] Finished systemd-networkd-wait-onl… Wait for Network to be Configured.
+         Starting cloud-init-network.service - Cloud-init: Network Stage...
+[   10.081961] cloud-init[473]: Cloud-init v. 25.1.4 running 'init' at Sun, 08 Nov 2026 14:14:15 +0000. Up 10.06 seconds.
+[   10.098433] cloud-init[473]: ci-info: +++++++++++++++++++++++++++++++++++++++Net device info+++++++++++++++++++++++++++++++++++++++
+[   10.102300] cloud-init[473]: ci-info: +--------+------+------------------------------+---------------+--------+-------------------+
+[   10.105305] cloud-init[473]: ci-info: | Device |  Up  |           Address            |      Mask     | Scope  |     Hw-Address    |
+[   10.108407] cloud-init[473]: ci-info: +--------+------+------------------------------+---------------+--------+-------------------+
+[   10.112442] cloud-init[473]: ci-info: |  end0  | True |        192.168.66.83         | 255.255.255.0 | global | 12:f3:ae:d1:ac:1e |
+[   10.117419] cloud-init[473]: ci-info: |  end0  | True | fe80::10f3:aeff:fed1:ac1e/64 |       .       |  link  | 12:f3:ae:d1:ac:1e |
+[   10.121442] cloud-init[473]: ci-info: |   lo   | True |          127.0.0.1           |   255.0.0.0   |  host  |         .         |
+[   10.125486] cloud-init[473]: ci-info: |   lo   | True |           ::1/128            |       .       |  host  |         .         |
+[   10.129489] cloud-init[473]: ci-info: +--------+------+------------------------------+---------------+--------+-------------------+
+[   10.133468] cloud-init[473]: ci-info: +++++++++++++++++++++++++++++++Route IPv4 info+++++++++++++++++++++++++++++++
+[   10.135490] cloud-init[473]: ci-info: +-------+--------------+--------------+-----------------+-----------+-------+
+[   10.137401] cloud-init[473]: ci-info: | Route | Destination  |   Gateway    |     Genmask     | Interface | Flags |
+[   10.140554] cloud-init[473]: ci-info: +-------+--------------+--------------+-----------------+-----------+-------+
+[   10.145492] cloud-init[473]: ci-info: |   0   |   0.0.0.0    | 192.168.66.1 |     0.0.0.0     |    end0   |   UG  |
+[  OK  ] Reached target bluetooth.target - Bluetooth Support.
+[   10.145900] cloud-init[473]: ci-info: |   1   | 192.168.66.0 |   0.0.0.0    |  255.255.255.0  |    end0   |   U   |
+[   10.151422] cloud-init[473]: ci-info: |   2   | 192.168.66.1 |   0.0.0.0    | 255.255.255.255 |    end0   |   UH  |
+[   10.153485] cloud-init[473]: ci-info: +-------+--------------+--------------+-----------------+-----------+-------+
+[   10.155575] cloud-init[473]: ci-info: +++++++++++++++++++Route IPv6 info+++++++++++++++++++
+[   10.159431] cloud-init[473]: ci-info: +-------+-------------+---------+-----------+-------+
+[   10.162434] cloud-init[473]: ci-info: | Route | Destination | Gateway | Interface | Flags |
+[   10.165457] cloud-init[473]: ci-info: +-------+-------------+---------+-----------+-------+
+[   10.168369] cloud-init[473]: ci-info: |   0   |  fe80::/64  |    ::   |    end0   |   U   |
+[  OK  ] Stopped target bluetooth.target - Bluetooth Support.
+[   10.171442] cloud-init[473]: ci-info: |   2   |   anycast   |    ::   |    end0   |   U   |
+[   10.178281] cloud-init[473]: ci-info: |   3   |    local    |    ::   |    end0   |   U   |
+[   10.181407] cloud-init[473]: ci-info: |   4   |  multicast  |    ::   |    end0   |   U   |
+[   10.184506] cloud-init[473]: ci-info: +-------+-------------+---------+-----------+-------+
+[   10.297933] cloud-init[473]: 2026-11-08 14:14:16,083 - DataSourceEc2.py[WARNING]: Metadata 'network' key not valid: None.
+[  OK  ] Reached target bluetooth.target - Bluetooth Support.
+[  OK  ] Stopped target bluetooth.target - Bluetooth Support.
+[   10.714080] sh[490]: Completed socket interaction for boot stage network
+[  OK  ] Finished cloud-init-network.service - Cloud-init: Network Stage.
+[  OK  ] Reached target cloud-config.target - Cloud-config availability.
+[  OK  ] Reached target network-online.target - Network is Online.
+[  OK  ] Reached target sysinit.target - System Initialization.
+[  OK  ] Started rsyslog-hostname-reload.pa…ostname changes and reload rsyslog.
+[  OK  ] Started systemd-tmpfiles-clean.tim…y Cleanup of Temporary Directories.
+[  OK  ] Reached target paths.target - Path Units.
+[  OK  ] Listening on cloud-init-hotplugd.s…t - cloud-init hotplug hook socket.
+[  OK  ] Listening on dbus.socket - D-Bus System Message Bus Socket.
+[  OK  ] Listening on ssh.socket - OpenBSD Secure Shell server socket.
+[  OK  ] Listening on sshd-unix-local.socke…temd-ssh-generator, AF_UNIX Local).
+[  OK  ] Listening on systemd-hostnamed.socket - Hostname Service Socket.
+[  OK  ] Reached target sockets.target - Socket Units.
+[  OK  ] Reached target basic.target - Basic System.
+         Starting bird.service - BIRD Internet Routing Daemon...
+         Starting captainos-banner.service - CaptainOS Banner...
+         Starting cloud-config.service - Cloud-init: Config Stage...
+         Starting dbus.service - D-Bus System Message Bus...
+[  OK  ] Started kubelet.service - kubelet: The Kubernetes Node Agent.
+         Starting rsyslog.service - Remote Syslog Forwarder (rsyslog)...
+         Starting ssh.service - OpenBSD Secure Shell server...
+         Starting systemd-logind.service - User Login Management...
+         Starting systemd-user-sessions.service - Permit User Sessions...
+[  OK  ] Started dbus.service - D-Bus System Message Bus.
+[  OK  ] Finished captainos-banner.service - CaptainOS Banner.
+[  OK  ] Started rsyslog.service - Remote Syslog Forwarder (rsyslog).
+[  OK  ] Reached target bluetooth.target - Bluetooth Support.
+         Starting containerd.service - containerd container runtime...
+[  OK  ] Finished systemd-user-sessions.service - Permit User Sessions.
+[  OK  ] Stopped target bluetooth.target - Bluetooth Support.
+[  OK  ] Started getty@tty1.service - Getty on tty1.
+[  OK  ] Started serial-getty@ttyS0.service - Serial Getty on ttyS0.
+[  OK  ] Reached target getty.target - Login Prompts.
+         Starting systemd-hostnamed.service - Hostname Service...
+[  OK  ] Started ssh.service - OpenBSD Secure Shell server.
+[  OK  ] Started bird.service - BIRD Internet Routing Daemon.
+         Starting bird-graceful-shutdown.se…utdown before BIRD/network stops...
+[  OK  ] Started systemd-logind.service - User Login Management.
+[  OK  ] Finished bird-graceful-shutdown.se…shutdown before BIRD/network stops.
+[  OK  ] Started systemd-hostnamed.service - Hostname Service.
+         Starting polkit.service - Authorization Manager...
+[  OK  ] Reached target bluetooth.target - Bluetooth Support.
+[   11.023742] cloud-init[473]: Cloud-init v. 25.1.4 running 'modules:config' at Sun, 08 Nov 2026 14:14:16 +0000. Up 10.89 seconds.
+[  OK  ] Stopped target bluetooth.target - Bluetooth Support.
+[  OK  ] Started polkit.service - Authorization Manager.
+[   11.090695] sh[535]: Completed socket interaction for boot stage config
+[  OK  ] Finished cloud-config.service - Cloud-init: Config Stage.
+[  OK  ] Reached target bluetooth.target - Bluetooth Support.
+[  OK  ] Stopped target bluetooth.target - Bluetooth Support.
+[  OK  ] Started containerd.service - containerd container runtime.
+[  OK  ] Reached target multi-user.target - Multi-User System.
+[  OK  ] Reached target bluetooth.target - Bluetooth Support.
+[  OK  ] Stopped target bluetooth.target - Bluetooth Support.
+[  OK  ] Reached target bluetooth.target - Bluetooth Support.
+[  OK  ] Stopped target bluetooth.target - Bluetooth Support.
+         Starting rsyslog-hostname-reload.s… rsyslog to pick up new hostname...
+[  OK  ] Reached target bluetooth.target - Bluetooth Support.
+         Stopping rsyslog.service - Remote Syslog Forwarder (rsyslog)...
+[  OK  ] Stopped rsyslog.service - Remote Syslog Forwarder (rsyslog).
+[  OK  ] Stopped target bluetooth.target - Bluetooth Support.
+         Starting rsyslog.service - Remote Syslog Forwarder (rsyslog)...
+[  OK  ] Started rsyslog.service - Remote Syslog Forwarder (rsyslog).
+[  OK  ] Finished rsyslog-hostname-reload.s…rt rsyslog to pick up new hostname.
+[  OK  ] Reached target bluetooth.target - Bluetooth Support.
+[  OK  ] Stopped target bluetooth.target - Bluetooth Support.
+[  OK  ] Reached target bluetooth.target - Bluetooth Support.
+[  OK  ] Stopped target bluetooth.target - Bluetooth Support.
+[  OK  ] Reached target bluetooth.target - Bluetooth Support.
+[  OK  ] Stopped target bluetooth.target - Bluetooth Support.
+[  OK  ] Reached target bluetooth.target - Bluetooth Support.
+[  OK  ] Stopped target bluetooth.target - Bluetooth Support.
+[  OK  ] Reached target bluetooth.target - Bluetooth Support.
+[  OK  ] Stopped target bluetooth.target - Bluetooth Support.
+[  OK  ] Reached target bluetooth.target - Bluetooth Support.
+[  OK  ] Stopped target bluetooth.target - Bluetooth Support.
+[  OK  ] Reached target bluetooth.target - Bluetooth Support.
+[  OK  ] Stopped target bluetooth.target - Bluetooth Support.
+[  OK  ] Finished systemd-time-wait-sync.se…ait Until Kernel Time Synchronized.
+[  OK  ] Reached target time-sync.target - System Time Synchronized.
+[  OK  ] Started dpkg-db-backup.timer - Daily dpkg database backup timer.
+[  OK  ] Reached target timers.target - Timer Units.
+         Starting cloud-final.service - Cloud-init: Final Stage...
+[  OK  ] Reached target bluetooth.target - Bluetooth Support.
+[  OK  ] Stopped target bluetooth.target - Bluetooth Support.
+[   14.624760] cloud-init[473]: Cloud-init v. 25.1.4 running 'modules:final' at Sun, 08 Nov 2026 14:14:20 +0000. Up 14.50 seconds.
+[   14.695445] cloud-init[473]: Cloud-init v. 25.1.4 finished at Sun, 08 Nov 2026 14:14:20 +0000. Datasource DataSourceEc2.  Up 14.69 seconds
+[   14.700054] sh[637]: Completed socket interaction for boot stage final
+[  OK  ] Finished cloud-final.service - Cloud-init: Final Stage.
+[  OK  ] Reached target cloud-init.target - Cloud-init target.
+
+CaptainOS Kubernetes node (Cluster API Provider Tinkerbell), disk image [img-k8s-capt-trixie-genio] nio-12l-5lxzk-f4x62 ttyS0
+
+nio-12l-5lxzk-f4x62 login: root (automatic login)
+
+
+Welcome to CaptainOS: Kubernetes node (Cluster API Provider Tinkerbell), disk image.
+
+   ▄▄▄▄▄▄▄                                    ▄▄▄▄▄    ▄▄▄▄▄▄▄
+  ███▀▀▀▀▀              ██        ▀▀        ▄███████▄ █████▀▀▀
+  ███       ▀▀█▄ ████▄ ▀██▀▀ ▀▀█▄ ██  ████▄ ███   ███  ▀████▄
+  ███      ▄█▀██ ██ ██  ██  ▄█▀██ ██  ██ ██ ███▄▄▄███    ▀████
+  ▀███████ ▀█▄██ ████▀  ██  ▀█▄██ ██▄ ██ ██  ▀█████▀  ███████▀
+                 ██
+                 ▀▀
+
+Flavor: img-k8s-capt-trixie-genio
+
+- Use `cloud-init status --long` / `journalctl -u cloud-init` for the Tootles bootstrap.
+- Use `journalctl -u kubelet` to access the kubelet logs.
+- Use `crictl ps` / `crictl logs` to access pod containers.
+- On control planes, use `kubectl --kubeconfig /etc/kubernetes/admin.conf`.
+
+root@nio-12l-5lxzk-f4x62:~# ls -la /dev/tee*
+crw------- 1 root root 242,  0 Nov  8 14:14 /dev/tee0
+crw------- 1 root root 242, 16 Nov  8 14:14 /dev/teepriv0
+root@nio-12l-5lxzk-f4x62:~# dmesg | grep -i tee
+[    0.000000] OF: reserved mem: 0x0000000043200000..0x0000000043dfffff (12288 KiB) nomap non-reusable optee@43200000
+[    0.654231] optee: probing for conduit method.
+[    0.654258] optee: revision 3.19 (00000000ab5d0acf)
+[    0.654276] optee: dynamic shared memory is enabled
+[    0.654817] optee: initialized driver
+root@nio-12l-5lxzk-f4x62:~#
