@@ -1,6 +1,6 @@
 # RK3588 naneng-combphy: SATA pipe_con1 register offset (K9)
 
-Status ID: **K9**. U-Boot twin: **U1** (same table, same bug). Prepared 2026-11-08, reworded 2026-11-09 (TRM, Fixes, stable); being sent by the user.
+Status ID: **K9**. U-Boot twin: **U1** (same table, same bug). **Sent v1 2026-11-09** by the user via b4: `20261109-rk3588-combphy-sata2-6g-v1-1-e9135c91de6a@pardini.net` (https://patch.msgid.link/20261109-rk3588-combphy-sata2-6g-v1-1-e9135c91de6a@pardini.net). Tag `sent/20261024-rk3588-combphy-sata2-6g-03bb30151552-v1` is GPG-signed.
 
 ## The bug
 
@@ -37,19 +37,16 @@ Only sata2 was tested.
 - No `Assisted-by:`.
 - Recipients come from `b4 prep --auto-to-cc`: Vinod, Neil, Mani, Heiko, Andrew Powers-Holmes, Lucas Tanure (Fixes authors; the 2023 collabora address may bounce), plus linux-phy, linux-arm-kernel, linux-rockchip and LKML. stable and Yifeng Zhao (BSP fix author) are Cc'd from inside the patch.
 
-## Before sending
+## Sent / after sending
 
-1. Signed-off-by: added by the user on 2026-11-08.
-2. Signing: GPG key set up on this VM on 2026-11-08 (see AGENTS.md). `b4 send --dry-run` produces an openpgp-sha256 `X-Developer-Signature`.
-3. `b4 prep --check` passes 1/1. There's no `Assisted-by` (user: the kernel doesn't take it anymore).
-4. 2026-11-09:
-   - commit message corrected to sata2-only, with a TRM citation
-   - `Fixes:` and `Cc: stable` added
-   - cover reworded (TRM, PCIe grant-bit note)
-   - both commits re-signed (G)
-   - backup branch `backup/k9-pre-trm-reword` (pre-TRM text)
-5. The dry-run is OK, with an openpgp signature. The user sends it via b4 themselves (2026-11-09). Afterwards: `20-lore.sh all K9`, update STATUS to `sent v1`, push the branch and the `sent/` tag to the fork, delete the backup branch.
-6. U1 (U-Boot twin): apply the same sata2-only correction before it is sent.
+- v1 sent 2026-11-09. The SoB, the GPG signature (openpgp-sha256 `X-Developer-Signature`) and `b4 prep --check` 1/1 were all done before sending.
+- Sashiko v1: Reviewed, "No issues found" (`lore/topics/K9/sashiko/v1.md`). No list replies yet: lore has 4 list copies of the patch.
+- The backup branch `backup/k9-pre-trm-reword` was deleted 2026-11-09.
+- b4 bumped the local branch to revision 2 after sending, which left both branch commits **unsigned**: b4's pygit2 rewrite drops GPG signatures by design. The sent tag is still signed. A fix (post-rewrite hook) is proposed and pending the user's OK.
+- Still to do:
+  - Fork push of the branch and the `sent/` tag. The user deferred it. The fork has the pre-TRM e91931493f5d, so a `--force-with-lease` is needed.
+  - Watch for review: `scripts/20-lore.sh all K9`.
+- U1 (U-Boot twin): apply the same sata2-only correction before it is sent.
 
 ## Checks run
 
