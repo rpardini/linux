@@ -18,6 +18,7 @@ Instructions for AI agents working under `~/linuxdev` (= `/opt/linuxdev`). This 
   - `remotes.tsv` is the source of truth for kernel/u-boot. Remotes the user dropped (eg. u-boot `kwiboo`, `kwiboo-denx`) must not be re-added or fetched.
 - Topic IDs: K = kernel mainline, KA = kernel Armbian trees, RK = Rockchip vendor 6.1, U/UA = u-boot.
 - Keep `STATUS.md` and `topics.tsv` IDs in sync.
+- Don't track push state (pushed / not pushed / "fork push pending") in `STATUS.md` or notes: it goes stale every cycle. `scripts/03-verify.sh` is the source of truth.
 - Per-topic notes go in `notes/kernel/` and `notes/u-boot/`, linked from the STATUS row's Notes column.
 
 ## topics.tsv
