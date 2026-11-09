@@ -79,7 +79,7 @@ Dropped: `mpp-report-zero-load-for-idle` — not needed on rkr7.2 (Rockchip solv
 
 | ID | Topic | Branch | Status | Next | Notes |
 |---|---|---|---|---|---|
-| U1 | RK3588 SATA: dwc_ahci sata-port PHY, ahci READ CAPACITY last LBA, combphy pipe_con1 (sata2 6G, K9 twin) | `b4/rk3588-sata-fixes` | prepared (v1, main v2027.01-rc1+) | add SoB, send | change-id `20261024-rk3588-sata-fixes-v2027-01-892bf10a3512`; worktree `u-boot-rk3588-sata-fixes`; Arm: `u-boot/v2026.10/general-*`; notes `notes/u-boot/rk3588-sata-fixes.md`, `notes/u-boot/BLADE3-SATA-REPORT.md` |
+| U1 | RK3588/RK356x SATA: dwc_ahci sata-port PHY, ahci READ CAPACITY last LBA, combphy pipe_con1 (sata2 6G, K9 twin) | `b4/rk35xx-sata-fixes` | prepared (v1, main v2027.01-rc1+) | add SoB, send | change-id `20261024-rk3588-sata-fixes-v2027-01-892bf10a3512`; worktree `u-boot-rk35xx-sata-fixes`; Arm: `u-boot/v2026.10/general-*`; notes `notes/u-boot/rk35xx-sata-fixes.md`, `notes/u-boot/BLADE3-SATA-REPORT.md` |
 | U2 | tcpm/fusb302: drain RX FIFO, delay BC_LVL; Blade 3 USB-C1 sink-only; Sebastian Reichel's tcpm fixes | — (on UA1; was `mainline/blade3-fusb302-tcpm`) | needs port | port onto v2026.10 | `rk3588-mixtile-blade3-u-boot.dtsi` is not in v2026.10; Arm: `u-boot/v2026.10/board_mixtile-blade3/020-*`; reports `notes/u-boot/BLADE3-USBPD-REPORT.md`, `Blade3-usbpd-powering-submit.md` |
 | UA1 | Armbian context for U2 (+DEBUG, + full PD logs "keep forever") | `armbian-tree/blade3-edge-20261022-debug-usbpd` | debug | keep | |
 | U3 | PXE/extlinux over HTTP(S) + docs | `mainline/pxe-http-boot` | wip | b4 prep | Arm: `u-boot/v2026.{07,10}/pxe-over-http-v0.patch`; Armbian context UA2 `armbian-tree/pxe-http-boot` (has DEBUG) |

@@ -32,7 +32,7 @@ KA4	kernel	armbian-tree/sc8280xp-7.3-20261104-x13s	armbian-armsurvivors-sc8280xp
 KA5	kernel	armbian-tree/meson64-7.2-20260923-t95z	armbian-armsurvivors-meson64-7.2-20260923	copy	-	-	rpardini-linux	-	-
 RK1	kernel	rk61/blade3-fusb302-pd-debug	nyanmisaka-rk-6.1-rkr7.2-fixes	copy	-	-	rpardini-armbian-linux-rockchip-rk3588	-	-
 RK2	kernel	rk61/bcmdhd-pcie-sdio	rk-6.1-rkr7.2-20260807-bcmdhd-pcie-sdio	copy	-	-	rpardini-armbian-linux-rockchip-rk3588	-	-
-U1	u-boot	b4/rk3588-sata-fixes	-	keep	-	-	rpardini-armbian	y	rk3588-sata-fixes
+U1	u-boot	b4/rk35xx-sata-fixes	-	keep	-	-	rpardini-armbian	y	rk35xx-sata-fixes
 #U2	u-boot	mainline/blade3-fusb302-tcpm	-	pick	v2026.10	84c8d44cb2cd6c3e13ef225e8e13c4ae8341ec90,e6d3a560de18fd1726b4e156341a6cbae1d87649,d92ab23bb722d9b3386172df9981c637d7e497f1,bf6a39d698d86dd8caf0878adcd4ce0641c583e6,874fd9d3ffd422129b56e2a7c750e615e031139d,1ac98d467912662377b1cf62976e74d029299cb4,1ee6443a60fe163e76c64136aa1a9a68401cb065	rpardini-armbian	-	-
 UA1	u-boot	armbian-tree/blade3-edge-20261022-debug-usbpd	armbian-armsurvivors-mixtile-blade3-edge-20261022-debug-usbpd	copy	-	-	rpardini-armbian	-	-
 U3	u-boot	mainline/pxe-http-boot	-	pick	v2026.10	23602a8d62588d8b5f630b62a8da2eca043f8f0c,55ea3698959d2c8d07e85478e37795cbe48704ba,8e868e03d8babdb94a7516f1143bbfe4cb5f9a3e	rpardini-armbian	-	-
