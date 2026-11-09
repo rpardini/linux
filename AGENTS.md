@@ -56,7 +56,10 @@ Prefer extending these scripts (they share `lib.sh`: `run`, `each_topic`, `topic
 - Don't add `Assisted-by:` either. User, 2026-11-08: the kernel doesn't take it anymore.
 - Signing (set up 2026-11-08):
   - The user's GPG key `AC18230CF6AFEACADC4888933B5E3FE39EC7EDE9` is git `user.signingkey`. patatt falls back to it as `openpgp:`, and b4 sends through B4 Relay by default in kernel trees.
-  - `commit.gpgsign` and `tag.gpgsign` are on, so **every commit, amend and rebase needs an unlocked gpg-agent**. The agent caches the passphrase for 8h; the user unlocks it in their own terminal with `echo test | gpg --clearsign >/dev/null`.
+  - **What needs a signature is the mail, not the commits.** `b4 send` signs each message with patatt (`X-Developer-Signature`, openpgp-sha256), and b4 signs its `sent/` tags.
+  - b4's own rewrites drop commit signatures by design (cover edits, `--auto-to-cc`, `trailers -u`, the post-send revision bump: pygit2 in `b4/_rewrite.py`). That's fine.
+  - So **don't spend effort on commit signatures**: no re-signing rebases, no `%G?` checks, no hooks (user, 2026-11-09).
+  - `commit.gpgsign` and `tag.gpgsign` are still on, so `git commit` and `git rebase` need an unlocked gpg-agent, and so does `b4 send`. The agent caches the passphrase for 8h; the user unlocks it in their own terminal with `echo test | gpg --clearsign >/dev/null`.
   - Agent shells have no TTY. Check first with `echo t | gpg --batch --pinentry-mode error --clearsign >/dev/null`; if it fails, ask the user to unlock.
 - Commit messages and cover letters are written in the user's voice. Show the wording to the user before anything is sent.
 - Build in an out-of-tree dir inside the worktree (eg. `O=.build`). The host is arm64, so no cross compile is needed for arm64.
