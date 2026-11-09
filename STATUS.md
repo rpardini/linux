@@ -4,7 +4,7 @@ Human-edited tracker for kernel / u-boot work that used to live in Mac-local `/V
 Branch-level data the scripts need lives in `topics.tsv` (keep the IDs in sync); everything here is free-form.
 
 - Lore, my posts: <https://lore.kernel.org/all/?q=f%3Aricardo%40pardini.net>
-- Forks: kernel `rpardini/linux` (remote `rpardini-linux`), vendor 6.1 `rpardini/armbian-linux-rockchip-rk3588`, u-boot `rpardini/armbian-patched-u-boot` (remote `rpardini-armbian`)
+- Forks: kernel `rpardini/linux` (remote `kernel-rpardini-linux`), vendor 6.1 `rpardini/armbian-linux-rockchip-rk3588` (remote `kernel-rpardini-armbian-linux-rockchip-rk3588`), u-boot `rpardini/armbian-patched-u-boot` (remote `uboot-rpardini-armbian`). Remotes are prefixed per clone (`kernel-*`, `uboot-*`, `armbian-*`); list in `remotes.tsv`.
 - Armbian patch paths are relative to `armbian-build/patch/`.
 - Branch names below are **local** names. On the forks everything lives under `linuxdev-work/`: `b4/x` → `linuxdev-work/b4/x`, `mainline/x` → `linuxdev-work/mainline/x`, `armbian-tree/x` (full Armbian-patched trees) → `linuxdev-work/armbian-tree/x`, `rk61/x` → `linuxdev-work/rk61/x`. `11-vm-checkout.sh` maps them back, so b4 branches stay `b4/*` locally. Pre-existing un-prefixed copies on the forks (old `b4/*`, `pxe-http-boot`, the x13s branch…) are leftovers that can be deleted.
 - Status words: `merged` · `sent vN` · `prepared` (b4 ready, unsent) · `wip` · `needs port` (only exists on an Armbian tree; picks do not apply on plain upstream) · `armbian-only` · `debug` · `parked` · `landed` · `drop`
@@ -37,7 +37,7 @@ Inventory as of 2026-11-06 (kernel v7.3 / u-boot v2026.10).
 | K20 | Sunvell T95Z Plus: DT, IR pull-up, blue remote keytable | — (on KA5; was `mainline/t95z-plus`) | needs port | port onto v7.3 | `meson-gxm-t95z-plus.dts` is not in v7.3; from KA5 |
 | K21 | rk3588: enable NPU on all remaining boards | `mainline/rk3588-npu-all-boards` | wip | rebase on v7.3, drop what K1 merged | alt `v7.1-rc4-add-rk3588-npu-all{,-sonnet}` |
 | K22 | auxdisplay TM16xx: fix SPI autoload (on Jean-François Lessard's TM16xx v6 series) | `mainline/tm16xx-spi-autoload` | wip | reply on Lessard's thread | branch includes his 6 patches; Arm: `meson64-7.3/general-driver-tm16xx-v6.patch` |
-| K23 | MediaTek MT8195 HDMI CEC: binding, `drivers/media/cec` driver, drm/mediatek HDMI v2 CEC notifier, mt8195.dtsi, Nio-12L enable | `b4/mt8195-cec` | prepared (v1, **untested on HW**) | board test, SoB, send | change-id `20261108-b4-mt8195-cec-7f2840a477aa`; Arm: `kernel/archive/genio-7.3/310{0..4}-*` + `CONFIG_CEC_MTK=m`; vendor ref `mediatek-aiot/mtk-v6.6`; notes `notes/kernel/mt8195-cec.md` |
+| K23 | MediaTek MT8195 HDMI CEC: binding, `drivers/media/cec` driver, drm/mediatek HDMI v2 CEC notifier, mt8195.dtsi, Nio-12L enable | `b4/mt8195-cec` | prepared (v1, **untested on HW**) | board test, SoB, send | change-id `20261108-b4-mt8195-cec-7f2840a477aa`; Arm: `kernel/archive/genio-7.3/310{0..4}-*` + `CONFIG_CEC_MTK=m`; vendor ref `kernel-mediatek-aiot/mtk-v6.6`; notes `notes/kernel/mt8195-cec.md` |
 
 ### Kernel Armbian trees (KA; full patched trees, README commit + my work on top)
 
@@ -102,7 +102,7 @@ All default to dry-run (print only); `DRY_RUN=0` executes. `ONLY='^(K9|U1)$'` re
 
 On the Mac (`LINUXDEV_ROOT=/Volumes/LinuxDev`, the default here):
 1. `scripts/01-make-branches.sh` — create `mainline/*`, `armbian-tree/*`, `rk61/*` branches (copy, or cherry-pick onto v7.3 / v2026.10; failed picks are reported, not created).
-2. `scripts/02-push.sh` — push them as `linuxdev-work/<branch>`, plus b4 `sent/*` tags and this `status` branch (as `linuxdev-work/status`), no force.
+2. `scripts/02-push.sh` — push them as `linuxdev-work/<branch>`, plus b4 `sent/*` tags and this `linuxdev-work/status` branch (remote `linuxdev-status-rpardini`), no force.
 3. `scripts/03-verify.sh` — local vs fork, per topic (read-only).
 
 Anywhere: `scripts/20-lore.sh init|mine|topic <ID>|sashiko <ID>|all <ID>|up` — lore mail via lei + Sashiko reviews into `$LINUXDEV_ROOT/lore` (how-to: `notes/lore-lei.md`). Agent instructions: `AGENTS.md`.
@@ -110,7 +110,7 @@ Anywhere: `scripts/20-lore.sh init|mine|topic <ID>|sashiko <ID>|all <ID>|up` —
 On a VM / remote host:
 ```sh
 mkdir -p ~/linuxdev && cd ~/linuxdev
-git clone -b linuxdev-work/status --single-branch git@github.com:rpardini/linux.git linuxdev-status
+git clone -o linuxdev-status-rpardini -b linuxdev-work/status --single-branch git@github.com:rpardini/linux.git linuxdev-status
 DRY_RUN=0 linuxdev-status/scripts/10-vm-clone-main.sh kernel --blobless   # main tree ~/linuxdev/kernel
 DRY_RUN=0 linuxdev-status/scripts/10-vm-clone-main.sh u-boot
 DRY_RUN=0 linuxdev-status/scripts/11-vm-checkout.sh K9                    # switch main tree to K9's branch

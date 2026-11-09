@@ -40,7 +40,7 @@ Cover: "rockchip: fix on-board SATA on RK3588 and RK356x" (retitled 2026-11-09, 
 ## Branch / worktree
 
 - `b4/rk35xx-sata-fixes`, worktree `/opt/linuxdev/u-boot-rk35xx-sata-fixes` (renamed 2026-11-09 from `rk3588-sata-fixes`), on upstream **`main`** (934995f642a, v2027.01-rc1-341).
-  - U-Boot renamed master → main. `origin/master` (on GitHub and on git.u-boot-project.org) is frozen at v2026.07.
+  - U-Boot renamed master → main. `uboot-upstream/master` (on GitHub and on git.u-boot-project.org) is frozen at v2026.07.
 - change-id `20261024-rk3588-sata-fixes-v2027-01-892bf10a3512`, revision 1 (kept from the old branch).
 - The old fork branch `linuxdev-work/b4/rk3588-sata-fixes-v2027.01` (on v2026.10+) has the pre-TRM text with Assisted-by. Delete it once the new branch is pushed.
 - Local backup: `backup/u1-pre-reword` (rebased, pre-reword).
@@ -67,7 +67,7 @@ Cover: "rockchip: fix on-board SATA on RK3588 and RK356x" (retitled 2026-11-09, 
 ## Sent / after sending
 
 - Sent 2026-11-09 by the user (SoB added via rebase, then auto-to-cc rerun).
-- Fork: `linuxdev-work/b4/rk35xx-sata-fixes` and the sent tag were pushed to rpardini-armbian. The old `linuxdev-work/b4/rk3588-sata-fixes-v2027.01` was deleted. The `backup/u1-*` branches were deleted.
+- Fork: `linuxdev-work/b4/rk35xx-sata-fixes` and the sent tag were pushed to `uboot-rpardini-armbian`. The old `linuxdev-work/b4/rk3588-sata-fixes-v2027.01` was deleted. The `backup/u1-*` branches were deleted.
 - Sashiko: still pending at send time (it doesn't review the U-Boot list right away, or at all). Refresh with `scripts/20-lore.sh all U1`.
 - Still to do:
   - Armbian PR: cherry-pick armbian-build `extensions` 222d20421 onto armbian/build main (rpardini/armbian-build).

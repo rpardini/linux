@@ -15,7 +15,8 @@ LINUXDEV_ROOT="${LINUXDEV_ROOT:-$(dirname "$STATUS_DIR")}"
 DRY_RUN="${DRY_RUN:-1}"
 ONLY="${ONLY:-}"
 PUSH_PREFIX="${PUSH_PREFIX:-linuxdev-work/}"
-STATUS_BRANCH="status" # local name; pushed as ${PUSH_PREFIX}status
+STATUS_BRANCH="${PUSH_PREFIX}status" # local == remote name (bootstrap clones it as-is); remote linuxdev-status-rpardini
+STATUS_REMOTE="linuxdev-status-rpardini"
 TOPICS_TSV="$STATUS_DIR/topics.tsv"
 REMOTES_TSV="$STATUS_DIR/remotes.tsv"
 

@@ -8,7 +8,7 @@ Status ID: **K9**. U-Boot twin: **U1** (same table, same bug). **Sent v1 2026-11
 - `.pipe_con1_for_sata = { 0x0000, 2, 0, 0x00, 0x2 }`. It should be offset `0x0004` (php_grf CON1[2:0] = 2).
 - Because of this, CON1 is never written and SATA trains only at 1.5 Gb/s.
 - Rockchip fixed this in its BSP in 2022 ("config sata2 rate to 6G for rk3588", rockchip-linux/kernel 2f5fe2c0bbd4).
-- Still wrong in torvalds/master and next-20261105 as of 2026-11-08. lore has no prior patch for it.
+- Still wrong in `kernel-torvalds/master` and next-20261105 as of 2026-11-08. lore has no prior patch for it.
 
 Tested (by the user) with an mSATA SSD on sata2 (combphy2_psu): 1.5 → 6.0 Gb/s, 124 → 421 MB/s O_DIRECT reads.
 Only sata2 was tested.

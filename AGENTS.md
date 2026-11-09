@@ -1,19 +1,21 @@
 # AGENTS.md: linuxdev workspace (kernel / u-boot upstreaming)
 
 Instructions for AI agents working under `~/linuxdev` (= `/opt/linuxdev`). This file lives in the
-`linuxdev-status` repo (branch `status`, pushed as `linuxdev-work/status` on `rpardini/linux`), and
+`linuxdev-status` repo (local branch `linuxdev-work/status`, remote `linuxdev-status-rpardini` = `rpardini/linux`), and
 `/opt/linuxdev/CLAUDE.md` imports it.
 
 ## Layout
 
 | Path | What |
 |---|---|
-| `kernel/`, `u-boot/` | main trees (blobless clones). Remotes are listed in `linuxdev-status/remotes.tsv` |
+| `kernel/`, `u-boot/` | main trees (all blobs fetched here; `10-vm-clone-main.sh --blobless` remains for new hosts). Remotes are listed in `linuxdev-status/remotes.tsv` |
 | `kernel-<slug>/`, `u-boot-<slug>/` | per-topic git worktrees of the main trees (eg. `kernel-rk3588-rtl-eth`, `kernel-cec`) |
 | `linuxdev-status/` | this repo: `STATUS.md` (human tracker), `topics.tsv` (machine data per topic), `remotes.tsv`, `notes/`, `scripts/` |
 | `lore/` | lei store and saved searches, per-topic mail and Sashiko reviews (see `notes/lore-lei.md`) |
 | `armbian-build/` | Armbian build framework. Patch paths in STATUS are relative to `armbian-build/patch/` |
 
+- Remotes are prefixed per clone: `kernel-*` in `kernel/`, `uboot-*` in `u-boot/` (`uboot-upstream` is U-Boot upstream, there is no `origin`), `armbian-*` in `armbian-build/` (`armbian-upstream`, `armbian-rpardini`, `armbian-armsurvivors`), `linuxdev-status-rpardini` here. Worktrees share their main tree's remotes.
+  - `remotes.tsv` is the source of truth for kernel/u-boot. Remotes the user dropped (eg. u-boot `kwiboo`, `kwiboo-denx`) must not be re-added or fetched.
 - Topic IDs: K = kernel mainline, KA = kernel Armbian trees, RK = Rockchip vendor 6.1, U/UA = u-boot.
 - Keep `STATUS.md` and `topics.tsv` IDs in sync.
 - Per-topic notes go in `notes/kernel/` and `notes/u-boot/`, linked from the STATUS row's Notes column.
@@ -49,6 +51,13 @@ Prefer extending these scripts (they share `lib.sh`: `run`, `each_topic`, `topic
 - Before sending, run `b4 prep --check`, `make dt_binding_check` / `CHECK_DTBS=y` for DT work, `b4 send --dry-run`.
 - **Never** run `b4 send`, `git push` or `02-push.sh` (with DRY_RUN=0), and never post to lists, without the user's explicit OK.
 - Before rewriting a branch that matters (rebase, drop, `b4 trailers -u`), make a backup branch.
+
+## Commit messages (all repos)
+
+- **Never** add `Co-Authored-By:` anywhere (user, 2026-11-09).
+- Kernel / u-boot / anything sent to a mailing list: no AI trailers at all (see below).
+- Non-mailing-list repos (armbian-build, linuxdev-status, forks' non-mail branches): `Assisted-by: Claude:<model-id>` is OK.
+- Body: terse Markdown bullet points, no prose. Mailed patches follow the target project's style instead.
 
 ## Kernel / u-boot rules
 

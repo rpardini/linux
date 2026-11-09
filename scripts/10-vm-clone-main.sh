@@ -4,7 +4,7 @@
 #
 # Bootstrap on a new host:
 #   mkdir -p ~/linuxdev && cd ~/linuxdev
-#   git clone -b linuxdev-work/status --single-branch git@github.com:rpardini/linux.git linuxdev-status
+#   git clone -o linuxdev-status-rpardini -b linuxdev-work/status --single-branch git@github.com:rpardini/linux.git linuxdev-status
 #   DRY_RUN=0 linuxdev-status/scripts/10-vm-clone-main.sh kernel --blobless
 #   DRY_RUN=0 linuxdev-status/scripts/10-vm-clone-main.sh u-boot
 #
@@ -56,7 +56,7 @@ fetch_remote() {
 	[[ "$fetch" == "y" ]] || return 0
 	info "fetching $name"
 	run git -C "$dir" fetch ${FETCH_OPTS[@]+"${FETCH_OPTS[@]}"} --prune "$name"
-	if [[ "$name" == rpardini* ]]; then # b4 bookkeeping tags live on the forks
+	if [[ "$name" == *-rpardini-* ]]; then # b4 bookkeeping tags live on the forks
 		run git -C "$dir" fetch "$name" 'refs/tags/sent/*:refs/tags/sent/*' || warn "no sent/* tags on $name"
 	fi
 }
@@ -64,8 +64,8 @@ each_remote "$repo" fetch_remote
 
 if ((CHECKOUT)) && ! gx rev-parse -q --verify HEAD > /dev/null 2>&1; then
 	case "$repo" in
-		kernel) start="torvalds/master" ;;
-		u-boot) start="origin/main" ;;
+		kernel) start="kernel-torvalds/master" ;;
+		u-boot) start="uboot-upstream/main" ;;
 	esac
 	info "detaching main tree at $start"
 	run git -C "$dir" switch --detach "$start"

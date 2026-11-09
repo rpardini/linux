@@ -22,7 +22,7 @@ It is the default for `BRANCH=edge`. Vendor TF-A, OP-TEE, libdram/libbase and th
 ## Repos and branches
 
 - `armbian-build`, branch `extensions`: 27 commits on top of `93209f021` (last 3: OP-TEE), reworked history.
-  - **Not pushed yet**: it is 24 ahead / 21 behind `origin/extensions`, so it needs `git push --force-with-lease origin extensions`.
+  - **Not pushed yet**: it is 24 ahead / 21 behind `armbian-armsurvivors/extensions`, so it needs `git push --force-with-lease armbian-armsurvivors extensions`.
   - Backups: `extensions-backup-pre-rework` (before restructuring), `extensions-backup-pre-bodies` (before the patch-summary messages).
 - `u-boot-genio-mainline`, branch `armbian/genio-nio12l`: off `v2027.01-rc1`, 22 commits; the source of the patches.
   - Backup: `armbian/genio-nio12l-backup-pre-trailers`.
