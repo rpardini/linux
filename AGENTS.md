@@ -59,8 +59,8 @@ Prefer extending these scripts (they share `lib.sh`: `run`, `each_topic`, `topic
   - **What needs a signature is the mail, not the commits.** `b4 send` signs each message with patatt (`X-Developer-Signature`, openpgp-sha256), and b4 signs its `sent/` tags.
   - b4's own rewrites drop commit signatures by design (cover edits, `--auto-to-cc`, `trailers -u`, the post-send revision bump: pygit2 in `b4/_rewrite.py`). That's fine.
   - So **don't spend effort on commit signatures**: no re-signing rebases, no `%G?` checks, no hooks (user, 2026-11-09).
-  - `commit.gpgsign` and `tag.gpgsign` are still on, so `git commit` and `git rebase` need an unlocked gpg-agent, and so does `b4 send`. The agent caches the passphrase for 8h; the user unlocks it in their own terminal with `echo test | gpg --clearsign >/dev/null`.
-  - Agent shells have no TTY. Check first with `echo t | gpg --batch --pinentry-mode error --clearsign >/dev/null`; if it fails, ask the user to unlock.
+  - `commit.gpgsign` and `tag.gpgsign` stay **on** (user, 2026-11-09), so that non-mail work (armbian-build, the forks) gets signed commits. Don't turn them off. Because they're on, `git commit` and `git rebase` need an unlocked gpg-agent, and so does `b4 send`. The agent caches the passphrase for 8h; the user unlocks it in their own terminal with `echo test | gpg --clearsign >/dev/null`.
+  - Agent shells have no TTY. Check first with `echo t | gpg --batch --pinentry-mode error --clearsign >/dev/null`; if it fails, or a commit errors out on gpg, stop and ask the user to refresh the gpg cache. Never work around it with `--no-gpg-sign` or `-c commit.gpgsign=false`.
 - Commit messages and cover letters are written in the user's voice. Show the wording to the user before anything is sent.
 - Build in an out-of-tree dir inside the worktree (eg. `O=.build`). The host is arm64, so no cross compile is needed for arm64.
 
