@@ -1,0 +1,11 @@
+# Armbian patch files that are b4 am dumps of a topic's latest sent version (scripts/30-armbian-b4.sh).
+# Columns: id  dirs  file
+#   dirs: comma-separated, relative to armbian-build/patch/
+#   file: name inside each dir; {v} is replaced by the version (vN) and older {v} siblings are git rm'ed.
+#         Names follow Armbian's prefixes (ask the user for new ones).
+# rockchip64-7.3: K4/K4b not listed; v6 does not apply on 7.3 (NanoPC-T6 context), 7.3 keeps the hand-made 1220 (binding included).
+# id	dirs	file
+K4b	kernel/archive/rockchip64-7.4	rk3588-1219-dt-bindings-net-realtek-rtl8125-{v}.patch
+K4	kernel/archive/rockchip64-7.4	rk3588-1220-arm64-dts-rockchip-describe-pcie-ethernets-on-many-boards.patch
+K9	kernel/archive/rockchip64-7.3,kernel/archive/rockchip64-7.4	914-phy-rockchip-naneng-combphy-fix-rk3588-pipe_con1_for_sata-offset.patch
+U1	u-boot/v2026.10	rk35xx-sata-fixes-{v}.patch

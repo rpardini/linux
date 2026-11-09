@@ -39,30 +39,6 @@ saved_search() {
 	fi
 }
 
-# b4_tracking <id|branch>: sets TOPIC_ID, TOPIC_REPO, TOPIC_BRANCH, TOPIC_JSON (b4 tracking JSON).
-b4_tracking() {
-	local key row id repo branch
-	key="$(local_branch "$1")"
-	if row="$(topic_row "$key")" && [[ -n "$row" ]]; then
-		IFS=$'\t' read -r id repo branch _ <<< "$row"
-	else
-		die "$key not in topics.tsv"
-	fi
-	has_branch "$repo" "$branch" || die "$id: branch $branch not present in $(repo_dir "$repo"); run 11-vm-checkout.sh $id first"
-	TOPIC_ID="$id" TOPIC_REPO="$repo" TOPIC_BRANCH="$branch"
-	TOPIC_JSON="$(g "$repo" log -1 --format=%B --grep='^--- b4-submit-tracking ---$' "$branch" |
-		sed -n '/^--- b4-submit-tracking ---$/,$p' | sed '1,/^# /d')"
-	[[ -n "$TOPIC_JSON" ]] || die "$id: no b4 tracking (cover commit) on $branch; not a b4 prep branch?"
-}
-
-# json_get <expr>: evaluate a python expression over the tracking JSON 's' (series dict).
-json_get() {
-	python3 -I -c 'import json,sys; s=json.loads(sys.stdin.read())["series"]; r=eval(sys.argv[1]); print("\n".join(r) if isinstance(r,list) else r)' "$1" <<< "$TOPIC_JSON"
-}
-
-# sent_versions: "vN msgid" lines for every sent version (first msgid of each).
-sent_versions() { json_get '[f"{k} {v[0]}" for k, v in sorted(s.get("history", {}).items(), key=lambda kv: int(kv[0][1:]))]'; }
-
 cmd_init() {
 	command -v lei > /dev/null || die "lei not found (Debian: apt install lei)"
 	if [[ -n "$(lei config leistore.dir 2> /dev/null)" ]]; then

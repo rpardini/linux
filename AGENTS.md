@@ -10,7 +10,7 @@ Instructions for AI agents working under `~/linuxdev` (= `/opt/linuxdev`). This 
 |---|---|
 | `kernel/`, `u-boot/` | main trees (all blobs fetched here; `10-vm-clone-main.sh --blobless` remains for new hosts). Remotes are listed in `linuxdev-status/remotes.tsv` |
 | `kernel-<slug>/`, `u-boot-<slug>/` | per-topic git worktrees of the main trees (eg. `kernel-rk3588-rtl-eth`, `kernel-cec`) |
-| `linuxdev-status/` | this repo: `STATUS.md` (human tracker), `topics.tsv` (machine data per topic), `remotes.tsv`, `notes/`, `scripts/` |
+| `linuxdev-status/` | this repo: `STATUS.md` (human tracker), `topics.tsv` (machine data per topic), `remotes.tsv`, `armbian.tsv`, `notes/`, `scripts/` |
 | `lore/` | lei store and saved searches, per-topic mail and Sashiko reviews (see `notes/lore-lei.md`) |
 | `armbian-build/` | Armbian build framework. Patch paths in STATUS are relative to `armbian-build/patch/` |
 
@@ -38,6 +38,7 @@ All of them default to **dry-run** (they print commands). `DRY_RUN=0` executes. 
 - `10-vm-clone-main.sh <repo>`: create a main tree.
 - `11-vm-checkout.sh <ID> [--worktree [path]]`: check out a topic. The worktree defaults to `<repo>-<slug|id>`.
 - `20-lore.sh init|mine|topic <ID>|sashiko <ID>|all <ID>|up`: lore mail through lei, plus Sashiko reviews.
+- `30-armbian-b4.sh <ID>|all|ext <msgid> <dir> <file>`: Armbian patch files as `b4 am` dumps from lore (one file per series; files listed in `armbian.tsv`). Own series get `-t`, others `-s`. Keep Armbian filename prefixes, ask the user for new names. If a dump doesn't apply, stop and ask.
 
 Prefer extending these scripts (they share `lib.sh`: `run`, `each_topic`, `topic_row`, ...) over one-off commands.
 
