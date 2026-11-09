@@ -40,7 +40,7 @@ Only sata2 was tested.
 ## Sent / after sending
 
 - v1 sent 2026-11-09. The SoB, the GPG signature (openpgp-sha256 `X-Developer-Signature`) and `b4 prep --check` 1/1 were all done before sending.
-- Sashiko v1: Reviewed, "No issues found" (`lore/topics/K9/sashiko/v1.md`). No list replies yet: lore has 4 list copies of the patch.
+- Sashiko v1: Reviewed, "No issues found" (`lore/topics/K9/sashiko/v1.md`). No list replies yet: lore has 4 list copies of the patch. Rechecked 2026-11-09 afternoon: unchanged.
 - The backup branch `backup/k9-pre-trm-reword` was deleted 2026-11-09.
 - b4 bumped the local branch to revision 2 after sending, which left both branch commits **unsigned**: b4's pygit2 rewrite drops GPG signatures by design. The sent tag is still signed. That's fine: b4 doesn't need signed commits, since the mails are patatt-signed. Don't re-sign (user, 2026-11-09; see AGENTS.md).
 - Still to do: watch for review with `scripts/20-lore.sh all K9`.

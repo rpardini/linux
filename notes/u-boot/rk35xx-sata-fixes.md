@@ -68,7 +68,8 @@ Cover: "rockchip: fix on-board SATA on RK3588 and RK356x" (retitled 2026-11-09, 
 
 - Sent 2026-11-09 by the user (SoB added via rebase, then auto-to-cc rerun).
 - Fork: `linuxdev-work/b4/rk35xx-sata-fixes` and the sent tag were pushed to `uboot-rpardini-armbian`. The old `linuxdev-work/b4/rk3588-sata-fixes-v2027.01` was deleted. The `backup/u1-*` branches were deleted.
-- Sashiko: still pending at send time (it doesn't review the U-Boot list right away, or at all). Refresh with `scripts/20-lore.sh all U1`.
+- Sashiko: no patchset (API 404) at send time and again on 2026-11-09 afternoon; it seems not to cover the U-Boot list. Refresh with `scripts/20-lore.sh all U1`.
+- Lore, 2026-11-09 afternoon: no replies yet (only the 4 sent messages).
 - Still to do:
   - Armbian PR: cherry-pick armbian-build `extensions` 222d20421 onto armbian/build main (rpardini/armbian-build).
   - Post the iav reply there, with a link to this series.
