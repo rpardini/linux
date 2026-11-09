@@ -1,6 +1,6 @@
 # U-Boot RK3588/RK356x on-board SATA fixes (U1)
 
-Status ID: **U1**. Kernel twin of patch 3: **K9** (sent 2026-11-09). Prepared 2026-11-09 and **not sent**.
+Status ID: **U1**. Kernel twin of patch 3: **K9** (sent 2026-11-09). **Sent v1 2026-11-09**: `20261109-rk3588-sata-fixes-v2027-01-v1-0-e54ca8e68f18@pardini.net` (https://patch.msgid.link/20261109-rk3588-sata-fixes-v2027-01-v1-0-e54ca8e68f18@pardini.net). Tag `sent/20261024-rk3588-sata-fixes-v2027-01-892bf10a3512-v1`.
 Debugging history: `BLADE3-SATA-REPORT.md`.
 
 ## Series
@@ -53,9 +53,9 @@ Cover: "rockchip: fix on-board SATA on RK3588 and RK356x" (retitled 2026-11-09, 
 - Board-neutral: no Blade 3 (not upstream) and no Armbian mention. "mSATA SSD on sata2 (combphy2_psu)".
 - Rebased onto main, since these are fixes.
 - Recipients come from `b4 prep --auto-to-cc`:
-  - To: u-boot@lists.u-boot-project.org, Simon Glass, Kever Yang, Eugen Hristev
+  - To: u-boot@lists.u-boot-project.org, Simon Glass, Kever Yang, Eugen Hristev, Jon Lin (author of the combphy Fixes target c5b4a012bca8; b4 re-added him on the 2026-11-09 auto-to-cc rerun)
   - Cc: Tom Rini, Peng Fan, Quentin Schulz, Heiko Stuebner (by hand), Jonas Karlman (added to the cover by hand on 2026-11-09, so he gets the whole series: he isn't in MAINTAINERS but wrote much of the RK3588 and combphy support), plus in-patch Cc's (Jonas on patch 1, Julius, Yifeng)
-  - Jon Lin (in the old To) is no longer suggested.
+  - b4 flags `needs-auto-to-cc` after patch changes, and `b4 send` preflight fails until it is rerun.
 
 ## Checks (2026-11-09)
 
@@ -64,8 +64,11 @@ Cover: "rockchip: fix on-board SATA on RK3588 and RK356x" (retitled 2026-11-09, 
 - `coolpi-cm5-evb-rk3588_defconfig` (DWC_AHCI, NANENG_COMBOPHY, SCSI_AHCI) built with `KCFLAGS=-Werror` in `.build/coolpi-cm5-evb` (inside the worktree): clean, apart from missing-blob warnings.
 - `b4 send --dry-run`: 4 messages, openpgp `X-Developer-Signature`, via B4 Relay.
 
-## Before sending
+## Sent / after sending
 
-1. The user adds their SoB to the 3 patches, eg. `git rebase -x 'git commit --amend -s --no-edit' HEAD~3`. A b4 rewrite afterwards (eg. `--auto-to-cc`) drops commit signatures, and that's fine.
-2. gpg-agent unlocked, then `b4 send`.
-3. After sending: `20-lore.sh all U1`, STATUS `sent v1`, push the branch and tag, delete the old `-v2027.01` fork branch and `backup/u1-pre-reword`.
+- Sent 2026-11-09 by the user (SoB added via rebase, then auto-to-cc rerun).
+- Fork: `linuxdev-work/b4/rk35xx-sata-fixes` and the sent tag were pushed to rpardini-armbian. The old `linuxdev-work/b4/rk3588-sata-fixes-v2027.01` was deleted. The `backup/u1-*` branches were deleted.
+- Sashiko: still pending at send time (it doesn't review the U-Boot list right away, or at all). Refresh with `scripts/20-lore.sh all U1`.
+- Still to do:
+  - Armbian PR: cherry-pick armbian-build `extensions` 222d20421 onto armbian/build main (rpardini/armbian-build).
+  - Post the iav reply there, with a link to this series.
