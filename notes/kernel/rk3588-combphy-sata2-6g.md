@@ -48,13 +48,23 @@ Only sata2 was tested.
 ## v1 review (lore, checked 2026-11-10)
 
 Sebastian Reichel, 2026-11-10 00:29, `<avJULe_00cHwMh4X@venus>`. `Reviewed-by: Sebastian Reichel <sebastian.reichel@collabora.com>` conditional on:
-- [ ] Authorship: the patch is 1:1 from Yifeng Zhao, so he should be the author. Trailers: `Fixes:`, `Cc: stable`, `Signed-off-by: Yifeng Zhao <yifeng.zhao@rock-chips.com>`, `[add proper commit message]`, `Signed-off-by: Ricardo Pardini`. His example drops the BSP `Link:` and the `Cc: Yifeng`.
-- [ ] Drop the last sentence of the TRM paragraph ("Rockchip fixed this in their BSP kernel in 2022 ..."): irrelevant in the git log.
-- [ ] Put the pcie3x2 link reset grant side effect (stray write to PHP_GRF_PHP_CON0[2:0]) in the commit message.
-- [ ] Below the fold: drop the three paragraphs that repeat the commit message. Keep "only sata2 tested / U-Boot fix sent separately".
-- Decide with the user before v2: authorship needs Yifeng's SoB from the BSP commit.
-- Same question for U1 3/3.
-- U1 (U-Boot twin): apply the same sata2-only correction before it is sent.
+- [x] Authorship: the patch is 1:1 from Yifeng Zhao, so he should be the author. Trailers: `Fixes:`, `Cc: stable`, `Signed-off-by: Yifeng Zhao <yifeng.zhao@rock-chips.com>`, bracket note, `Signed-off-by: Ricardo Pardini`. His example drops the BSP `Link:` and the `Cc: Yifeng`.
+- [x] Drop the last sentence of the TRM paragraph ("Rockchip fixed this in their BSP kernel in 2022 ..."): irrelevant in the git log.
+- [x] Put the pcie3x2 link reset grant side effect (stray write to PHP_GRF_PHP_CON0[2:0]) in the commit message.
+- [x] Below the fold: drop the three paragraphs that repeat the commit message. Keep "only sata2 tested / U-Boot fix sent separately".
+
+User's reply, 2026-11-10 02:30, `<f225b5f6-13eb-40d0-a9ca-7efab0e6876c@pardini.net>`: thanks; v2 prepared, waiting a bit before sending; asked for Tested-by from &sata2 board owners.
+- In mainline, &sata2 is enabled on RK3588 only in `rk3588-firefly-itx-3588j.dts` and `rk3588-roc-rt.dts` (v7.4-rc1 / torvalds 2026-11-08). The other &sata2 users are RK356x, which uses a different grfcfg table and isn't affected.
+- Lucas Tanure (v1 To:) is not on the reply's Cc.
+
+## v2 (prepared 2026-11-10; user sends later this week)
+
+- Yifeng's SoB is copied word for word from BSP commit 2f5fe2c0bbd4. Bracket note `[rewrite commit message]` (user's choice; precedents: c9211fa2602b, feb69bccf5d3, 98dcc6be3859). R-b collected with `b4 -n trailers -u` (DKIM ✗ for collabora.com).
+- Below the fold: the sata2-only note + `[1]` link to U1 v1, plus Changes in v2.
+- Backup branch `backup/k9-pre-v2`. Checks: `b4 prep --check` clean, `b4 send --dry-run` OK.
+- **b4 0.16 gotcha:** don't run `b4 prep --auto-to-cc` when the cover has a `---` Changes section. Send parses To/Cc above the `---`, but auto-to-cc reads the raw cover, finds nothing, and appends a duplicate block at the end, which then leaks into the mail body.
+- Before sending: rerun `scripts/20-lore.sh all K9` for any Tested-by, then `b4 trailers -u`.
+- U1 3/3 (U-Boot twin): same Yifeng authorship question, still open.
 
 ## Checks run
 
