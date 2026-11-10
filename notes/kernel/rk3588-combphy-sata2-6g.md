@@ -43,7 +43,17 @@ Only sata2 was tested.
 - Sashiko v1: Reviewed, "No issues found" (`lore/topics/K9/sashiko/v1.md`). No list replies yet: lore has 4 list copies of the patch. Rechecked 2026-11-09 afternoon: unchanged.
 - The backup branch `backup/k9-pre-trm-reword` was deleted 2026-11-09.
 - b4 bumped the local branch to revision 2 after sending, which left both branch commits **unsigned**: b4's pygit2 rewrite drops GPG signatures by design. The sent tag is still signed. That's fine: b4 doesn't need signed commits, since the mails are patatt-signed. Don't re-sign (user, 2026-11-09; see AGENTS.md).
-- Still to do: watch for review with `scripts/20-lore.sh all K9`.
+- Still to do: v2 per Sebastian's review (below).
+
+## v1 review (lore, checked 2026-11-10)
+
+Sebastian Reichel, 2026-11-10 00:29, `<avJULe_00cHwMh4X@venus>`. `Reviewed-by: Sebastian Reichel <sebastian.reichel@collabora.com>` conditional on:
+- [ ] Authorship: the patch is 1:1 from Yifeng Zhao, so he should be the author. Trailers: `Fixes:`, `Cc: stable`, `Signed-off-by: Yifeng Zhao <yifeng.zhao@rock-chips.com>`, `[add proper commit message]`, `Signed-off-by: Ricardo Pardini`. His example drops the BSP `Link:` and the `Cc: Yifeng`.
+- [ ] Drop the last sentence of the TRM paragraph ("Rockchip fixed this in their BSP kernel in 2022 ..."): irrelevant in the git log.
+- [ ] Put the pcie3x2 link reset grant side effect (stray write to PHP_GRF_PHP_CON0[2:0]) in the commit message.
+- [ ] Below the fold: drop the three paragraphs that repeat the commit message. Keep "only sata2 tested / U-Boot fix sent separately".
+- Decide with the user before v2: authorship needs Yifeng's SoB from the BSP commit.
+- Same question for U1 3/3.
 - U1 (U-Boot twin): apply the same sata2-only correction before it is sent.
 
 ## Checks run
