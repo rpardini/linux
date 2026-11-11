@@ -11,6 +11,45 @@ Branch-level data the scripts need lives in `topics.tsv` (keep the IDs in sync);
 
 Inventory as of 2026-11-06 (kernel v7.3 / u-boot v2026.10).
 
+## Sent series: links
+
+Per-series links for what's on the lists. Lore `b:` search by change-id catches every version plus replies. Local copies: `lore/topics/<ID>/` (refresh: `scripts/20-lore.sh all <ID>`). Last checked 2026-11-11.
+
+### K4: RTL8125 PCIe Ethernet in DT (sent v6)
+
+- Lore, v6 thread: <https://lore.kernel.org/all/20261109-rk3588-dts-rtl-eth-describe-dt-alias-v6-0-91f1efefba0b@pardini.net/>
+- Lore, all versions: <https://lore.kernel.org/all/?q=b%3A20260524-rk3588-dts-rtl-eth-describe-dt-alias-c1ed187b7c50>
+- Patchwork, linux-rockchip (v6 cover): <https://patchwork.kernel.org/project/linux-rockchip/cover/20261109-rk3588-dts-rtl-eth-describe-dt-alias-v6-0-91f1efefba0b@pardini.net/>
+- Sashiko:
+  - v6 (no findings): <https://sashiko.dev/#/patchset/20261109-rk3588-dts-rtl-eth-describe-dt-alias-v6-0-91f1efefba0b%40pardini.net>
+  - v5 (2/7 with findings): <https://sashiko.dev/#/patchset/20260910-rk3588-dts-rtl-eth-describe-dt-alias-v5-0-c1b9e5f10cd6%40pardini.net>
+  - v1–v4: `lore/topics/K4/sashiko/v{1..4}.md` (each has its web link)
+
+### K4b: dt-bindings: net: realtek,rtl8125 (merged into net-next)
+
+- Applied to net-next by Jakub Kicinski 2026-11-11: <https://git.kernel.org/netdev/net-next/c/711c458f6f34>
+- Lore, v1 thread: <https://lore.kernel.org/all/20261109-dt-bindings-net-realtek-rtl8125-v1-1-cff4b8a8be66@pardini.net/>
+- Patchwork:
+  - netdevbpf: <https://patchwork.kernel.org/project/netdevbpf/patch/20261109-dt-bindings-net-realtek-rtl8125-v1-1-cff4b8a8be66@pardini.net/>
+  - devicetree: <https://patchwork.kernel.org/project/devicetree/patch/20261109-dt-bindings-net-realtek-rtl8125-v1-1-cff4b8a8be66@pardini.net/>
+- Sashiko v1 (no findings): <https://sashiko.dev/#/patchset/20261109-dt-bindings-net-realtek-rtl8125-v1-1-cff4b8a8be66%40pardini.net>
+
+### K9: RK3588 naneng-combphy SATA pipe_con1 (sent v1, v2 prepared)
+
+- Lore, v1 thread (Sebastian's review + my T-b request): <https://lore.kernel.org/all/20261109-rk3588-combphy-sata2-6g-v1-1-e9135c91de6a@pardini.net/>
+- Lore, all versions: <https://lore.kernel.org/all/?q=b%3A20261024-rk3588-combphy-sata2-6g-03bb30151552>
+- Patchwork:
+  - linux-phy: <https://patchwork.kernel.org/project/linux-phy/patch/20261109-rk3588-combphy-sata2-6g-v1-1-e9135c91de6a@pardini.net/>
+  - linux-rockchip: <https://patchwork.kernel.org/project/linux-rockchip/patch/20261109-rk3588-combphy-sata2-6g-v1-1-e9135c91de6a@pardini.net/>
+- Sashiko v1 (no findings): <https://sashiko.dev/#/patchset/20261109-rk3588-combphy-sata2-6g-v1-1-e9135c91de6a%40pardini.net>
+
+### U1: RK3588/RK356x SATA fixes, u-boot (sent v1)
+
+- Lore, v1 thread: <https://lore.kernel.org/u-boot/20261109-rk3588-sata-fixes-v2027-01-v1-0-e54ca8e68f18@pardini.net/>
+- Lore, all versions: <https://lore.kernel.org/all/?q=b%3A20261024-rk3588-sata-fixes-v2027-01-892bf10a3512>
+- Patchwork, U-Boot (ozlabs, v1 cover): <https://patchwork.ozlabs.org/project/uboot/cover/20261109-rk3588-sata-fixes-v2027-01-v1-0-e54ca8e68f18@pardini.net/>
+- Sashiko: none (doesn't cover the U-Boot list)
+
 ## Kernel mainline (K)
 
 | ID | Topic | Branch | Status | Next | Notes |
@@ -18,12 +57,12 @@ Inventory as of 2026-11-06 (kernel v7.3 / u-boot v2026.10).
 | K1 | rk3588 NPU enablements | `b4/arm64-dts-rockchip-rk3588-npu-enablements` | merged (v2, v6.20/7.0 cycle) | — | change-id `20251230-arm64-dts-rockchip-rk3588-npu-enablements-1e2830d2e7b0` |
 | K2 | Radxa Zero 2: type-C controller, NPU | `b4/arm64-dts-amlogic-radxa-zero2-additions` | merged (v2, v6.20/7.0 cycle) | — | change-id `20260114-arm64-dts-amlogic-radxa-zero2-additions-905549fbed3e` |
 | K3 | NanoPC-T6 regulator names per schematic | `b4/rk3588-dts-rockchip-nanopct6-fix-schematic-names` | merged (v1) | — | change-id `20260603-rk3588-dts-rockchip-nanopct6-fix-schematic-names-a1b8d27f82e7` |
-| K4 | RTL8125 PCIe Ethernet in DT (NanoPC-T6, ROCK 5 family/ITX, CM3588-NAS, R5S, R6C) | `b4/rk3588-dts-rtl-eth-describe-dt-alias-v6-v7.4` | sent v6 (2026-11-09; v7.4-rc1, binding split out to K4b) | await review (Heiko). Checked lore 2026-11-10: no list replies; Sashiko v6 6/6 no findings; msgid `20261109-rk3588-dts-rtl-eth-describe-dt-alias-v6-0-91f1efefba0b@pardini.net` | change-id `20260524-rk3588-dts-rtl-eth-describe-dt-alias-c1ed187b7c50`; worktree `kernel-rk3588-rtl-eth`; Arm: `kernel/archive/rockchip64-7.4/rk3588-1220-…-many-boards.patch` (b4 dump; 7.3 hand-made, v6 does not apply); notes `notes/kernel/rk3588-rtl8125-dt.md`; lore `lore/topics/K4` |
-| K4b | dt-bindings: net: `realtek,rtl8125` (split from K4 v5 1/7, Rob's R-b) | `b4/dt-bindings-net-realtek-rtl8125` | sent v1 (2026-11-09, net-next) | await review; reply on list to any Sashiko / netdev-ai findings. Checked lore 2026-11-10: no replies. 2026-11-09: [netdev patchwork](https://patchwork.kernel.org/project/netdevbpf/patch/20261109-dt-bindings-net-realtek-rtl8125-v1-1-cff4b8a8be66@pardini.net/) state New (delegate netdev), static checks + `contest` green, `sashiko-nipa` and `contest-hw` pending; Sashiko (sashiko.dev) v1 no findings; msgid `20261109-dt-bindings-net-realtek-rtl8125-v1-1-cff4b8a8be66@pardini.net` | change-id `20261108-dt-bindings-net-realtek-rtl8125-991226c1733f`; base net-next/main; worktree `kernel-rtl8125-binding`; Arm: `kernel/archive/rockchip64-7.4/rk3588-1219-dt-bindings-net-realtek-rtl8125-v1.patch`; notes `notes/kernel/rk3588-rtl8125-dt.md` |
+| K4 | RTL8125 PCIe Ethernet in DT (NanoPC-T6, ROCK 5 family/ITX, CM3588-NAS, R5S, R6C) | `b4/rk3588-dts-rtl-eth-describe-dt-alias-v6-v7.4` | sent v6 (2026-11-09; v7.4-rc1, binding split out to K4b) | await review (Heiko); binding dep K4b now in net-next. Checked lore 2026-11-11: no list replies; Sashiko v6 6/6 no findings. Links: [Sent series](#k4-rtl8125-pcie-ethernet-in-dt-sent-v6) | change-id `20260524-rk3588-dts-rtl-eth-describe-dt-alias-c1ed187b7c50`; worktree `kernel-rk3588-rtl-eth`; Arm: `kernel/archive/rockchip64-7.4/rk3588-1220-…-many-boards.patch` (b4 dump; 7.3 hand-made, v6 does not apply); notes `notes/kernel/rk3588-rtl8125-dt.md`; lore `lore/topics/K4` |
+| K4b | dt-bindings: net: `realtek,rtl8125` (split from K4 v5 1/7, Rob's R-b) | `b4/dt-bindings-net-realtek-rtl8125` | merged (v1 applied to net-next 2026-11-11, `711c458f6f34`; mainline in the 7.5 merge window) | — (drop the Armbian patch once the tree has it). Sashiko v1 no findings. Links: [Sent series](#k4b-dt-bindings-net-realtekrtl8125-merged-into-net-next) | change-id `20261108-dt-bindings-net-realtek-rtl8125-991226c1733f`; base net-next/main; worktree `kernel-rtl8125-binding`; Arm: `kernel/archive/rockchip64-7.4/rk3588-1219-dt-bindings-net-realtek-rtl8125-v1.patch`; notes `notes/kernel/rk3588-rtl8125-dt.md` |
 | K6 | rk35xx MAC addresses from OTP (nvmem cpuid layouts RK3588/RK3568, GMAC + RTL8125 per-board) | `mainline/rk35xx-mac-from-otp` | wip | wait for dep | **On top of K4 and of someone else's nvmem serial#/cpuid series** — track that series; rebase when it lands |
 | K7 | Nio-12L: i2c3 on 40-pin, drop i2c2 drive-strength | `b4/nio-12l-add-i2c-40-pin` | sent v2 (2026-06-24); v3 prepared | ping / resend | change-id `20260624-nio-12l-add-i2c-40-pin-19e0482fd835` |
 | K8 | Nio-12L: UFS lanes, onboard LEDs, ASoC mediatek DAI-link refs (+K7) | `mainline/nio-12l-fixes` | wip | split: DT vs ASoC | Arm: `kernel/archive/genio-7.3/300{3,4}-*` |
-| K9 | RK3588 naneng-combphy SATA pipe_con1 offset (SATA stuck at 1.5 Gb/s) | `b4/rk3588-combphy-sata2-6g` | sent v1 (2026-11-09, Fixes + stable); v2 prepared | send v2 later this week (user). v2 does Sebastian Reichel's review (Yifeng Zhao author + SoB, `[rewrite commit message]`, R-b collected). Replied 2026-11-10 asking for T-b from &sata2 board owners (Firefly ITX-3588J, ROC-RK3588-RT). Sashiko v1 no findings | change-id `20261024-rk3588-combphy-sata2-6g-03bb30151552`; worktree `kernel-rk3588-combphy-sata2-6g`; Arm: `rockchip64-7.{3,4}/914-*`; u-boot twin U1; notes `notes/kernel/rk3588-combphy-sata2-6g.md` |
+| K9 | RK3588 naneng-combphy SATA pipe_con1 offset (SATA stuck at 1.5 Gb/s) | `b4/rk3588-combphy-sata2-6g` | sent v1 (2026-11-09, Fixes + stable); v2 prepared | send v2 later this week (user). v2 does Sebastian Reichel's review (Yifeng Zhao author + SoB, `[rewrite commit message]`, R-b collected). Replied 2026-11-10 asking for T-b from &sata2 board owners (Firefly ITX-3588J, ROC-RK3588-RT). Checked lore 2026-11-11: no T-b yet. Sashiko v1 no findings. Links: [Sent series](#k9-rk3588-naneng-combphy-sata-pipe_con1-sent-v1-v2-prepared) | change-id `20261024-rk3588-combphy-sata2-6g-03bb30151552`; worktree `kernel-rk3588-combphy-sata2-6g`; Arm: `rockchip64-7.{3,4}/914-*`; u-boot twin U1; notes `notes/kernel/rk3588-combphy-sata2-6g.md` |
 | K10 | Seeed reComputer RK3588 Dev Kit (binding + 15 DT patches) | `mainline/recomputer-rk3588-devkit` | wip | b4 prep | includes K11 + PWMv4/counter build fixups underneath; alt attempts `v7.2-rc2-…-claude`, `…-copilot-FAIL` |
 | K11 | Seeed reComputer RK3576 Dev Kit | `mainline/recomputer-rk3576-devkit` | wip | b4 prep | fan patch is `[DO-NOT-MERGE]`; carries `pwm`/`counter` rockchip PWMv4 "device flag accessors" fixups (Armbian-only?) ; alt `rk3576-devkit-rework` |
 | K12 | Mixtile Blade 3 rework (fan, Type-C roles, RTL8125 behind ASM1182e, CAN2) | `mainline/mixtile-blade3-rework` | wip | clean up "claude pass" commits | sits on K4 |
@@ -79,7 +118,7 @@ Dropped: `mpp-report-zero-load-for-idle` — not needed on rkr7.2 (Rockchip solv
 
 | ID | Topic | Branch | Status | Next | Notes |
 |---|---|---|---|---|---|
-| U1 | RK3588/RK356x SATA: dwc_ahci sata-port PHY, ahci READ CAPACITY last LBA, combphy pipe_con1 (sata2 6G, K9 twin) | `b4/rk35xx-sata-fixes` | sent v1 (2026-11-09, main v2027.01-rc1+) | await review. Checked lore 2026-11-10: no replies; 3/3 may need the same Yifeng authorship as K9 v2; no Sashiko (404, U-Boot list not covered); msgid `20261109-rk3588-sata-fixes-v2027-01-v1-0-e54ca8e68f18@pardini.net` | change-id `20261024-rk3588-sata-fixes-v2027-01-892bf10a3512`; worktree `u-boot-rk35xx-sata-fixes`; Arm: `u-boot/v2026.10/rk35xx-sata-fixes-v1.patch`; notes `notes/u-boot/rk35xx-sata-fixes.md`, `notes/u-boot/BLADE3-SATA-REPORT.md` |
+| U1 | RK3588/RK356x SATA: dwc_ahci sata-port PHY, ahci READ CAPACITY last LBA, combphy pipe_con1 (sata2 6G, K9 twin) | `b4/rk35xx-sata-fixes` | sent v1 (2026-11-09, main v2027.01-rc1+) | await review. Checked lore 2026-11-11: no replies; 3/3 may need the same Yifeng authorship as K9 v2; no Sashiko (U-Boot list not covered). Links: [Sent series](#u1-rk3588rk356x-sata-fixes-u-boot-sent-v1) | change-id `20261024-rk3588-sata-fixes-v2027-01-892bf10a3512`; worktree `u-boot-rk35xx-sata-fixes`; Arm: `u-boot/v2026.10/rk35xx-sata-fixes-v1.patch`; notes `notes/u-boot/rk35xx-sata-fixes.md`, `notes/u-boot/BLADE3-SATA-REPORT.md` |
 | U2 | tcpm/fusb302: drain RX FIFO, delay BC_LVL; Blade 3 USB-C1 sink-only; Sebastian Reichel's tcpm fixes | — (on UA1; was `mainline/blade3-fusb302-tcpm`) | needs port | port onto v2026.10 | `rk3588-mixtile-blade3-u-boot.dtsi` is not in v2026.10; Arm: `u-boot/v2026.10/board_mixtile-blade3/020-*`; reports `notes/u-boot/BLADE3-USBPD-REPORT.md`, `Blade3-usbpd-powering-submit.md` |
 | UA1 | Armbian context for U2 (+DEBUG, + full PD logs "keep forever") | `armbian-tree/blade3-edge-20261022-debug-usbpd` | debug | keep | |
 | U3 | PXE/extlinux over HTTP(S) + docs | `mainline/pxe-http-boot` | wip | b4 prep | Arm: `u-boot/v2026.{07,10}/pxe-over-http-v0.patch`; Armbian context UA2 `armbian-tree/pxe-http-boot` (has DEBUG) |
