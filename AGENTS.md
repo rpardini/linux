@@ -13,6 +13,7 @@ Instructions for AI agents working under `~/linuxdev` (= `/opt/linuxdev`). This 
 | `linuxdev-status/` | this repo: `STATUS.md` (human tracker), `topics.tsv` (machine data per topic), `remotes.tsv`, `armbian.tsv`, `notes/`, `scripts/` |
 | `lore/` | lei store and saved searches, per-topic mail and Sashiko reviews (see `notes/lore-lei.md`) |
 | `armbian-build/` | Armbian build framework. Patch paths in STATUS are relative to `armbian-build/patch/` |
+| `runs/` | logs and exit codes of long runs started with `scripts/40-tmux-run.sh` |
 
 - Remotes are prefixed per clone: `kernel-*` in `kernel/`, `uboot-*` in `u-boot/` (`uboot-upstream` is U-Boot upstream, there is no `origin`), `armbian-*` in `armbian-build/` (`armbian-upstream`, `armbian-rpardini`, `armbian-armsurvivors`), `linuxdev-status-rpardini` here. Worktrees share their main tree's remotes.
   - `remotes.tsv` is the source of truth for kernel/u-boot. Remotes the user dropped (eg. u-boot `kwiboo`, `kwiboo-denx`) must not be re-added or fetched.
@@ -39,8 +40,16 @@ All of them default to **dry-run** (they print commands). `DRY_RUN=0` executes. 
 - `11-vm-checkout.sh <ID> [--worktree [path]]`: check out a topic. The worktree defaults to `<repo>-<slug|id>`.
 - `20-lore.sh init|mine|topic <ID>|sashiko <ID>|all <ID>|up`: lore mail through lei, plus Sashiko reviews.
 - `30-armbian-b4.sh <ID>|all|ext <msgid> <dir> <file>`: Armbian patch files as `b4 am` dumps from lore (one file per series; files listed in `armbian.tsv`). Own series get `-t`, others `-s`. Keep Armbian filename prefixes, ask the user for new names. If a dump doesn't apply, stop and ask.
+- `40-tmux-run.sh <name> [-C <dir>] -- <cmd...>`: run a long command in a window of the tmux session `linuxdev`. It prints `LOG=` and `RC=` paths.
 
 Prefer extending these scripts (they share `lib.sh`: `run`, `each_topic`, `topic_row`, ...) over one-off commands.
+
+### Long-running commands
+
+- Run anything long through `DRY_RUN=0 scripts/40-tmux-run.sh`, not as a Bash background task. That covers Armbian `compile.sh`, kernel/u-boot `make`, `make dt_binding_check` and `CHECK_DTBS=y` builds. The user watches the runs from iTerm2 (see `notes/tmux-iterm2.md`). Claude itself may run in a window of the same session; never kill windows you didn't create.
+- Window names: `<board>-<branch>` for Armbian, `<worktree-slug>-<target>` for kernel/u-boot.
+- To get notified when a run ends, wait for the `RC` file with a background `until [ -f <rc> ]; do sleep 5; done` (Bash `run_in_background`). Then read the exit code and the end of the `LOG` with ANSI codes stripped.
+- Never kill a window that's still running unless the user asks. A finished window is replaced automatically when a new run uses its name.
 
 ## b4 workflow
 
