@@ -1,11 +1,14 @@
-# tmux session `linuxdev` + iTerm2 tmux integration
+# tmux session per VM + iTerm2 tmux integration
 
-Claude and long runs share one tmux session, `linuxdev`. iTerm2's tmux integration (`tmux -CC`) shows each
-tmux window as a native iTerm2 tab: one tab for Claude, one per build.
+Claude and long runs share one tmux session per VM. iTerm2's tmux integration (`tmux -CC`) shows each tmux
+window as a native iTerm2 tab: one tab for Claude, one per build.
 
 ## Setup
 
-- One SSH connection: `ssh -t <vm> tmux -CC new -A -s linuxdev`. This attaches to the session, or creates it.
+- iTerm2 profiles "<host> lima <vm> tmux" (made by xml-gen-iterm2) SSH in, attach `tmux -CC` to the most
+  recently attached session, and open a new tab with a shell. With no session they create one named after the VM
+  (eg. `armbian-trixie-linuxdev`).
+  - By hand: `ssh -t <vm> tmux -CC new -A -s <session>`.
   - The tab you run it in becomes the "gateway": Esc detaches, X force-quits. iTerm2 can hide it.
   - Detaching (closing the window, Mac sleep, SSH drop) leaves everything running. Reattach with the same command.
 - Claude runs in a window of the session: press Cmd-T in the tmux window, then
@@ -21,6 +24,10 @@ tmux window as a native iTerm2 tab: one tab for Claude, one per build.
 ## Runs (`scripts/40-tmux-run.sh`)
 
 - `DRY_RUN=0 scripts/40-tmux-run.sh <name> [-C <dir>] -- <cmd...>` opens a background (`-d`) window named `<name>`.
+- Session: `$TMUX_SESSION`, else the current one (run from inside tmux), else the most recently attached,
+  else a new one named after the VM (`hostname -s` minus `lima-`), the same name the iTerm2 profiles use.
+- `DRY_RUN` and `ONLY` are kept out of tmux: a tmux server copies the environment of whoever starts it into every
+  window, so `DRY_RUN=0` would otherwise end up in the user's shells. Put `DRY_RUN=0` in `<cmd>` explicitly if needed.
 - `~/linuxdev/runs/<name>-<ts>.sh` (runner), `.log` (output with colors, via `script`), `.rc` (exit code, written at the end).
 - A finished window stays open (`remain-on-exit`). Its last line is `== <name> exited N ==`.
 - Starting a run with the name of a finished window replaces that window. The new window is created before the
