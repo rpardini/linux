@@ -14,8 +14,11 @@ window as a native iTerm2 tab: one tab for Claude, one per build.
 - Claude runs in a window of the session: press Cmd-T in the tmux window, then
   `cd /opt/linuxdev && claude --continue` (or `--resume` to pick a conversation).
 - Same Unix user everywhere (`rpardini`, uid 501), so Claude's shell and your SSH share the default tmux socket.
+- iTerm2 → Settings → Advanced → tmux: "Where should new tmux windows not created by iTerm2 open?": **New window**
+  (defaults key `AnonymousTmuxWindowsOpenInCurrentWindow`, int: 0 new window, 1 focused window (default), 2 topmost
+  session window). This is what puts each build (`tmux new-window -d` from the VM) in its own native window.
 - iTerm2 → Settings → General → tmux:
-  - "When attaching, restore windows as": **Native windows**.
+  - "When attaching, restore windows as": **Native windows** (`OpenTmuxWindowsIn` = 0). Applies only at attach.
   - "Automatically bury the tmux client session after connecting": on, to hide the gateway tab.
   - Pausing slow panes: keep the default. A pause stops only the display; the build and its log keep going.
     Press a key in the pane to catch up.
