@@ -81,6 +81,7 @@ Per-series links for what's on the lists. Lore `b:` search by change-id catches 
 | K25 | MT8195 HDMI unplug: `vblank wait timed out` WARN in `mtk_crtc_atomic_disable` + runtime PM underflow (ETHDR / MDP-RDMA) | — | parked | prove pre-existing (build without K23 `3102`), check lore, analyze | found with K23 hotplug test; likely not CEC; notes `notes/kernel/mt8195-hdmi-unplug-vblank-warn.md` |
 | K26 | mtk-vcodec stateless: guard empty capture queue in `mtk_vdec_stateless_cap_to_disp` (upstream oopses on NULL) | `mainline/mtk-vcodec-cap-to-disp-guard` (pick of Collabora `29c8b5f5bf593` onto v7.3) | wip | check if upstream-bound; carry in Armbian genio edge | from `kernel-collabora-mediatek` `wip/mtk/mtk-staging`; part of the [MediaTek vdec / Kodi](#mediatek-vdec--kodi-le-media-kodi-vdec) work |
 | K27 | MDP3: MT2110T/MT2110R (10-bit MediaTek tiled) input on MT8195 | — | wip (research) | layout from GStreamer `video-format.c` unpack_MT2110T/R; no vendor reference anywhere | needed for 10-bit DirectToPlane; notes `notes/media/le-media-kodi-vdec.md` |
+| K28 | videobuf2 dma-contig: real cache maintenance in dma-buf `begin/end_cpu_access` for non-coherent buffers (chewitt) | `mainline/vb2-dc-noncoherent-cpu-sync` (LE `amlogic-0116` applied on v7.3) | wip | carry in Armbian genio edge and LE Mediatek; not on lore yet (chewitt's) | needed by chewitt's FFmpeg cached CAPTURE buffers: without it, `hwdownload` reads stale cache lines (VP8 20/61 → 59/61 with hints off) |
 
 ### Kernel Armbian trees (KA; full patched trees, README commit + my work on top)
 
@@ -133,7 +134,7 @@ Dropped: `mpp-report-zero-load-for-idle` — not needed on rkr7.2 (Rockchip solv
 
 ## MediaTek vdec / Kodi (`le-media-kodi-vdec`)
 
-HW video decode on Genio 1200 (NIO-12L): mtk-vcodec MM21/MT2110 → FFmpeg v4l2request → Kodi (EGL / MDP3→plane), via kodi-rockchip-deb on Armbian kernels, later LibreELEC ([PR #10891](https://github.com/LibreELEC/LibreELEC.tv/pull/10891)). Started 2026-11-12. Userspace has no IDs; it's tracked in the notes. Kernel parts: K26, K27.
+HW video decode on Genio 1200 (NIO-12L): mtk-vcodec MM21/MT2110 → FFmpeg v4l2request → Kodi (EGL / MDP3→plane), via kodi-rockchip-deb on Armbian kernels, later LibreELEC ([PR #10891](https://github.com/LibreELEC/LibreELEC.tv/pull/10891)). Started 2026-11-12. Userspace has no IDs; it's tracked in the notes. Kernel parts: K26, K27, K28.
 
 - Clones: `/opt/linuxdev/le-media-kodi-vdec/{kodi-rockchip-deb,ffmpeg,libreelec,kodi,gstreamer,mesa,fluster,linux-firmware}` (remotes in `remotes.tsv`)
 - Findings and test recipes: `notes/media/le-media-kodi-vdec.md`

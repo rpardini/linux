@@ -64,7 +64,7 @@ Packaging: kodi-rockchip-deb (Docker; v4l2requests flavor; container run via ner
 - `51-media-image.sh <name>`: builds `scripts/media/<name>.Dockerfile` with docker on the VM, then `docker save | ssh board nerdctl load`. The board has no buildkit.
 - `50-media-ffmpeg-build.sh [--reconfigure] [--ship]`: incremental out-of-tree FFmpeg build in `vdec/ffmpeg-dev` (trixie + backports `linux-libc-dev`). ccache; about 90 s cold. Install goes to `out/ffmpeg-vdec`; `--ship` tars it to the board's `/opt/ffmpeg-vdec`.
 - `le-media-kodi-vdec/board-fluster-gst.sh`: the GStreamer fluster baseline. `board-ffmpeg-md5.py <suite.json>` / `board-ffmpeg-all.sh`: FFmpeg v4l2request → `hwdownload` (MM21 CPU detile) → md5 vs. the fluster reference. Results go to `le-media-kodi-vdec/results/`.
-- Vectors: `le-media-kodi-vdec/fluster-vectors` (copied to the board). **ITU-hosted vectors (all H.264 JVT, part of HEVC) are blocked**: the ITU WAF answers "Request Rejected", so fluster reports checksum mismatches. No H.264 conformance yet; needs a mirror or a manual download.
+- Vectors: `le-media-kodi-vdec/fluster-vectors` (copied to the board). **ITU-hosted vectors (H.264 JVT, HEVC) are rate-limited**: fluster's default parallel download (2x cores) gets "Request Rejected" HTML pages from the ITU WAF, which fluster reports as checksum mismatches. **`fluster.py download -j 1 -r 5` works** (2026-11-12).
 
 ### GStreamer 1.26.2 v4l2codecs baseline (kernel + firmware OK)
 | Suite | Pass | Failures |
@@ -82,7 +82,13 @@ These are the known limits of the hardware and driver; there's no kernel bug to 
 - **Root cause of "nothing decodes in hardware" on Debian trixie**: libdrm 2.4.124's `drm_fourcc.h` (the one `#include <drm_fourcc.h>` finds) has no MediaTek modifiers, even in backports. Every `#if defined(DRM_FORMAT_MOD_MTK_16L_32S_TILE)` block was compiled out, so the MM21 CAPTURE entry was missing, then "Failed to select a CAPTURE format", then a silent software fallback. Fixed with `#ifndef` fallbacks in `hwcontext_v4l2request.c` and `vf_scale_v4l2m2m.c`, and in Kodi's `utils/DRMHelpers.h`. LibreELEC's libdrm presumably has them, which is why August worked there.
 - After the fix, hardware decode plus `hwdownload` MM21 detile is **bit-exact** (VP9/HEVC sample OK). Full results: see `results/ffmpeg-*.txt`.
 - FFmpeg checks `ENUM_FRAMESIZES` (stepwise 64x64–4096x2304), so vectors below 64 px fall back to software. GStreamer doesn't check.
-- Early VP8 run: 20/61 (md5 mismatches, no errors). It overlapped with the hung MDP3 test below and other decodes. Recheck in isolation.
+- **Stale cache on readback (→ K28)**: chewitt's base allocates CAPTURE buffers `V4L2_MEMORY_FLAG_NON_COHERENT` and queues them with `NO_CACHE_CLEAN|NO_CACHE_INVALIDATE` (commit "use cached CAPTURE buffers when supported"). Mainline v7.3 `vb2_dc_dmabuf_ops_begin_cpu_access` is a stub, so `DMA_BUF_IOCTL_SYNC` does nothing and `hwdownload` reads stale lines once buffers are reused. The first ~12 frames are fine, then corruption starts. LE fixes this only for Amlogic (`amlogic-0116`, chewitt). With the hints off in a local test build: VP8 goes from 20/61 to 59/61. The display path (no CPU reads) is not affected. Decision: carry the kernel patch (K28); FFmpeg stays as chewitt has it. Until the board runs a K28 kernel, test with the local build that has the hints disabled (uncommitted `0 &&` in `v4l2_request.c` / `hwcontext_v4l2request.c`; don't commit it).
+- `board-ffmpeg-md5.py` marks `SW` when hardware equals FFmpeg's own software decode but fluster's reference differs (15 VP8 14xx vectors: FFmpeg software decode doesn't match the reference either).
+- **VP8 real failures (2)**:
+  - `vp80-03-segmentation-1425` diverges from frame 4 and **always triggers about 10 decoder IOMMU faults** (larb21 port0 `VDEC_MC_EXT` read, port2 `VDEC_PP_EXT` write, `pa=0x0`)
+  - `vp80-03-segmentation-1436` diverges from frame 1
+  - GStreamer passes both. The MTK VP8 driver only takes the 3 ref timestamps, `flags>>1` and the bitstream (the firmware parses the header), so the difference is in the refs or buffer contents FFmpeg submits. Next: dump the per-frame controls from both stacks and compare.
+- Earlier in the session the larb21 faults were blamed on the MDP3 test; they actually came from this VP8 vector running in the concurrent conformance run.
 
 ### The "one frame then hang": reproduced outside Kodi
 - `ffmpeg … -hwaccel v4l2request -hwaccel_output_format drm_prime -i vp90-2-02-size-lf-1920x1080.webm -vf scale_v4l2m2m=format=uyvy -f null -` **hangs**. A plain decode of the same file runs at about 300 fps.
@@ -92,6 +98,7 @@ These are the known limits of the hardware and driver; there's no kernel bug to 
   1. MDP3 with `v4l2-ctl` linear in/out
   2. MDP3 MM21 input
   3. FFmpeg decode → `scale_v4l2m2m`
+- **Recovery takes a power cycle**: `systemctl reboot` stalls on the D-state ffmpeg, and after a forced warm reset the kernel hung in `kernel_init`/`async_synchronize_full`, with an MT6360 IRQ storm (`irq 116: nobody cared`). Only a long power-off fixed it. `scp.img` is not the cause: it isn't in the initrd, and the early-boot load fails (-2) on a good boot too. **Ask the user before any test that might hang MDP3.**
 - So `-f null` (nothing held downstream) is enough to hang. The FFmpeg capture-buffer accounting fix (12 buffers, wait for returns) is still right for Kodi, but it isn't this bug.
 
 ## Findings
