@@ -6,7 +6,8 @@
 #                               (b4 am -o- -l -S -t). A {v} in the file name becomes vN, and older -v* siblings
 #                               are git rm'ed.
 #   all                         the above for every armbian.tsv row (honors ONLY)
-#   ext <msgid|url> <dir> <file>  someone else's series: dump into armbian-build/patch/<dir>/<file>
+#   ext <msgid|url> <dir> <file> [b4 am args]  someone else's series: dump into armbian-build/patch/<dir>/<file>
+#                               (extra args go to b4 am, eg. -P 3 to take only patch 3 of the series)
 #                               (b4 am -o- -l -S -s: adds my Signed-off-by)
 #
 # Never commits. Check the result applies to the Armbian trees before committing.
@@ -72,8 +73,10 @@ cmd_all() {
 }
 
 cmd_ext() {
-	[[ $# -eq 3 ]] || usage
-	dump "$ARMBIAN_DIR/patch/$2/$3" -l -S -s "$1"
+	[[ $# -ge 3 ]] || usage
+	local msgid="$1" dir="$2" file="$3"
+	shift 3
+	dump "$ARMBIAN_DIR/patch/$dir/$file" -l -S -s "$@" "$msgid"
 }
 
 [[ $# -ge 1 ]] || usage

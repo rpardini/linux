@@ -105,7 +105,15 @@ These are the known limits of the hardware and driver; there's no kernel bug to 
 - **Isolated, step 1 (2026-11-12 15:06): MDP3 hangs on its own.** Fresh boot, `v4l2-ctl -d /dev/video4` linear NV12 1920x1080 → YUYV, MMAP both sides, no decoder/FFmpeg/dma-buf, and the task goes D in `v4l2_m2m_cancel_job` ← `mdp_m2m_release`. Nothing logged by MDP3/SCP/CMDQ. **So the hang is kernel/DT/firmware, not userspace.** It's likely Kodi's DirectToPlane "one frame then hang" too. The GLES/EGL path doesn't use MDP3.
   - Mechanism: `mdp_cmdq_send` sends a GCE packet via `mbox_send_message`; completion only via `mdp_handle_cmdq_callback`, no timeout. The GCE probably waits on a hardware event that never fires. Suspects: `mediatek,gce-events` in the DT, VPP clocks/power domains off on the NIO-12L, the SCP firmware's MDP part vs the upstream driver.
   - **Don't read debugfs `clk_summary` / `pm_genpd_summary` on a board with a hung MDP3**: doing that at 15:08 stalled the board, and the watchdog reset it (UART showed only BL2 restarting).
-  - Next (no board needed): compare the NIO-12L/Armbian MT8195 MDP3/VPP DT with Collabora's tested setup (Cherry) and the vendor tree; then a test kernel with a CMDQ timeout plus debug, so a hang logs and recovers. Candidate K29.
+  - **Root cause (source analysis, 2026-11-12): K29.** Jason-JH Lin's series "Add pm_runtime support for GCE power control" v2 (`20250829091727.3745415-{2,3,4}-jason-jh.lin@mediatek.com`) was merged only in part:
+    - 1/3 (`3f39f5652037`, mailbox no longer powers the GCE in `cmdq_mbox_send_data`) went into v6.18-rc1
+    - 2/3 (drm, `afcfb6c8474d`) went in via drm-fixes
+    - **3/3 (mtk-mdp3) never merged**, and master still lacks it
+    - So since v6.18 MDP3 calls `mbox_send_message` on GCE1 (used only by MDP3), which has usually autosuspended. The packet never runs, the callback never comes, nothing is logged, and `cancel_job` waits forever. That matches every symptom.
+    - The DT is identical to the vendor tree and Cherry; the SCP setup is identical to Cherry.
+    - The vendor (Genio) also moved MT8195 MDP3 config into the kernel (no SCP), plus many `GENIO:` MDP3 fixes, including "adjust MUTEX clock enable timing".
+  - Test kernel: Armbian genio-7.3 with `3200` (K29, b4 dump `-P 3`), `3201` (K26) and `3202` (K28). Built 2026-11-12, then install, reboot, and rerun MDP3 step 1.
+  - Upstream: worth pinging or resending 3/3, with a `Fixes:` on `3f39f5652037`. The user decides; nothing goes to lists without an OK.
 - So `-f null` (nothing held downstream) is enough to hang. The FFmpeg capture-buffer accounting fix (12 buffers, wait for returns) is still right for Kodi, but it isn't this bug.
 
 ## Findings

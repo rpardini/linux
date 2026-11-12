@@ -27,6 +27,7 @@ K22	kernel	mainline/tm16xx-spi-autoload	-	pick	v7.3	1be540cbce71da927e516c89a50c
 K23	kernel	b4/mt8195-cec	-	keep	-	-	kernel-rpardini-linux	y	-
 K26	kernel	mainline/mtk-vcodec-cap-to-disp-guard	-	pick	v7.3	29c8b5f5bf593e7f2f2d506f953b0c741a13ba3c	kernel-rpardini-linux	-	-
 K28	kernel	mainline/vb2-dc-noncoherent-cpu-sync	-	keep	-	-	kernel-rpardini-linux	-	vb2-dc-cache
+K29	kernel	mainline/mtk-mdp3-gce-pm-runtime	-	pick	v7.3	604b6c37dba856c1b18cc4b3f7332e2538e13eba	kernel-rpardini-linux	-	-
 KA1	kernel	armbian-tree/rockchip64-7.2-20260915	armbian-armsurvivors-rockchip64-7.2-20260915	copy	-	-	kernel-rpardini-linux	-	-
 KA2	kernel	armbian-tree/rockchip64-7.2-20260813-e24c	armbian-armsurvivors-rockchip64-7.2-20260813	copy	-	-	kernel-rpardini-linux	-	-
 KA3	kernel	armbian-tree/rockchip64-7.3-20261022-blade3-fusb302	armbian-armsurvivors-rockchip64-7.3-20261022-blade3-tcpm-fusb302-debug	copy	-	-	kernel-rpardini-linux	-	-
