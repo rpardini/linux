@@ -1,0 +1,107 @@
+[ 1387.755330] ------------[ cut here ]------------
+[ 1387.755352] mediatek-drm mediatek-drm.9.auto: [drm] vblank wait timed out on crtc 0
+[ 1387.755443] WARNING: drivers/gpu/drm/drm_vblank.c:1329 at drm_crtc_wait_one_vblank+0x198/0x220, CPU#0: irq/327-1c30000/142
+[ 1387.755995] CPU: 0 UID: 0 PID: 142 Comm: irq/327-1c30000 Not tainted 7.3.4-edge-genio #1 PREEMPT(full) 
+[ 1387.756017] Hardware name: Radxa NIO 12L (DT)
+[ 1387.756030] pstate: 60400009 (nZCv daif +PAN -UAO -TCO -DIT -SSBS BTYPE=--)
+[ 1387.756049] pc : drm_crtc_wait_one_vblank+0x198/0x220
+[ 1387.756070] lr : drm_crtc_wait_one_vblank+0x198/0x220
+[ 1387.756090] sp : ffff8000842c3900
+[ 1387.756101] x29: ffff8000842c3930 x28: ffff0000c0a41870 x27: 0000000000000038
+[ 1387.756137] x26: ffff800081a464c8 x25: ffff8000820e6ae0 x24: ffff0000c8ccd888
+[ 1387.756173] x23: 0000000000000000 x22: 00000000000001a3 x21: 0000000000000000
+[ 1387.756202] x20: 0000000000000000 x19: ffff0000c8cca000 x18: 00000000ffffffff
+[ 1387.756214] x17: 6e6f2074756f2064 x16: 656d697420746961 x15: 77206b6e616c6276
+[ 1387.756226] x14: 205d6d72645b203a x13: 302063747263206e x12: 6f2074756f206465
+[ 1387.756238] x11: 6d69742074696177 x10: 206b6e616c627620 x9 : ffff80008019ed54
+[ 1387.756250] x8 : 0000000000000866 x7 : ffff800082f1dbf0 x6 : ffff800082f1dbf0
+[ 1387.756262] x5 : ffff0003fde351c8 x4 : bfffffffffffe000 x3 : ffff80037b0fa000
+[ 1387.756273] x2 : 0000000000000000 x1 : 0000000000000000 x0 : ffff0000c8560000
+[ 1387.756286] Call trace:
+[ 1387.756290]  drm_crtc_wait_one_vblank+0x198/0x220 (P)
+[ 1387.756300]  mtk_crtc_atomic_disable+0xd8/0x428
+[ 1387.756309]  drm_atomic_helper_commit_crtc_disable+0x114/0x1f8
+[ 1387.756318]  drm_atomic_helper_commit_tail_rpm+0x44/0xe8
+[ 1387.756325]  commit_tail+0xa8/0x1b0
+[ 1387.756331]  drm_atomic_helper_commit+0x184/0x1c0
+[ 1387.756338]  drm_atomic_commit+0x94/0xe0
+[ 1387.756346]  drm_client_modeset_commit_atomic+0x220/0x298
+[ 1387.756354]  drm_client_modeset_commit_locked+0x64/0x1a8
+[ 1387.756363]  drm_client_modeset_commit+0x34/0x68
+[ 1387.756371]  __drm_fb_helper_restore_fbdev_mode_unlocked.part.0+0x98/0xa8
+[ 1387.756379]  drm_fb_helper_set_par+0x70/0x98
+[ 1387.756386]  drm_fb_helper_hotplug_event+0xd8/0xf8
+[ 1387.756393]  drm_fbdev_client_hotplug+0x2c/0xe8
+[ 1387.756400]  drm_client_hotplug+0x50/0xd8
+[ 1387.756408]  drm_client_dev_hotplug+0xa4/0xd8
+[ 1387.756416]  drm_helper_hpd_irq_event+0xfc/0x120
+[ 1387.756424]  __mtk_hdmi_v2_isr_thread.isra.0+0x78/0xd0
+[ 1387.756434]  mtk_hdmi_v2_isr_thread+0x2c/0x50
+[ 1387.756441]  irq_thread_fn+0x34/0xc0
+[ 1387.756449]  irq_thread+0x1a4/0x360
+[ 1387.756457]  kthread+0x138/0x150
+[ 1387.756466]  ret_from_fork+0x10/0x20
+[ 1387.756475] ---[ end trace 0000000000000000 ]---
+[ 1387.763540] mediatek-disp-ethdr 1c114000.hdr-engine: Runtime PM usage count underflow!
+[ 1387.763689] mediatek-mdp-rdma 1c10b000.dma-controller: Runtime PM usage count underflow!
+[ 1387.763705] mediatek-mdp-rdma 1c10a000.dma-controller: Runtime PM usage count underflow!
+[ 1387.763719] mediatek-mdp-rdma 1c109000.dma-controller: Runtime PM usage count underflow!
+[ 1387.763732] mediatek-mdp-rdma 1c108000.dma-controller: Runtime PM usage count underflow!
+[ 1387.763744] mediatek-mdp-rdma 1c107000.dma-controller: Runtime PM usage count underflow!
+[ 1387.763756] mediatek-mdp-rdma 1c106000.dma-controller: Runtime PM usage count underflow!
+[ 1387.763782] mediatek-mdp-rdma 1c105000.dma-controller: Runtime PM usage count underflow!
+[ 1387.763796] mediatek-mdp-rdma 1c104000.dma-controller: Runtime PM usage count underflow!
+[ 1425.450879] ------------[ cut here ]------------
+[ 1425.450906] mediatek-drm mediatek-drm.9.auto: [drm] vblank wait timed out on crtc 0
+[ 1425.450986] WARNING: drivers/gpu/drm/drm_vblank.c:1329 at drm_crtc_wait_one_vblank+0x198/0x220, CPU#0: irq/327-1c30000/142
+[ 1425.451193] CPU: 0 UID: 0 PID: 142 Comm: irq/327-1c30000 Tainted: G        W           7.3.4-edge-genio #1 PREEMPT(full) 
+[ 1425.451202] Tainted: [W]=WARN
+[ 1425.451206] Hardware name: Radxa NIO 12L (DT)
+[ 1425.451211] pstate: 60400009 (nZCv daif +PAN -UAO -TCO -DIT -SSBS BTYPE=--)
+[ 1425.451218] pc : drm_crtc_wait_one_vblank+0x198/0x220
+[ 1425.451225] lr : drm_crtc_wait_one_vblank+0x198/0x220
+[ 1425.451232] sp : ffff8000842c3900
+[ 1425.451236] x29: ffff8000842c3930 x28: ffff0000c0a41870 x27: 0000000000000038
+[ 1425.451249] x26: ffff800081a464c8 x25: ffff8000820e6ae0 x24: ffff0000c8ccd888
+[ 1425.451261] x23: 0000000000000000 x22: 0000000000000241 x21: 0000000000000000
+[ 1425.451272] x20: 0000000000000000 x19: ffff0000c8cca000 x18: 00000000ffffffff
+[ 1425.451284] x17: 6e6f2074756f2064 x16: 656d697420746961 x15: 77206b6e616c6276
+[ 1425.451296] x14: 205d6d72645b203a x13: 302063747263206e x12: 6f2074756f206465
+[ 1425.451307] x11: 6d69742074696177 x10: 206b6e616c627620 x9 : ffff80008019ed54
+[ 1425.451319] x8 : 00000000000008a0 x7 : ffff800082f1dbf0 x6 : ffff800082f1dbf0
+[ 1425.451330] x5 : ffff0003fde351c8 x4 : bfffffffffffe000 x3 : ffff80037b0fa000
+[ 1425.451342] x2 : 0000000000000000 x1 : 0000000000000000 x0 : ffff0000c8560000
+[ 1425.451354] Call trace:
+[ 1425.451359]  drm_crtc_wait_one_vblank+0x198/0x220 (P)
+[ 1425.451368]  mtk_crtc_atomic_disable+0xd8/0x428
+[ 1425.451377]  drm_atomic_helper_commit_crtc_disable+0x114/0x1f8
+[ 1425.451386]  drm_atomic_helper_commit_tail_rpm+0x44/0xe8
+[ 1425.451394]  commit_tail+0xa8/0x1b0
+[ 1425.451400]  drm_atomic_helper_commit+0x184/0x1c0
+[ 1425.451407]  drm_atomic_commit+0x94/0xe0
+[ 1425.451415]  drm_client_modeset_commit_atomic+0x220/0x298
+[ 1425.451423]  drm_client_modeset_commit_locked+0x64/0x1a8
+[ 1425.451432]  drm_client_modeset_commit+0x34/0x68
+[ 1425.451440]  __drm_fb_helper_restore_fbdev_mode_unlocked.part.0+0x98/0xa8
+[ 1425.451448]  drm_fb_helper_set_par+0x70/0x98
+[ 1425.451455]  drm_fb_helper_hotplug_event+0xd8/0xf8
+[ 1425.451462]  drm_fbdev_client_hotplug+0x2c/0xe8
+[ 1425.451469]  drm_client_hotplug+0x50/0xd8
+[ 1425.451477]  drm_client_dev_hotplug+0xa4/0xd8
+[ 1425.451485]  drm_helper_hpd_irq_event+0xfc/0x120
+[ 1425.451493]  __mtk_hdmi_v2_isr_thread.isra.0+0x78/0xd0
+[ 1425.451503]  mtk_hdmi_v2_isr_thread+0x2c/0x50
+[ 1425.451511]  irq_thread_fn+0x34/0xc0
+[ 1425.451519]  irq_thread+0x1a4/0x360
+[ 1425.451526]  kthread+0x138/0x150
+[ 1425.451535]  ret_from_fork+0x10/0x20
+[ 1425.451545] ---[ end trace 0000000000000000 ]---
+[ 1425.458538] mediatek-disp-ethdr 1c114000.hdr-engine: Runtime PM usage count underflow!
+[ 1425.458672] mediatek-mdp-rdma 1c10b000.dma-controller: Runtime PM usage count underflow!
+[ 1425.458688] mediatek-mdp-rdma 1c10a000.dma-controller: Runtime PM usage count underflow!
+[ 1425.458701] mediatek-mdp-rdma 1c109000.dma-controller: Runtime PM usage count underflow!
+[ 1425.458713] mediatek-mdp-rdma 1c108000.dma-controller: Runtime PM usage count underflow!
+[ 1425.458726] mediatek-mdp-rdma 1c107000.dma-controller: Runtime PM usage count underflow!
+[ 1425.458738] mediatek-mdp-rdma 1c106000.dma-controller: Runtime PM usage count underflow!
+[ 1425.458750] mediatek-mdp-rdma 1c105000.dma-controller: Runtime PM usage count underflow!
+[ 1425.458762] mediatek-mdp-rdma 1c104000.dma-controller: Runtime PM usage count underflow!

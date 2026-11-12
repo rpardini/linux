@@ -1,0 +1,77 @@
+Driver Info:
+	Driver Name                : mtk-hdmi-cec
+	Adapter Name               : 10014000.cec
+	Capabilities               : 0x0000030e
+		Logical Addresses
+		Transmit
+		Passthrough
+		Connector Info
+		Reply Vendor ID
+	Driver version             : 7.3.4
+	Available Logical Addresses: 1
+	DRM Connector Info         : card 1, connector 36
+	Physical Address           : 1.0.0.0
+	Logical Address Mask       : 0x0010
+	CEC Version                : 2.0
+	Vendor ID                  : 0x000c03 (HDMI)
+	OSD Name                   : 'NIO12L'
+	Logical Addresses          : 1 (Allow RC Passthrough)
+
+	  Logical Address          : 4 (Playback Device 1)
+	    Primary Device Type    : Playback
+	    Logical Address Type   : Playback
+	    All Device Types       : Playback
+	    RC TV Profile          : None
+	    Device Features        :
+		None
+
+Monitor All mode is not supported, falling back to regular monitoring
+
+
+Initial Event: State Change: PA: 1.0.0.0, LA mask: 0x0010
+Transmitted by Playback Device 1 to all (4 to 15): REPORT_FEATURES (0xa6):
+	cec-version: version-2-0 (0x06)
+	all-device-types: playback (0x10)
+	rc-profile: tv-profile-none (0x00)
+	dev-features: 0 (0x00)
+Transmitted by Playback Device 1 to all (4 to 15): REPORT_PHYSICAL_ADDR (0x84):
+	phys-addr: 1.0.0.0
+	prim-devtype: playback (0x04)
+Transmitted by Playback Device 1 to all (4 to 15): DEVICE_VENDOR_ID (0x87):
+	vendor-id: 0x000c03 (HDMI)
+
+1386.186180: Event: State Change: PA: f.f.f.f, LA mask: 0x0000
+
+1405.202735: Event: State Change: PA: 1.0.0.0, LA mask: 0x0000
+Transmitted by Playback Device 1 to Playback Device 1 (4 to 4): POLL
+	Tx, Not Acknowledged (4), Max Retries
+
+1405.352784: Event: State Change: PA: 1.0.0.0, LA mask: 0x0010
+Transmitted by Playback Device 1 to all (4 to 15): REPORT_FEATURES (0xa6):
+	cec-version: version-2-0 (0x06)
+	all-device-types: playback (0x10)
+	rc-profile: tv-profile-none (0x00)
+	dev-features: 0 (0x00)
+Transmitted by Playback Device 1 to all (4 to 15): REPORT_PHYSICAL_ADDR (0x84):
+	phys-addr: 1.0.0.0
+	prim-devtype: playback (0x04)
+Transmitted by Playback Device 1 to all (4 to 15): DEVICE_VENDOR_ID (0x87):
+	vendor-id: 0x000c03 (HDMI)
+
+1423.889244: Event: State Change: PA: f.f.f.f, LA mask: 0x0000
+
+1429.821818: Event: State Change: PA: 1.0.0.0, LA mask: 0x0000
+Transmitted by Playback Device 1 to Playback Device 1 (4 to 4): POLL
+	Tx, Not Acknowledged (4), Max Retries
+
+1429.971642: Event: State Change: PA: 1.0.0.0, LA mask: 0x0010
+Transmitted by Playback Device 1 to all (4 to 15): REPORT_FEATURES (0xa6):
+	cec-version: version-2-0 (0x06)
+	all-device-types: playback (0x10)
+	rc-profile: tv-profile-none (0x00)
+	dev-features: 0 (0x00)
+Transmitted by Playback Device 1 to all (4 to 15): REPORT_PHYSICAL_ADDR (0x84):
+	phys-addr: 1.0.0.0
+	prim-devtype: playback (0x04)
+Transmitted by Playback Device 1 to all (4 to 15): DEVICE_VENDOR_ID (0x87):
+	vendor-id: 0x000c03 (HDMI)

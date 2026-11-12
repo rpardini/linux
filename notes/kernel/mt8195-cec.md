@@ -1,7 +1,7 @@
 # MediaTek MT8195 HDMI CEC (Radxa NIO-12L): upstreamable driver
 
 Work of 2026-11-08. Status ID: K23. The series is written and builds clean; all DT checks pass.
-**Not tested on hardware yet.** Whether the HDMI display supports CEC is not known.
+**Board-tested 2026-11-12** against a Mixtile Blade 3 HDMI-in (see "Board test"). Module renamed to `mtk-hdmi-cec` after the test found a module name clash.
 
 ## Problem
 
@@ -105,18 +105,39 @@ Authorship (user decision):
   - `config/kernel/linux-genio-edge.config`: `CONFIG_CEC_MTK=m`. `MEDIA_CEC_SUPPORT`/`CEC_CORE`/`CEC_NOTIFIER` are already on (via `CEC_CROS_EC=y`).
 - The kernel deb is not built yet (user: "not now").
 
+## Board test (2026-11-12)
+
+Setup:
+- NIO-12L `192.168.66.83` (CAPT-k8s image, Armbian `7.3.4-edge-genio`, genio-7.3 `3100..3104`) HDMI TX → Mixtile Blade 3 `blade3a` `192.168.66.145` HDMI IN (`snps_hdmirx`, Armbian `7.3.1-edge-rockchip64`, default EDID `LNX hdmi-4k-300`, source PA 1.0.0.0).
+- Blade 3 `/dev/cec1` (`snps_hdmirx`) = partner, `cec-ctl -d1 --tv` → LA 14 (Specific, see K24). NIO `cec-ctl -d0 --playback` → LA 4.
+- Tools: `v4l-utils` 1.30.1, `edid-decode`, `libdrm-tests` (NIO); + `ffmpeg`, gstreamer (Blade 3). trixie-backports added on both.
+- **Only one cable on the CEC bus.** With the second cable (Blade 3 TX → NIO RX) plugged in, every broadcast from the Blade 3 RX adapter ended in NACK/Max Retries, and the NIO got 4 copies. Still the same with the NIO adapter unconfigured, so the NIO is not the one rejecting: the Blade 3's own TX CEC (`dwhdmiqp`, unconfigured, PA f.f.f.f) sits on the same bus through the NIO's RX connector. Unplugged → broadcasts OK. Noted in K24.
+
+Bug found and fixed:
+- Module name clash: `mtk-cec.c` → module `mtk_cec`, the same name as DRM's `drivers/gpu/drm/mediatek/mtk_cec.c` (built in with `DRM_MEDIATEK_HDMI=y`). `modprobe` saw it as built-in and did nothing, no `/dev/cec0`. Renamed to `mtk-hdmi-cec.c` (module `mtk_hdmi_cec`, driver name `mtk-hdmi-cec`, Kconfig help names the module). Fixup squashed into patch 2; backup `b4/mt8195-cec-backup-pre-rename`; Armbian `3101` re-exported (armbian `cc18d8632`).
+
+Results (logs in `notes/kernel/mt8195-cec/`):
+- Probe OK at boot, `/dev/cec0`, IRQ `GIC 712`. "Failed to find CEC node" is gone.
+- PA from the DRM notifier: 1.0.0.0 (matches `edid-decode` of the Blade 3 EDID). LA 4 claimed.
+- NIO → Blade 3 (LA 14): give-device-power-status, give-osd-name, give-physical-addr, get-cec-version, give-device-vendor-id: Tx OK, replies received. Broadcast active-source: received by the Blade 3.
+- Blade 3 → NIO (LA 4, `cec-follower` on the NIO): power status on, OSD name, PA, CEC version, vendor id: all answered. Broadcast request-active-source: Tx OK, received once.
+- NACK: NIO → LA 5 (nobody there): `Not Acknowledged, Max Retries`, no timeout. No IRQ storm (about 600 IRQs for a full stress run).
+- `cec-compliance -d0 -A` (NIO adapter): 11/11 OK, 1 warning. 73 GET_CEC_VERSION sent, 17 CEC_VERSION received. The Blade 3 monitor saw 74 GET_CEC_VERSION and only 18 replies sent: the remote core's TX queue limit (18) under flood. Not our driver.
+- `cec-compliance -d1 -r 4` (Blade 3 tests the NIO as remote): **84/84 OK**, 1 warning (Inactive Source reply, cec-follower behaviour).
+- `cec-compliance -d0 -r 14` (NIO tests the Blade 3 as TV): cut off by a 400 s timeout in the power tests. Failures (System Audio Mode directly addressed, Wake up TV on Image/Text View On) are the Blade 3 TV emulation. `IMAGE_VIEW_ON` does reach the Blade 3, but `cec-follower` only acts as a TV on LA 0, and the Blade 3 is on LA 14 because of K24.
+- Board reset during the test (not the driver): reading `TR_CONFIG` via `/dev/mem` after `cec-ctl --clear` (adapter off → clocks gated) hangs the bus, so the watchdog resets with nothing on the UART. **Never touch the CEC registers via /dev/mem while the adapter is unconfigured.**
+- `TR_CONFIG` while configured: `0x24ff2303` (`RX_CHK_DST`, LA1=4, `ACK_ERROR_BYPASS`, `HEADER_TRIG_INT_EN`, `RX_ACK_SEL`=1 from reset). Toggling `RX_ACK_SEL`/`RX_HEADER_ACK`/`RX_DATA_ACK` does not change broadcast behaviour; setting `HEADER_ACK`/`DATA_ACK` breaks direct ACKs. Leave them as they are.
+
+Hotplug (2 unplug/replug cycles, one quick ~2 s): PA → f.f.f.f + LA released at unplug, PA 1.0.0.0 at replug and LA 4 re-claimed ~150 ms later by itself, then broadcast `REPORT_PHYSICAL_ADDR`. Picture recovers. Logs `mt8195-cec/2026-11-12-hotplug-*`.
+- Every unplug also logs a DRM `vblank wait timed out` WARN + runtime PM underflow (ETHDR / MDP-RDMA). Likely pre-existing, not CEC: K25, `notes/kernel/mt8195-hdmi-unplug-vblank-warn.md`.
+
+Not tested yet: a real TV (remote keys, input switching, Kodi/libcec "Linux" adapter, several CEC devices on the bus / arbitration). Suspend/resume skipped (user: not relevant for CEC use).
+`CONFIG_MEDIA_CEC_RC` is off in genio edge (and rockchip64 edge): libcec/Kodi don't need it, but without it the kernel creates no remote-key input device. Decide later.
+
 ## Next steps
 
-1. Build: `PREFER_DOCKER=no ./compile.sh rpardini-generic kernel BOARD=radxa-nio-12l BRANCH=edge`, then install the debs on the board (`root@192.168.66.83`).
-2. Board test:
-   - `dmesg | grep -i cec`: probe OK, no `Failed to find CEC node`
-   - `ls /dev/cec0`
-   - `cec-ctl -d0`: physical address (e.g. 1.0.0.0) with HDMI plugged in, f.f.f.f when unplugged
-   - `cec-ctl --playback`, `cec-ctl --to 0 --give-device-power-status`, `--image-view-on`, `--standby`
-   - `cec-ctl -M` while pressing TV remote keys
-   - `cec-compliance -A` if the display supports CEC
-   - without CEC on the display: transmits must end in NACK, not timeouts or IRQ storms
-   - regression: HDMI output, hotplug, audio
+1. TV test: `cec-ctl -d0 --playback` + `cec-ctl -M` while pressing remote keys; `--image-view-on` / `--standby` to 0; input switching / TV off-on (PA + K25 WARN); `cec-compliance -r 0`; Kodi with `cec-client -l` showing a Linux adapter.
+2. Before installing a kernel on the CAPT boards: fix the versions in `/boot/extlinux/extlinux.conf` first (it pins them).
 3. If TX status or RX misbehaves: compare with the vendor flow (start-bit workaround, broadcast ACK semantics).
 4. Before sending: SoB, trailer format, `b4 prep --auto-to-cc`, `b4 prep --check`, Cc Tommy Chen. MT8188 is untested; say so (already in the cover).
 5. Later: monitor-all, 3 logical addresses, CEC wakeup; MT8188/MT8370 DT nodes by someone with hardware.

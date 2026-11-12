@@ -1,0 +1,70 @@
+Driver Info:
+	Driver Name                : mtk-hdmi-cec
+	Adapter Name               : 10014000.cec
+	Capabilities               : 0x0000030e
+		Logical Addresses
+		Transmit
+		Passthrough
+		Connector Info
+		Reply Vendor ID
+	Driver version             : 7.3.4
+	Available Logical Addresses: 1
+	DRM Connector Info         : card 1, connector 36
+	Physical Address           : 1.0.0.0
+	Logical Address Mask       : 0x0010
+	CEC Version                : 2.0
+	Vendor ID                  : 0x000c03 (HDMI)
+	OSD Name                   : 'NIO12L'
+	Logical Addresses          : 1 (Allow RC Passthrough)
+
+	  Logical Address          : 4 (Playback Device 1)
+	    Primary Device Type    : Playback
+	    Logical Address Type   : Playback
+	    All Device Types       : Playback
+	    RC TV Profile          : None
+	    Device Features        :
+		None
+
+Compliance test for mtk-hdmi-cec device /dev/cec0:
+
+    The test results mean the following:
+        OK                    Supported correctly by the device.
+        OK (Not Supported)    Not supported and not mandatory for the device.
+        OK (Presumed)         Presumably supported.  Manually check to confirm.
+        OK (Unexpected)       Supported correctly but is not expected to be supported for this device.
+        OK (Refused)          Supported by the device, but was refused.
+        OK (Expected Failure) Failed but this was expected (see -e option).
+        FAIL                  Failed and was expected to be supported by this device.
+
+Find remote devices:
+	Polling: OK
+
+CEC API:
+	CEC_ADAP_G_CAPS: OK
+	Invalid ioctls: OK
+	CEC_DQEVENT: OK
+	CEC_ADAP_G/S_PHYS_ADDR: OK
+	CEC_ADAP_G/S_LOG_ADDRS: OK
+	CEC_TRANSMIT: OK
+	CEC_RECEIVE: OK
+	CEC_TRANSMIT/RECEIVE (non-blocking): OK
+	CEC_G/S_MODE: OK
+		Successful transmits: 73
+		Received messages: 19 of which 19 were CEC_MSG_CEC_VERSION
+		Received 54 messages immediately, and 38 over 6 seconds
+		SFTs for repeating messages (>= 7): 4: 72
+		SFTs for repeating remote messages (>= 7): 6: 3, 7: 15
+		SFTs for newly transmitted remote messages (>= 5): 4: 1
+	warn: cec-test-adapter.cpp(1377): There were 74 CEC_GET_VERSION transmits but only 19 CEC_VERSION receives
+	CEC_EVENT_LOST_MSGS: OK
+
+Network topology:
+	System Information for device 14 (Specific) from device 4 (Playback Device 1):
+		CEC Version                : 2.0
+		Physical Address           : 1.0.0.0
+		Primary Device Type        : TV
+		Vendor ID                  : 0x000c03 (HDMI)
+		OSD Name                   : 'Blade3RX'
+		Power Status               : Tx, OK, Rx, OK, Feature Abort
+
+Total for mtk-hdmi-cec device /dev/cec0: 11, Succeeded: 11, Failed: 0, Warnings: 1
