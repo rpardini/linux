@@ -4,12 +4,23 @@ Copied from the 2026-11-12 Claude plan session. Findings: [le-media-kodi-vdec.md
 
 ## How to resume
 
-- Done:
+- Done (2026-11-12):
   - Phase 0: clones; commits `f4d2536` (clone script + `remotes.tsv`) and `40aa1fc` (tmux ssh agent)
   - A1: notes, K26/K27, AGENTS row
-- Next: A2 → A5 (no board needed), then Phase B once the CEC session (K23) is done with the NIO-12L.
-  - Board writes and kernel installs need the user's OK. The CAPT `extlinux.conf` pins the kernel version.
-- In a new session, say "continue the MediaTek vdec plan in `notes/media/le-media-kodi-vdec-plan.md`".
+  - B1: `scp.img` on the board, decoder up
+  - B2: GStreamer fluster baseline (see the main note)
+  - A2: FFmpeg `mediatek-mm21-armsoc-9.0.2`: libdrm fallback defines (root cause of no HW decode), scale filter buffer accounting, MM21 detile, deinterlace modifier check. Build loop `scripts/50-media-ffmpeg-build.sh`
+  - A3: Kodi `mediatek-piers`: DRMHelpers fallback, vendor-gated convert filter with aspect-fit size, GetBuffer 10-bit, Reopen unref, OES-only for MTK. Applies on LE's 22.0rc2-Piers too
+  - A4: kodi-rockchip-deb `mediatek-genio` (patches regenerated, Mesa from backports, README)
+  - A5: LibreELEC `mediatek-genio` (PR commits on master, ffmpeg/kodi Mediatek gates and patch dirs). **Kernel still v7.2**: the bump to the Armbian genio-7.3 patch set is pending
+- Open:
+  - B3: MDP3 hang (main note, "one frame then hang"). Needs a board reboot to unwedge MDP3, then isolated repro
+  - B3: FFmpeg conformance (`results/ffmpeg-*.txt`), VP8 recheck in isolation
+  - B4: Kodi container on the board (kodi-deb image built on the VM; rebuild with refreshed patches)
+  - B5: K26 into Armbian genio-7.3
+  - H.264 vectors: the ITU WAF blocks fluster downloads
+- Board writes and kernel installs need the user's OK. The CAPT `extlinux.conf` pins the kernel version.
+- Nothing is pushed: the branches above live only in the local clones.
 
 ## Context
 
@@ -27,7 +38,7 @@ This plan covers:
 ### Decisions so far
 - **Board**: tests run on the current CaptainOS node (CAPI checks paused).
   - Kodi runs in a nerdctl container. FFmpeg tests run in a `debian:trixie` container. The host only gets `scp.img`.
-  - **No board writes until the CEC session is done.** The CEC session now has the Armbian 7.3.4-edge-genio kernel with CEC on the node; extlinux pins the kernel version.
+  - The CEC session is done (2026-11-12); the board is ours. extlinux pins the kernel version.
 - **FFmpeg**: rework on `ffmpeg-chewitt/armsoc-9.0.2`. Iterate with a native build (in a trixie container on this VM) plus rsync.
 - **Mesa**: the Kodi container uses trixie + backports Mesa 26.1.6.
 - **kodi-rockchip-deb**: MediaTek goes into the existing `v4l2requests` flavor. Kodi base is `Piers`.

@@ -54,9 +54,45 @@ Packaging: kodi-rockchip-deb (Docker; v4l2requests flavor; container run via ner
   - The CEC session has since installed its CEC build.
   - `/boot/extlinux/extlinux.conf` pins the kernel version: fix it after any kernel `dpkg -i`, before rebooting.
 - Video devices: `video0` jpeg-dec, `video1` jpeg-enc, `video2` vcodec-enc, `video3` vcodec-dec, `video4` mdp3 m2m; `media0`. HDMI-A-1 connected.
-- **There is no `/lib/firmware` at all**: `Direct firmware load for mediatek/mt8195/scp.img failed`, `mtk-vcodec-dec ... failed to load firmware!`. Nothing can decode until `scp.img` is installed.
-  - It's in linux-firmware (`mediatek/mt8195/scp.img`, last changed `5e9fdab5` 2023-11) and in armbian/firmware `master`.
+- ~~No `/lib/firmware`~~ **fixed 2026-11-12**: `scp.img` from the linux-firmware clone copied to `/usr/lib/firmware/mediatek/mt8195/` (plain file, sha256 `995bcf81…`). No reboot needed: the remoteproc boots on the first decoder open (`SCP is ready. FW version cherry_scp_v2.0.23042-e27728578`).
+- Board test dirs: `/root/vdec/{vectors,results}`, FFmpeg at `/opt/ffmpeg-vdec`. Images (nerdctl, default namespace): `vdec/gst-fluster`, `vdec/ffmpeg-run`. Containers need `--net=host` (no CNI bridge on the node) and `--privileged -v /dev:/dev`.
 - containerd, nerdctl (`/usr/local/bin`), crictl and kubelet are present. `/` has 232 GB free. There's an SD card (`mmcblk1`, 59.5 GB).
+
+## Phase B results (2026-11-12)
+
+### Tooling (`linuxdev-status/scripts/`)
+- `51-media-image.sh <name>`: builds `scripts/media/<name>.Dockerfile` with docker on the VM, then `docker save | ssh board nerdctl load`. The board has no buildkit.
+- `50-media-ffmpeg-build.sh [--reconfigure] [--ship]`: incremental out-of-tree FFmpeg build in `vdec/ffmpeg-dev` (trixie + backports `linux-libc-dev`). ccache; about 90 s cold. Install goes to `out/ffmpeg-vdec`; `--ship` tars it to the board's `/opt/ffmpeg-vdec`.
+- `le-media-kodi-vdec/board-fluster-gst.sh`: the GStreamer fluster baseline. `board-ffmpeg-md5.py <suite.json>` / `board-ffmpeg-all.sh`: FFmpeg v4l2request → `hwdownload` (MM21 CPU detile) → md5 vs. the fluster reference. Results go to `le-media-kodi-vdec/results/`.
+- Vectors: `le-media-kodi-vdec/fluster-vectors` (copied to the board). **ITU-hosted vectors (all H.264 JVT, part of HEVC) are blocked**: the ITU WAF answers "Request Rejected", so fluster reports checksum mismatches. No H.264 conformance yet; needs a mirror or a manual download.
+
+### GStreamer 1.26.2 v4l2codecs baseline (kernel + firmware OK)
+| Suite | Pass | Failures |
+|---|---|---|
+| VP8-TEST-VECTORS | 61/61 | |
+| VP9-TEST-VECTORS | 276/305 | resize/inter-resize (24), svc, 422/444 (driver: "only 420 subsampling") |
+| AV1-TEST-VECTORS | 240/242 | film grain (2) |
+| CHROMIUM-8bit-AV1 | 11/13 | film grain (2) |
+| CHROMIUM-10bit-AV1 | 22/23 | film grain; **10-bit (MT2110) works in GStreamer** (CPU unpack) |
+| JCT-VC-HEVC_V1 | 142/147 | PICSIZE_A-D (beyond limits), TSUNEQBD (unequal luma/chroma depth) |
+
+These are the known limits of the hardware and driver; there's no kernel bug to chase here.
+
+### FFmpeg (branch `mediatek-mm21-armsoc-9.0.2`)
+- **Root cause of "nothing decodes in hardware" on Debian trixie**: libdrm 2.4.124's `drm_fourcc.h` (the one `#include <drm_fourcc.h>` finds) has no MediaTek modifiers, even in backports. Every `#if defined(DRM_FORMAT_MOD_MTK_16L_32S_TILE)` block was compiled out, so the MM21 CAPTURE entry was missing, then "Failed to select a CAPTURE format", then a silent software fallback. Fixed with `#ifndef` fallbacks in `hwcontext_v4l2request.c` and `vf_scale_v4l2m2m.c`, and in Kodi's `utils/DRMHelpers.h`. LibreELEC's libdrm presumably has them, which is why August worked there.
+- After the fix, hardware decode plus `hwdownload` MM21 detile is **bit-exact** (VP9/HEVC sample OK). Full results: see `results/ffmpeg-*.txt`.
+- FFmpeg checks `ENUM_FRAMESIZES` (stepwise 64x64–4096x2304), so vectors below 64 px fall back to software. GStreamer doesn't check.
+- Early VP8 run: 20/61 (md5 mismatches, no errors). It overlapped with the hung MDP3 test below and other decodes. Recheck in isolation.
+
+### The "one frame then hang": reproduced outside Kodi
+- `ffmpeg … -hwaccel v4l2request -hwaccel_output_format drm_prime -i vp90-2-02-size-lf-1920x1080.webm -vf scale_v4l2m2m=format=uyvy -f null -` **hangs**. A plain decode of the same file runs at about 300 fps.
+- At the same moment there was a burst of `mtk-iommu 1c01f000: fault … pa=0x0 (larb=21 port=0 read / port=2 write)`. **larb21 ports 0/2 are `VDEC_MC_EXT`/`VDEC_PP_EXT`, the decoder, not MDP3** (MDP RDMA is larb4 on iommu_vpp).
+- Then hung task: the filter thread stays in D state in `v4l2_m2m_cancel_job` ← `VIDIOC_STREAMOFF` on the MDP3 fd. An MDP3 job never completes, and afterwards even a standalone `v4l2-ctl` NV12→YUYV m2m on `/dev/video4` times out. **MDP3 is wedged until reboot.**
+- Caveat: a second decode (the conformance run) was going at the same time. After a reboot, repeat it alone, one stage at a time:
+  1. MDP3 with `v4l2-ctl` linear in/out
+  2. MDP3 MM21 input
+  3. FFmpeg decode → `scale_v4l2m2m`
+- So `-f null` (nothing held downstream) is enough to hang. The FFmpeg capture-buffer accounting fix (12 buffers, wait for returns) is still right for Kodi, but it isn't this bug.
 
 ## Findings
 
