@@ -10,7 +10,7 @@ Started 2026-11-12. Board: Radxa NIO-12L (Genio 1200 / MT8395, Mali-G57).
   - K29: mtk-mdp3 GCE pm_runtime, **the MDP3 hang fix**
 - Userspace work has no IDs and is tracked here.
 
-## Status (2026-11-12 evening)
+## Status (2026-11-12, 21:30)
 
 - **Board**: Armbian genio edge 7.3.4 build #3 with patches 3200 (K29), 3201 (K26) and 3202 (K28), plus `scp.img`. Decoder and MDP3 work.
 - **Decoding (hardware, through FFmpeg and GStreamer)**: H.264, HEVC, VP8, VP9 and AV1 decode correctly on the hardware, apart from the open FFmpeg issues below. Conformance tables are under "Results".
@@ -23,7 +23,35 @@ Started 2026-11-12. Board: Radxa NIO-12L (Genio 1200 / MT8395, Mali-G57).
   - GStreamer passes all of these, so FFmpeg's controls differ from what the driver/firmware expects.
 - **H.264 B-frame corruption in FFmpeg: fixed** (2026-11-12, 2 FFmpeg commits). It showed up with real libx264 clips. FFmpeg H.264 conformance is now 100/135 (GStreamer 95).
 - **Kodi on the board: both paths work** (EGL and DirectToPlane via MDP3 + plane, UYVY LINEAR): hardware decode, 1080p fullscreen, real time, no faults or hangs. Kodi matrix with the fixed FFmpeg (image rebuilt with kodi-rockchip-deb `6a72109`): **16/16 runs on 8-bit clips OK** (H.264/HEVC/VP9/AV1 × 1080p/4K × EGL/plane). 10-bit HEVC now plays on both paths through the software fallback (3 Kodi fixes, below).
-- **Branches**: FFmpeg `mediatek-mm21-armsoc-9.0.2`, Kodi `mediatek-piers`, kodi-rockchip-deb `mediatek-genio`, LibreELEC `mediatek-genio` (kernel still 7.2), armbian-build `extensions` (`8c93af5e2`).
+- **Branches** (nothing pushed):
+  - FFmpeg `mediatek-mm21-armsoc-9.0.2` (incl. the H.264 fixes `03849804f8`, `34de8f4aa7`)
+  - Kodi `mediatek-piers` (8 MTK commits incl. the 10-bit fallback `7e9b59cb0f`, `ee3a4f3339`, `1b94bc79cd`)
+  - kodi-rockchip-deb `mediatek-genio` (`941ec9b`; image `kodi-rockchip-gbm:trixie-v4l2requests` loaded on the NIO)
+  - LibreELEC `mediatek-genio` (`424ce54491`; patches refreshed; kernel still 7.2)
+  - armbian-build `extensions` (`8c93af5e2`)
+
+## Usability assessment (2026-11-12): how usable is it for regular Kodi use?
+
+Based only on what was tested: generated testsrc2 clips at 30 fps, no audio track, 30 s each, played through JSON-RPC.
+
+**Works (verified)**
+- 8-bit H.264, HEVC, VP9 and AV1, 1080p and 4K: hardware decode, real time, correct picture on both render paths (EGL and DirectToPlane/MDP3). No IOMMU faults, no hangs (MDP3 stable with K29).
+- Real libx264 streams (B-frames) are bit-exact since the FFmpeg H.264 fix.
+- FFmpeg conformance: H.264 100/135, HEVC 132/147, VP9 204/305. Most failures are features real movies don't use (interlaced/PAFF/MBAFF, Baseline FMO/ASO, Extended SP, VP9 resize vectors).
+- 10-bit plays, through the CPU (software fallback).
+
+**Risks for real movies (in order of impact)**
+1. **Audio unverified.** The clips have no audio. Every Kodi log shows `ActiveAE::InitSink - returned error` / `no sink was returned`: no ALSA sink was found in the container. It could be the container setup or the NIO HDMI audio (the ASoC patches). Check this first.
+2. **10-bit is CPU-decoded.** Most 4K/HDR content is 10-bit (HEVC Main10, VP9 Profile 2, much AV1). The hardware decodes it, but neither Mesa/Panfrost nor MDP3 can read the MTK 10-bit tiled output (MT2110; MDP3 = K27; or an MT2110 detile). 1080p 10-bit probably keeps up on the CPU; 4K 10-bit very likely doesn't.
+3. **No HDR.** Kodi shows "HDR passthrough: off" and the display has no HDR types, so HDR content would look washed out.
+4. **Interlaced content** (TV/DVB recordings, some DVD rips): no hardware deinterlacer, and interlaced H.264 fails conformance (FFmpeg and GStreamer alike).
+5. **AV1 tiles/SVC**: the conformance tile vectors still IOMMU-fault the decoder. The 4K libsvtav1 test clip played fine, but some real high-resolution or high-bitrate encodes might hit this.
+6. **Not tested**: 23.976 fps and refresh-rate switching (disabled in the tests), seeking, long playback, subtitles, high-bitrate real files, real HDMI-CEC remote use with Kodi.
+7. **Minor**: EGL vs. plane colour rendition differs slightly (range/matrix); faint mottling in the grey box on VP9/AV1 4K; display-driver kernel warnings on Kodi start/stop (`vblank wait timed out`, `Runtime PM usage count underflow` on `mdp-rdma`/`ethdr`); about 240 harmless HEVC reference errors after the mid-GOP 10-bit fallback, which also seems to skip ahead.
+
+**Verdict**: for an 8-bit H.264/HEVC/VP9/AV1 library over HDMI it should already be pleasant to use, if audio works. For a 4K HDR library it isn't there yet (10-bit display path, HDR).
+
+**Next to prove it**: a real-movie test: a 1080p H.264 file with 5.1 audio, a 4K HEVC 10-bit HDR file, and a VP9/AV1 web-style file. Enable refresh-rate switching, seek and play a few minutes. Before that, an ALSA check on the board (`aplay -l` on the host and in the container).
 
 ## Layout (`/opt/linuxdev/le-media-kodi-vdec/`)
 
@@ -318,6 +346,11 @@ Commits on top of chewitt `armsoc-9.0.2` (`ad8c2e36ee`):
 - [x] LibreELEC `mediatek-genio`: FFmpeg H.264 fixes + Kodi fixes refreshed (`957538b1a0`, `424ce54491`)
 - [x] Kodi seed dialogs: handled in the test script
 - [ ] Upstream candidates: the two FFmpeg H.264 fixes (to chewitt / the v4l2-request series)
+- [ ] **Audio**: ALSA/HDMI audio on the NIO (host and container); Kodi currently finds no sink
+- [ ] **Real-movie test** (see "Usability assessment"): 5.1 audio, 4K HEVC 10-bit HDR, VP9/AV1, 23.976 refresh switching, seeking, long playback
+- [ ] 10-bit display path: MT2110 detile (Mesa or CPU into P010) or MDP3 MT2110 (K27); HDR output
+- [ ] Colour rendition: EGL vs. plane (range/matrix)
+- [ ] 10-bit fallback skips ahead at the reopen (keep the packets already queued?)
 - [ ] Display-driver warnings: vblank timeout on crtc disable, rdma/ethdr runtime-PM underflow
 - [ ] FFmpeg vs driver: VP8 1425/1436, AV1 tiles/SVC, H.264 WP/MR1, HEVC CONFWIN (diff the controls against GStreamer)
 - [ ] `hwdownload` detile for MT2110 (10-bit), so 10-bit conformance can be checked

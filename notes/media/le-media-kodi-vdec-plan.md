@@ -16,7 +16,7 @@ In a new session, say "continue the MediaTek vdec plan in `notes/media/le-media-
   - Run one decode test at a time. Don't read clk/genpd debugfs on a hung board.
   - Nothing is pushed and nothing goes to lists without an OK.
 
-**Resume here (2026-11-12 ~21:15)**: Kodi plays everything in the matrix on both paths, 10-bit included (software fallback). LibreELEC branch refreshed. PR screenshots in `notes/media/img/`. Next: Phase C step 3 for VP8/AV1/HEVC (extend `tools/h264ctl-dump`), then housekeeping (LE kernel 7.3, Armbian 3200/3202 refresh, K29 ping draft). Use Sonnet/Haiku subagents for captures and logs.
+**Resume here (2026-11-12 ~21:30)**: Kodi plays everything in the test matrix on both paths (10-bit via software fallback). See the main note's "Usability assessment". The open question is real use. Next, in order: (a) audio: ALSA/HDMI on the NIO, since Kodi finds no sink; (b) a real-movie test (5.1 audio, 4K HEVC 10-bit HDR, VP9/AV1, refresh switching, seeking); (c) Phase C step 3 for VP8/AV1/HEVC (extend `tools/h264ctl-dump`); (d) housekeeping. Use Sonnet/Haiku subagents for captures and logs. Guard `rm` variables with `"${VAR:?}"`.
 
 ## Phase C (next, in order)
 

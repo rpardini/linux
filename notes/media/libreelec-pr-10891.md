@@ -49,7 +49,7 @@
 | `mediatek-genio-wip` | the PR (8 commits, kernel v7.2) | `54eca63dd0` (2026-08-23), 1222 behind master |
 | `mediatek-genio-wip-v1` | older version: own kernel (rpardini/linux `00b5f937`, 6.19-rc4 + Collabora/Armbian), DTB `-extra` | 2026-01-11, 4252 behind |
 | `master-26.08-rpardini` | wip series **plus the media stack**, 60 ahead / 1177 behind | `da49141f4f` |
-| **`mediatek-genio`** (2026-11-12) | the 8 PR commits rebased cleanly on master, plus `ffmpeg: Mediatek: chewitt armsoc-9.0.2 plus MM21 support` and `kodi: Mediatek: drmprime-filter plus MediaTek patches`. **Kernel still v7.2** | `le-upstream/master` `01a57f984b` |
+| **`mediatek-genio`** (2026-11-12) | the 8 PR commits rebased cleanly on master, plus `ffmpeg: Mediatek: chewitt armsoc-9.0.2 plus MM21 support` and `kodi: Mediatek: drmprime-filter plus MediaTek patches`; patches refreshed 2026-11-12 evening (`957538b1a0`: FFmpeg H.264 B-frame fixes + Kodi 10-bit fallback; `424ce54491`: Kodi GLES fallback for plane-rejected buffers). The Kodi patches apply on `22.0rc2-Piers`. **Kernel still v7.2** (needs 7.3 + K29/K26/K28) | `le-upstream/master` `01a57f984b` |
 
 The media commits on `master-26.08-rpardini`:
 - `a7cbf90cfa`: ffmpeg `Mediatek)` case, chewitt `837d8c2f` (`rockchip-9.0.1`) + `PKG_PATCH_DIRS+=" mediatek"`
@@ -86,3 +86,8 @@ Branch `mediatek-genio` (off `le-upstream/master`) is done except the kernel:
   - **K28** (vb2 dma-contig cache sync, needed by chewitt's cached CAPTURE buffers; LE has it only for Amlogic as `amlogic-0116`)
   - The Armbian genio-7.3 patch files `3200`–`3202` are ready to copy.
 - No LE image built or tested yet. Force-pushing or updating the PR branch is the user's call.
+
+## For the PR description (2026-11-12)
+
+- Tested in the kodi-rockchip-deb container on the NIO-12L with the same FFmpeg/Kodi patches. See `le-media-kodi-vdec.md` "Usability assessment" and the screenshots in `notes/media/img/`.
+- The August "one frame then hang" was the kernel (MDP3 GCE pm_runtime, K29), not LibreELEC.
