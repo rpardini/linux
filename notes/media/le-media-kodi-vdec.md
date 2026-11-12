@@ -272,6 +272,19 @@ Commits on top of chewitt `armsoc-9.0.2` (`ad8c2e36ee`):
 - **Audio device**: Kodi enumerates only `@` and `sysdefault:CARD=sofmt8395evk` for this card, and `ValidateOutputDevices` sometimes rewrote `plughw:…,DEV=5` to `sysdefault` (PCM 0, not HDMI). Test setup now mounts `kodi-home/asound.conf` (board `/root/vdec/asound.conf`) as `/etc/asound.conf` (`pcm.!default` = plug → `hw:CARD=sofmt8395evk,DEV=5`), and the seed uses `ALSA:default`.
 - Screenshots: `real-jf-hevc10-2160-plane-hwdetile-processinfo.png`, `real-jf-av1-10-2160-egl-hwdetile-processinfo.png`.
 
+### Step 5 (2026-11-12/13): conformance with the detile, AV1 tiles, K27
+
+- **Conformance with 10-bit checkable** (`board-ffmpeg-md5.py` downloads `p010le` for 10-bit; `results/k5-*`): AV1 137 → **201/242**, HEVC 132 → **142/147**, VP9 unchanged 204/305 (profile 0 only), Chromium 10-bit AV1 10/23 before the tile fix.
+- **AV1 tile bug (FFmpeg)**: `v4l2_request_av1.c` filled `mi_col_starts`/`mi_row_starts` with CBS superblock starts (only the last entry was in MI units). V4L2 wants MI (4x4) units, and the MTK driver derives tile sizes from consecutive starts (`vdec_av1_slice_setup_tile`, `sb_boundary_x_m1`), so every multi-tile frame faulted. Fixed: shift by 4 (or 5 for 128x128 SB). FFmpeg `3a0857fba5`.
+  - Chromium 8-bit AV1 6 → **10/13**, Chromium 10-bit 10 → **22/23** (= GStreamer) (`results/k6-*`). Left: `av1-1-b8-03-sizeup` (still IOMMU-faults) and the film-grain vectors.
+- **Dufresne's comment on the PR** ("For 10bit, you can point your AI to gstreamer code… The mapping in MDP3 is indeed missing… It is supported though, maybe this can be extracted from vendor TV stacks"):
+  - The CPU detile is a port of his GStreamer unpack code; the FFmpeg commit now credits him (`1ed4b233dc`).
+  - **K27 tried**: mainline MDP3 already has `MDP_COLOR_420_BLK_10_V/_H` + RDMA 10-bit; added MT2110T/R entries (`037c58f9c881`, Armbian `3203`, armbian-build `310898a8c`), plus a `scale_v4l2m2m` NV15+MTK-10-bit mapping (FFmpeg, not committed; saved at scratchpad `ffmpeg-mt2110-mdp3-filter.diff`).
+  - Result: MDP3 lists `MT2T`, but conversion triggers **`mtk-scp: SCP watchdog timeout`** (`mdp_vpu_sendmsg` → `scp_ipi_send failed -5`), ~1 fps, and the decoder briefly times out on the same SCP. The SCP recovered by itself (8-bit decode and MM21→UYVY fine afterwards); no reboot needed.
+  - The ChromeOS SCP fw (`cherry_scp_v2.0.23042`; linux-firmware `f41d890a` "support 10bit mode" by Yunfei Dong, 2023) has 10-bit strings only on the decoder side (`MM21_10bit tile/raster mode` next to `Unsupported capture fourcc`); its MDP code shows only alignment checks.
+  - Vendor TV kernel sources aren't public in a useful form. Looking at the Genio AIoT SCP fw (Ubuntu `linux-firmware-mediatek-aiot`, `scp.img v14454.8.0`) and the Genio BSP kernel's mdp3 (gitlab `mediatek/aiot/bsp/linux`), under `le-media-kodi-vdec/vendor/`.
+  - Kodi is unaffected: it detiles 10-bit on the CPU before any MDP3 conversion. The FFmpeg mapping was reverted on the board.
+
 ### Audio (2026-11-12)
 
 - **Root cause of "no sink"**: no sound card. The SOF DSP (`sof-audio-of-mt8195 10803000.dsp`) failed with `SOF firmware and/or topology file not found` (`mediatek/sof/sof-mt8195.ri`, `mediatek/sof-tplg/sof-mt8195.tplg`). The machine driver `mt8195_mt6359` then never registered the card.
