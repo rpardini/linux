@@ -58,6 +58,8 @@ First pass: generated testsrc2 clips (30 fps, no audio). **Updated with real cli
 
 **Verdict**: for an 8-bit H.264/HEVC/VP9/AV1 library over HDMI it should already be pleasant to use, if audio works. For a 4K HDR library it isn't there yet (10-bit display path, HDR).
 
+**Real-use check done (BBB)**: refresh switching, seeking, long play and audio work; multichannel is unverified (the sink has no audio EDID).
+
 **Next to prove it**: a real-movie test: a 1080p H.264 file with 5.1 audio, a 4K HEVC 10-bit HDR file, and a VP9/AV1 web-style file. Enable refresh-rate switching, seek and play a few minutes. Before that, an ALSA check on the board (`aplay -l` on the host and in the container).
 
 ## Layout (`/opt/linuxdev/le-media-kodi-vdec/`)
@@ -247,6 +249,15 @@ Commits on top of chewitt `armsoc-9.0.2` (`ad8c2e36ee`):
 - **AV1 crash fix**: Kodi `282a09a58b` "VideoPlayer: Switch to a software decoder when reopening fails" (`Reopen()` returns bool; on failure VideoPlayer recreates the codec with `CODEC_FORCE_SOFTWARE`, so `CDVDVideoCodecFFmpeg` + libdav1d + GLES). kodi-rockchip-deb `0220831`, LibreELEC `691a0686ea`.
 - Screenshots: `notes/media/img/real-*` (best: `real-bbb-1080p24-egl-plain.png`, `real-bbb-1080p24-egl-processinfo.png` (HW H.264, 24 fps, AAC 5.1), `real-bbb-1080p24-plane-processinfo.png` (HW + MDP3), `real-jf-hevc8-1080-30M-egl-processinfo.png`; informative: `real-jf-avc-2160-150M-plane-*`, `real-jf-hevc10-2160-plane-swfallback-processinfo.png`, `real-jf-hevc-hdr10-2160-egl-processinfo.png` (washed out)). `kodi-shots.sh` has `SEEK=<pct>` and `PLAIN=1`.
 
+### Real use: BBB 1080p24 (2026-11-12 ~22:35; `kodi-realuse.sh <clip> <r> [min]`, results `results/realuse-*`)
+
+- **Refresh-rate switching works** (`adjustrefreshrate`=2): the GUI is at 1080p60 (148.5 MHz), playback switches to 1080p23.98/24 (74.25 MHz), and stop returns to 60. Same on both paths.
+- **Seeking works**: 25/60/90/10% all land and resume at speed 1 within 6 s (time advances 5 s in 5 s).
+- **3 min continuous play OK** on both paths; audio PCM `RUNNING` throughout; 0 IOMMU faults.
+- Drops: 64× `OutputPicture - dropped in output` per run (around seeks and mode switches), plus the normal seek-target drops.
+- **5.1 → stereo**: Kodi set to 5.1, but the ALSA device reports only FL/FR (`Input Channel Count: 6 Output Channel Count: 2`). Likely the Blade3 RX's EDID has no audio block (`hdmi-audio-codec: Unknown ELD version 0`), so the HDMI codec limits output to 2 channels. Needs a real AV receiver/TV to test multichannel and passthrough.
+- **Mode switches are slow**: every CRTC disable waits out vblank timeouts (`mtk_crtc_atomic_disable` → `drm_atomic_helper_wait_for_vblanks`; `vblank wait timed out on crtc 0` warnings). The watcher caught `kodi-gbm` in D state there once, during the 24p↔60p switch at stop. It recovered, so it's not a hang, but it is a display-driver bug to look at (with the rdma/ethdr runtime-PM underflows).
+
 ### Audio (2026-11-12)
 
 - **Root cause of "no sink"**: no sound card. The SOF DSP (`sof-audio-of-mt8195 10803000.dsp`) failed with `SOF firmware and/or topology file not found` (`mediatek/sof/sof-mt8195.ri`, `mediatek/sof-tplg/sof-mt8195.tplg`). The machine driver `mt8195_mt6359` then never registered the card.
@@ -388,6 +399,8 @@ Commits on top of chewitt `armsoc-9.0.2` (`ad8c2e36ee`):
 - [x] Audio: SOF firmware, HDMI `hw:0,5` + mixer routes; Kodi plays to HDMI (2.0)
 - [ ] Blade3 (RK3588) mainline `snps_hdmirx`: why no audio capture? (would allow verifying NIO HDMI audio end to end)
 - [x] Real-clip matrix (Jellyfin + BBB): 8-bit HW solid up to 4K150M; 10-bit 4K CPU-bound; AV1 10-bit crash found and fixed (verified)
+- [x] BBB real use: 24p refresh switching, seeking, 3 min play, audio (2.0)
+- [ ] Display: slow CRTC disable (vblank timeouts) on every mode switch; rdma/ethdr runtime-PM underflow
 - [ ] Audio: multichannel / passthrough over HDMI; persistent mixer setup on CaptainOS/Armbian (UCM `sof-mt8395-evk`); upstream the UCM to alsa-ucm-conf?
 - [ ] **Real-movie test** (see "Usability assessment"): 5.1 audio, 4K HEVC 10-bit HDR, VP9/AV1, 23.976 refresh switching, seeking, long playback
 - [ ] 10-bit display path: MT2110 detile (Mesa or CPU into P010) or MDP3 MT2110 (K27); HDR output
