@@ -1,5 +1,6 @@
 # repo	remote	url	fetch (y = fetched by 10-vm-clone-main.sh; n = added only, fetch on demand)
 # remote names are prefixed per repo: kernel-* in kernel/, uboot-* in u-boot/ (also armbian-* in armbian-build/, linuxdev-status-* here; those two are not managed by the scripts). Dropped remotes (u-boot kwiboo, kwiboo-denx) are gone on purpose: do not re-add.
+# repo = dir under LINUXDEV_ROOT, so nested repos work (le-media-kodi-vdec/*: MediaTek vdec / Kodi / LibreELEC userspace). Their first fetch=y remote's default branch is the initial checkout.
 kernel	kernel-rpardini-linux	git@github.com:rpardini/linux.git	y
 kernel	kernel-rpardini-armbian-linux-rockchip-rk3588	git@github.com:rpardini/armbian-linux-rockchip-rk3588.git	y
 kernel	kernel-torvalds	https://github.com/torvalds/linux.git	y
@@ -23,3 +24,19 @@ u-boot	uboot-upstream	https://github.com/u-boot/u-boot.git	y
 u-boot	uboot-rockchip-linux	git@github.com:rockchip-linux/u-boot.git	n
 u-boot	uboot-radxa	https://github.com/radxa/u-boot.git	n
 u-boot	uboot-kernel-devicetree-rebasing	https://git.kernel.org/pub/scm/linux/kernel/git/devicetree/devicetree-rebasing.git	n
+le-media-kodi-vdec/kodi-rockchip-deb	kodideb-armsurvivors	git@github.com:armsurvivors/kodi-rockchip-deb.git	y
+le-media-kodi-vdec/ffmpeg	ffmpeg-rpardini	git@github.com:rpardini/FFmpeg.git	y
+le-media-kodi-vdec/ffmpeg	ffmpeg-upstream	https://github.com/FFmpeg/FFmpeg.git	y
+le-media-kodi-vdec/ffmpeg	ffmpeg-kwiboo	https://github.com/Kwiboo/FFmpeg.git	y
+le-media-kodi-vdec/ffmpeg	ffmpeg-chewitt	https://github.com/chewitt/FFmpeg.git	y
+le-media-kodi-vdec/ffmpeg	ffmpeg-rpi	https://github.com/jc-kynesim/rpi-ffmpeg.git	y
+le-media-kodi-vdec/libreelec	le-rpardini	git@github.com:rpardini/LibreELEC.tv.git	y
+le-media-kodi-vdec/libreelec	le-upstream	https://github.com/LibreELEC/LibreELEC.tv.git	y
+le-media-kodi-vdec/libreelec	le-chewitt	https://github.com/chewitt/LibreELEC.tv.git	y
+le-media-kodi-vdec/kodi	kodi-rpardini	git@github.com:rpardini/xbmc.git	y
+le-media-kodi-vdec/kodi	kodi-upstream	https://github.com/xbmc/xbmc.git	y
+le-media-kodi-vdec/gstreamer	gst-upstream	https://gitlab.freedesktop.org/gstreamer/gstreamer.git	y
+le-media-kodi-vdec/mesa	mesa-upstream	https://gitlab.freedesktop.org/mesa/mesa.git	y
+le-media-kodi-vdec/fluster	fluster-upstream	https://github.com/fluendo/fluster.git	y
+le-media-kodi-vdec/linux-firmware	linuxfw-upstream	https://git.kernel.org/pub/scm/linux/kernel/git/firmware/linux-firmware.git	y
+le-media-kodi-vdec/linux-firmware	linuxfw-armbian	https://github.com/armbian/firmware.git	y

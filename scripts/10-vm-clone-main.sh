@@ -8,13 +8,19 @@
 #   DRY_RUN=0 linuxdev-status/scripts/10-vm-clone-main.sh kernel --blobless
 #   DRY_RUN=0 linuxdev-status/scripts/10-vm-clone-main.sh u-boot
 #
-# Usage: [DRY_RUN=0] scripts/10-vm-clone-main.sh <kernel|u-boot> [--blobless] [--no-checkout]
+#   DRY_RUN=0 linuxdev-status/scripts/10-vm-clone-main.sh le-media-kodi-vdec/ffmpeg   # any repo listed in remotes.tsv
+#
+# Usage: [DRY_RUN=0] scripts/10-vm-clone-main.sh <repo> [--blobless] [--no-checkout]
+#   <repo>         repo column of remotes.tsv = dir under $LINUXDEV_ROOT (kernel, u-boot, le-media-kodi-vdec/ffmpeg, ...)
 #   --blobless     first fetch uses --filter=blob:none (blobs fetched on demand)
 #   --no-checkout  leave HEAD unborn instead of detaching at the upstream default branch
+#                  (kernel-torvalds/master, uboot-upstream/main; other repos: default branch of their first fetch=y remote)
 source "$(dirname "$0")/lib.sh"
 
 repo="${1:-}"
-[[ "$repo" == "kernel" || "$repo" == "u-boot" ]] || die "usage: $0 <kernel|u-boot> [--blobless] [--no-checkout]"
+[[ -n "$repo" ]] || die "usage: $0 <repo> [--blobless] [--no-checkout]"
+first_remote="$(awk -F'\t' -v r="$repo" '!/^#/ && $1 == r && $4 == "y" { print $2; exit }' "$REMOTES_TSV")"
+[[ -n "$first_remote" ]] || die "no fetch=y remotes for '$repo' in remotes.tsv"
 shift
 BLOBLESS=0 CHECKOUT=1
 for a in "$@"; do
@@ -66,6 +72,10 @@ if ((CHECKOUT)) && ! gx rev-parse -q --verify HEAD > /dev/null 2>&1; then
 	case "$repo" in
 		kernel) start="kernel-torvalds/master" ;;
 		u-boot) start="uboot-upstream/main" ;;
+		*)
+			run git -C "$dir" remote set-head "$first_remote" --auto
+			start="$first_remote/HEAD"
+			;;
 	esac
 	info "detaching main tree at $start"
 	run git -C "$dir" switch --detach "$start"
