@@ -140,6 +140,7 @@ HW video decode on Genio 1200 (NIO-12L): mtk-vcodec MM21/MT2110 → FFmpeg v4l2r
 - Clones: `/opt/linuxdev/le-media-kodi-vdec/{kodi-rockchip-deb,ffmpeg,libreelec,kodi,gstreamer,mesa,fluster,linux-firmware}` (remotes in `remotes.tsv`)
 - Findings and test recipes: `notes/media/le-media-kodi-vdec.md`
 - Plan and how to resume: `notes/media/le-media-kodi-vdec-plan.md`
+- Status 2026-11-12: decode works on hardware (FFmpeg + GStreamer conformance in the note); **"one frame then hang" (MDP3) fixed by K29**; board runs Armbian genio edge with K26/K28/K29 (`genio-7.3/3200-3202`). Next: Kodi on the board, FFmpeg-vs-driver mismatches (VP8/AV1), K29 upstream ping.
 - PR #10891 summary: `notes/media/libreelec-pr-10891.md`
 - Status: plan written, nothing executed beyond the clones. The board (CaptainOS node) has no `scp.img`, so decode can't work yet. Board work waits for K23 testing to finish.
 

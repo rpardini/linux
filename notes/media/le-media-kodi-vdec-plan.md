@@ -4,23 +4,41 @@ Copied from the 2026-11-12 Claude plan session. Findings: [le-media-kodi-vdec.md
 
 ## How to resume
 
-- Done (2026-11-12):
-  - Phase 0: clones; commits `f4d2536` (clone script + `remotes.tsv`) and `40aa1fc` (tmux ssh agent)
-  - A1: notes, K26/K27, AGENTS row
-  - B1: `scp.img` on the board, decoder up
-  - B2: GStreamer fluster baseline (see the main note)
-  - A2: FFmpeg `mediatek-mm21-armsoc-9.0.2`: libdrm fallback defines (root cause of no HW decode), scale filter buffer accounting, MM21 detile, deinterlace modifier check. Build loop `scripts/50-media-ffmpeg-build.sh`
-  - A3: Kodi `mediatek-piers`: DRMHelpers fallback, vendor-gated convert filter with aspect-fit size, GetBuffer 10-bit, Reopen unref, OES-only for MTK. Applies on LE's 22.0rc2-Piers too
-  - A4: kodi-rockchip-deb `mediatek-genio` (patches regenerated, Mesa from backports, README)
-  - A5: LibreELEC `mediatek-genio` (PR commits on master, ffmpeg/kodi Mediatek gates and patch dirs). **Kernel still v7.2**: the bump to the Armbian genio-7.3 patch set is pending
-- Open:
-  - B3: MDP3 hang (main note, "one frame then hang"). Needs a board reboot to unwedge MDP3, then isolated repro
-  - B3: FFmpeg conformance (`results/ffmpeg-*.txt`), VP8 recheck in isolation
-  - B4: Kodi container on the board (kodi-deb image built on the VM; rebuild with refreshed patches)
-  - B5: K26 into Armbian genio-7.3
-  - H.264 vectors: the ITU WAF blocks fluster downloads
-- Board writes and kernel installs need the user's OK. The CAPT `extlinux.conf` pins the kernel version.
-- Nothing is pushed: the branches above live only in the local clones.
+In a new session, say "continue the MediaTek vdec plan in `notes/media/le-media-kodi-vdec-plan.md`". Read the main note's **Status** section first.
+
+- **Done (2026-11-12)**:
+  - Phase 0, A1–A5 and B1–B3: clones; notes; FFmpeg/Kodi/kodi-deb/LE branches; board firmware; GStreamer and FFmpeg conformance incl. H.264
+  - **MDP3 hang root-caused and fixed (K29)**
+  - Board kernel: Armbian genio edge build #3 with 3200 (K29), 3201 (K26), 3202 (K28); armbian-build `8c93af5e2`
+- **Rules**:
+  - Ask the user before anything that might hang or crash the board. Recovery is a long power-off by the user.
+  - Kernel installs and reboots need an OK. The CAPT `extlinux.conf` pins the kernel version.
+  - Run one decode test at a time. Don't read clk/genpd debugfs on a hung board.
+  - Nothing is pushed and nothing goes to lists without an OK.
+
+## Phase C (next, in order)
+
+1. **FFmpeg cleanup**: revert the uncommitted cache-hint hack in `le-media-kodi-vdec/ffmpeg` (K28 is in the board kernel now). Rebuild with `scripts/50-media-ffmpeg-build.sh --ship`, rerun VP8 (`board-ffmpeg-md5.py`) and expect 59/61 with the hints on.
+2. **Kodi on the board (B4)**:
+   - rebuild the kodi-deb image if the patches changed since `25df920`, then `docker save | ssh nerdctl load`
+   - run Kodi in nerdctl (main note, "Test recipes"); test clips 1080p/4K H.264/HEVC/VP9/AV1 (+ one 10-bit)
+   - EGL path first (no MDP3), then DirectToPlane (MDP3 + K29)
+   - Collect Kodi debug logs, dmesg and IOMMU faults
+   - Check: the plane dest rect vs our aspect-fit scale, frames held vs `capture_buffers=12`, whether the EGLImage bypass is needed with Mesa 26.1
+   - Ask the user before starting: a hang still costs a power cycle.
+3. **FFmpeg vs. driver**: diff the per-frame V4L2 controls FFmpeg and GStreamer send (`GST_DEBUG=v4l2codecs*:7` vs an FFmpeg debug log / `v4l2-tracer`). Cases:
+   - VP8 `segmentation-1425` (IOMMU faults) and `1436`
+   - AV1 `nonuniformtiling`, tile-rows/cols, SVC (with K26 these should no longer panic; ask before running)
+   - H.264 `CAWP5`/`CVWP5`/`MR1_BT_A`
+   - HEVC `CONFWIN_A`
+4. **Upstream K29**: draft a ping/resend of `[PATCH v2 3/3] media: platform: mtk-mdp3: Add pm_runtime support for GCE power control` with `Fixes: 3f39f5652037` and the NIO-12L reproduction, for the user to review.
+5. **Housekeeping**:
+   - refresh Armbian 3200/3202 for 7.3.4
+   - LibreELEC kernel 7.2 → 7.3 with the genio patch set
+   - MT2110 `hwdownload` detile (10-bit conformance)
+   - push decisions (the user's)
+
+The sections below are the original 2026-11-12 plan, kept for reference; everything in them is done or carried into Phase C.
 
 ## Context
 
@@ -65,7 +83,7 @@ This plan covers:
   - `Reopen()` leaks `m_pFrame`
   - with limited-range colour, the YUV path is tried every frame first
 
-## Phase A: no board writes (start now)
+## Phase A: no board writes (done 2026-11-12)
 
 ### A1. Notes and tracking (`linuxdev-status`)
 - `notes/media/le-media-kodi-vdec.md`, the main note:
@@ -141,7 +159,7 @@ This plan covers:
   - kernel bumped to match Armbian genio edge, with the NIO-12L DT and ASoC patches
 - No LE image build in this phase unless you ask (it takes hours). No push.
 
-## Phase B: board (only after the CEC session hands the NIO-12L over)
+## Phase B: board (done 2026-11-12; see the main note)
 
 I'll ask the CEC session (via SendMessage) to tell me when it's done, and confirm with you before the first write.
 

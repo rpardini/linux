@@ -49,6 +49,7 @@
 | `mediatek-genio-wip` | the PR (8 commits, kernel v7.2) | `54eca63dd0` (2026-08-23), 1222 behind master |
 | `mediatek-genio-wip-v1` | older version: own kernel (rpardini/linux `00b5f937`, 6.19-rc4 + Collabora/Armbian), DTB `-extra` | 2026-01-11, 4252 behind |
 | `master-26.08-rpardini` | wip series **plus the media stack**, 60 ahead / 1177 behind | `da49141f4f` |
+| **`mediatek-genio`** (local only, 2026-11-12) | the 8 PR commits rebased cleanly on master, plus `ffmpeg: Mediatek: chewitt armsoc-9.0.2 plus MM21 support` and `kodi: Mediatek: drmprime-filter plus MediaTek patches`. **Kernel still v7.2** | `le-upstream/master` `01a57f984b` |
 
 The media commits on `master-26.08-rpardini`:
 - `a7cbf90cfa`: ffmpeg `Mediatek)` case, chewitt `837d8c2f` (`rockchip-9.0.1`) + `PKG_PATCH_DIRS+=" mediatek"`
@@ -76,4 +77,12 @@ The media commits on `master-26.08-rpardini`:
 
 ## Plan for the PR
 
-New branch `mediatek-genio` off `le-upstream/master`: the 8 PR commits plus the cleaned media commits (see plan A5). Force-pushing the PR branch is your call.
+Branch `mediatek-genio` (local, off `le-upstream/master`) is done except the kernel:
+- **ffmpeg**: `Mediatek)` case = chewitt tarball `ad8c2e36ee` (`armsoc-9.0.2`, sha256 `eed6678e…`, includes v4l2-request and the m2m deinterlace) + `PKG_PATCH_DIRS+=" mediatek"`. The 5 patches come from FFmpeg branch `mediatek-mm21-armsoc-9.0.2`. Mediatek is added to the v4l2-request/libudev gate and the VERSION file.
+- **kodi**: `Mediatek` added to the `drmprime-filter` gate, plus `patches/mediatek` (6 patches from Kodi branch `mediatek-piers`). They apply on `22.0rc2-Piers`.
+- **Kernel, still to do**: bump to 7.3 to match Armbian genio edge, and carry:
+  - **K29** (mtk-mdp3 GCE pm_runtime): **the August "one frame then hang" in DirectToPlane is almost certainly this**. Any kernel ≥ v6.18 without it hangs MDP3. LE's v7.2 kernel has the bug.
+  - **K26** (vcodec empty capture queue guard; FFmpeg AV1 streams can panic without it)
+  - **K28** (vb2 dma-contig cache sync, needed by chewitt's cached CAPTURE buffers; LE has it only for Amlogic as `amlogic-0116`)
+  - The Armbian genio-7.3 patch files `3200`–`3202` are ready to copy.
+- No LE image built or tested yet. Force-pushing or updating the PR branch is the user's call.

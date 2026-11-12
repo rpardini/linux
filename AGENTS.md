@@ -40,8 +40,10 @@ All of them default to **dry-run** (they print commands). `DRY_RUN=0` executes. 
 - `10-vm-clone-main.sh <repo>`: create a main tree.
 - `11-vm-checkout.sh <ID> [--worktree [path]]`: check out a topic. The worktree defaults to `<repo>-<slug|id>`.
 - `20-lore.sh init|mine|topic <ID>|sashiko <ID>|all <ID>|up`: lore mail through lei, plus Sashiko reviews.
-- `30-armbian-b4.sh <ID>|all|ext <msgid> <dir> <file>`: Armbian patch files as `b4 am` dumps from lore (one file per series; files listed in `armbian.tsv`). Own series get `-t`, others `-s`. Keep Armbian filename prefixes, ask the user for new names. If a dump doesn't apply, stop and ask.
+- `30-armbian-b4.sh <ID>|all|ext <msgid> <dir> <file> [b4 am args]`: Armbian patch files as `b4 am` dumps from lore (one file per series; files listed in `armbian.tsv`). Own series get `-t`, others `-s`. Keep Armbian filename prefixes, ask the user for new names. If a dump doesn't apply, stop and ask.
 - `40-tmux-run.sh <name> [-C <dir>] -- <cmd...>`: run a long command in a window of a tmux session: the current one, else the most recently attached one, else a new one named after the VM (eg. `armbian-trixie-linuxdev`, as the iTerm2 tmux profiles do). It prints `WINDOW=`, `LOG=` and `RC=`.
+- `50-media-ffmpeg-build.sh [--reconfigure] [--ship]`: incremental FFmpeg build (le-media-kodi-vdec) in a trixie container; `--ship` copies it to the NIO-12L.
+- `51-media-image.sh <name>`: builds `scripts/media/<name>.Dockerfile` here and loads it into the board's containerd (`nerdctl load`).
 
 Prefer extending these scripts (they share `lib.sh`: `run`, `each_topic`, `topic_row`, ...) over one-off commands.
 
