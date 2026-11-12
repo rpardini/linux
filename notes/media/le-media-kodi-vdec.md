@@ -21,7 +21,7 @@ Started 2026-11-12. Board: Radxa NIO-12L (Genio 1200 / MT8395, Mali-G57).
   - AV1 tile and SVC vectors IOMMU-fault the decoder; before K26 one panicked the kernel (with K26: no panic; lead = tiny 16–17 byte OUTPUT buffers, EBUSY)
   - H.264 `CAWP5`/`CVWP5`/`MR1_BT_A` and HEVC `CONFWIN_A` mismatch
   - GStreamer passes all of these, so FFmpeg's controls differ from what the driver/firmware expects.
-- **Not yet tested**: Kodi itself on the board, both the EGL and DirectToPlane paths.
+- **Not yet tested**: Kodi itself on the board, both the EGL and DirectToPlane paths. **Setup is fully planned** (JSON-RPC control, Blade3 HDMI-RX capture at `root@192.168.66.145`, generated clips): plan note, "Kodi test setup".
 - **Branches**: FFmpeg `mediatek-mm21-armsoc-9.0.2`, Kodi `mediatek-piers`, kodi-rockchip-deb `mediatek-genio`, LibreELEC `mediatek-genio` (kernel still 7.2), armbian-build `extensions` (`8c93af5e2`).
 
 ## Layout (`/opt/linuxdev/le-media-kodi-vdec/`)
@@ -127,6 +127,7 @@ Packaging: kodi-rockchip-deb (Docker; v4l2requests flavor; container run via ner
   - **So K28 fixes the readback with chewitt's FFmpeg unchanged.**
   - GStreamer: VP8 61, VP9 276, AV1 240, Chromium 8-bit 11, Chromium 10-bit 22, HEVC 142, H.264 95. Identical to before; no regressions from 3200–3202.
   - IOMMU faults: only VP8 `segmentation-1425` (as before). 11 faults this boot in total; no hang, no reboot.
+- Retest summary: low-risk (FFmpeg hints on + GStreamer) no regressions; soak passes; AV1 no panic.
 - **Risky retests on build #3 (2026-11-12 ~17:13–17:30 UTC+1), under `board-watch.sh`**:
   - **MDP3 soak passed**: 20/20 short decode→`scale_v4l2m2m` runs with 2 s idle gaps (GCE autosuspend between jobs), 217/217 frames each at 210–216 fps, then one 21700-frame loop at 213 fps. 0 IOMMU faults. **K29 holds.**
   - **FFmpeg AV1, no panic (K26 works)**: AV1-TEST-VECTORS 137/242 (same as before), Chromium-8bit 6/13.

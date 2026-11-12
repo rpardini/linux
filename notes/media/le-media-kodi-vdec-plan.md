@@ -19,13 +19,34 @@ In a new session, say "continue the MediaTek vdec plan in `notes/media/le-media-
 ## Phase C (next, in order)
 
 1. ~~FFmpeg cleanup~~ done (retest on build #3: no regressions; K28 confirmed). Soak and FFmpeg AV1 retests done 2026-11-12 (soak passes; AV1 no longer panics).
-2. **Kodi on the board (B4)**:
+2. **Kodi on the board (B4)**, see "Kodi test setup" below:
    - rebuild the kodi-deb image if the patches changed since `25df920`, then `docker save | ssh nerdctl load`
    - run Kodi in nerdctl (main note, "Test recipes"); test clips 1080p/4K H.264/HEVC/VP9/AV1 (+ one 10-bit)
    - EGL path first (no MDP3), then DirectToPlane (MDP3 + K29)
    - Collect Kodi debug logs, dmesg and IOMMU faults
    - Check: the plane dest rect vs our aspect-fit scale, frames held vs `capture_buffers=12`, whether the EGLImage bypass is needed with Mesa 26.1
    - Ask the user before starting: a hang still costs a power cycle.
+### Kodi test setup (B4), prepared 2026-11-12. The user's answers:
+- **No input device on the NIO.** Drive Kodi only over **JSON-RPC/HTTP**: pre-seed `guisettings.xml`/`advancedsettings.xml` with the web server on (port 8080, no auth, `services.webserver=true`, `services.esallinterfaces`), then `Player.Open {"item":{"file":…}}`, `Player.GetProperties`, `Settings.SetSettingValue videoplayer.useprimerenderer` (0 = DirectToPlane, 1 = EGL) and `Application.Quit`.
+- **Seeing the output: Blade3 HDMI-RX** (the NIO's HDMI TX is wired to it).
+  - Blade3 = CAPT node `root@192.168.66.145`, kernel 7.3.1-edge-rockchip64, mainline `snps_hdmirx` = `/dev/video3`, BGR24 only. v4l2-ctl and ffmpeg 7.1 are on the host. The user says it's free to use.
+  - Capture: `v4l2-ctl -d /dev/video3 --set-dv-bt-timings query && v4l2-ctl -d /dev/video3 --stream-mmap=4 --stream-skip=5 --stream-count=N --stream-to=/tmp/f.raw`, then `ffmpeg -f rawvideo -pix_fmt bgr24 -s WxH -i /tmp/f.raw -vf scale=960:540 f%03d.png`. One test grab worked (it showed the NIO's CaptainOS console at 3840x2160@30).
+  - For playback checks grab ~60 frames, then (a) look at a few PNGs, (b) check that consecutive frames differ (moving), (c) read the burned frame counter.
+- **Output mode: 1080p60**, take over the display and ALSA freely. The NIO console currently runs at 4K30 into the Blade3; set Kodi to 1920x1080@60 (`videoscreen.screenmode` in guisettings, or `Settings.SetSettingValue`).
+- **Media: generated test clips.**
+  - In a container on the VM (the trixie `ffmpeg` package has libx264/libx265/libvpx/libaom/libsvtav1), from `testsrc2=size=WxH:rate=30` + `drawtext` frame counter (`text='%{n}'`), 30 s each.
+  - Codecs H.264 (High), HEVC (Main + one Main10), VP9 (profile 0), AV1 (8-bit), at 1080p and 4K (2160p30).
+  - Store in `le-media-kodi-vdec/clips/`, then tar to the NIO `/root/vdec/clips` (mount into Kodi as `/media`).
+- **Kodi image**: `kodi-rockchip-gbm:trixie-v4l2requests` (built today with the MTK patches; the EGLImage MTK code is verified compiled in). Load it with `docker save kodi-rockchip-gbm:trixie-v4l2requests | ssh root@192.168.66.83 nerdctl load` (about 1.2 GB).
+- **Run** (NIO): `nerdctl run -d --name kodi --privileged --net=host -v /dev:/dev -v /run/udev:/run/udev:ro -v /root/vdec/kodi-home:/root/.kodi -v /root/vdec/clips:/media kodi-rockchip-gbm:trixie-v4l2requests kodi --logging=console --windowing=gbm --audio-backend=alsa`. Check the image's entrypoint/README first (`le-media-kodi-vdec/kodi-rockchip-deb/README.md`, "Install: containers").
+  - `kodi-home/userdata/advancedsettings.xml`: `<loglevel>2</loglevel>` (debug) + webserver.
+  - `guisettings.xml`: webserver, `videoplayer.useprimerenderer`, DRM PRIME on.
+- **Test matrix**: per clip, EGL (1) then DirectToPlane (0).
+  - Start under `board-watch.sh` (NIO). Play 20 s, capture 60 frames on the Blade3, stop.
+  - Record: plays / one-frame-freeze / garbage; Kodi log lines (`DRMPRIME`, `scale_v4l2m2m`, renderer chosen, EGL import errors); NIO dmesg/IOMMU faults; MDP3 `scale_v4l2m2m` frame sizes vs the plane.
+  - Watch for: the aspect-fit scale matching the plane rect, `capture_buffers=12` enough (ENOBUFS in the log?), whether the EGLImage bypass is needed (look for EGL query results in the log), and the 10-bit clip falling back to software.
+- **Risk**: MDP3 hangs should be gone (K29), but ask/notify the user before the first DirectToPlane run.
+
 3. **FFmpeg vs. driver**: diff the per-frame V4L2 controls FFmpeg and GStreamer send (`GST_DEBUG=v4l2codecs*:7` vs an FFmpeg debug log / `v4l2-tracer`). Cases:
    - VP8 `segmentation-1425` (IOMMU faults) and `1436`
    - AV1 `nonuniformtiling`, tile-rows/cols, SVC, `sizeup` (K26 confirmed: no panic). Start with the 16–17 byte OUTPUT buffers that get EBUSY (`show_existing_frame`?)
