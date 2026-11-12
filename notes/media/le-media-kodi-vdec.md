@@ -22,7 +22,7 @@ Started 2026-11-12. Board: Radxa NIO-12L (Genio 1200 / MT8395, Mali-G57).
   - HEVC `CONFWIN_A` mismatch (H.264 `CAWP5`/`CVWP5`/`MR1_BT_A` fixed by the pic_num fix)
   - GStreamer passes all of these, so FFmpeg's controls differ from what the driver/firmware expects.
 - **H.264 B-frame corruption in FFmpeg: fixed** (2026-11-12, 2 FFmpeg commits). It showed up with real libx264 clips. FFmpeg H.264 conformance is now 100/135 (GStreamer 95).
-- **Kodi on the board: both paths work** (EGL and DirectToPlane via MDP3 + plane, UYVY LINEAR): hardware decode, 1080p fullscreen, real time, no faults or hangs. Kodi matrix with the fixed FFmpeg (image rebuilt with kodi-rockchip-deb `6a72109`): **16/16 runs on 8-bit clips OK** (H.264/HEVC/VP9/AV1 × 1080p/4K × EGL/plane). 10-bit HEVC fails (NV15/MT2110, see below).
+- **Kodi on the board: both paths work** (EGL and DirectToPlane via MDP3 + plane, UYVY LINEAR): hardware decode, 1080p fullscreen, real time, no faults or hangs. Kodi matrix with the fixed FFmpeg (image rebuilt with kodi-rockchip-deb `6a72109`): **16/16 runs on 8-bit clips OK** (H.264/HEVC/VP9/AV1 × 1080p/4K × EGL/plane). 10-bit HEVC now plays on both paths through the software fallback (3 Kodi fixes, below).
 - **Branches**: FFmpeg `mediatek-mm21-armsoc-9.0.2`, Kodi `mediatek-piers`, kodi-rockchip-deb `mediatek-genio`, LibreELEC `mediatek-genio` (kernel still 7.2), armbian-build `extensions` (`8c93af5e2`).
 
 ## Layout (`/opt/linuxdev/le-media-kodi-vdec/`)
@@ -185,8 +185,12 @@ Commits on top of chewitt `armsoc-9.0.2` (`ad8c2e36ee`):
 - **10-bit HEVC (`hevc10-1080.mkv`) freezes at 0% on both paths.** The decoder outputs NV15 with modifier `0x0b00000000010001` (MTK 10-bit).
   - EGL: `CEGLImage::SupportsFormatAndModifier … not supported for format (NV15)`, then `refusing unsupported pix_fmt drm_prime` / `failed to configure renderer`.
   - Plane: `scale_v4l2m2m Unsupported input layout, fourcc NV15`, then "falling back to software decoding". **Our software fallback is broken**: the reopened codec still has the drm_prime hw setup and loops on `Invalid setup for format drm_prime: missing configuration` / `GetFormat - no supported pixel formats: yuv420p10le` (25k log lines).
-  - Fix in Kodi `mediatek-piers`: on fallback, reopen without hw_device_ctx / get_format(drm_prime). The EGL path also needs the fallback trigger (it never tries).
-- **PR screenshots** (`notes/media/img/`): `kodi-sysinfo-{summary,video,hardware}.png` (kernel 7.3.4-edge-genio, Mali-G57 Panfrost / Mesa 26.1.6, Genio 1200 MT8395 / NIO 12L, Kodi 22.0-RC2), `kodi-hevc2160-plane-processinfo.png` (4K HEVC, `ff-hevc-drm_prime (HW)`, `scale_v4l2m2m=format=uyvy`), `kodi-hevc2160-plane-osd.png`. Made with (`le-media-kodi-vdec/kodi-shots.sh <clip> <renderer> <prefix>`: System Information pages + player process info / codec info / OSD during playback).
+  - **Fixed** (Kodi `mediatek-piers` `7e9b59cb0f`, `ee3a4f3339`, `1b94bc79cd`; kodi-rockchip-deb `a08dda0`, `941ec9b`; LibreELEC `957538b1a0`, `424ce54491`):
+    - DRMHelpers: fallback defines for `DRM_FORMAT_S0xx/S2xx/S4xx` (libdrm 2.4.125+). With 2.4.124, `yuv420p10` was compiled out of the software path. Also includes DRMHelpers in `VideoBufferPoolDMA.cpp`.
+    - DRMPRIME codec: reopen in software as soon as a frame has an MTK 10-bit layout (`MTK_FMT_MOD_10BIT_LAYOUT_MASK`), on both paths; `GetFormat` skips `drm_prime` once forced to software.
+    - RendererDRMPRIMEGLES: no longer gated on `useprimerenderer == 1`. `drm_prime` (plane) is tried first (map order), so GLES only takes the buffers no plane accepts. The MTK planes take neither S010 nor YUV420, so this also fixes 8-bit software fallback in plane mode.
+  - Result: `hevc10-1080.mkv` plays (CPU decode, GLES render) on both settings, 0 IOMMU faults. Expected: ~240× `Could not find ref with POC` / `Error constructing the frame RPS` after the mid-GOP reopen. At the 15 s check it was already at 74% (others ~48%): the reopen seems to skip ahead; minor.
+- **PR screenshots** (`notes/media/img/`): `kodi-sysinfo-{summary,video,hardware}.png` (kernel 7.3.4-edge-genio, Mali-G57 Panfrost / Mesa 26.1.6, Genio 1200 MT8395 / NIO 12L, Kodi 22.0-RC2), `kodi-hevc2160-plane-processinfo.png` (4K HEVC, `ff-hevc-drm_prime (HW)`, `scale_v4l2m2m=format=uyvy`), `kodi-hevc2160-plane-osd.png`; player process info: `kodi-av1-2160-plane-processinfo.png` (`ff-av1-drm_prime (HW)` + `scale_v4l2m2m`), `kodi-vp9-2160-egl-processinfo.png` (`ff-vp9-drm_prime (HW)`, 3840x2160 via EGL), `kodi-h264-1080-egl-processinfo.png` (`ff-h264-drm_prime (HW)`), `kodi-hevc10-1080-plane-swfallback-processinfo.png` (`ff-hevc-drm_prime (SW)`, `yuv420p10le`). Made with (`le-media-kodi-vdec/kodi-shots.sh <clip> <renderer> <prefix>`: System Information pages + player process info / codec info / OSD during playback).
 
 ### MDP3 hang: root cause K29 (fixed)
 
@@ -310,8 +314,8 @@ Commits on top of chewitt `armsoc-9.0.2` (`ad8c2e36ee`):
 - [x] FFmpeg H.264 B-frame corruption (pic_num wrap + stale marking size), conformance 100/135
 - [x] Kodi DirectToPlane (MDP3) run: works
 - [x] kodi-rockchip-deb FFmpeg patches regenerated (`6a72109`), image rebuilt, Kodi matrix 16/16 OK
-- [ ] LibreELEC `mediatek-genio`: refresh `patches/mediatek` with the 2 H.264 fixes
-- [ ] **Kodi 10-bit software fallback**: broken reopen (keeps drm_prime hw setup); EGL path never falls back
+- [x] Kodi 10-bit software fallback (both paths), patches refreshed in kodi-rockchip-deb and LibreELEC
+- [x] LibreELEC `mediatek-genio`: FFmpeg H.264 fixes + Kodi fixes refreshed (`957538b1a0`, `424ce54491`)
 - [x] Kodi seed dialogs: handled in the test script
 - [ ] Upstream candidates: the two FFmpeg H.264 fixes (to chewitt / the v4l2-request series)
 - [ ] Display-driver warnings: vblank timeout on crtc disable, rdma/ethdr runtime-PM underflow

@@ -16,7 +16,7 @@ In a new session, say "continue the MediaTek vdec plan in `notes/media/le-media-
   - Run one decode test at a time. Don't read clk/genpd debugfs on a hung board.
   - Nothing is pushed and nothing goes to lists without an OK.
 
-**Resume here (2026-11-12 ~20:45)**: Kodi matrix 16/16 OK on 8-bit (both paths, 1080p/4K, 4 codecs) with the fixed FFmpeg; PR screenshots in `notes/media/img/`. Next: (a) fix the Kodi 10-bit software fallback (main note, "Kodi on the board"); (b) refresh the LibreELEC FFmpeg patches; (c) Phase C step 3 for VP8/AV1/HEVC (extend `tools/h264ctl-dump`). Use Sonnet/Haiku subagents for captures and logs.
+**Resume here (2026-11-12 ~21:15)**: Kodi plays everything in the matrix on both paths, 10-bit included (software fallback). LibreELEC branch refreshed. PR screenshots in `notes/media/img/`. Next: Phase C step 3 for VP8/AV1/HEVC (extend `tools/h264ctl-dump`), then housekeeping (LE kernel 7.3, Armbian 3200/3202 refresh, K29 ping draft). Use Sonnet/Haiku subagents for captures and logs.
 
 ## Phase C (next, in order)
 
