@@ -16,7 +16,13 @@ In a new session, say "continue the MediaTek vdec plan in `notes/media/le-media-
   - Run one decode test at a time. Don't read clk/genpd debugfs on a hung board.
   - Nothing is pushed and nothing goes to lists without an OK.
 
-**Resume here (2026-11-12 ~23:20)**: steps 1–4 done: real clips, BBB real use, audio, **10-bit HW decode + CPU detile to P010** (4K60 HEVC 10-bit at full rate; AV1 10-bit 4K at 44/60). See the main note. Next, in order: (5) FFmpeg vs GStreamer for VP8/AV1/HEVC conformance (extend `tools/h264ctl-dump`; AV1 tiles first, since real 4K AV1 uses tiles); (6) housekeeping (LE kernel 7.3 + K29/K26/K28, Armbian 3200/3202 refresh, SOF firmware/UCM packaging for Armbian, K29 ping draft, upstream candidates). Use Sonnet/Haiku subagents for captures and logs; guard `rm` variables; tools on the NIO host are OK to install (ask for more).
+**Resume here (2026-11-13 ~00:30)**: steps 1–4 done; step 5 mostly done (AV1 tiles fixed, 10-bit conformance checkable, K27 tried and parked: SCP fw watchdogs; the Genio BSP does MDP on the AP). The main note's Status and "Step 5" sections have the details.
+- **Board**: kernel build #4 (still has the reverted 3203; harmless, replace at the next kernel install). FFmpeg on the board = branch HEAD `3a0857fba5` (no MT2110 filter mapping). Kodi image = kodi-rockchip-deb `fac74f5` (rebuild for `c8d8889`, which adds the AV1 tile fix). NIO has alsa-utils, SOF fw, `/root/vdec/asound.conf`, clips in `/root/vdec/clips{,/real}`.
+- **Next, in order**:
+  1. Rebuild and load the Kodi image (kodi-rockchip-deb `c8d8889`), and quickly recheck AV1 in Kodi (multi-tile real clips).
+  2. Step 5 leftovers, each with the `tools/h264ctl-dump` approach (extend to VP8/HEVC): AV1 `av1-1-b8-03-sizeup` (IOMMU faults; the 16–17 byte OUTPUT buffer lead), AV1 film grain (check GStreamer too), VP8 `segmentation-1425/1436`, HEVC `CONFWIN_A`, and the remaining H.264/HEVC 10-bit fails.
+  3. Step 6 housekeeping: Armbian kernel rebuild (without 3203; 3200/3202 needs_rebase refresh for 7.3.4) + install; LE kernel 7.2 → 7.3 with K29/K26/K28; SOF fw + UCM for Armbian/CaptainOS; K29 upstream ping draft (user decides); upstream candidates (FFmpeg H.264 pic_num/marking, AV1 MI units, MT2110 detile; Kodi fallbacks); display warnings (vblank timeout on CRTC disable, rdma/ethdr runtime-PM underflow); Blade3 hdmirx audio; AV1 10-bit 4K headroom.
+- **Rules**: Sonnet/Haiku subagents for captures/logs/downloads; guard `rm` with `"${VAR:?}"`; installing small tools on the NIO host is OK (ask for anything bigger); ask before reboots/kernel installs and before risky board tests; one decode test at a time; run long work in tmux with `board-watch.sh`.
 
 ## Phase C (next, in order)
 

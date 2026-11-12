@@ -10,7 +10,7 @@ Started 2026-11-12. Board: Radxa NIO-12L (Genio 1200 / MT8395, Mali-G57).
   - K29: mtk-mdp3 GCE pm_runtime, **the MDP3 hang fix**
 - Userspace work has no IDs and is tracked here.
 
-## Status (2026-11-12, 21:30)
+## Status (2026-11-13 ~00:30)
 
 - **Board**: Armbian genio edge 7.3.4 build #3 with patches 3200 (K29), 3201 (K26) and 3202 (K28), plus `scp.img`. Decoder and MDP3 work.
 - **Decoding (hardware, through FFmpeg and GStreamer)**: H.264, HEVC, VP8, VP9 and AV1 decode correctly on the hardware, apart from the open FFmpeg issues below. Conformance tables are under "Results".
@@ -23,6 +23,7 @@ Started 2026-11-12. Board: Radxa NIO-12L (Genio 1200 / MT8395, Mali-G57).
   - GStreamer passes all of these, so FFmpeg's controls differ from what the driver/firmware expects.
 - **H.264 B-frame corruption in FFmpeg: fixed** (2026-11-12, 2 FFmpeg commits). It showed up with real libx264 clips. FFmpeg H.264 conformance is now 100/135 (GStreamer 95).
 - **Kodi on the board: both paths work** (EGL and DirectToPlane via MDP3 + plane, UYVY LINEAR): hardware decode, 1080p fullscreen, real time, no faults or hangs. Kodi matrix with the fixed FFmpeg (image rebuilt with kodi-rockchip-deb `6a72109`): **16/16 runs on 8-bit clips OK** (H.264/HEVC/VP9/AV1 × 1080p/4K × EGL/plane). 10-bit HEVC now plays on both paths through the software fallback (3 Kodi fixes, below).
+- **2026-11-13 summary**: Kodi plays 8-bit H.264/HEVC/VP9/AV1 up to 4K60 (150 Mbps) in HW on both paths. 10-bit = HW decode + CPU MT2110 detile → P010 (4K60 HEVC 10-bit/HDR10/DV8.1 at full rate, AV1 10-bit 4K at 44/60). Audio over HDMI works (SOF fw). Refresh switching, seeking and long play OK. FFmpeg fixes: H.264 pic_num/marking, AV1 tile MI units, MT2110 detile. Conformance: H.264 100/135, HEVC 142/147, AV1 201/242, Chromium AV1 8-bit 10/13, 10-bit 22/23. K27 (MDP3 10-bit) parked: the SCP fw can't do it.
 - **Branches** (nothing pushed):
   - FFmpeg `mediatek-mm21-armsoc-9.0.2` (incl. the H.264 fixes `03849804f8`, `34de8f4aa7`)
   - Kodi `mediatek-piers` (8 MTK commits incl. the 10-bit fallback `7e9b59cb0f`, `ee3a4f3339`, `1b94bc79cd`)
@@ -288,7 +289,7 @@ Commits on top of chewitt `armsoc-9.0.2` (`ad8c2e36ee`):
     - Ubuntu `linux-firmware-mediatek-aiot` 2-0ubuntu1 (newest on Launchpad) mt8195 `scp.img` = `cherry_scp_v2.0.11877 / 14454.8.0 (2022-01-24)`: **older** than linux-firmware's `cherry_scp_v2.0.23042 (2023-11-21)`, same MDP strings, no 10-bit MDP. No alternative SCP fw there.
     - Genio BSP kernel `gitlab.com/mediatek/aiot/bsp/linux` `mtk-v6.6` (newest): **MDP3 frame setup runs on the AP** (`mdp_alg_*.c`/`mdp_tile_*.c`, ~13k lines, `.mdp_alg_plat = MDP_ALG_MT8195`), not in the SCP. Its RDMA algorithm handles 10-bit block input (`mdp_alg_rdma.c`: `blk_10bit = MDP_COLOR_IS_10BIT_PACKED`, `blk_tile = MDP_COLOR_IS_10BIT_TILE`). It still has **no MT2110 V4L2 mapping** (only MT21C/MM21). Stride/plane-size code matches mainline.
     - `mtk-v5.15-dev` and 4 mtk-v6.6 headers weren't fetched (GitLab HTTP 429; retry later).
-    - **Conclusion**: the hardware supports 10-bit block input, as Dufresne says, but the mainline SCP-firmware MDP path doesn't. K27 would mean porting the BSP's AP-side MDP algorithm (big, unlikely upstreamable) or getting MediaTek to update the SCP fw. **Parked**; the CPU detile covers 10-bit (4K60 HEVC at full rate). Armbian `3203` to be reverted before the next kernel build (it exposes a path that crashes the SCP).
+    - **Conclusion**: the hardware supports 10-bit block input, as Dufresne says, but the mainline SCP-firmware MDP path doesn't. K27 would mean porting the BSP's AP-side MDP algorithm (big, unlikely upstreamable) or getting MediaTek to update the SCP fw. **Parked**; the CPU detile covers 10-bit (4K60 HEVC at full rate). Armbian `3203` reverted (armbian-build `9259e765f`); branch `mainline/mtk-mdp3-mt2110` kept for reference. **The NIO still runs kernel build #4 with 3203**: harmless for our stack (nothing feeds 10-bit to MDP3), replace it at the next kernel install.
 
 ### Audio (2026-11-12)
 
