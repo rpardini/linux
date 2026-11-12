@@ -16,7 +16,7 @@ In a new session, say "continue the MediaTek vdec plan in `notes/media/le-media-
   - Run one decode test at a time. Don't read clk/genpd debugfs on a hung board.
   - Nothing is pushed and nothing goes to lists without an OK.
 
-**Resume here (2026-11-12 ~20:10)**: Kodi works on both paths (EGL, DirectToPlane). FFmpeg H.264 B-frame bug fixed (2 commits on `mediatek-mm21-armsoc-9.0.2`, conformance 100/135). Next: (a) regenerate the kodi-rockchip-deb FFmpeg patches, rebuild and load the Kodi image, then run `kodi-test.sh` on all clips (EGL, then plane), with the add-on dialogs suppressed; (b) Phase C step 3 for the other codecs (VP8/AV1/HEVC): use `tools/h264ctl-dump` as the pattern (extend it to AV1/VP8/HEVC controls). Use Sonnet/Haiku subagents to read captures and logs.
+**Resume here (2026-11-12 ~20:45)**: Kodi matrix 16/16 OK on 8-bit (both paths, 1080p/4K, 4 codecs) with the fixed FFmpeg; PR screenshots in `notes/media/img/`. Next: (a) fix the Kodi 10-bit software fallback (main note, "Kodi on the board"); (b) refresh the LibreELEC FFmpeg patches; (c) Phase C step 3 for VP8/AV1/HEVC (extend `tools/h264ctl-dump`). Use Sonnet/Haiku subagents for captures and logs.
 
 ## Phase C (next, in order)
 

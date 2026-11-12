@@ -22,7 +22,7 @@ Started 2026-11-12. Board: Radxa NIO-12L (Genio 1200 / MT8395, Mali-G57).
   - HEVC `CONFWIN_A` mismatch (H.264 `CAWP5`/`CVWP5`/`MR1_BT_A` fixed by the pic_num fix)
   - GStreamer passes all of these, so FFmpeg's controls differ from what the driver/firmware expects.
 - **H.264 B-frame corruption in FFmpeg: fixed** (2026-11-12, 2 FFmpeg commits). It showed up with real libx264 clips. FFmpeg H.264 conformance is now 100/135 (GStreamer 95).
-- **Kodi on the board: both paths work** (EGL and DirectToPlane via MDP3 + plane, UYVY LINEAR): hardware decode, 1080p fullscreen, real time, no faults or hangs. The Kodi image still has the old FFmpeg; rebuild it with the H.264 fix.
+- **Kodi on the board: both paths work** (EGL and DirectToPlane via MDP3 + plane, UYVY LINEAR): hardware decode, 1080p fullscreen, real time, no faults or hangs. Kodi matrix with the fixed FFmpeg (image rebuilt with kodi-rockchip-deb `6a72109`): **16/16 runs on 8-bit clips OK** (H.264/HEVC/VP9/AV1 × 1080p/4K × EGL/plane). 10-bit HEVC fails (NV15/MT2110, see below).
 - **Branches**: FFmpeg `mediatek-mm21-armsoc-9.0.2`, Kodi `mediatek-piers`, kodi-rockchip-deb `mediatek-genio`, LibreELEC `mediatek-genio` (kernel still 7.2), armbian-build `extensions` (`8c93af5e2`).
 
 ## Layout (`/opt/linuxdev/le-media-kodi-vdec/`)
@@ -178,6 +178,16 @@ Commits on top of chewitt `armsoc-9.0.2` (`ad8c2e36ee`):
   - Other differences that remain, believed harmless: FFmpeg POCs carry a +65536 offset, and FFmpeg always sets `PPS_FLAG_SCALING_MATRIX_PRESENT` (with a flat matrix).
 - **DirectToPlane (`useprimerenderer=0`)**, `h264-1080-nowp-nob.mp4`: correct picture, fullscreen. The plane is `UYVY`/`LINEAR` 1920x1080 (MDP3 via the convert filter). No hang, no IOMMU faults; the same display warnings as EGL. The dialogs from more add-ons (Shadertoy) still dim the picture; those add-ons need disabling in the seed.
 
+- **Matrix (2026-11-12 ~20:30, `kodi-matrix.sh`)**: every run real time (speed 1), 31 distinct frames per 60 captured (30 fps content on 60 Hz), 0 IOMMU faults, no hangs.
+  - Pictures checked visually against the pattern: all OK. VP9 and AV1 at 4K show faint mottling in the grey box (minor, maybe encoder or scaling).
+  - EGL and plane render colours slightly differently (range/matrix); to check later.
+  - `kodi-test.sh` now answers the add-on dialogs until `GUI.GetProperties currentwindow` is Home.
+- **10-bit HEVC (`hevc10-1080.mkv`) freezes at 0% on both paths.** The decoder outputs NV15 with modifier `0x0b00000000010001` (MTK 10-bit).
+  - EGL: `CEGLImage::SupportsFormatAndModifier … not supported for format (NV15)`, then `refusing unsupported pix_fmt drm_prime` / `failed to configure renderer`.
+  - Plane: `scale_v4l2m2m Unsupported input layout, fourcc NV15`, then "falling back to software decoding". **Our software fallback is broken**: the reopened codec still has the drm_prime hw setup and loops on `Invalid setup for format drm_prime: missing configuration` / `GetFormat - no supported pixel formats: yuv420p10le` (25k log lines).
+  - Fix in Kodi `mediatek-piers`: on fallback, reopen without hw_device_ctx / get_format(drm_prime). The EGL path also needs the fallback trigger (it never tries).
+- **PR screenshots** (`notes/media/img/`): `kodi-sysinfo-{summary,video,hardware}.png` (kernel 7.3.4-edge-genio, Mali-G57 Panfrost / Mesa 26.1.6, Genio 1200 MT8395 / NIO 12L, Kodi 22.0-RC2), `kodi-hevc2160-plane-processinfo.png` (4K HEVC, `ff-hevc-drm_prime (HW)`, `scale_v4l2m2m=format=uyvy`), `kodi-hevc2160-plane-osd.png`. Made with (`le-media-kodi-vdec/kodi-shots.sh <clip> <renderer> <prefix>`: System Information pages + player process info / codec info / OSD during playback).
+
 ### MDP3 hang: root cause K29 (fixed)
 
 - **Symptom**: any MDP3 m2m job (FFmpeg `scale_v4l2m2m`, even plain `v4l2-ctl` NV12→YUYV on a fresh boot) never completes.
@@ -299,8 +309,10 @@ Commits on top of chewitt `armsoc-9.0.2` (`ad8c2e36ee`):
 - [x] Kodi on the board: EGL path (works; picture correct when the decode is)
 - [x] FFmpeg H.264 B-frame corruption (pic_num wrap + stale marking size), conformance 100/135
 - [x] Kodi DirectToPlane (MDP3) run: works
-- [ ] Regenerate the kodi-rockchip-deb and LibreELEC FFmpeg patches with the H.264 fix; rebuild the Kodi image; rerun Kodi on `h264-1080.mp4` (B-frames) and the other codecs/4K
-- [ ] Kodi seed: stop the "Disabled add-ons" dialogs (disable the add-ons, or find a setting for them)
+- [x] kodi-rockchip-deb FFmpeg patches regenerated (`6a72109`), image rebuilt, Kodi matrix 16/16 OK
+- [ ] LibreELEC `mediatek-genio`: refresh `patches/mediatek` with the 2 H.264 fixes
+- [ ] **Kodi 10-bit software fallback**: broken reopen (keeps drm_prime hw setup); EGL path never falls back
+- [x] Kodi seed dialogs: handled in the test script
 - [ ] Upstream candidates: the two FFmpeg H.264 fixes (to chewitt / the v4l2-request series)
 - [ ] Display-driver warnings: vblank timeout on crtc disable, rdma/ethdr runtime-PM underflow
 - [ ] FFmpeg vs driver: VP8 1425/1436, AV1 tiles/SVC, H.264 WP/MR1, HEVC CONFWIN (diff the controls against GStreamer)
