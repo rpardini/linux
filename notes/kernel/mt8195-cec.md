@@ -100,10 +100,10 @@ Authorship (user decision):
 
 ## Armbian backport
 
-- armbian-build commit `f635a539d` "genio: edge: HDMI CEC for MT8195 (NIO-12L)", branch `extensions` (not pushed):
-  - `patch/kernel/archive/genio-7.3/3100…3104-*.patch` (the 5 patches, `format-patch` from the series before b4 enrollment)
+- armbian-build: one commit `ad52b6fa1` "genio: edge: HDMI CEC for MT8195 (NIO-12L)", branch `extensions` (2026-11-12: the original commit and the rename / SFT / re-export follow-ups squashed into it; message = bullet-point version of the cover; backup `extensions-backup-pre-cec-squash`):
+  - `patch/kernel/archive/genio-7.3/3100…3104-*.patch`: patches 1-5 of the final v1 series (`format-patch`; the defconfig patch isn't needed in Armbian)
   - `config/kernel/linux-genio-edge.config`: `CONFIG_CEC_MTK=m`. `MEDIA_CEC_SUPPORT`/`CEC_CORE`/`CEC_NOTIFIER` are already on (via `CEC_CROS_EC=y`).
-- The kernel deb is not built yet (user: "not now").
+- Built and board-tested 2026-11-12 (`7.3.4-edge-genio`, see below).
 
 ## Board test (2026-11-12)
 
@@ -114,7 +114,7 @@ Setup:
 - **Only one cable on the CEC bus.** With the second cable (Blade 3 TX → NIO RX) plugged in, every broadcast from the Blade 3 RX adapter ended in NACK/Max Retries, and the NIO got 4 copies. Still the same with the NIO adapter unconfigured, so the NIO is not the one rejecting: the Blade 3's own TX CEC (`dwhdmiqp`, unconfigured, PA f.f.f.f) sits on the same bus through the NIO's RX connector. Unplugged → broadcasts OK. Noted in K24.
 
 Bug found and fixed:
-- Module name clash: `mtk-cec.c` → module `mtk_cec`, the same name as DRM's `drivers/gpu/drm/mediatek/mtk_cec.c` (built in with `DRM_MEDIATEK_HDMI=y`). `modprobe` saw it as built-in and did nothing, no `/dev/cec0`. Renamed to `mtk-hdmi-cec.c` (module `mtk_hdmi_cec`, driver name `mtk-hdmi-cec`, Kconfig help names the module). Fixup squashed into patch 2; backup `b4/mt8195-cec-backup-pre-rename`; Armbian `3101` re-exported (armbian `cc18d8632`).
+- Module name clash: `mtk-cec.c` → module `mtk_cec`, the same name as DRM's `drivers/gpu/drm/mediatek/mtk_cec.c` (built in with `DRM_MEDIATEK_HDMI=y`). `modprobe` saw it as built-in and did nothing, no `/dev/cec0`. Renamed to `mtk-hdmi-cec.c` (module `mtk_hdmi_cec`, driver name `mtk-hdmi-cec`, Kconfig help names the module). Fixup squashed into patch 2; backup `b4/mt8195-cec-backup-pre-rename`; Armbian `3101` re-exported (now in armbian `ad52b6fa1`).
 
 Results (logs in `notes/kernel/mt8195-cec/`):
 - Probe OK at boot, `/dev/cec0`, IRQ `GIC 712`. "Failed to find CEC node" is gone.
@@ -141,7 +141,7 @@ Learnings applied:
 - RK3588 CEC (Cristian Ciocaltea, dw-hdmi-qp v1-v4, applied by Heiko): downstream author as `Co-developed-by` + `Signed-off-by`; generic patches independent of platform ones (Heiko); last patch `arm64: defconfig`; cover explains design. They used the DRM HDMI CEC adapter helpers because their CEC is inside the HDMI controller; ours is a separate block, so the notifier is right (cover says so).
 - Hans Verkuil (MSM CEC review 2023, snps_hdmirx review 2024, media maintainer profile): `cec-compliance` must pass, `-A` from both sides; who does the retries (MAX_RETRIES consistency); signal free time; transmit with HPD low (`CEC_CAP_NEEDS_HPD`); `C=1` sparse/smatch.
 
-Driver changes from this (fixup into patch 2, Armbian `3101` re-exported, armbian `e6c768703`):
+Driver changes from this (fixup into patch 2, Armbian `3101` re-exported, now in armbian `ad52b6fa1`):
 - SFT: measured (own sender + Blade 3 receiver, `scratchpad` scripts `sft_test.py`/`sft_rx.py`): 4 bit periods between own consecutive messages, whatever `TX_ARB` BCNT_* is set to (even 15). The hardware does not wait for SFT on an idle bus. Driver now records `bus_free` (TX/RX done) and starts TX_READY after `signal_free_time` × 2.4 ms (hrtimer when needed). Measured after: 7 (repeat), 5 (new initiator).
 - Retries: hardware retransmit counts 0, the core retries (before: hw 1 retry + core retries).
 - `CEC_CAP_NEEDS_HPD` not set: separate block; not tested with a TV that drops HPD in standby.
@@ -161,7 +161,7 @@ Series (b4, v1, change-id `20261108-b4-mt8195-cec-7f2840a477aa`, base `d164c7d75
 - Recipients: `b4 prep --auto-to-cc` (Hans, Mauro, DT, Matthias, Angelo, Chun-Kuang, Philipp, Airlie, Vetter + lists); Tommy via trailers.
 - Preview: `b4 send -o` (nothing sent).
 - Before sending: user SoB (`git rebase --signoff` on the 6 patches), `b4 send --dry-run`, then `b4 send` with OK.
-- Armbian `3100..3104` re-exported from the final v1 commits (armbian `c1d750009`, code unchanged; file names kept). The defconfig patch is not needed in Armbian (own kernel config).
+- Armbian `3100..3104` re-exported from the final v1 commits (now in armbian `ad52b6fa1`, code unchanged; file names kept). The defconfig patch is not needed in Armbian (own kernel config).
 - b4 gotcha: `b4 prep --edit-cover` feeds the editor the cover **without** the tracking block and re-adds it. Feeding it text that already contains `--- b4-submit-tracking ---` duplicates the block, and b4 then can't load the cover (`ValueError: too many values to unpack`). Fixed by amending the cover commit with one block (backup `b4/mt8195-cec-backup-pre-coverfix`). Only feed cover text + To/Cc.
 - sparse: kernel `C=1` runs sparse on every compiled file; this tree's `scripts/checker-valid.sh` needs `__typeof_unqual__` support, which Debian's 0.6.4 lacks, so `C=1` is silently skipped (Makefile warns "sparse is not available or not up to date"). Needs sparse built from git (git.kernel.org/pub/scm/devel/sparse/sparse.git). Media builds with `C=1` (sparse + smatch) and wants no new warnings.
 - 2026-11-12: sparse built from git (tip `84ec065`, 2026-10-22) in `/opt/linuxdev/sparse-src`, installed to `~/.local/bin/sparse` (`--version` says 0.6.4: shallow clone, no tags). `checker-valid.sh` accepts it. Run: `make O=.build W=1 C=2 CHECK=$HOME/.local/bin/sparse CF=-D__CHECK_ENDIAN__ <objs>`. Result: `mtk-hdmi-cec.c`, `mtk_hdmi.c`, `mtk_hdmi_common.c`, `mtk_hdmi_v2.c` clean (V=1 confirms sparse ran on them). smatch not installed (not in Debian).
