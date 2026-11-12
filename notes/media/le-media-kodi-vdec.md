@@ -102,6 +102,10 @@ These are the known limits of the hardware and driver; there's no kernel bug to 
   2. MDP3 MM21 input
   3. FFmpeg decode → `scale_v4l2m2m`
 - **Recovery takes a power cycle**: `systemctl reboot` stalls on the D-state ffmpeg, and after a forced warm reset the kernel hung in `kernel_init`/`async_synchronize_full`, with an MT6360 IRQ storm (`irq 116: nobody cared`). Only a long power-off fixed it. `scp.img` is not the cause: it isn't in the initrd, and the early-boot load fails (-2) on a good boot too. **Ask the user before any test that might hang MDP3.**
+- **Isolated, step 1 (2026-11-12 15:06): MDP3 hangs on its own.** Fresh boot, `v4l2-ctl -d /dev/video4` linear NV12 1920x1080 → YUYV, MMAP both sides, no decoder/FFmpeg/dma-buf, and the task goes D in `v4l2_m2m_cancel_job` ← `mdp_m2m_release`. Nothing logged by MDP3/SCP/CMDQ. **So the hang is kernel/DT/firmware, not userspace.** It's likely Kodi's DirectToPlane "one frame then hang" too. The GLES/EGL path doesn't use MDP3.
+  - Mechanism: `mdp_cmdq_send` sends a GCE packet via `mbox_send_message`; completion only via `mdp_handle_cmdq_callback`, no timeout. The GCE probably waits on a hardware event that never fires. Suspects: `mediatek,gce-events` in the DT, VPP clocks/power domains off on the NIO-12L, the SCP firmware's MDP part vs the upstream driver.
+  - **Don't read debugfs `clk_summary` / `pm_genpd_summary` on a board with a hung MDP3**: doing that at 15:08 stalled the board, and the watchdog reset it (UART showed only BL2 restarting).
+  - Next (no board needed): compare the NIO-12L/Armbian MT8195 MDP3/VPP DT with Collabora's tested setup (Cherry) and the vendor tree; then a test kernel with a CMDQ timeout plus debug, so a hang logs and recovers. Candidate K29.
 - So `-f null` (nothing held downstream) is enough to hang. The FFmpeg capture-buffer accounting fix (12 buffers, wait for returns) is still right for Kodi, but it isn't this bug.
 
 ## Findings
