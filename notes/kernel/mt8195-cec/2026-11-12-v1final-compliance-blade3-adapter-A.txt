@@ -1,0 +1,66 @@
+Driver Info:
+	Driver Name                : snps_hdmirx
+	Adapter Name               : snps-hdmirx
+	Capabilities               : 0x0000022e
+		Logical Addresses
+		Transmit
+		Passthrough
+		Monitor All
+		Reply Vendor ID
+	Driver version             : 7.3.1
+	Available Logical Addresses: 4
+	Connector Info             : None
+	Physical Address           : 1.0.0.0
+	Logical Address Mask       : 0x4000
+	CEC Version                : 2.0
+	Vendor ID                  : 0x000c03 (HDMI)
+	OSD Name                   : 'Blade3RX'
+	Logical Addresses          : 1 (Allow RC Passthrough)
+
+	  Logical Address          : 14 (Specific)
+	    Primary Device Type    : TV
+	    Logical Address Type   : TV
+	    All Device Types       : TV
+	    RC TV Profile          : None
+	    Device Features        :
+		None
+
+Compliance test for snps_hdmirx device /dev/cec1:
+
+    The test results mean the following:
+        OK                    Supported correctly by the device.
+        OK (Not Supported)    Not supported and not mandatory for the device.
+        OK (Presumed)         Presumably supported.  Manually check to confirm.
+        OK (Unexpected)       Supported correctly but is not expected to be supported for this device.
+        OK (Refused)          Supported by the device, but was refused.
+        OK (Expected Failure) Failed but this was expected (see -e option).
+        FAIL                  Failed and was expected to be supported by this device.
+
+Find remote devices:
+	Polling: OK
+
+CEC API:
+	CEC_ADAP_G_CAPS: OK
+	Invalid ioctls: OK
+	CEC_DQEVENT: OK
+	CEC_ADAP_G/S_PHYS_ADDR: OK
+	CEC_ADAP_G/S_LOG_ADDRS: OK
+	CEC_TRANSMIT: OK
+	CEC_RECEIVE: OK
+	CEC_TRANSMIT/RECEIVE (non-blocking): OK
+	CEC_G/S_MODE: OK
+		SFTs for repeating remote messages (>= 7): 7: 1
+		SFTs for newly transmitted messages (>= 5): 4: 10, 5: 35
+		SFTs for newly transmitted remote messages (>= 5): 4: 35, 5: 10
+	CEC_EVENT_LOST_MSGS: OK
+
+Network topology:
+	System Information for device 4 (Playback Device 1) from device 14 (Specific):
+		CEC Version                : 2.0
+		Physical Address           : 1.0.0.0
+		Primary Device Type        : Playback
+		Vendor ID                  : 0x000c03 (HDMI)
+		OSD Name                   : 'NIO12L'
+		Power Status               : On
+
+Total for snps_hdmirx device /dev/cec1: 11, Succeeded: 11, Failed: 0, Warnings: 0

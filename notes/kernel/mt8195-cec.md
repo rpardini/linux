@@ -134,6 +134,37 @@ Hotplug (2 unplug/replug cycles, one quick ~2 s): PA → f.f.f.f + LA released a
 Not tested yet: a real TV (remote keys, input switching, Kodi/libcec "Linux" adapter, several CEC devices on the bus / arbitration). Suspend/resume skipped (user: not relevant for CEC use).
 `CONFIG_MEDIA_CEC_RC` is off in genio edge (and rockchip64 edge): libcec/Kodi don't need it, but without it the kernel creates no remote-key input device. Decide later.
 
+## Submission prep (2026-11-12)
+
+Learnings applied:
+- Own series: cover says how it was found + concrete test results, `[n]` links; no `---` lines in the cover text (K4 v6 b4 To/Cc bug); no `Assisted-by`; user adds SoB.
+- RK3588 CEC (Cristian Ciocaltea, dw-hdmi-qp v1-v4, applied by Heiko): downstream author as `Co-developed-by` + `Signed-off-by`; generic patches independent of platform ones (Heiko); last patch `arm64: defconfig`; cover explains design. They used the DRM HDMI CEC adapter helpers because their CEC is inside the HDMI controller; ours is a separate block, so the notifier is right (cover says so).
+- Hans Verkuil (MSM CEC review 2023, snps_hdmirx review 2024, media maintainer profile): `cec-compliance` must pass, `-A` from both sides; who does the retries (MAX_RETRIES consistency); signal free time; transmit with HPD low (`CEC_CAP_NEEDS_HPD`); `C=1` sparse/smatch.
+
+Driver changes from this (fixup into patch 2, Armbian `3101` re-exported, armbian `e6c768703`):
+- SFT: measured (own sender + Blade 3 receiver, `scratchpad` scripts `sft_test.py`/`sft_rx.py`): 4 bit periods between own consecutive messages, whatever `TX_ARB` BCNT_* is set to (even 15). The hardware does not wait for SFT on an idle bus. Driver now records `bus_free` (TX/RX done) and starts TX_READY after `signal_free_time` × 2.4 ms (hrtimer when needed). Measured after: 7 (repeat), 5 (new initiator).
+- Retries: hardware retransmit counts 0, the core retries (before: hw 1 retry + core retries).
+- `CEC_CAP_NEEDS_HPD` not set: separate block; not tested with a TV that drops HPD in standby.
+- Results (logs `mt8195-cec/2026-11-12-v1final-*`): `-A` NIO 11/11 0 warnings; `-A` Blade 3 11/11 0 warnings; `-r 4` from Blade 3 84/84 (1 cec-follower warning).
+- Measurement note: each side measures the other's replies ~1 bit period short (timestamp bias, symmetric); own transmits measure correctly.
+
+Series (b4, v1, change-id `20261108-b4-mt8195-cec-7f2840a477aa`, base `d164c7d754f0` v7.4-rc1+):
+1. `dt-bindings: media: cec: add MediaTek MT8195 HDMI CEC controller`
+2. `media: cec: add MediaTek MT8195 HDMI CEC driver` (Co-developed-by + SoB Tommy Chen, from vendor `737f4ade54b2`)
+3. `drm/mediatek: mtk_hdmi: Register a CEC notifier for HDMI v2`
+4. `arm64: dts: mediatek: mt8195: Add HDMI CEC controller`
+5. `arm64: dts: mediatek: mt8395-radxa-nio-12l: Enable HDMI CEC`
+6. `arm64: defconfig: Enable MediaTek HDMI CEC` (new)
+- Backups: `b4/mt8195-cec-backup-pre-rename`, `-pre-sft`, `-pre-msgs`.
+- Checks: dt_binding_check, CHECK_DTBS (only pre-existing jpeg warnings), W=1, checkpatch --strict (only missing SoB + usual MAINTAINERS note on the binding), `b4 prep --check` same.
+- sparse: Debian 0.6.4 is too old for this kernel (`__typeof_unqual__`); building sparse from git was blocked. Pending user decision.
+- Recipients: `b4 prep --auto-to-cc` (Hans, Mauro, DT, Matthias, Angelo, Chun-Kuang, Philipp, Airlie, Vetter + lists); Tommy via trailers.
+- Preview: `b4 send -o` (nothing sent).
+- Before sending: user SoB (`git rebase --signoff` on the 6 patches), `b4 send --dry-run`, then `b4 send` with OK.
+- Armbian `3100..3104` re-exported from the final v1 commits (armbian `c1d750009`, code unchanged; file names kept). The defconfig patch is not needed in Armbian (own kernel config).
+- b4 gotcha: `b4 prep --edit-cover` feeds the editor the cover **without** the tracking block and re-adds it. Feeding it text that already contains `--- b4-submit-tracking ---` duplicates the block, and b4 then can't load the cover (`ValueError: too many values to unpack`). Fixed by amending the cover commit with one block (backup `b4/mt8195-cec-backup-pre-coverfix`). Only feed cover text + To/Cc.
+- sparse: kernel `C=1` runs sparse on every compiled file; this tree's `scripts/checker-valid.sh` needs `__typeof_unqual__` support, which Debian's 0.6.4 lacks, so `C=1` is silently skipped (Makefile warns "sparse is not available or not up to date"). Needs sparse built from git (git.kernel.org/pub/scm/devel/sparse/sparse.git). Media builds with `C=1` (sparse + smatch) and wants no new warnings.
+
 ## Next steps
 
 1. TV test: `cec-ctl -d0 --playback` + `cec-ctl -M` while pressing remote keys; `--image-view-on` / `--standby` to 0; input switching / TV off-on (PA + K25 WARN); `cec-compliance -r 0`; Kodi with `cec-client -l` showing a Linux adapter.

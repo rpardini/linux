@@ -1,0 +1,187 @@
+Driver Info:
+	Driver Name                : snps_hdmirx
+	Adapter Name               : snps-hdmirx
+	Capabilities               : 0x0000022e
+		Logical Addresses
+		Transmit
+		Passthrough
+		Monitor All
+		Reply Vendor ID
+	Driver version             : 7.3.1
+	Available Logical Addresses: 4
+	Connector Info             : None
+	Physical Address           : 1.0.0.0
+	Logical Address Mask       : 0x4000
+	CEC Version                : 2.0
+	Vendor ID                  : 0x000c03 (HDMI)
+	OSD Name                   : 'Blade3RX'
+	Logical Addresses          : 1 (Allow RC Passthrough)
+
+	  Logical Address          : 14 (Specific)
+	    Primary Device Type    : TV
+	    Logical Address Type   : TV
+	    All Device Types       : TV
+	    RC TV Profile          : None
+	    Device Features        :
+		None
+
+Compliance test for snps_hdmirx device /dev/cec1:
+
+    The test results mean the following:
+        OK                    Supported correctly by the device.
+        OK (Not Supported)    Not supported and not mandatory for the device.
+        OK (Presumed)         Presumably supported.  Manually check to confirm.
+        OK (Unexpected)       Supported correctly but is not expected to be supported for this device.
+        OK (Refused)          Supported by the device, but was refused.
+        OK (Expected Failure) Failed but this was expected (see -e option).
+        FAIL                  Failed and was expected to be supported by this device.
+
+Find remote devices:
+	Polling: OK
+
+Network topology:
+	System Information for device 4 (Playback Device 1) from device 14 (Specific):
+		CEC Version                : 2.0
+		Physical Address           : 1.0.0.0
+		Primary Device Type        : Playback
+		Vendor ID                  : 0x000c03 (HDMI)
+		OSD Name                   : 'NIO12L'
+		Power Status               : On
+
+testing CEC local LA 14 (Specific) to remote LA 4 (Playback Device 1):
+	Core:
+	    Feature aborts unknown messages: OK
+	    Feature aborts Abort message: OK
+
+	Give Device Power Status feature:
+	    Give Device Power Status: OK
+	    Report Device Power Status: OK (Presumed)
+
+	System Information feature:
+	    Polling Message: OK
+	    Give Physical Address: OK
+	    Give CEC Version: OK
+	    Get Menu Language: OK (Not Supported)
+	    Set Menu Language: OK (Presumed)
+	    Give Device Features: OK
+
+	Vendor Specific Commands feature:
+	    Give Device Vendor ID: OK
+
+	Device OSD Transfer feature:
+	    Set OSD Name: OK (Presumed)
+	    Give OSD Name: OK
+
+	OSD String feature:
+	    Set OSD String with default timeout: OK (Not Supported)
+
+	Remote Control Passthrough feature:
+	    User Control Pressed: OK (Presumed)
+	    User Control Released: OK (Presumed)
+
+	Device Menu Control feature:
+	    Menu Request: OK (Not Supported)
+	    User Control Pressed: OK (Presumed)
+	    User Control Released: OK (Presumed)
+
+	Deck Control feature:
+	    Give Deck Status: OK (Not Supported)
+	    Give Deck Status Invalid Operand: OK (Not Supported)
+	    Deck Control: OK (Not Supported)
+	    Deck Control Invalid Operand: OK (Not Supported)
+	    Play: OK (Not Supported)
+	    Play Invalid Operand: OK (Not Supported)
+
+	Tuner Control feature:
+	    Tuner Control: OK (Not Supported)
+
+	One Touch Record feature:
+	    Record TV Screen: OK (Not Supported)
+	    Record On: OK (Not Supported)
+	    Record On Invalid Operand: OK (Not Supported)
+	    Record Off: OK (Not Supported)
+
+	Timer Programming feature:
+	    Set Analogue Timer: OK (Not Supported)
+	    Set Digital Timer: OK (Not Supported)
+	    Set Timer Program Title: OK (Not Supported)
+	    Set External Timer: OK (Not Supported)
+	    Clear Analogue Timer: OK (Not Supported)
+	    Clear Digital Timer: OK (Not Supported)
+	    Clear External Timer: OK (Not Supported)
+	    Set Timers with Errors: OK (Not Supported)
+	    Set Overlapping Timers: OK (Not Supported)
+
+	Capability Discovery and Control feature:
+	    CDC_HEC_Discover: OK (Not Supported)
+
+	Dynamic Auto Lipsync feature:
+	    Request Current Latency: OK
+	    Request Current Latency with invalid PA: OK
+
+	Audio Return Channel feature:
+	    Initiate ARC (RX): OK (Not Supported)
+	    Initiate ARC (TX): OK (Not Supported)
+
+	System Audio Control feature:
+	    Request Short Audio Descriptor: OK (Not Supported)
+	    Set System Audio Mode (directly addressed): OK (Not Supported)
+	    Set System Audio Mode (broadcast on): OK (Presumed)
+	    System Audio Mode Status: OK (Unexpected)
+	    System Audio Mode Request (on): OK (Not Supported)
+	    Give System Audio Mode Status: OK (Not Supported)
+	    Give Audio Status: OK (Not Supported)
+	    User Control Pressed (Volume Up): OK (Unexpected)
+	    User Control Pressed (Volume Down): OK (Unexpected)
+	    User Control Pressed (Mute): OK (Unexpected)
+	    User Control Pressed (Restore Volume Function): OK (Presumed)
+	    User Control Pressed (Mute Function): OK (Presumed)
+	    User Control Released (Audio): OK (Presumed)
+	    Set System Audio Mode (broadcast off): OK (Presumed)
+
+	Audio Rate Control feature:
+	    Set Audio Rate: OK (Not Supported)
+
+	Routing Control feature:
+	    Active Source: OK (Presumed)
+	    Request Active Source: OK
+	warn: cec-test.cpp(475): Expected Active Source or Set Stream Path reply to Inactive Source
+	    Inactive Source: OK (Unexpected)
+		>>> Sending Set Stream Path and waiting for reply. This may take up to 60 s.
+	    Set Stream Path: OK
+
+	Standby/Resume and Power Status:
+		>>> Sending Standby message.
+		>>> Waiting for new stable power status. This may take up to 60 s.
+		>>> Transient state after 0 s, stable state Standby after 6 s
+	    Standby: OK
+		>>> Sending Standby message.
+		>>> Checking for power status change. This may take up to 60 s.
+	    Repeated Standby message does not wake up: OK
+	    Standby: Feature aborts unknown messages: OK
+	    Standby: Feature aborts Abort message: OK
+	    Standby: Polling Message: OK
+	    Standby: Give Device Power Status: OK
+	    Standby: Give Physical Address: OK
+	    Standby: Give CEC Version: OK
+	    Standby: Give Device Vendor ID: OK
+	    Standby: Give OSD Name: OK
+	    Standby: Get Menu Language: OK (Not Supported)
+	    Standby: Give Device Features: OK
+		>>> Sending Active Source message.
+		>>> Checking for power status change. This may take up to 60 s.
+	    No wakeup on Active Source: OK
+		>>> Wait for device to wake up
+		>>> Waiting for new stable power status. This may take up to 60 s.
+		>>> Transient state after 0 s, stable state On after 7 s
+	    Wake up: OK
+	    Power State Transitions: OK (Unexpected)
+	    Deck Eject Standby Resume: OK (Not Supported)
+	    Deck Play Standby Resume: OK (Not Supported)
+	    Record Standby Active Source: OK (Not Supported)
+	    Record Standby Inactive Source: OK (Not Supported)
+
+	Post-test checks:
+	    Recognized/unrecognized message consistency: OK
+
+Total for snps_hdmirx device /dev/cec1: 84, Succeeded: 84, Failed: 0, Warnings: 1
