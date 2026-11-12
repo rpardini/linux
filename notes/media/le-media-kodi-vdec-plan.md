@@ -18,7 +18,7 @@ In a new session, say "continue the MediaTek vdec plan in `notes/media/le-media-
 
 ## Phase C (next, in order)
 
-1. ~~FFmpeg cleanup~~ done (retest on build #3: no regressions; K28 confirmed). **Pending, with the user at the board**: `board-mdp3-soak.sh`, then FFmpeg AV1 + Chromium-8bit (they panicked pre-K26). Run each under `board-watch.sh`.
+1. ~~FFmpeg cleanup~~ done (retest on build #3: no regressions; K28 confirmed). Soak and FFmpeg AV1 retests done 2026-11-12 (soak passes; AV1 no longer panics).
 2. **Kodi on the board (B4)**:
    - rebuild the kodi-deb image if the patches changed since `25df920`, then `docker save | ssh nerdctl load`
    - run Kodi in nerdctl (main note, "Test recipes"); test clips 1080p/4K H.264/HEVC/VP9/AV1 (+ one 10-bit)
@@ -28,7 +28,7 @@ In a new session, say "continue the MediaTek vdec plan in `notes/media/le-media-
    - Ask the user before starting: a hang still costs a power cycle.
 3. **FFmpeg vs. driver**: diff the per-frame V4L2 controls FFmpeg and GStreamer send (`GST_DEBUG=v4l2codecs*:7` vs an FFmpeg debug log / `v4l2-tracer`). Cases:
    - VP8 `segmentation-1425` (IOMMU faults) and `1436`
-   - AV1 `nonuniformtiling`, tile-rows/cols, SVC (with K26 these should no longer panic; ask before running)
+   - AV1 `nonuniformtiling`, tile-rows/cols, SVC, `sizeup` (K26 confirmed: no panic). Start with the 16–17 byte OUTPUT buffers that get EBUSY (`show_existing_frame`?)
    - H.264 `CAWP5`/`CVWP5`/`MR1_BT_A`
    - HEVC `CONFWIN_A`
 4. **Upstream K29**: draft a ping/resend of `[PATCH v2 3/3] media: platform: mtk-mdp3: Add pm_runtime support for GCE power control` with `Fixes: 3f39f5652037` and the NIO-12L reproduction, for the user to review.

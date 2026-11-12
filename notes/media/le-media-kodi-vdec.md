@@ -18,7 +18,7 @@ Started 2026-11-12. Board: Radxa NIO-12L (Genio 1200 / MT8395, Mali-G57).
 - **FFmpeg on Debian trixie decoded nothing in hardware**: libdrm 2.4.124 lacks the MTK modifiers, which compiled MM21 out. Fixed in FFmpeg and Kodi with `#ifndef` fallbacks.
 - **Open issues (FFmpeg vs. the MTK driver)**:
   - VP8 `segmentation-1425`/`1436` decode wrong (1425 also IOMMU-faults the decoder)
-  - AV1 tile and SVC vectors IOMMU-fault the decoder; before K26 one panicked the kernel
+  - AV1 tile and SVC vectors IOMMU-fault the decoder; before K26 one panicked the kernel (with K26: no panic; lead = tiny 16–17 byte OUTPUT buffers, EBUSY)
   - H.264 `CAWP5`/`CVWP5`/`MR1_BT_A` and HEVC `CONFWIN_A` mismatch
   - GStreamer passes all of these, so FFmpeg's controls differ from what the driver/firmware expects.
 - **Not yet tested**: Kodi itself on the board, both the EGL and DirectToPlane paths.
@@ -127,6 +127,12 @@ Packaging: kodi-rockchip-deb (Docker; v4l2requests flavor; container run via ner
   - **So K28 fixes the readback with chewitt's FFmpeg unchanged.**
   - GStreamer: VP8 61, VP9 276, AV1 240, Chromium 8-bit 11, Chromium 10-bit 22, HEVC 142, H.264 95. Identical to before; no regressions from 3200–3202.
   - IOMMU faults: only VP8 `segmentation-1425` (as before). 11 faults this boot in total; no hang, no reboot.
+- **Risky retests on build #3 (2026-11-12 ~17:13–17:30 UTC+1), under `board-watch.sh`**:
+  - **MDP3 soak passed**: 20/20 short decode→`scale_v4l2m2m` runs with 2 s idle gaps (GCE autosuspend between jobs), 217/217 frames each at 210–216 fps, then one 21700-frame loop at 213 fps. 0 IOMMU faults. **K29 holds.**
+  - **FFmpeg AV1, no panic (K26 works)**: AV1-TEST-VECTORS 137/242 (same as before), Chromium-8bit 6/13.
+    - Still faulting the decoder IOMMU: `sizeup` (10), `svc-L1T2` (1), `svc-L2T1` (25), `svc-L2T2` (30, the one that panicked before), `nonuniformtiling` (50), `tile-rows-3-tile-cols-3` (50), `only-tile-cols-is-power-of-2` (11), `only-tile-rows-is-power-of-2` (1).
+    - The kernel log shows the K26 guard firing: `CAPTURE buffer unavailable on decode completion`. Each one follows `decode src_buf[1] sz=0x10/0x11 pts=… ret=-16` (EBUSY) on **16–17 byte OUTPUT buffers**.
+    - **Lead**: FFmpeg submits tiny AV1 temporal units (likely `show_existing_frame` / frame-header-only OBUs) to the hardware, and the MTK AV1 driver/firmware mishandles them. GStreamer presumably doesn't submit those to the decoder. Check that first in Phase C step 3.
 - GStreamer's failures are known hardware/driver limits.
 - The decoder supports 64x64–4096x2304 (stepwise 16). H.264/HEVC are FRAME_BASED + ANNEX_B.
 
@@ -265,7 +271,7 @@ Commits on top of chewitt `armsoc-9.0.2` (`ad8c2e36ee`):
 - [x] Board baseline: scp.img, GStreamer/fluster (incl. H.264), FFmpeg CLI conformance
 - [x] MDP3 hang: root cause and fix (K29)
 - [x] Revert the FFmpeg cache-hint test hack; retest on the K26/K28/K29 kernel (no regressions; K28 confirmed)
-- [ ] MDP3 soak and FFmpeg AV1 on the K26 kernel (need the user at the board)
+- [x] MDP3 soak (pass) and FFmpeg AV1 on the K26 kernel (no panic; faults remain; lead: tiny show-existing-frame submissions)
 - [ ] Kodi on the board: EGL and DirectToPlane paths
 - [ ] FFmpeg vs driver: VP8 1425/1436, AV1 tiles/SVC, H.264 WP/MR1, HEVC CONFWIN (diff the controls against GStreamer)
 - [ ] `hwdownload` detile for MT2110 (10-bit), so 10-bit conformance can be checked
