@@ -13,6 +13,7 @@ Instructions for AI agents working under `~/linuxdev` (= `/opt/linuxdev`). This 
 | `linuxdev-status/` | this repo: `STATUS.md` (human tracker), `topics.tsv` (machine data per topic), `remotes.tsv`, `armbian.tsv`, `notes/`, `scripts/` |
 | `lore/` | lei store and saved searches, per-topic mail and Sashiko reviews (see `notes/lore-lei.md`) |
 | `armbian-build/` | Armbian build framework. Patch paths in STATUS are relative to `armbian-build/patch/` |
+| `le-media-kodi-vdec/` | MediaTek vdec / Kodi / LibreELEC userspace clones (kodi-rockchip-deb, ffmpeg, libreelec, kodi, gstreamer, mesa, fluster, linux-firmware), made by `10-vm-clone-main.sh le-media-kodi-vdec/<x>`. Notes and plan: `notes/media/` |
 | `runs/` | logs and exit codes of long runs started with `scripts/40-tmux-run.sh` |
 
 - Remotes are prefixed per clone: `kernel-*` in `kernel/`, `uboot-*` in `u-boot/` (`uboot-upstream` is U-Boot upstream, there is no `origin`), `armbian-*` in `armbian-build/` (`armbian-upstream`, `armbian-rpardini`, `armbian-armsurvivors`), `linuxdev-status-rpardini` here. Worktrees share their main tree's remotes.

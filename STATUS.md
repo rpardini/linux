@@ -79,6 +79,8 @@ Per-series links for what's on the lists. Lore `b:` search by change-id catches 
 | K23 | MediaTek MT8195 HDMI CEC: binding, `drivers/media/cec` driver, drm/mediatek HDMI v2 CEC notifier, mt8195.dtsi, Nio-12L enable | `b4/mt8195-cec` | prepared (v1, 6 patches, board-tested 2026-11-12 vs Blade 3 HDMI-in; cec-compliance clean) | review wording, SoB, send; TV test optional (sparse clean) | change-id `20261108-b4-mt8195-cec-7f2840a477aa`; Arm: `kernel/archive/genio-7.3/310{0..4}-*` + `CONFIG_CEC_MTK=m`; vendor ref `kernel-mediatek-aiot/mtk-v6.6`; notes `notes/kernel/mt8195-cec.md` |
 | K24 | snps_hdmirx (RK3588 HDMI RX): CEC adapter takes the source's PA from its own EDID (should be the parent, 0.0.0.0), so `--tv` gets LA 14 | — | parked | analyze + fix later | found with K23 (Blade 3 RX); notes `notes/kernel/snps-hdmirx-cec-phys-addr.md` |
 | K25 | MT8195 HDMI unplug: `vblank wait timed out` WARN in `mtk_crtc_atomic_disable` + runtime PM underflow (ETHDR / MDP-RDMA) | — | parked | prove pre-existing (build without K23 `3102`), check lore, analyze | found with K23 hotplug test; likely not CEC; notes `notes/kernel/mt8195-hdmi-unplug-vblank-warn.md` |
+| K26 | mtk-vcodec stateless: guard empty capture queue in `mtk_vdec_stateless_cap_to_disp` (upstream oopses on NULL) | `mainline/mtk-vcodec-cap-to-disp-guard` (pick of Collabora `29c8b5f5bf593` onto v7.3) | wip | check if upstream-bound; carry in Armbian genio edge | from `kernel-collabora-mediatek` `wip/mtk/mtk-staging`; part of the [MediaTek vdec / Kodi](#mediatek-vdec--kodi-le-media-kodi-vdec) work |
+| K27 | MDP3: MT2110T/MT2110R (10-bit MediaTek tiled) input on MT8195 | — | wip (research) | layout from GStreamer `video-format.c` unpack_MT2110T/R; no vendor reference anywhere | needed for 10-bit DirectToPlane; notes `notes/media/le-media-kodi-vdec.md` |
 
 ### Kernel Armbian trees (KA; full patched trees, README commit + my work on top)
 
@@ -128,6 +130,16 @@ Dropped: `mpp-report-zero-load-for-idle` — not needed on rkr7.2 (Rockchip solv
 | U5 | RK3588 stable GMAC MAC fdt fixup | `mainline/rk3588-stable-gmac-mac` | parked | | from `rk3588-stable-gmac-of-wip`; `rk3588-stable-gmac-of` has copilot-iteration history |
 | U6 | Genio mt8195 / Nio-12L: boot order, mem size fixup, bind, btrfs, load addrs | `mainline/genio-mt8195-nio-12l` | armbian-only | | Arm: `u-boot/u-boot-genio/33xx-*` |
 | UA3 | Blade 3 vendor u-boot PD tracing | `armbian-tree/blade3-vendor-20261022-pd-debug` | debug | | from `armbian-armsurvivors-mixtile-blade3-vendor-20261022` (diverged from fork) |
+
+## MediaTek vdec / Kodi (`le-media-kodi-vdec`)
+
+HW video decode on Genio 1200 (NIO-12L): mtk-vcodec MM21/MT2110 → FFmpeg v4l2request → Kodi (EGL / MDP3→plane), via kodi-rockchip-deb on Armbian kernels, later LibreELEC ([PR #10891](https://github.com/LibreELEC/LibreELEC.tv/pull/10891)). Started 2026-11-12. Userspace has no IDs; it's tracked in the notes. Kernel parts: K26, K27.
+
+- Clones: `/opt/linuxdev/le-media-kodi-vdec/{kodi-rockchip-deb,ffmpeg,libreelec,kodi,gstreamer,mesa,fluster,linux-firmware}` (remotes in `remotes.tsv`)
+- Findings and test recipes: `notes/media/le-media-kodi-vdec.md`
+- Plan and how to resume: `notes/media/le-media-kodi-vdec-plan.md`
+- PR #10891 summary: `notes/media/libreelec-pr-10891.md`
+- Status: plan written, nothing executed beyond the clones. The board (CaptainOS node) has no `scp.img`, so decode can't work yet. Board work waits for K23 testing to finish.
 
 ## Not migrated (stay on the Mac volume until it's retired)
 

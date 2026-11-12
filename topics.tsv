@@ -25,6 +25,7 @@ K18	kernel	mainline/phytium-stmmac	v7.1-add-phytium-stmmac	copy	-	-	kernel-rpard
 K21	kernel	mainline/rk3588-npu-all-boards	v7.1-rc4-rk3588-add-npu-all-opus	copy	-	-	kernel-rpardini-linux	-	-
 K22	kernel	mainline/tm16xx-spi-autoload	-	pick	v7.3	1be540cbce71da927e516c89a50c75ecca504aaf,cfc5b0db5dc305597e8dc56b90ca417fa2992dbb,1a2de927687697e8805fd88587649844c6891a2b,f5f6030d9fbdad9e91cb9f187ca21d6023d21e28,6ec51616e81a658a3278faadc11292a729915bcb,4db0b95b207db0c4dcf593e1de814bf08a3d7ec6,039320b80d856da5cc7b1a29cc8cf047ac8af01e	kernel-rpardini-linux	-	-
 K23	kernel	b4/mt8195-cec	-	keep	-	-	kernel-rpardini-linux	y	-
+K26	kernel	mainline/mtk-vcodec-cap-to-disp-guard	-	pick	v7.3	29c8b5f5bf593e7f2f2d506f953b0c741a13ba3c	kernel-rpardini-linux	-	-
 KA1	kernel	armbian-tree/rockchip64-7.2-20260915	armbian-armsurvivors-rockchip64-7.2-20260915	copy	-	-	kernel-rpardini-linux	-	-
 KA2	kernel	armbian-tree/rockchip64-7.2-20260813-e24c	armbian-armsurvivors-rockchip64-7.2-20260813	copy	-	-	kernel-rpardini-linux	-	-
 KA3	kernel	armbian-tree/rockchip64-7.3-20261022-blade3-fusb302	armbian-armsurvivors-rockchip64-7.3-20261022-blade3-tcpm-fusb302-debug	copy	-	-	kernel-rpardini-linux	-	-
