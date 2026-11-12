@@ -41,7 +41,7 @@ Based only on what was tested: generated testsrc2 clips at 30 fps, no audio trac
 - 10-bit plays, through the CPU (software fallback).
 
 **Risks for real movies (in order of impact)**
-1. **Audio unverified.** The clips have no audio. Every Kodi log shows `ActiveAE::InitSink - returned error` / `no sink was returned`: no ALSA sink was found in the container. It could be the container setup or the NIO HDMI audio (the ASoC patches). Check this first.
+1. **Audio: works since 2026-11-12 ~21:45** (was: no ALSA card at all). See "Audio" below. Not yet heard by a human, since the Blade3's mainline HDMI-RX has no audio capture; the PCM runs at the right rate. Only 2.0 tested so far (multichannel and passthrough not yet).
 2. **10-bit is CPU-decoded.** Most 4K/HDR content is 10-bit (HEVC Main10, VP9 Profile 2, much AV1). The hardware decodes it, but neither Mesa/Panfrost nor MDP3 can read the MTK 10-bit tiled output (MT2110; MDP3 = K27; or an MT2110 detile). 1080p 10-bit probably keeps up on the CPU; 4K 10-bit very likely doesn't.
 3. **No HDR.** Kodi shows "HDR passthrough: off" and the display has no HDR types, so HDR content would look washed out.
 4. **Interlaced content** (TV/DVB recordings, some DVD rips): no hardware deinterlacer, and interlaced H.264 fails conformance (FFmpeg and GStreamer alike).
@@ -220,6 +220,18 @@ Commits on top of chewitt `armsoc-9.0.2` (`ad8c2e36ee`):
   - Result: `hevc10-1080.mkv` plays (CPU decode, GLES render) on both settings, 0 IOMMU faults. Expected: ~240× `Could not find ref with POC` / `Error constructing the frame RPS` after the mid-GOP reopen. At the 15 s check it was already at 74% (others ~48%): the reopen seems to skip ahead; minor.
 - **PR screenshots** (`notes/media/img/`): `kodi-sysinfo-{summary,video,hardware}.png` (kernel 7.3.4-edge-genio, Mali-G57 Panfrost / Mesa 26.1.6, Genio 1200 MT8395 / NIO 12L, Kodi 22.0-RC2), `kodi-hevc2160-plane-processinfo.png` (4K HEVC, `ff-hevc-drm_prime (HW)`, `scale_v4l2m2m=format=uyvy`), `kodi-hevc2160-plane-osd.png`; player process info: `kodi-av1-2160-plane-processinfo.png` (`ff-av1-drm_prime (HW)` + `scale_v4l2m2m`), `kodi-vp9-2160-egl-processinfo.png` (`ff-vp9-drm_prime (HW)`, 3840x2160 via EGL), `kodi-h264-1080-egl-processinfo.png` (`ff-h264-drm_prime (HW)`), `kodi-hevc10-1080-plane-swfallback-processinfo.png` (`ff-hevc-drm_prime (SW)`, `yuv420p10le`). Made with (`le-media-kodi-vdec/kodi-shots.sh <clip> <renderer> <prefix>`: System Information pages + player process info / codec info / OSD during playback).
 
+### Audio (2026-11-12)
+
+- **Root cause of "no sink"**: no sound card. The SOF DSP (`sof-audio-of-mt8195 10803000.dsp`) failed with `SOF firmware and/or topology file not found` (`mediatek/sof/sof-mt8195.ri`, `mediatek/sof-tplg/sof-mt8195.tplg`). The machine driver `mt8195_mt6359` then never registered the card.
+- **Fix on the board**: copied `sof-mt8195.{ri,ldc}` and `sof-mt8195.tplg` from the linux-firmware clone into `/usr/lib/firmware/mediatek/` and rebooted. The card is now `sof-mt8395-evk` (`sofmt8395evk`).
+- **HDMI = `hw:0,5`** (`DL10 Playback`), from LibreELEC's UCM `projects/Mediatek/filesystem/usr/share/alsa/ucm2/MediaTek/sof-mt8395-evk/`. It needs mixer routes that nothing sets on CaptainOS (no UCM there, and the Kodi image's alsa-ucm-conf has `mt8395-evk` but not `sof-mt8395-evk`):
+  - `HDMI_OUT_MUX`=1, `ETDM_OUT3_Clock_Source`=a1sys_a2sys, `O176 I070 Switch`=on, `O177 I071 Switch`=on
+  - set by hand with `amixer` from a throwaway trixie container. **They are lost at reboot.** The host has no alsa-utils: ask the user to install it.
+  - `speaker-test -D hw:0,5 -c2` runs at the right rate.
+- **Kodi**: `default`/`sysdefault` is PCM 0 (DL2), not HDMI, and `@:CARD=…,DEV=5` expands to `front:…`, which doesn't exist. The seed now sets `audiooutput.audiodevice` = `ALSA:plughw:CARD=sofmt8395evk,DEV=5` and `audiooutput.channels` = 1 (2.0). During BBB (AAC 5.1 downmixed) the PCM is `RUNNING` at S24_LE, 2 channels, 48 kHz.
+- **LibreELEC has all the firmware**: `projects/Mediatek/config/kernel-firmware.dat` contains `mediatek/*` (copied recursively), and LE's linux-firmware `20261019` has `mediatek/mt8195/scp.img`, `mediatek/sof/sof-mt8195.ri` and `mediatek/sof-tplg/sof-mt8195.tplg`. The branch also ships the UCM (`sof-mt8395-evk`, matching the card name).
+- **Armbian/CaptainOS**: needs the SOF firmware (and `scp.img`) packaged, plus UCM `sof-mt8395-evk` (or alsa-ucm-conf upstream) and alsa-utils/UCM to apply the boot sequence.
+
 ### MDP3 hang: root cause K29 (fixed)
 
 - **Symptom**: any MDP3 m2m job (FFmpeg `scale_v4l2m2m`, even plain `v4l2-ctl` NV12→YUYV on a fresh boot) never completes.
@@ -346,7 +358,8 @@ Commits on top of chewitt `armsoc-9.0.2` (`ad8c2e36ee`):
 - [x] LibreELEC `mediatek-genio`: FFmpeg H.264 fixes + Kodi fixes refreshed (`957538b1a0`, `424ce54491`)
 - [x] Kodi seed dialogs: handled in the test script
 - [ ] Upstream candidates: the two FFmpeg H.264 fixes (to chewitt / the v4l2-request series)
-- [ ] **Audio**: ALSA/HDMI audio on the NIO (host and container); Kodi currently finds no sink
+- [x] Audio: SOF firmware, HDMI `hw:0,5` + mixer routes; Kodi plays to HDMI (2.0)
+- [ ] Audio: multichannel / passthrough over HDMI; persistent mixer setup on CaptainOS/Armbian (UCM `sof-mt8395-evk`); upstream the UCM to alsa-ucm-conf?
 - [ ] **Real-movie test** (see "Usability assessment"): 5.1 audio, 4K HEVC 10-bit HDR, VP9/AV1, 23.976 refresh switching, seeking, long playback
 - [ ] 10-bit display path: MT2110 detile (Mesa or CPU into P010) or MDP3 MT2110 (K27); HDR output
 - [ ] Colour rendition: EGL vs. plane (range/matrix)
