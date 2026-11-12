@@ -114,6 +114,11 @@ These are the known limits of the hardware and driver; there's no kernel bug to 
     - The vendor (Genio) also moved MT8195 MDP3 config into the kernel (no SCP), plus many `GENIO:` MDP3 fixes, including "adjust MUTEX clock enable timing".
   - Test kernel: Armbian genio-7.3 with `3200` (K29, b4 dump `-P 3`), `3201` (K26) and `3202` (K28). Built 2026-11-12, then install, reboot, and rerun MDP3 step 1.
   - Upstream: worth pinging or resending 3/3, with a `Fixes:` on `3f39f5652037`. The user decides; nothing goes to lists without an OK.
+  - **Confirmed on the board (2026-11-12 15:20 UTC, Armbian genio edge build #3 with 3200/3201/3202):**
+    1. `v4l2-ctl` NV12→YUYV: 30/30 frames, no hang
+    2. GStreamer `v4l2slvp9dec ! v4l2convert ! YUY2`: whole 1080p stream to EOS in 2.1 s
+    3. FFmpeg v4l2request → `scale_v4l2m2m` `format=uyvy`, `uyvy:w=1280:h=720` and `nv12`: 217/217 frames each at 205–215 fps
+    - No IOMMU faults. **The MDP3 hang ("one frame then hang" in DirectToPlane) is fixed by K29.**
 - So `-f null` (nothing held downstream) is enough to hang. The FFmpeg capture-buffer accounting fix (12 buffers, wait for returns) is still right for Kodi, but it isn't this bug.
 
 ## Findings
