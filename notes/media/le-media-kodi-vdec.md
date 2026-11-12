@@ -22,7 +22,7 @@ Started 2026-11-12. Board: Radxa NIO-12L (Genio 1200 / MT8395, Mali-G57).
   - H.264 `CAWP5`/`CVWP5`/`MR1_BT_A` and HEVC `CONFWIN_A` mismatch
   - GStreamer passes all of these, so FFmpeg's controls differ from what the driver/firmware expects.
 - **Not yet tested**: Kodi itself on the board, both the EGL and DirectToPlane paths.
-- **Branches (all local, nothing pushed)**: FFmpeg `mediatek-mm21-armsoc-9.0.2`, Kodi `mediatek-piers`, kodi-rockchip-deb `mediatek-genio`, LibreELEC `mediatek-genio` (kernel still 7.2), armbian-build `extensions` (`8c93af5e2`).
+- **Branches**: FFmpeg `mediatek-mm21-armsoc-9.0.2`, Kodi `mediatek-piers`, kodi-rockchip-deb `mediatek-genio`, LibreELEC `mediatek-genio` (kernel still 7.2), armbian-build `extensions` (`8c93af5e2`).
 
 ## Layout (`/opt/linuxdev/le-media-kodi-vdec/`)
 
