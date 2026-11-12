@@ -32,7 +32,7 @@ Started 2026-11-12. Board: Radxa NIO-12L (Genio 1200 / MT8395, Mali-G57).
 
 ## Usability assessment (2026-11-12): how usable is it for regular Kodi use?
 
-Based only on what was tested: generated testsrc2 clips at 30 fps, no audio track, 30 s each, played through JSON-RPC.
+First pass: generated testsrc2 clips (30 fps, no audio). **Updated with real clips (2026-11-12 ~22:15)**: the Jellyfin test videos (60 fps, 3–150 Mbps, SDR/HDR10/DV, 1080p–8K, no audio) and Big Buck Bunny 1080p24 (AAC 5.1). Table in "Real clips" below.
 
 **Works (verified)**
 - 8-bit H.264, HEVC, VP9 and AV1, 1080p and 4K: hardware decode, real time, correct picture on both render paths (EGL and DirectToPlane/MDP3). No IOMMU faults, no hangs (MDP3 stable with K29).
@@ -48,6 +48,13 @@ Based only on what was tested: generated testsrc2 clips at 30 fps, no audio trac
 5. **AV1 tiles/SVC**: the conformance tile vectors still IOMMU-fault the decoder. The 4K libsvtav1 test clip played fine, but some real high-resolution or high-bitrate encodes might hit this.
 6. **Not tested**: 23.976 fps and refresh-rate switching (disabled in the tests), seeking, long playback, subtitles, high-bitrate real files, real HDMI-CEC remote use with Kodi.
 7. **Minor**: EGL vs. plane colour rendition differs slightly (range/matrix); faint mottling in the grey box on VP9/AV1 4K; display-driver kernel warnings on Kodi start/stop (`vblank wait timed out`, `Runtime PM usage count underflow` on `mdp-rdma`/`ethdr`); about 240 harmless HEVC reference errors after the mid-GOP 10-bit fallback, which also seems to skip ahead.
+
+**Real-clip measurements**:
+- **8-bit HW is solid**: AVC 1080p/4K up to **150 Mbps 4K60** and HEVC 8-bit 1080p 10/30 Mbps run at full 60 fps on both paths. BBB 1080p24 plays with 5.1 AAC to HDMI.
+- **10-bit through the CPU**: HEVC 10-bit 1080p60 at full rate; 4K60 at about half rate (29–32/60 distinct; HDR10 clip 48–57). DV 8.1 plays as its HDR10 base layer, at half rate too.
+- **HDR**: washed out (`HDR passthrough: off`, `tonemap method: off`, display reports no HDR static metadata). That's expected: the Blade3 HDMI-RX is the sink.
+- **AV1 10-bit crashed Kodi** (segfault after the failed software reopen: the DRMPRIME software path needs a DR1 decoder, and libdav1d isn't one). Fixed with a VideoPlayer software codec switch; to be verified.
+- **8K** (AVC 4320p) isn't supported by the HW (`hwaccel initialisation returned error`); a software slideshow (13/60), no crash.
 
 **Verdict**: for an 8-bit H.264/HEVC/VP9/AV1 library over HDMI it should already be pleasant to use, if audio works. For a 4K HDR library it isn't there yet (10-bit display path, HDR).
 
@@ -220,13 +227,33 @@ Commits on top of chewitt `armsoc-9.0.2` (`ad8c2e36ee`):
   - Result: `hevc10-1080.mkv` plays (CPU decode, GLES render) on both settings, 0 IOMMU faults. Expected: ~240× `Could not find ref with POC` / `Error constructing the frame RPS` after the mid-GOP reopen. At the 15 s check it was already at 74% (others ~48%): the reopen seems to skip ahead; minor.
 - **PR screenshots** (`notes/media/img/`): `kodi-sysinfo-{summary,video,hardware}.png` (kernel 7.3.4-edge-genio, Mali-G57 Panfrost / Mesa 26.1.6, Genio 1200 MT8395 / NIO 12L, Kodi 22.0-RC2), `kodi-hevc2160-plane-processinfo.png` (4K HEVC, `ff-hevc-drm_prime (HW)`, `scale_v4l2m2m=format=uyvy`), `kodi-hevc2160-plane-osd.png`; player process info: `kodi-av1-2160-plane-processinfo.png` (`ff-av1-drm_prime (HW)` + `scale_v4l2m2m`), `kodi-vp9-2160-egl-processinfo.png` (`ff-vp9-drm_prime (HW)`, 3840x2160 via EGL), `kodi-h264-1080-egl-processinfo.png` (`ff-h264-drm_prime (HW)`), `kodi-hevc10-1080-plane-swfallback-processinfo.png` (`ff-hevc-drm_prime (SW)`, `yuv420p10le`). Made with (`le-media-kodi-vdec/kodi-shots.sh <clip> <renderer> <prefix>`: System Information pages + player process info / codec info / OSD during playback).
 
+### Real clips (2026-11-12 ~22:00; `clips/real/`, results `results/kodi-real/`)
+
+| clip | EGL (r1) | plane (r0) | notes |
+|---|---|---|---|
+| bbb-1080p24-h264 (AAC 5.1) | OK-HW | OK-HW | 25/60 distinct (24 fps); audio to HDMI |
+| jf-avc-1080-10M | OK-HW | OK-HW | 60/60 |
+| jf-avc-2160-40M | OK-HW | OK-HW | 60/60 |
+| jf-avc-2160-150M | OK-HW | OK-HW | 60/60 |
+| jf-hevc8-1080-10M / 30M | OK-HW | OK-HW | 60/60 |
+| jf-hevc10-1080-10M | OK-SW | OK-SW | 60/60 |
+| jf-hevc10-2160-40M | SLOW-SW | SLOW-SW | 29/32 |
+| jf-hevc-hdr10-2160-40M | SLOW-SW | SLOW-SW | 57/48; washed out (no HDR) |
+| jf-dv81-2160 | SLOW-SW | SLOW-SW | 30/26; HDR10 base layer; `Multiple Dolby Vision RPUs found in one AU` |
+| jf-av1-10-1080/2160, jf-av1-hdr10-2160 | CRASH | CRASH | Kodi segfault after `unable to find decoder for codec 222` / `failed to reopen` |
+| jf-avc-4320-150M (8K) | SLOW-SW | SLOW-SW | 13/14; HW refuses 8K |
+
+- Kernel: 0 IOMMU faults, no vcodec/MDP3 errors. Display noise as before (rdma/ethdr runtime-PM underflow, vblank timeout on crtc disable); also `hdmi-audio-codec: Unknown ELD version 0` (the Blade3 RX's EDID has no audio block?).
+- **AV1 crash fix**: Kodi `282a09a58b` "VideoPlayer: Switch to a software decoder when reopening fails" (`Reopen()` returns bool; on failure VideoPlayer recreates the codec with `CODEC_FORCE_SOFTWARE`, so `CDVDVideoCodecFFmpeg` + libdav1d + GLES). kodi-rockchip-deb `0220831`, LibreELEC `691a0686ea`.
+- Screenshots: `notes/media/img/real-*` (best: `real-bbb-1080p24-egl-plain.png`, `real-bbb-1080p24-egl-processinfo.png` (HW H.264, 24 fps, AAC 5.1), `real-bbb-1080p24-plane-processinfo.png` (HW + MDP3), `real-jf-hevc8-1080-30M-egl-processinfo.png`; informative: `real-jf-avc-2160-150M-plane-*`, `real-jf-hevc10-2160-plane-swfallback-processinfo.png`, `real-jf-hevc-hdr10-2160-egl-processinfo.png` (washed out)). `kodi-shots.sh` has `SEEK=<pct>` and `PLAIN=1`.
+
 ### Audio (2026-11-12)
 
 - **Root cause of "no sink"**: no sound card. The SOF DSP (`sof-audio-of-mt8195 10803000.dsp`) failed with `SOF firmware and/or topology file not found` (`mediatek/sof/sof-mt8195.ri`, `mediatek/sof-tplg/sof-mt8195.tplg`). The machine driver `mt8195_mt6359` then never registered the card.
 - **Fix on the board**: copied `sof-mt8195.{ri,ldc}` and `sof-mt8195.tplg` from the linux-firmware clone into `/usr/lib/firmware/mediatek/` and rebooted. The card is now `sof-mt8395-evk` (`sofmt8395evk`).
 - **HDMI = `hw:0,5`** (`DL10 Playback`), from LibreELEC's UCM `projects/Mediatek/filesystem/usr/share/alsa/ucm2/MediaTek/sof-mt8395-evk/`. It needs mixer routes that nothing sets on CaptainOS (no UCM there, and the Kodi image's alsa-ucm-conf has `mt8395-evk` but not `sof-mt8395-evk`):
   - `HDMI_OUT_MUX`=1, `ETDM_OUT3_Clock_Source`=a1sys_a2sys, `O176 I070 Switch`=on, `O177 I071 Switch`=on
-  - set by hand with `amixer` from a throwaway trixie container. **They are lost at reboot.** The host has no alsa-utils: ask the user to install it.
+  - set with `amixer`. alsa-utils is now installed on the NIO host (user OK) and the state is saved with `alsactl store` (`/var/lib/alsa/asound.state`, restored at boot by `alsa-restore`).
   - `speaker-test -D hw:0,5 -c2` runs at the right rate.
 - **Kodi**: `default`/`sysdefault` is PCM 0 (DL2), not HDMI, and `@:CARD=…,DEV=5` expands to `front:…`, which doesn't exist. The seed now sets `audiooutput.audiodevice` = `ALSA:plughw:CARD=sofmt8395evk,DEV=5` and `audiooutput.channels` = 1 (2.0). During BBB (AAC 5.1 downmixed) the PCM is `RUNNING` at S24_LE, 2 channels, 48 kHz.
 - **LibreELEC has all the firmware**: `projects/Mediatek/config/kernel-firmware.dat` contains `mediatek/*` (copied recursively), and LE's linux-firmware `20261019` has `mediatek/mt8195/scp.img`, `mediatek/sof/sof-mt8195.ri` and `mediatek/sof-tplg/sof-mt8195.tplg`. The branch also ships the UCM (`sof-mt8395-evk`, matching the card name).
@@ -360,6 +387,7 @@ Commits on top of chewitt `armsoc-9.0.2` (`ad8c2e36ee`):
 - [ ] Upstream candidates: the two FFmpeg H.264 fixes (to chewitt / the v4l2-request series)
 - [x] Audio: SOF firmware, HDMI `hw:0,5` + mixer routes; Kodi plays to HDMI (2.0)
 - [ ] Blade3 (RK3588) mainline `snps_hdmirx`: why no audio capture? (would allow verifying NIO HDMI audio end to end)
+- [x] Real-clip matrix (Jellyfin + BBB): 8-bit HW solid up to 4K150M; 10-bit 4K CPU-bound; AV1 10-bit crash found and fixed (verify)
 - [ ] Audio: multichannel / passthrough over HDMI; persistent mixer setup on CaptainOS/Armbian (UCM `sof-mt8395-evk`); upstream the UCM to alsa-ucm-conf?
 - [ ] **Real-movie test** (see "Usability assessment"): 5.1 audio, 4K HEVC 10-bit HDR, VP9/AV1, 23.976 refresh switching, seeking, long playback
 - [ ] 10-bit display path: MT2110 detile (Mesa or CPU into P010) or MDP3 MT2110 (K27); HDR output
