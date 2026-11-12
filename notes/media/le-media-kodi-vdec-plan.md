@@ -16,6 +16,8 @@ In a new session, say "continue the MediaTek vdec plan in `notes/media/le-media-
   - Run one decode test at a time. Don't read clk/genpd debugfs on a hung board.
   - Nothing is pushed and nothing goes to lists without an OK.
 
+**Resume here (2026-11-12 ~17:40)**: retests are all done (see the main note). Kodi prep started in tmux window `vdec-kodi-prep` (`le-media-kodi-vdec/make-clips.sh`: generate clips → copy to the NIO `/root/vdec/clips` → `nerdctl load` the Kodi image). Check `runs/vdec-kodi-prep-20261112-173959.{log,rc}`. Then follow "Kodi test setup" below: write the `kodi-home` pre-seed, start Kodi, JSON-RPC, capture on the Blade3.
+
 ## Phase C (next, in order)
 
 1. ~~FFmpeg cleanup~~ done (retest on build #3: no regressions; K28 confirmed). Soak and FFmpeg AV1 retests done 2026-11-12 (soak passes; AV1 no longer panics).
