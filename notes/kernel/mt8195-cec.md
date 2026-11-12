@@ -166,6 +166,33 @@ Series (b4, v1, change-id `20261108-b4-mt8195-cec-7f2840a477aa`, base `d164c7d75
 - sparse: kernel `C=1` runs sparse on every compiled file; this tree's `scripts/checker-valid.sh` needs `__typeof_unqual__` support, which Debian's 0.6.4 lacks, so `C=1` is silently skipped (Makefile warns "sparse is not available or not up to date"). Needs sparse built from git (git.kernel.org/pub/scm/devel/sparse/sparse.git). Media builds with `C=1` (sparse + smatch) and wants no new warnings.
 - 2026-11-12: sparse built from git (tip `84ec065`, 2026-10-22) in `/opt/linuxdev/sparse-src`, installed to `~/.local/bin/sparse` (`--version` says 0.6.4: shallow clone, no tags). `checker-valid.sh` accepts it. Run: `make O=.build W=1 C=2 CHECK=$HOME/.local/bin/sparse CF=-D__CHECK_ENDIAN__ <objs>`. Result: `mtk-hdmi-cec.c`, `mtk_hdmi.c`, `mtk_hdmi_common.c`, `mtk_hdmi_v2.c` clean (V=1 confirms sparse ran on them). smatch not installed (not in Debian).
 
+## Lore and references used to prepare v1
+
+Saved copies: `/opt/linuxdev/lore/topics/K23/refs/` (b4 mboxes, the lei search result, the cec-compliance source). Links use `https://lore.kernel.org/r/<msgid>`.
+
+RK3588/RK3576 HDMI CEC, Cristian Ciocaltea (dw-hdmi-qp, applied by Heiko for v6.19):
+- v1 `20250704-rk3588-hdmi-cec-v1-0-2bd8de8700cd@collabora.com`
+  - Heiko `13504186.5MRjnR8RnV@diego`: series structure. Generic bridge patches must carry what they need and not depend on platform patches; defconfig patch last.
+  - Maxime Ripard `20250704-granite-piculet-of-elevation-f01e08@houat`: use clk_get() for the one clock, not a loop over clk_bulk.
+  - Dmitry Baryshkov `ahnm4oor4qiac55zyggwe3ndxn346cx2bpzghb5j5wwmfjmdyx@gt6e5fjyq3rs`: R-b "for the DRM CEC parts".
+- v2 `20250710-rk3588-hdmi-cec-v2-0-f5884be34bc1@collabora.com`; v3 `20250825-rk3588-hdmi-cec-v3-0-95324fb22592@collabora.com` (not fetched)
+- v4 `20250903-rk3588-hdmi-cec-v4-0-fa25163c4b08@collabora.com`: cover style (what each patch does, known fix dependencies), bisect fixes asked by Daniel Stone, applied `[1/6]..[6/6]` (`e4a2d54a2f1a`, `f7a1de0d8622`, `b6736a4ea3fa`, `9baa02327adf`, `33ea4d520fbd`, defconfig `ae753d769a5f`).
+  - Mark Brown `6f3f126d-72c1-48cb-a9c8-8d354af2a3d5@sirena.org.uk`: -next crash in `drm_bridge_connector_hdmi_cec_init`, fixed by `20251017-drm-bridge-alloc-getput-bridge-connector-fix-hdmi_cec-v2-0-667abf6d47c0@bootlin.com` (bridge refcounting; our notifier path goes through the same `drm_bridge_connector` code).
+- Commit messages in tree: `e4a2d54a2f1a` (downstream author as Co-developed-by + SoB: Algea Cao, Derek Foreman), `9baa02327adf`, `f7a1de0d8622`.
+
+Hans Verkuil on CEC drivers (lei: `f:hverkuil AND b:cec-compliance AND rt:2022-01-01..`, saved as `lei-hverkuil-cec-compliance.mbx`):
+- drm/msm HDMI CEC, `85a999b2-ae13-2ab7-6706-477b9d302efa@xs4all.nl` (2023-04-21): his checklist. Run `cec-compliance --test-adapter`; who retries (MAX_RETRIES consistency); signal free time (hardware or `signal_free_time` argument); no busy-wait for the bus in transmit; can it transmit with HPD low (else `CEC_CAP_NEEDS_HPD`); `CEC_LOG_ADDR_INVALID` is 0xff.
+  - follow-up `73a9a58e-ca66-5f58-d8e5-2c1b33cec643@xs4all.nl` (2023-05-26)
+- snps_hdmirx v3 5/6, `fd05435c-8925-4ed2-8ba3-a0804ca2232b@xs4all.nl` (2024-04-04): test CEC with a CEC-capable source and run `cec-compliance -A` from both sides ("a good job of checking the signal free time handling"). v4 4/4 `c5b9be4d-16ee-45f7-b980-d2e0e4b3ef23@xs4all.nl`.
+- Recent CEC core work seen in the search (2026): `[PATCH 0/8] media: cec/core: fixes and improvements` (timeouts, `CEC_LOG_ADDRS_FL_CONFIG_FAILED`, v7.3 pull) and `cec-ctl/compliance: support new HPD_PRESENT feature` (2026-11-05). Check whether HPD_PRESENT affects notifier-based drivers before v2.
+
+Other references:
+- `Documentation/driver-api/media/maintainer-entry-profile.rst`: CEC drivers must pass `cec-compliance`; media builds with `C=1 W=1`, `__CHECK_ENDIAN__`, sparse + smatch.
+- v4l-utils 1.30.1 `utils/cec-compliance/cec-test-adapter.cpp` (`testLostMsgs()`): how the "SFTs for ..." histograms are measured (timestamps, rounded down), so they're estimates, and no warning is raised for them.
+- Vendor driver: MediaTek Genio BSP `mtk-v6.6`, commit `737f4ade54b2599a709eb239f5f65b35ede42aac` (Tommy Chen, SoB), `drivers/gpu/drm/mediatek/mtk_cec_v2.{c,h}` (worktree `/opt/linuxdev/kernel-genio-mtk`). Same TX_ARB SFT values (4/5/7) and 1 hardware retry as our first version.
+- Own earlier series as style references: K4 v6 and K4b covers (`[n]` links, "Changes in vN", the `---` in cover b4 bug), K9 (Sebastian's authorship review: BSP author gets credit + SoB), K7 v2 (MediaTek DT subject style).
+- SFT measurement scripts: `notes/kernel/mt8195-cec/sft_test.py` (NIO: optional `TX_ARB` poke, only while the adapter is configured, 15 back-to-back broadcasts, SFT from TX timestamps) and `sft_rx.py` (receiver: monitor mode, SFT from RX timestamps).
+
 ## Next steps
 
 1. TV test: `cec-ctl -d0 --playback` + `cec-ctl -M` while pressing remote keys; `--image-view-on` / `--standby` to 0; input switching / TV off-on (PA + K25 WARN); `cec-compliance -r 0`; Kodi with `cec-client -l` showing a Linux adapter.
