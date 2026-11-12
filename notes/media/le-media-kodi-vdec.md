@@ -19,10 +19,10 @@ Started 2026-11-12. Board: Radxa NIO-12L (Genio 1200 / MT8395, Mali-G57).
 - **Open issues (FFmpeg vs. the MTK driver)**:
   - VP8 `segmentation-1425`/`1436` decode wrong (1425 also IOMMU-faults the decoder)
   - AV1 tile and SVC vectors IOMMU-fault the decoder; before K26 one panicked the kernel (with K26: no panic; lead = tiny 16–17 byte OUTPUT buffers, EBUSY)
-  - H.264 `CAWP5`/`CVWP5`/`MR1_BT_A` and HEVC `CONFWIN_A` mismatch
+  - HEVC `CONFWIN_A` mismatch (H.264 `CAWP5`/`CVWP5`/`MR1_BT_A` fixed by the pic_num fix)
   - GStreamer passes all of these, so FFmpeg's controls differ from what the driver/firmware expects.
-- **H.264 with B-frames decodes wrong through FFmpeg** (found 2026-11-12 with real libx264 clips: the most important open bug). GStreamer decodes the same clip bit-exact. Details under "Kodi on the board".
-- **Kodi on the board, EGL path: works** (hardware decode, EGL render, 1080p fullscreen, real time). The picture is only correct when the decode is (see the B-frame bug). DirectToPlane not run yet.
+- **H.264 B-frame corruption in FFmpeg: fixed** (2026-11-12, 2 FFmpeg commits). It showed up with real libx264 clips. FFmpeg H.264 conformance is now 100/135 (GStreamer 95).
+- **Kodi on the board: both paths work** (EGL and DirectToPlane via MDP3 + plane, UYVY LINEAR): hardware decode, 1080p fullscreen, real time, no faults or hangs. The Kodi image still has the old FFmpeg; rebuild it with the H.264 fix.
 - **Branches**: FFmpeg `mediatek-mm21-armsoc-9.0.2`, Kodi `mediatek-piers`, kodi-rockchip-deb `mediatek-genio`, LibreELEC `mediatek-genio` (kernel still 7.2), armbian-build `extensions` (`8c93af5e2`).
 
 ## Layout (`/opt/linuxdev/le-media-kodi-vdec/`)
@@ -170,7 +170,13 @@ Commits on top of chewitt `armsoc-9.0.2` (`ad8c2e36ee`):
   - **GStreamer `v4l2slh264dec` on the default clip: 0/900 wrong**, so the cause is in FFmpeg's controls, not the driver or firmware.
   - Not the cause: weighted prediction, b-pyramid, multiple refs, DPB ordering (the driver remaps DPB slots by POC in `mtk_vdec_h264_update_dpb` and builds its own P/B0/B1 lists with `v4l2_h264_build_*_ref_list`).
   - Errors start at a B-frame mid-GOP, then propagate. Probably related to the conformance failures `MR1_BT_A` and `CAWP5`/`CVWP5`.
-  - Next: dump the per-frame `DECODE_PARAMS`/`SLICE_PARAMS` (DPB POCs, flags, `nal_ref_idc`, `num_ref_idx_l1`, direct flags) from FFmpeg and GStreamer on this clip and diff them.
+  - **Root cause** (found with the `LD_PRELOAD` control dumper `le-media-kodi-vdec/tools/h264ctl-dump.{c,so}`, `H264DUMP=<file>`; `tools/norm.py` normalises dumps for diffing): two FFmpeg bugs.
+    - DPB `pic_num` came from `pic->pic_id`, which is stale. After `frame_num` wraps it isn't FrameNumWrap; GStreamer sends e.g. -5.
+    - `dec_ref_pic_marking_bit_size` kept the previous reference slice's value on non-reference slices.
+    - FFmpeg commits `03849804f8` (h264_slice: reset marking size) and `34de8f4aa7` (v4l2_request_h264: PicNum = FrameNumWrap). Not isolated which of the two the MTK firmware cares about; probably pic_num (corruption starts right after the wrap).
+  - After the fix, all test clips are bit-exact. JVT-AVC_V1 went 96 → 100/135 (`results/k4-ffmpeg-JVT-AVC_V1.txt`): fixed `CAWP5`, `CVWP5`, `MR1_BT_A`, `MR3_TANDBERG_B`.
+  - Other differences that remain, believed harmless: FFmpeg POCs carry a +65536 offset, and FFmpeg always sets `PPS_FLAG_SCALING_MATRIX_PRESENT` (with a flat matrix).
+- **DirectToPlane (`useprimerenderer=0`)**, `h264-1080-nowp-nob.mp4`: correct picture, fullscreen. The plane is `UYVY`/`LINEAR` 1920x1080 (MDP3 via the convert filter). No hang, no IOMMU faults; the same display warnings as EGL. The dialogs from more add-ons (Shadertoy) still dim the picture; those add-ons need disabling in the seed.
 
 ### MDP3 hang: root cause K29 (fixed)
 
@@ -291,8 +297,11 @@ Commits on top of chewitt `armsoc-9.0.2` (`ad8c2e36ee`):
 - [x] Revert the FFmpeg cache-hint test hack; retest on the K26/K28/K29 kernel (no regressions; K28 confirmed)
 - [x] MDP3 soak (pass) and FFmpeg AV1 on the K26 kernel (no panic; faults remain; lead: tiny show-existing-frame submissions)
 - [x] Kodi on the board: EGL path (works; picture correct when the decode is)
-- [ ] **FFmpeg H.264 B-frame corruption** (GStreamer is bit-exact): diff the controls, fix FFmpeg
-- [ ] Kodi DirectToPlane (MDP3) run (ask the user first)
+- [x] FFmpeg H.264 B-frame corruption (pic_num wrap + stale marking size), conformance 100/135
+- [x] Kodi DirectToPlane (MDP3) run: works
+- [ ] Regenerate the kodi-rockchip-deb and LibreELEC FFmpeg patches with the H.264 fix; rebuild the Kodi image; rerun Kodi on `h264-1080.mp4` (B-frames) and the other codecs/4K
+- [ ] Kodi seed: stop the "Disabled add-ons" dialogs (disable the add-ons, or find a setting for them)
+- [ ] Upstream candidates: the two FFmpeg H.264 fixes (to chewitt / the v4l2-request series)
 - [ ] Display-driver warnings: vblank timeout on crtc disable, rdma/ethdr runtime-PM underflow
 - [ ] FFmpeg vs driver: VP8 1425/1436, AV1 tiles/SVC, H.264 WP/MR1, HEVC CONFWIN (diff the controls against GStreamer)
 - [ ] `hwdownload` detile for MT2110 (10-bit), so 10-bit conformance can be checked

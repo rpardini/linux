@@ -16,7 +16,7 @@ In a new session, say "continue the MediaTek vdec plan in `notes/media/le-media-
   - Run one decode test at a time. Don't read clk/genpd debugfs on a hung board.
   - Nothing is pushed and nothing goes to lists without an OK.
 
-**Resume here (2026-11-12 ~20:00)**: Kodi EGL path tested and works (main note, "Kodi on the board"). Found an FFmpeg H.264 B-frame decode bug (GStreamer is bit-exact on the same clip). Next, in order: (a) DirectToPlane run `kodi-test.sh h264-1080-nowp-nob.mp4 0`, but ask the user first; (b) fix the B-frame bug by diffing FFmpeg vs GStreamer H.264 controls on `clips/h264-1080.mp4`. Use Sonnet/Haiku subagents to read the captures and logs.
+**Resume here (2026-11-12 ~20:10)**: Kodi works on both paths (EGL, DirectToPlane). FFmpeg H.264 B-frame bug fixed (2 commits on `mediatek-mm21-armsoc-9.0.2`, conformance 100/135). Next: (a) regenerate the kodi-rockchip-deb FFmpeg patches, rebuild and load the Kodi image, then run `kodi-test.sh` on all clips (EGL, then plane), with the add-on dialogs suppressed; (b) Phase C step 3 for the other codecs (VP8/AV1/HEVC): use `tools/h264ctl-dump` as the pattern (extend it to AV1/VP8/HEVC controls). Use Sonnet/Haiku subagents to read captures and logs.
 
 ## Phase C (next, in order)
 
