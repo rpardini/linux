@@ -53,7 +53,7 @@ First pass: generated testsrc2 clips (30 fps, no audio). **Updated with real cli
 - **8-bit HW is solid**: AVC 1080p/4K up to **150 Mbps 4K60** and HEVC 8-bit 1080p 10/30 Mbps run at full 60 fps on both paths. BBB 1080p24 plays with 5.1 AAC to HDMI.
 - **10-bit through the CPU**: HEVC 10-bit 1080p60 at full rate; 4K60 at about half rate (29–32/60 distinct; HDR10 clip 48–57). DV 8.1 plays as its HDR10 base layer, at half rate too.
 - **HDR**: washed out (`HDR passthrough: off`, `tonemap method: off`, display reports no HDR static metadata). That's expected: the Blade3 HDMI-RX is the sink.
-- **AV1 10-bit crashed Kodi** (segfault after the failed software reopen: the DRMPRIME software path needs a DR1 decoder, and libdav1d isn't one). Fixed with a VideoPlayer software codec switch; to be verified.
+- **AV1 10-bit crashed Kodi** (segfault after the failed software reopen: the DRMPRIME software path needs a DR1 decoder, and libdav1d isn't one). Fixed with a VideoPlayer software codec switch (verified: libdav1d, 1080p60 48/60, 4K60 17/60, no crash).
 - **8K** (AVC 4320p) isn't supported by the HW (`hwaccel initialisation returned error`); a software slideshow (13/60), no crash.
 
 **Verdict**: for an 8-bit H.264/HEVC/VP9/AV1 library over HDMI it should already be pleasant to use, if audio works. For a 4K HDR library it isn't there yet (10-bit display path, HDR).
@@ -240,7 +240,7 @@ Commits on top of chewitt `armsoc-9.0.2` (`ad8c2e36ee`):
 | jf-hevc10-2160-40M | SLOW-SW | SLOW-SW | 29/32 |
 | jf-hevc-hdr10-2160-40M | SLOW-SW | SLOW-SW | 57/48; washed out (no HDR) |
 | jf-dv81-2160 | SLOW-SW | SLOW-SW | 30/26; HDR10 base layer; `Multiple Dolby Vision RPUs found in one AU` |
-| jf-av1-10-1080/2160, jf-av1-hdr10-2160 | CRASH | CRASH | Kodi segfault after `unable to find decoder for codec 222` / `failed to reopen` |
+| jf-av1-10-1080/2160, jf-av1-hdr10-2160 | CRASH → SW | CRASH → SW | was a Kodi segfault after `unable to find decoder for codec 222` / `failed to reopen`; after the fix, dav1d on the CPU: 1080p 48/60, 4K 17/60 |
 | jf-avc-4320-150M (8K) | SLOW-SW | SLOW-SW | 13/14; HW refuses 8K |
 
 - Kernel: 0 IOMMU faults, no vcodec/MDP3 errors. Display noise as before (rdma/ethdr runtime-PM underflow, vblank timeout on crtc disable); also `hdmi-audio-codec: Unknown ELD version 0` (the Blade3 RX's EDID has no audio block?).
@@ -387,7 +387,7 @@ Commits on top of chewitt `armsoc-9.0.2` (`ad8c2e36ee`):
 - [ ] Upstream candidates: the two FFmpeg H.264 fixes (to chewitt / the v4l2-request series)
 - [x] Audio: SOF firmware, HDMI `hw:0,5` + mixer routes; Kodi plays to HDMI (2.0)
 - [ ] Blade3 (RK3588) mainline `snps_hdmirx`: why no audio capture? (would allow verifying NIO HDMI audio end to end)
-- [x] Real-clip matrix (Jellyfin + BBB): 8-bit HW solid up to 4K150M; 10-bit 4K CPU-bound; AV1 10-bit crash found and fixed (verify)
+- [x] Real-clip matrix (Jellyfin + BBB): 8-bit HW solid up to 4K150M; 10-bit 4K CPU-bound; AV1 10-bit crash found and fixed (verified)
 - [ ] Audio: multichannel / passthrough over HDMI; persistent mixer setup on CaptainOS/Armbian (UCM `sof-mt8395-evk`); upstream the UCM to alsa-ucm-conf?
 - [ ] **Real-movie test** (see "Usability assessment"): 5.1 audio, 4K HEVC 10-bit HDR, VP9/AV1, 23.976 refresh switching, seeking, long playback
 - [ ] 10-bit display path: MT2110 detile (Mesa or CPU into P010) or MDP3 MT2110 (K27); HDR output

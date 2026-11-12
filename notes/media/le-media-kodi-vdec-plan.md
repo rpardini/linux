@@ -16,7 +16,7 @@ In a new session, say "continue the MediaTek vdec plan in `notes/media/le-media-
   - Run one decode test at a time. Don't read clk/genpd debugfs on a hung board.
   - Nothing is pushed and nothing goes to lists without an OK.
 
-**Resume here (2026-11-12 ~22:25)**: audio works (SOF firmware, HDMI `hw:0,5`). Real-clip matrix done (main note, "Real clips"). AV1 10-bit crash fix built into the Kodi image (`kodi-rockchip-deb 0220831`); verify it. Then, in order: (3) BBB real-use checks (refresh switching 24p, seeking, long play, 5.1 over HDMI); (4) MT2110 CPU detile → P010 (10-bit 4K is CPU-bound); (5) FFmpeg vs GStreamer for VP8/AV1/HEVC (extend `tools/h264ctl-dump`); (6) housekeeping. Use Sonnet/Haiku subagents for captures and logs; guard `rm` variables; installing tools on the NIO host is OK (ask for anything bigger).
+**Resume here (2026-11-12 ~22:25)**: audio works (SOF firmware, HDMI `hw:0,5`). Real-clip matrix done (main note, "Real clips"). AV1 10-bit crash fixed and verified (`kodi-rockchip-deb 0220831`). Then, in order: (3) BBB real-use checks (refresh switching 24p, seeking, long play, 5.1 over HDMI); (4) MT2110 CPU detile → P010 (10-bit 4K is CPU-bound); (5) FFmpeg vs GStreamer for VP8/AV1/HEVC (extend `tools/h264ctl-dump`); (6) housekeeping. Use Sonnet/Haiku subagents for captures and logs; guard `rm` variables; installing tools on the NIO host is OK (ask for anything bigger).
 
 ## Phase C (next, in order)
 
