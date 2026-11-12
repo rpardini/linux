@@ -284,6 +284,11 @@ Commits on top of chewitt `armsoc-9.0.2` (`ad8c2e36ee`):
   - The ChromeOS SCP fw (`cherry_scp_v2.0.23042`; linux-firmware `f41d890a` "support 10bit mode" by Yunfei Dong, 2023) has 10-bit strings only on the decoder side (`MM21_10bit tile/raster mode` next to `Unsupported capture fourcc`); its MDP code shows only alignment checks.
   - Vendor TV kernel sources aren't public in a useful form. Looking at the Genio AIoT SCP fw (Ubuntu `linux-firmware-mediatek-aiot`, `scp.img v14454.8.0`) and the Genio BSP kernel's mdp3 (gitlab `mediatek/aiot/bsp/linux`), under `le-media-kodi-vdec/vendor/`.
   - Kodi is unaffected: it detiles 10-bit on the CPU before any MDP3 conversion. The FFmpeg mapping was reverted on the board.
+  - **Vendor check (2026-11-13; files in `le-media-kodi-vdec/vendor/`)**:
+    - Ubuntu `linux-firmware-mediatek-aiot` 2-0ubuntu1 (newest on Launchpad) mt8195 `scp.img` = `cherry_scp_v2.0.11877 / 14454.8.0 (2022-01-24)`: **older** than linux-firmware's `cherry_scp_v2.0.23042 (2023-11-21)`, same MDP strings, no 10-bit MDP. No alternative SCP fw there.
+    - Genio BSP kernel `gitlab.com/mediatek/aiot/bsp/linux` `mtk-v6.6` (newest): **MDP3 frame setup runs on the AP** (`mdp_alg_*.c`/`mdp_tile_*.c`, ~13k lines, `.mdp_alg_plat = MDP_ALG_MT8195`), not in the SCP. Its RDMA algorithm handles 10-bit block input (`mdp_alg_rdma.c`: `blk_10bit = MDP_COLOR_IS_10BIT_PACKED`, `blk_tile = MDP_COLOR_IS_10BIT_TILE`). It still has **no MT2110 V4L2 mapping** (only MT21C/MM21). Stride/plane-size code matches mainline.
+    - `mtk-v5.15-dev` and 4 mtk-v6.6 headers weren't fetched (GitLab HTTP 429; retry later).
+    - **Conclusion**: the hardware supports 10-bit block input, as Dufresne says, but the mainline SCP-firmware MDP path doesn't. K27 would mean porting the BSP's AP-side MDP algorithm (big, unlikely upstreamable) or getting MediaTek to update the SCP fw. **Parked**; the CPU detile covers 10-bit (4K60 HEVC at full rate). Armbian `3203` to be reverted before the next kernel build (it exposes a path that crashes the SCP).
 
 ### Audio (2026-11-12)
 
