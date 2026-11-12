@@ -42,7 +42,7 @@ First pass: generated testsrc2 clips (30 fps, no audio). **Updated with real cli
 
 **Risks for real movies (in order of impact)**
 1. **Audio: works since 2026-11-12 ~21:45** (was: no ALSA card at all). See "Audio" below. Not yet heard by a human, since the Blade3's mainline HDMI-RX has no audio capture; the PCM runs at the right rate. Only 2.0 tested so far (multichannel and passthrough not yet).
-2. **10-bit is CPU-decoded.** Most 4K/HDR content is 10-bit (HEVC Main10, VP9 Profile 2, much AV1). The hardware decodes it, but neither Mesa/Panfrost nor MDP3 can read the MTK 10-bit tiled output (MT2110; MDP3 = K27; or an MT2110 detile). 1080p 10-bit probably keeps up on the CPU; 4K 10-bit very likely doesn't.
+2. **10-bit: hardware decode + CPU detile to P010 since 2026-11-12 ~23:15** (was: CPU decode). 4K60 HEVC 10-bit, HDR10 and DV 8.1 at 60/60; AV1 10-bit 4K60 at 44/60. Old text: Most 4K/HDR content is 10-bit (HEVC Main10, VP9 Profile 2, much AV1). The hardware decodes it, but neither Mesa/Panfrost nor MDP3 can read the MTK 10-bit tiled output (MT2110; MDP3 = K27; or an MT2110 detile). 1080p 10-bit probably keeps up on the CPU; 4K 10-bit very likely doesn't.
 3. **No HDR.** Kodi shows "HDR passthrough: off" and the display has no HDR types, so HDR content would look washed out.
 4. **Interlaced content** (TV/DVB recordings, some DVD rips): no hardware deinterlacer, and interlaced H.264 fails conformance (FFmpeg and GStreamer alike).
 5. **AV1 tiles/SVC**: the conformance tile vectors still IOMMU-fault the decoder. The 4K libsvtav1 test clip played fine, but some real high-resolution or high-bitrate encodes might hit this.
@@ -258,6 +258,20 @@ Commits on top of chewitt `armsoc-9.0.2` (`ad8c2e36ee`):
 - **5.1 → stereo**: Kodi set to 5.1, but the ALSA device reports only FL/FR (`Input Channel Count: 6 Output Channel Count: 2`). Likely the Blade3 RX's EDID has no audio block (`hdmi-audio-codec: Unknown ELD version 0`), so the HDMI codec limits output to 2 channels. Needs a real AV receiver/TV to test multichannel and passthrough.
 - **Mode switches are slow**: every CRTC disable waits out vblank timeouts (`mtk_crtc_atomic_disable` → `drm_atomic_helper_wait_for_vblanks`; `vblank wait timed out on crtc 0` warnings). The watcher caught `kodi-gbm` in D state there once, during the 24p↔60p switch at stop. It recovered, so it's not a hang, but it is a display-driver bug to look at (with the rdma/ethdr runtime-PM underflows).
 
+### 10-bit: MT2110 CPU detile to P010 (2026-11-12 ~23:00)
+
+- **FFmpeg** `c45b2cfba5` "avutil/hwcontext_v4l2request: Detile MediaTek MT2110T/R to P010 on hwdownload".
+  - Layout (from GStreamer `video-format.c` `unpack_MT2110T/R`): the MM21 tile grid (16x32 luma = 640 B, 16x16 chroma = 320 B, tiles linear, `x_tiles = bytesperline/16`). Partitions of 4 rows × 16 px = 80 B: 16 B of low 2 bits, then 64 B of high 8 bits. T: low bits at byte `x`, shift `2*row`; R: byte `row*4 + x/4`, shift `2*(x%4)`.
+  - Bit-exact against FFmpeg software (P010 framemd5): generated HEVC Main10 150/150, Jellyfin HEVC 10-bit 300/300, AV1 10-bit 300/300.
+  - Speed on the NIO, 4K60 10-bit: HEVC 104 fps with detile (132 without), AV1 97 fps (96).
+- **Kodi** `552f13298c` "DVDVideoCodecDRMPRIME: Detile MediaTek 10-bit frames into P010 DMA buffers": `DownloadToDMA()` takes a P010 `CVideoBufferDMA` from the software pool, `Export`s it into an AVFrame, runs `av_hwframe_transfer_data`, then moves it into `m_pFrame` so `SetPictureParams` takes the DMA path. GLES imports P010 directly; the plane path hands it to GLES (plane rejects P010). The software reopen remains as fallback.
+  - First build bug: `av_frame_copy_props()` copied the hw frame's `opaque` over our DMA buffer → `videoBuffer:nullptr` on every frame. Fixed by resetting `opaque` after the copy.
+- Packaging: kodi-rockchip-deb `fac74f5`, LibreELEC `483bb4a5c3` (FFmpeg and Kodi patches regenerated; Kodi patches apply on `22.0rc2-Piers`).
+- **Kodi matrix with the detile** (both paths): `jf-hevc10-2160-40M` 60/60, `jf-hevc-hdr10-2160-40M` 60/60, `jf-dv81-2160` 60/60, `hevc10-1080` (30 fps) 31/60, `jf-av1-10-2160-40M` 44/60. 0 IOMMU faults, no fallbacks.
+  - AV1 4K10 at 44/60 although hw+detile benchmarks at ~97 fps: to look at (Kodi-side copy/sync? AV1 hw decode alone is 96 fps, so little headroom).
+- **Audio device**: Kodi enumerates only `@` and `sysdefault:CARD=sofmt8395evk` for this card, and `ValidateOutputDevices` sometimes rewrote `plughw:…,DEV=5` to `sysdefault` (PCM 0, not HDMI). Test setup now mounts `kodi-home/asound.conf` (board `/root/vdec/asound.conf`) as `/etc/asound.conf` (`pcm.!default` = plug → `hw:CARD=sofmt8395evk,DEV=5`), and the seed uses `ALSA:default`.
+- Screenshots: `real-jf-hevc10-2160-plane-hwdetile-processinfo.png`, `real-jf-av1-10-2160-egl-hwdetile-processinfo.png`.
+
 ### Audio (2026-11-12)
 
 - **Root cause of "no sink"**: no sound card. The SOF DSP (`sof-audio-of-mt8195 10803000.dsp`) failed with `SOF firmware and/or topology file not found` (`mediatek/sof/sof-mt8195.ri`, `mediatek/sof-tplg/sof-mt8195.tplg`). The machine driver `mt8195_mt6359` then never registered the card.
@@ -403,7 +417,8 @@ Commits on top of chewitt `armsoc-9.0.2` (`ad8c2e36ee`):
 - [ ] Display: slow CRTC disable (vblank timeouts) on every mode switch; rdma/ethdr runtime-PM underflow
 - [ ] Audio: multichannel / passthrough over HDMI; persistent mixer setup on CaptainOS/Armbian (UCM `sof-mt8395-evk`); upstream the UCM to alsa-ucm-conf?
 - [ ] **Real-movie test** (see "Usability assessment"): 5.1 audio, 4K HEVC 10-bit HDR, VP9/AV1, 23.976 refresh switching, seeking, long playback
-- [ ] 10-bit display path: MT2110 detile (Mesa or CPU into P010) or MDP3 MT2110 (K27); HDR output
+- [x] 10-bit display path: CPU MT2110 detile → P010 (FFmpeg + Kodi), 4K60 HEVC 10-bit at full rate
+- [ ] AV1 10-bit 4K60 at 44/60 with the detile (headroom?); GPU detile in Mesa or MDP3 MT2110 (K27) as zero-CPU follow-ups; HDR output
 - [ ] Colour rendition: EGL vs. plane (range/matrix)
 - [ ] 10-bit fallback skips ahead at the reopen (keep the packets already queued?)
 - [ ] Display-driver warnings: vblank timeout on crtc disable, rdma/ethdr runtime-PM underflow

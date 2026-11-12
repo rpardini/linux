@@ -16,7 +16,7 @@ In a new session, say "continue the MediaTek vdec plan in `notes/media/le-media-
   - Run one decode test at a time. Don't read clk/genpd debugfs on a hung board.
   - Nothing is pushed and nothing goes to lists without an OK.
 
-**Resume here (2026-11-12 ~22:25)**: audio works (SOF firmware, HDMI `hw:0,5`). Real-clip matrix done (main note, "Real clips"). AV1 10-bit crash fixed and verified (`kodi-rockchip-deb 0220831`). BBB real-use checks done. Next, in order: (4) MT2110 CPU detile → P010 (10-bit 4K is CPU-bound); (5) FFmpeg vs GStreamer for VP8/AV1/HEVC (extend `tools/h264ctl-dump`); (6) housekeeping. Use Sonnet/Haiku subagents for captures and logs; guard `rm` variables; installing tools on the NIO host is OK (ask for anything bigger).
+**Resume here (2026-11-12 ~23:20)**: steps 1–4 done: real clips, BBB real use, audio, **10-bit HW decode + CPU detile to P010** (4K60 HEVC 10-bit at full rate; AV1 10-bit 4K at 44/60). See the main note. Next, in order: (5) FFmpeg vs GStreamer for VP8/AV1/HEVC conformance (extend `tools/h264ctl-dump`; AV1 tiles first, since real 4K AV1 uses tiles); (6) housekeeping (LE kernel 7.3 + K29/K26/K28, Armbian 3200/3202 refresh, SOF firmware/UCM packaging for Armbian, K29 ping draft, upstream candidates). Use Sonnet/Haiku subagents for captures and logs; guard `rm` variables; tools on the NIO host are OK to install (ask for more).
 
 ## Phase C (next, in order)
 
