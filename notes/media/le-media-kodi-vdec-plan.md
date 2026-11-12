@@ -16,7 +16,7 @@ In a new session, say "continue the MediaTek vdec plan in `notes/media/le-media-
   - Run one decode test at a time. Don't read clk/genpd debugfs on a hung board.
   - Nothing is pushed and nothing goes to lists without an OK.
 
-**Resume here (2026-11-12 ~17:40)**: retests are all done (see the main note). Kodi prep started in tmux window `vdec-kodi-prep` (`le-media-kodi-vdec/make-clips.sh`: generate clips → copy to the NIO `/root/vdec/clips` → `nerdctl load` the Kodi image). Check `runs/vdec-kodi-prep-20261112-173959.{log,rc}`. Then follow "Kodi test setup" below: write the `kodi-home` pre-seed, start Kodi, JSON-RPC, capture on the Blade3.
+**Resume here (2026-11-12 ~20:00)**: Kodi EGL path tested and works (main note, "Kodi on the board"). Found an FFmpeg H.264 B-frame decode bug (GStreamer is bit-exact on the same clip). Next, in order: (a) DirectToPlane run `kodi-test.sh h264-1080-nowp-nob.mp4 0`, but ask the user first; (b) fix the B-frame bug by diffing FFmpeg vs GStreamer H.264 controls on `clips/h264-1080.mp4`. Use Sonnet/Haiku subagents to read the captures and logs.
 
 ## Phase C (next, in order)
 

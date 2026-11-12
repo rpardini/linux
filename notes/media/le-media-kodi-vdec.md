@@ -21,7 +21,8 @@ Started 2026-11-12. Board: Radxa NIO-12L (Genio 1200 / MT8395, Mali-G57).
   - AV1 tile and SVC vectors IOMMU-fault the decoder; before K26 one panicked the kernel (with K26: no panic; lead = tiny 16–17 byte OUTPUT buffers, EBUSY)
   - H.264 `CAWP5`/`CVWP5`/`MR1_BT_A` and HEVC `CONFWIN_A` mismatch
   - GStreamer passes all of these, so FFmpeg's controls differ from what the driver/firmware expects.
-- **Not yet tested**: Kodi itself on the board, both the EGL and DirectToPlane paths. **Setup is fully planned** (JSON-RPC control, Blade3 HDMI-RX capture at `root@192.168.66.145`, generated clips): plan note, "Kodi test setup".
+- **H.264 with B-frames decodes wrong through FFmpeg** (found 2026-11-12 with real libx264 clips: the most important open bug). GStreamer decodes the same clip bit-exact. Details under "Kodi on the board".
+- **Kodi on the board, EGL path: works** (hardware decode, EGL render, 1080p fullscreen, real time). The picture is only correct when the decode is (see the B-frame bug). DirectToPlane not run yet.
 - **Branches**: FFmpeg `mediatek-mm21-armsoc-9.0.2`, Kodi `mediatek-piers`, kodi-rockchip-deb `mediatek-genio`, LibreELEC `mediatek-genio` (kernel still 7.2), armbian-build `extensions` (`8c93af5e2`).
 
 ## Layout (`/opt/linuxdev/le-media-kodi-vdec/`)
@@ -155,6 +156,22 @@ Commits on top of chewitt `armsoc-9.0.2` (`ad8c2e36ee`):
   - GStreamer passes all of them. The theme is tiles and SVC (tile group entries / tile_info / operating point). With K26 these should now fail without a panic (untested).
   - Next: diff the FFmpeg and GStreamer AV1 controls on `nonuniformtiling`.
 
+### Kodi on the board (2026-11-12; `le-media-kodi-vdec/kodi-test.sh`, results in `le-media-kodi-vdec/results/kodi-*`)
+
+- Harness: a fresh container per run with a seeded `kodi-home` (`le-media-kodi-vdec/kodi-home/`: web server without auth, DRM PRIME, `useprimerenderer`, 1920x1080@60). Control is JSON-RPC (`Player.Open`/`GetProperties`); 60 frames are grabbed on the Blade3 HDMI-RX (per-frame md5 count + 3 PNGs). Kodi log and kernel log are collected per run.
+  - The first start queues several "Disabled add-ons" Yes/No dialogs (RTMP, IPTV Simple). The script now answers them with `Input.Back`; they also dim the video behind them.
+- **EGL (`useprimerenderer=1`)**:
+  - `h264-1080.mp4` (libx264 High, default preset: B-frames): plays in real time with the right geometry, but the picture is **corrupted** (stale or ghosted macroblocks that persist).
+  - `h264-1080-nowp-nob.mp4` (no B-frames): picture matches the software reference. The renderer is `RendererDRMPRIMEGLES`, the decoder `CDVDVideoCodecDRMPRIME` with v4l2request. No EGL import errors, no IOMMU faults.
+  - The Kodi log shows `deinterlace_v4l2m2m … Could not find a valid device` / `FilterOpen … -22`: harmless (no deinterlacer on MTK).
+  - The kernel log at Kodi start/stop shows `vblank wait timed out on crtc 0` (WARNING in `mtk_crtc_atomic_disable`), plus `Runtime PM usage count underflow!` on `mediatek-disp-ethdr` and on `mediatek-mdp-rdma 1c104000`–`1c10b000`. These are display-driver issues, not fatal; to look at later.
+- **FFmpeg H.264 B-frame bug** (per-frame md5, `-hwaccel v4l2request … hwdownload` vs FFmpeg software, first 300 frames):
+  - default x264 250/300 wrong (from frame 26); `weightp=0` 254/300 (from 24); `b-pyramid=none` 231/300 (from 40); `refs=1` 254/300 (from 24); **`-bf 0`: 0/300**
+  - **GStreamer `v4l2slh264dec` on the default clip: 0/900 wrong**, so the cause is in FFmpeg's controls, not the driver or firmware.
+  - Not the cause: weighted prediction, b-pyramid, multiple refs, DPB ordering (the driver remaps DPB slots by POC in `mtk_vdec_h264_update_dpb` and builds its own P/B0/B1 lists with `v4l2_h264_build_*_ref_list`).
+  - Errors start at a B-frame mid-GOP, then propagate. Probably related to the conformance failures `MR1_BT_A` and `CAWP5`/`CVWP5`.
+  - Next: dump the per-frame `DECODE_PARAMS`/`SLICE_PARAMS` (DPB POCs, flags, `nal_ref_idc`, `num_ref_idx_l1`, direct flags) from FFmpeg and GStreamer on this clip and diff them.
+
 ### MDP3 hang: root cause K29 (fixed)
 
 - **Symptom**: any MDP3 m2m job (FFmpeg `scale_v4l2m2m`, even plain `v4l2-ctl` NV12→YUYV on a fresh boot) never completes.
@@ -259,7 +276,7 @@ Commits on top of chewitt `armsoc-9.0.2` (`ad8c2e36ee`):
 - **fluster**: `nerdctl run … -v /root/vdec/results:/results vdec/gst-fluster -ne run -j1 -t 60 -d GStreamer-H.264-V4L2SL -ts JVT-AVC_V1 -s -so /results/x.md`
 - **FFmpeg**: `nerdctl run --rm --net=host --privileged -v /dev:/dev -v /opt/ffmpeg-vdec:/opt/ffmpeg-vdec:ro -v /root/vdec/vectors:/vectors vdec/ffmpeg-run ffmpeg -hwaccel v4l2request -hwaccel_output_format drm_prime -i X [-vf scale_v4l2m2m=format=uyvy[:w=W:h=H] | -vf hwdownload,format=nv12] -f null -`
 - **MDP3 alone**: `v4l2-ctl -d /dev/video4 --set-fmt-video-out=width=1920,height=1080,pixelformat=NV12 --set-fmt-video=width=1920,height=1080,pixelformat=YUYV --stream-out-mmap=4 --stream-mmap=4 --stream-count=30`
-- **Kodi container** (not run yet): `docker save kodi-rockchip-gbm:trixie-v4l2requests | ssh board nerdctl load`, then `nerdctl run -it --rm --privileged --network host -v /dev:/dev -v /run:/run -v /srv/kodi:/root/.kodi <image> kodi --logging=console --windowing=gbm --audio-backend=alsa`.
+- **Kodi**: `le-media-kodi-vdec/kodi-test.sh <clip> <1=EGL|0=plane> [secs]` (run it through `40-tmux-run.sh` plus `board-watch.sh`). By hand: `docker save kodi-rockchip-gbm:trixie-v4l2requests | ssh board nerdctl load`, then `nerdctl run -it --rm --privileged --network host -v /dev:/dev -v /run:/run -v /srv/kodi:/root/.kodi <image> kodi --logging=console --windowing=gbm --audio-backend=alsa`.
   - Settings > Player: DRM PRIME on; render method EGL (`useprimerenderer=1`) vs DirectToPlane (0).
 - After any test: `journalctl -k --since @T0 | grep 'iommu.*fault'`, and check for D-state tasks.
 
@@ -273,7 +290,10 @@ Commits on top of chewitt `armsoc-9.0.2` (`ad8c2e36ee`):
 - [x] MDP3 hang: root cause and fix (K29)
 - [x] Revert the FFmpeg cache-hint test hack; retest on the K26/K28/K29 kernel (no regressions; K28 confirmed)
 - [x] MDP3 soak (pass) and FFmpeg AV1 on the K26 kernel (no panic; faults remain; lead: tiny show-existing-frame submissions)
-- [ ] Kodi on the board: EGL and DirectToPlane paths
+- [x] Kodi on the board: EGL path (works; picture correct when the decode is)
+- [ ] **FFmpeg H.264 B-frame corruption** (GStreamer is bit-exact): diff the controls, fix FFmpeg
+- [ ] Kodi DirectToPlane (MDP3) run (ask the user first)
+- [ ] Display-driver warnings: vblank timeout on crtc disable, rdma/ethdr runtime-PM underflow
 - [ ] FFmpeg vs driver: VP8 1425/1436, AV1 tiles/SVC, H.264 WP/MR1, HEVC CONFWIN (diff the controls against GStreamer)
 - [ ] `hwdownload` detile for MT2110 (10-bit), so 10-bit conformance can be checked
 - [ ] LibreELEC: kernel 7.2 → 7.3 with the genio patches (incl. 3200–3202)
