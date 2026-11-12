@@ -31,6 +31,10 @@ window as a native iTerm2 tab: one tab for Claude, one per build.
   else a new one named after the VM (`hostname -s` minus `lima-`), the same name the iTerm2 profiles use.
 - `DRY_RUN` and `ONLY` are kept out of tmux: a tmux server copies the environment of whoever starts it into every
   window, so `DRY_RUN=0` would otherwise end up in the user's shells. Put `DRY_RUN=0` in `<cmd>` explicitly if needed.
+- SSH agent: tmux's `SSH_AUTH_SOCK` (global and per session) is set at attach time and goes stale once that SSH
+  connection drops. The script passes the caller's `SSH_AUTH_SOCK` to the window (`tmux -e`) when that agent
+  holds keys. Otherwise the runner uses the first `/tmp/ssh-*/agent.*` that answers `ssh-add -l`, or prints
+  `[warn] no live ssh agent` and runs anyway. This matters for `git@` remotes and fetches.
 - `~/linuxdev/runs/<name>-<ts>.sh` (runner), `.log` (output with colors, via `script`), `.rc` (exit code, written at the end).
 - A finished window stays open (`remain-on-exit`). Its last line is `== <name> exited N ==`.
 - Starting a run with the name of a finished window replaces that window. The new window is created before the

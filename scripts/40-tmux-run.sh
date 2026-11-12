@@ -12,6 +12,9 @@
 #   attached existing session; else a new one named after the VM (hostname minus 'lima-', eg. armbian-trixie-linuxdev),
 #   the same name the iTerm2 tmux profiles create.
 # Env: RUNS_DIR (default $LINUXDEV_ROOT/runs), TMUX_SESSION
+# SSH agent: tmux's own SSH_AUTH_SOCK goes stale when the SSH connection that set it drops. The caller's
+#   SSH_AUTH_SOCK is passed to the window (tmux -e) if that agent holds keys; otherwise the runner picks the first
+#   /tmp/ssh-*/agent.* that does, and warns if there is none (git@ remotes, b4 send etc. will then fail).
 # Prints (stdout) LOG=, RC= and WINDOW= lines; wait for the RC file to appear.
 source "$(dirname "$0")/lib.sh"
 
@@ -56,6 +59,16 @@ runner_body="$(
 # $id: started $(date -Is)
 tmux set-option -w -t "\$TMUX_PANE" remain-on-exit on
 unset DRY_RUN ONLY # never inherit this script's DRY_RUN=0; put it in <cmd> explicitly if wanted
+# SSH agent: keep the inherited one if it holds keys, else the first live one with keys under /tmp.
+if ! ssh-add -l > /dev/null 2>&1; then
+	for s in /tmp/ssh-*/agent.*; do
+		[[ -S "\$s" ]] && SSH_AUTH_SOCK="\$s" ssh-add -l > /dev/null 2>&1 || continue
+		export SSH_AUTH_SOCK="\$s"
+		echo "[info] SSH_AUTH_SOCK=\$s (inherited agent was not usable)"
+		break
+	done
+	ssh-add -l > /dev/null 2>&1 || echo "[warn] no live ssh agent; git@ remotes will fail"
+fi
 cd $(printf %q "$dir") || exit 1
 printf '== %s: %s (in %s) ==\n' $(printf '%q ' "$name" "$cmd_q" "$dir")
 SHELL=/bin/bash script -qefc $(printf '%q ' "$cmd_q" "$log")
@@ -68,15 +81,19 @@ EOF
 # Same-name window: replace if finished, refuse if still running. The old window is killed only after the
 # new one exists, so the session (and an attached iTerm2 -CC client) never runs out of windows.
 old_ids=()
+agent_env=() # caller's agent, only if it holds keys; the runner falls back otherwise
+if [[ -S "${SSH_AUTH_SOCK:-}" ]] && ssh-add -l > /dev/null 2>&1; then
+	agent_env=(-e "SSH_AUTH_SOCK=$SSH_AUTH_SOCK")
+fi
 if tmux has-session -t "=$SESSION" 2> /dev/null; then
 	while read -r wid wname dead; do
 		[[ "$wname" == "$name" ]] || continue
 		[[ "$dead" == "1" ]] || die "window '$name' in session '$SESSION' is still running"
 		old_ids+=("$wid")
 	done < <(tmux list-windows -t "=$SESSION" -F '#{window_id} #{window_name} #{pane_dead}')
-	new=(env -u DRY_RUN -u ONLY tmux new-window -d -t "=$SESSION:" -n "$name" -c "$dir" bash "$runner")
+	new=(env -u DRY_RUN -u ONLY tmux new-window -d -t "=$SESSION:" -n "$name" -c "$dir" ${agent_env[@]+"${agent_env[@]}"} bash "$runner")
 else
-	new=(env -u DRY_RUN -u ONLY tmux new-session -d -s "$SESSION" -n "$name" -c "$dir" bash "$runner")
+	new=(env -u DRY_RUN -u ONLY tmux new-session -d -s "$SESSION" -n "$name" -c "$dir" ${agent_env[@]+"${agent_env[@]}"} bash "$runner")
 fi
 
 if [[ "$DRY_RUN" != "0" ]]; then
