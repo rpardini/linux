@@ -18,7 +18,7 @@ In a new session, say "continue the MediaTek vdec plan in `notes/media/le-media-
 
 ## Phase C (next, in order)
 
-1. **FFmpeg cleanup**: revert the uncommitted cache-hint hack in `le-media-kodi-vdec/ffmpeg` (K28 is in the board kernel now). Rebuild with `scripts/50-media-ffmpeg-build.sh --ship`, rerun VP8 (`board-ffmpeg-md5.py`) and expect 59/61 with the hints on.
+1. ~~FFmpeg cleanup~~ done (retest on build #3: no regressions; K28 confirmed). **Pending, with the user at the board**: `board-mdp3-soak.sh`, then FFmpeg AV1 + Chromium-8bit (they panicked pre-K26). Run each under `board-watch.sh`.
 2. **Kodi on the board (B4)**:
    - rebuild the kodi-deb image if the patches changed since `25df920`, then `docker save | ssh nerdctl load`
    - run Kodi in nerdctl (main note, "Test recipes"); test clips 1080p/4K H.264/HEVC/VP9/AV1 (+ one 10-bit)

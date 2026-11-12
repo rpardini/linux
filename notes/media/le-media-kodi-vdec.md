@@ -45,7 +45,7 @@ Also in `le-media-kodi-vdec/`:
 - `results/` (gst-*.md, ffmpeg-*.txt)
 - board test scripts: `board-fluster-gst.sh`, `board-ffmpeg-md5.py`, `board-ffmpeg-all.sh`, `board-h264-and-rest.sh`
 
-**FFmpeg working tree has an uncommitted test hack**: the cache hints are disabled (`0 &&` in `libavcodec/v4l2_request.c` and `libavutil/hwcontext_v4l2request.c`). It was needed for correct `hwdownload` before K28 was in the board kernel. K28 is now in, so **revert it** (`git checkout -- libavcodec/v4l2_request.c libavutil/hwcontext_v4l2request.c`), rebuild with `--ship`, and recheck VP8. **Don't commit it.**
+The FFmpeg working tree is clean again: the cache-hint test hack was reverted on 2026-11-12 once K28 was on the board, and the shipped build is the committed branch tip.
 
 - **Kernel:** `kernel/` with worktrees `kernel-<slug>`. The useful remotes are:
   - `kernel-collabora-mediatek` (fetched 2026-11-12)
@@ -100,6 +100,7 @@ Packaging: kodi-rockchip-deb (Docker; v4l2requests flavor; container run via ner
 - `scripts/51-media-image.sh <name>`: builds `scripts/media/<name>.Dockerfile` with docker on the VM, then `docker save | ssh board nerdctl load`. The images are `gst-fluster` (context = fluster clone) and `ffmpeg-run`.
 - `scripts/50-media-ffmpeg-build.sh [--reconfigure] [--ship]`: incremental out-of-tree FFmpeg build in `vdec/ffmpeg-dev` (trixie + backports `linux-libc-dev`), ccache, about 90 s cold. `--ship` tars it to the board's `/opt/ffmpeg-vdec`.
 - `scripts/30-armbian-b4.sh ext <msgid> <dir> <file> [b4 am args]`: extra args, eg. `-P 3`, take one patch of a series.
+- `board-watch.sh <rc-file> [max-min]`: background watcher; ends when the run finishes, or the board is unreachable, rebooted, or has a task stuck in D for 15 s+; board checked every 8 min. `board-retest-k3.sh`: FFmpeg + GStreamer retest. `board-mdp3-soak.sh`: 20 short scale runs with idle gaps + a 21k-frame loop.
 - `board-ffmpeg-md5.py <suite.json>`:
   - Pipeline: FFmpeg v4l2request → `hwdownload` (MM21 CPU detile) → md5 vs. the fluster reference.
   - Result codes: `OK`; `SW` = equals FFmpeg's own software decode while the reference differs (counted as a pass); `KO`.
@@ -121,6 +122,11 @@ Packaging: kodi-rockchip-deb (Docker; v4l2requests flavor; container run via ner
 | CHROMIUM-8bit-AV1 | 11/13 | 6/13 | GStreamer: film grain. FFmpeg: tile vectors fault the decoder |
 | CHROMIUM-10bit-AV1 | 22/23 | — | **10-bit (MT2110) works in GStreamer** (CPU unpack) |
 
+- **Retest on kernel build #3 (K26/K28/K29), 2026-11-12 ~16:45–17:10 UTC; FFmpeg with chewitt's cache hints back on (hack reverted)**: results in `results/k3-*`.
+  - FFmpeg H.264 96/135, HEVC 132/147, VP8 59/61, VP9 204/305. Identical to the hack-build numbers except one flaky VP9 resize vector (`resize-fp-tiles-4-16` failed once with EINVAL on submit; 3/3 OK on recheck).
+  - **So K28 fixes the readback with chewitt's FFmpeg unchanged.**
+  - GStreamer: VP8 61, VP9 276, AV1 240, Chromium 8-bit 11, Chromium 10-bit 22, HEVC 142, H.264 95. Identical to before; no regressions from 3200–3202.
+  - IOMMU faults: only VP8 `segmentation-1425` (as before). 11 faults this boot in total; no hang, no reboot.
 - GStreamer's failures are known hardware/driver limits.
 - The decoder supports 64x64–4096x2304 (stepwise 16). H.264/HEVC are FRAME_BASED + ANNEX_B.
 
@@ -258,7 +264,8 @@ Commits on top of chewitt `armsoc-9.0.2` (`ad8c2e36ee`):
 - [x] LibreELEC: `mediatek-genio` off master (PR commits + ffmpeg/kodi Mediatek gates and patch dirs; ffmpeg = chewitt tarball `ad8c2e36ee` + `patches/mediatek`)
 - [x] Board baseline: scp.img, GStreamer/fluster (incl. H.264), FFmpeg CLI conformance
 - [x] MDP3 hang: root cause and fix (K29)
-- [ ] Revert the FFmpeg cache-hint test hack now that K28 is in; rebuild, ship, recheck VP8
+- [x] Revert the FFmpeg cache-hint test hack; retest on the K26/K28/K29 kernel (no regressions; K28 confirmed)
+- [ ] MDP3 soak and FFmpeg AV1 on the K26 kernel (need the user at the board)
 - [ ] Kodi on the board: EGL and DirectToPlane paths
 - [ ] FFmpeg vs driver: VP8 1425/1436, AV1 tiles/SVC, H.264 WP/MR1, HEVC CONFWIN (diff the controls against GStreamer)
 - [ ] `hwdownload` detile for MT2110 (10-bit), so 10-bit conformance can be checked
