@@ -164,6 +164,7 @@ Series (b4, v1, change-id `20261108-b4-mt8195-cec-7f2840a477aa`, base `d164c7d75
 - Armbian `3100..3104` re-exported from the final v1 commits (armbian `c1d750009`, code unchanged; file names kept). The defconfig patch is not needed in Armbian (own kernel config).
 - b4 gotcha: `b4 prep --edit-cover` feeds the editor the cover **without** the tracking block and re-adds it. Feeding it text that already contains `--- b4-submit-tracking ---` duplicates the block, and b4 then can't load the cover (`ValueError: too many values to unpack`). Fixed by amending the cover commit with one block (backup `b4/mt8195-cec-backup-pre-coverfix`). Only feed cover text + To/Cc.
 - sparse: kernel `C=1` runs sparse on every compiled file; this tree's `scripts/checker-valid.sh` needs `__typeof_unqual__` support, which Debian's 0.6.4 lacks, so `C=1` is silently skipped (Makefile warns "sparse is not available or not up to date"). Needs sparse built from git (git.kernel.org/pub/scm/devel/sparse/sparse.git). Media builds with `C=1` (sparse + smatch) and wants no new warnings.
+- 2026-11-12: sparse built from git (tip `84ec065`, 2026-10-22) in `/opt/linuxdev/sparse-src`, installed to `~/.local/bin/sparse` (`--version` says 0.6.4: shallow clone, no tags). `checker-valid.sh` accepts it. Run: `make O=.build W=1 C=2 CHECK=$HOME/.local/bin/sparse CF=-D__CHECK_ENDIAN__ <objs>`. Result: `mtk-hdmi-cec.c`, `mtk_hdmi.c`, `mtk_hdmi_common.c`, `mtk_hdmi_v2.c` clean (V=1 confirms sparse ran on them). smatch not installed (not in Debian).
 
 ## Next steps
 
