@@ -22,7 +22,7 @@ In a new session, say "continue the MediaTek vdec plan in `notes/media/le-media-
   - `c9d1833dd9` module autoload + `NR_CPUS=8`
   - `d8ee45e1c0` cmdline
   - `d81abf04ae` `TYPEC_MT6360=m`
-  - `871008b8b8` streamnoise off, `ab4a5afe0d` HDMI S32 via linear plugin (not in an image yet)
+  - `4c26c67451` HDMI S32 via linear plugin (not in an image yet; board uses the autostart.sh bind mount)
 - Next (ask the user):
   - lockup: if the `NR_CPUS=8` soak stays clean, more boots/Kodi restarts to confirm; if it hangs, `modprobe.blacklist=tcpci_mt6360`
   - HDR output on LE
