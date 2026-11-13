@@ -244,7 +244,15 @@ The NIO-12L was moved to the TV and boots the LE SD image (`devel-20261113023614
     - `src bits 8` logged with a P010 fourcc for AV1 (cosmetic).
 - **Idle HDMI buzz (2026-11-13 ~18:15)**: with nothing playing, the TV buzzed/toned. Kodi keeps PCM 5 RUNNING (S24_LE, 2ch, 48 kHz; `streamsilence=1`), and `audiooutput.streamnoise=true` sends a "low noise" signal that comes out audible. Turning it off (JSON-RPC) stopped it at once. BBB playback audio was clean.
   - LE `871008b8b8`: Mediatek appliance `audiooutput.streamnoise` default false (next image).
-  - To do (later): why the low-level noise turns into a buzz (S24 container/justification through SOF DL10 → HDMI, gain, or the TV); test speaker-test S24 vs S16 at low amplitude.
+  - Explained by the S24 bug below: the low noise came out at a few bits of resolution.
+- **HDMI S24 bug: root cause of distorted Jellyfin audio (2026-11-13 ~18:20)**. The user reported severe distortion, crackle and start-up artifacts on Jellyfin (AAC 5.1 48 kHz → downmix → Kodi `AE_FMT_S24NE4` → `S24_LE` on PCM 5).
+  - speaker-test 440 Hz on `hdmi:CARD=sofmt8395evk,DEV=0`: **S16_LE and S32_LE clean, S24_LE very quiet** (~48 dB down).
+  - So the sof-mt8395-evk DL10/HDMI path advertises `S24_LE` but treats it as MSB-aligned 32-bit: signal −48 dB with a few bits left, which gives distortion at normal TV volume and the idle-noise buzz.
+  - Fix (LE `ab4a5afe0d`): `cards/sof-mt8395-evk.conf` wraps device 5 in `type linear` with slave `format S32_LE`. Channels/rate stay 2ch/48k, so Kodi still downmixes and resamples itself; a `plug` would allow 6ch and ALSA's route would drop the centre channel.
+  - Verified: Kodi now picks `AE_FMT_S24NE3`, the HW runs `S32_LE`, and BBB is clean (user). The running Kodi picked up the new conf without a restart.
+  - On the board until the next image: bind mount `/run/alsa-cards` over `/usr/share/alsa/cards` (gone at reboot). Kodi `audiooutput.streamsilence` is temporarily 0 (was default 1).
+  - **Armbian/CaptainOS was affected too**: `scripts/media/vdec/kodi-home/asound.conf` = `plug` → `hw:…,DEV=5`, and the PCM ran `S24_LE` during BBB (2026-11-12 notes). Unnoticed, since the Blade3 capture had no audio. Fix that asound.conf (`format S32_LE`) if it's used again.
+  - Kernel side (later, upstream candidate): the SOF topology / mt8195 AFE DL10 should not advertise `S24_LE` (or should honour `msbits`). Check `sound/soc/sof/mediatek/` and the sof-mt8195 tplg DAI formats.
 
 ## Board state
 
