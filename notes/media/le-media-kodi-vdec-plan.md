@@ -136,7 +136,7 @@ This plan covers:
 - One commit, path-limited (the CEC session also edits STATUS.md; check `git status` first and don't sweep up its changes).
 
 ### A2. FFmpeg (`le-media-kodi-vdec/ffmpeg`)
-- New branch `mediatek-mm21-armsoc-9.0.2` off `ffmpeg-chewitt/armsoc-9.0.2`.
+- New branch `armsoc-9.0.2-mediatek` off `ffmpeg-chewitt/armsoc-9.0.2`.
   - cherry-pick `7af1eb2d5d` (MM21/MT2110 hwcontext) and `a0709aa65a` (`vf_scale_v4l2m2m`)
   - rework `f4fff38020` as a modifier-only check, so linear 2-object NV12M still passes
   - fix the trailers

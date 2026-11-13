@@ -78,7 +78,7 @@ The media commits on `master-26.08-rpardini`:
 ## Plan for the PR
 
 Branch `mediatek-genio` (off `le-upstream/master`) is done except the kernel:
-- **ffmpeg**: `Mediatek)` case = chewitt tarball `ad8c2e36ee` (`armsoc-9.0.2`, sha256 `eed6678e…`, includes v4l2-request and the m2m deinterlace) + `PKG_PATCH_DIRS+=" mediatek"`. The 5 patches come from FFmpeg branch `mediatek-mm21-armsoc-9.0.2`. Mediatek is added to the v4l2-request/libudev gate and the VERSION file.
+- **ffmpeg**: `Mediatek)` case = chewitt tarball `ad8c2e36ee` (`armsoc-9.0.2`, sha256 `eed6678e…`, includes v4l2-request and the m2m deinterlace) + `PKG_PATCH_DIRS+=" mediatek"`. The 5 patches come from FFmpeg branch `armsoc-9.0.2-mediatek`. Mediatek is added to the v4l2-request/libudev gate and the VERSION file.
 - **kodi**: `Mediatek` added to the `drmprime-filter` gate, plus `patches/mediatek` (6 patches from Kodi branch `mediatek-piers`). They apply on `22.0rc2-Piers`.
 - **Kernel, still to do**: bump to 7.3 to match Armbian genio edge, and carry:
   - **K29** (mtk-mdp3 GCE pm_runtime): **the August "one frame then hang" in DirectToPlane is almost certainly this**. Any kernel ≥ v6.18 without it hangs MDP3. LE's v7.2 kernel has the bug.

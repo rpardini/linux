@@ -25,9 +25,9 @@ Started 2026-11-12. Board: Radxa NIO-12L (Genio 1200 / MT8395, Mali-G57).
 - **Kodi on the board: both paths work** (EGL and DirectToPlane via MDP3 + plane, UYVY LINEAR): hardware decode, 1080p fullscreen, real time, no faults or hangs. Kodi matrix with the fixed FFmpeg (image rebuilt with kodi-rockchip-deb `6a72109`): **16/16 runs on 8-bit clips OK** (H.264/HEVC/VP9/AV1 × 1080p/4K × EGL/plane). 10-bit HEVC now plays on both paths through the software fallback (3 Kodi fixes, below).
 - **2026-11-13 summary**: Kodi plays 8-bit H.264/HEVC/VP9/AV1 up to 4K60 (150 Mbps) in HW on both paths. 10-bit = HW decode + CPU MT2110 detile → P010 (4K60 HEVC 10-bit/HDR10/DV8.1 at full rate, AV1 10-bit 4K at 44/60). Audio over HDMI works (SOF fw). Refresh switching, seeking and long play OK. FFmpeg fixes: H.264 pic_num/marking, AV1 tile MI units, MT2110 detile. Conformance: H.264 100/135, HEVC 142/147, AV1 201/242, Chromium AV1 8-bit 10/13, 10-bit 22/23. K27 (MDP3 10-bit) parked: the SCP fw can't do it.
 - **Branches** (nothing pushed):
-  - FFmpeg `mediatek-mm21-armsoc-9.0.2` (incl. the H.264 fixes `03849804f8`, `34de8f4aa7`)
+  - FFmpeg `armsoc-9.0.2-mediatek` (also on the user's fork as `ffmpeg-rpardini/armsoc-9.0.2-mediatek`; local branch tracks it) (incl. the H.264 fixes `03849804f8`, `34de8f4aa7`)
   - Kodi `mediatek-piers` (8 MTK commits incl. the 10-bit fallback `7e9b59cb0f`, `ee3a4f3339`, `1b94bc79cd`)
-  - kodi-rockchip-deb `mediatek-genio` (`941ec9b`; image `kodi-rockchip-gbm:trixie-v4l2requests` loaded on the NIO)
+  - kodi-rockchip-deb `main` (work happens on `main`, user rule; MediaTek commits `25df920`..`9008c03`; image `kodi-rockchip-gbm:trixie-v4l2requests` loaded on the NIO)
   - LibreELEC `mediatek-genio` (`424ce54491`; patches refreshed; kernel still 7.2)
   - armbian-build `extensions` (`8c93af5e2`)
 
@@ -70,7 +70,7 @@ Full clones made by `scripts/10-vm-clone-main.sh <repo>`. The remotes are in `re
 | Dir | Remotes | Branches |
 |---|---|---|
 | `kodi-rockchip-deb` | `kodideb-armsurvivors` | **`mediatek-genio`** (work); `main` |
-| `ffmpeg` | `ffmpeg-rpardini`, `ffmpeg-upstream`, `ffmpeg-kwiboo`, `ffmpeg-chewitt`, `ffmpeg-rpi` (jc-kynesim) | **`mediatek-mm21-armsoc-9.0.2`** (work, off chewitt `armsoc-9.0.2`); `backup/…-pre-trailers`; old `mediatek-mm21-v4l2requests-opus` |
+| `ffmpeg` | `ffmpeg-rpardini`, `ffmpeg-upstream`, `ffmpeg-kwiboo`, `ffmpeg-chewitt`, `ffmpeg-rpi` (jc-kynesim) | **`armsoc-9.0.2-mediatek`** (work, off chewitt `armsoc-9.0.2`); `backup/…-pre-trailers`; old `mediatek-mm21-v4l2requests-opus` |
 | `libreelec` | `le-rpardini`, `le-upstream`, `le-chewitt` | **`mediatek-genio`** (work, off `le-upstream/master`); `mediatek-genio-wip` (PR head) |
 | `kodi` | `kodi-rpardini`, `kodi-upstream` (xbmc) | **`mediatek-piers`** (work, off `kodi-upstream/Piers`); `backup/mediatek-piers-pre-msg`; old `with-librelec-patches-and-mediatek-opus` |
 | `gstreamer` | `gst-upstream` (monorepo) | detached `main` |
@@ -176,7 +176,7 @@ Packaging: kodi-rockchip-deb (Docker; v4l2requests flavor; container run via ner
 - GStreamer's failures are known hardware/driver limits.
 - The decoder supports 64x64–4096x2304 (stepwise 16). H.264/HEVC are FRAME_BASED + ANNEX_B.
 
-### FFmpeg fixes and findings (branch `mediatek-mm21-armsoc-9.0.2`)
+### FFmpeg fixes and findings (branch `armsoc-9.0.2-mediatek`)
 
 Commits on top of chewitt `armsoc-9.0.2` (`ad8c2e36ee`):
 1. hwcontext MM21/MT2110 formats, with libdrm fallback defines
@@ -333,7 +333,7 @@ Commits on top of chewitt `armsoc-9.0.2` (`ad8c2e36ee`):
 - HEVC: the RK shortfall is likely the 10-bit vectors: rkvdec outputs NV15, and `board-ffmpeg-md5.py` asks for `p010le` via `hwdownload` (no NV15→P010 path), so it's a test-path limit, not decoding. To confirm.
 - **Blade3 hard hang (2026-11-13 02:47)**: FFmpeg AV1 vector `av1-1-b8-16-intra_only-intrabc-extreme-dv` (intra block copy with extreme displacement vectors) on the RK3588 AV1 VPU (`rockchip,rk3588-av1-vpu-dec`, hantro, kernel 7.3.1-edge-rockchip64) hard-hung the board: nothing on UART (the user had it open), no previous-boot journal; recovered by power cycle. Worth a report to the hantro/rockchip maintainers after a GStreamer cross-check (not done; skipped to protect the board).
   - Resumed with `blade3-baseline-2.sh`: `SKIP=` in `board-ffmpeg-md5.py`, `-sv` for GStreamer AV1-TEST-VECTORS. VP9 FFmpeg 213/305 (before the hang).
-- Next: headless Kodi on the Blade3 (it may need a connected display), then the full comparison table.
+- **Headless Kodi on the Blade3 doesn't work**: Kodi starts and answers JSON-RPC with HDMI disconnected, but on the first playback (H.264, v4l2-request, `RendererDRMPRIMEGLES`) it logs `RendererDRMPRIMEGLES::Configure: SetVideoOutput failed` and **segfaults** (exit 139). So no RK Kodi baseline without a display (the user won't add a second HDMI cable). Kodi crashing when there's no display is a small Kodi bug (not ours). `blade3-kodi.sh` kept for when a display is attached.
 - LibreELEC history rewritten (user): from `3a2cdd01d5` to 5 commits: `f72ec647a1` ffmpeg base (chewitt armsoc-9.0.2), `54dc2606a0` ffmpeg MediaTek patches (11, bullets), `6fe991975f` kodi drmprime-filter gate, `47996ebd19` kodi MediaTek patches (11, bullets), `7cf2fccd61` linux 7.3.4. Identical tree; backup `backup/mediatek-genio-pre-squash-20261113`.
 
 ### Parked (2026-11-13, user decision: non-essential)
