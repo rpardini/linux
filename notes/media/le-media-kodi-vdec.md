@@ -303,6 +303,28 @@ Commits on top of chewitt `armsoc-9.0.2` (`ad8c2e36ee`):
 - **kodi-rockchip-deb** `9008c03`: ffmpeg-only `kodi-rockchip-gbm-ffmpeg_<arch>_ffmpeg_<id>_<distro>.deb` (ffmpeg/ffprobe + the `/usr/local` libs they link, `dpkg-shlibdeps -xkodi-rockchip-gbm`, `Conflicts: kodi-rockchip-gbm`); the container stage installs only the Kodi package. Tested: installs on plain trixie, `-hwaccels` = drm v4l2request. The rkmpp flavor is untested (MPP/RGA libs get picked up via ldd).
 - **Blade3 baseline (RK3588 mainline: hantro, rkvdec, AV1 VPU)**: `blade3-setup.sh`, `blade3-baseline.sh` (`BOARD=` override in `board-ffmpeg-md5.py`, `board-fluster-gst.sh`, `board-watch.sh`). Headless only (no HDMI-RX on the NIO). Results in `results/blade3-*`.
 
+### Armbian PR prep (2026-11-13)
+
+- `extensions` rebased onto `armbian-upstream/main` (backup `backup/extensions-pre-genio-prs-20261113`). The 3 OP-TEE/TEE genio commits and `artifact-uboot: hash … fetch_sources_tools` had already landed upstream, and the K27 add/revert pair was dropped.
+- `rewrite-kernel-patches` normalised 3100–3104 and 3200–3202 (folded into their commits); 3005 left as is (user). Kernel build: 15/15 applied, **0 with problems**.
+- PR commits (last two on `extensions`; the user cuts PRs with `~/linuxdev/prtool`, so bodies are Markdown bullets):
+  - `019cc0818` genio: edge: HDMI CEC for MT8195 (NIO-12L)
+  - `f5be8635c` genio: edge: MDP3 GCE runtime PM, vcodec capture-queue guard, vb2 cache sync (body has sources and test results)
+- LibreELEC image: building natively (no Docker, per user) in tmux `le-mediatek-genio-image`, `taskset -c 0-11`, `THREADCOUNT=12 CONCURRENCY_MAKE_LEVEL=12`. Host deps installed: default-jre gperf libjson-perl libparse-yapp-perl libxml-parser-perl xfonts-utils xsltproc.
+
+### Rockchip baseline (Blade3, RK3588 mainline 7.3.1: hantro / rkvdec / AV1 VPU), in progress
+
+| suite (FFmpeg md5) | Blade3 RK3588 | NIO MT8395 |
+|---|---|---|
+| VP8 | 59/61 | 59/61 |
+| H.264 JVT-AVC_V1 | **131/135** | 100/135 |
+| HEVC JCT-VC | 134/147 | 142/147 |
+| VP9, AV1, Chromium AV1, GStreamer | running | VP9 265/305, AV1 234/242, Chromium 11/13 + 22/23 |
+
+- H.264: the RK decoders handle the interlaced/field vectors (PAFF/MBAFF) that MediaTek fails.
+- HEVC: the RK shortfall is likely the 10-bit vectors: rkvdec outputs NV15, and `board-ffmpeg-md5.py` asks for `p010le` via `hwdownload` (no NV15→P010 path), so it's a test-path limit, not decoding. To confirm.
+- Next: headless Kodi on the Blade3 (it may need a connected display), then the full comparison table.
+
 ### Parked (2026-11-13, user decision: non-essential)
 
 - HEVC `PICSIZE_A`–`D` (no output; not fixed by the min-framesize change) and `CONFWIN_A` (likely left/top crop of hw frames)
