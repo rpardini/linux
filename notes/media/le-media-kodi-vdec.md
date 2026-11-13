@@ -312,14 +312,22 @@ Commits on top of chewitt `armsoc-9.0.2` (`ad8c2e36ee`):
   - `f5be8635c` genio: edge: MDP3 GCE runtime PM, vcodec capture-queue guard, vb2 cache sync (body has sources and test results)
 - LibreELEC image: building natively (no Docker, per user) in tmux `le-mediatek-genio-image`, `taskset -c 0-11`, `THREADCOUNT=12 CONCURRENCY_MAKE_LEVEL=12`. Host deps installed: default-jre gperf libjson-perl libparse-yapp-perl libxml-parser-perl xfonts-utils xsltproc.
 
-### Rockchip baseline (Blade3, RK3588 mainline 7.3.1: hantro / rkvdec / AV1 VPU), in progress
+### Rockchip baseline (Blade3, RK3588 mainline 7.3.1: hantro / rkvdec / AV1 VPU), 2026-11-13
 
-| suite (FFmpeg md5) | Blade3 RK3588 | NIO MT8395 |
-|---|---|---|
-| VP8 | 59/61 | 59/61 |
-| H.264 JVT-AVC_V1 | **131/135** | 100/135 |
-| HEVC JCT-VC | 134/147 | 142/147 |
-| VP9, AV1, Chromium AV1, GStreamer | running | VP9 265/305, AV1 234/242, Chromium 11/13 + 22/23 |
+| suite | NIO MT8395 FFmpeg | NIO MT8395 GStreamer | Blade3 RK3588 FFmpeg | Blade3 RK3588 GStreamer |
+|---|---|---|---|---|
+| VP8 | 59/61 | 61/61 | 59/61 | 61/61 |
+| H.264 JVT-AVC_V1 | 100/135 | 95/135 | **131/135** | 129/135 |
+| HEVC JCT-VC | 142/147 | 142/147 | 134/147 ¹ | **31/147** ² |
+| VP9 | 265/305 | 276/305 | 213/305 ³ | 224/305 ³ |
+| AV1 | 234/242 | 240/242 | 150/241 ¹ ⁴ | 206/242 ⁴ |
+| Chromium AV1 8-bit | 11/13 | 11/13 | 10/13 | 10/13 |
+| Chromium AV1 10-bit | 22/23 | 22/23 | 0/23 ¹ | 7/23 |
+
+¹ RK 10-bit fails through the test path: rkvdec outputs NV15 and `board-ffmpeg-md5.py` downloads `p010le` (no NV15→P010 transfer). HEVC fails are mostly MAIN10, AV1 64× `b10-00-quantizer`. Not decoding failures.
+² GStreamer HEVC on rkvdec (7.3.1) fails almost everything, while FFmpeg passes 134: a GStreamer v4l2codecs/rkvdec HEVC issue, to look at later.
+³ RK fails 46 of the 71 tiny VP9 `vp90-2-02-size-*` vectors with **both** FFmpeg and GStreamer (hardware/driver limit; the MTK passes all 71 since the min-framesize fix). AV1 `b8-01-size` 21/100 likewise.
+⁴ `av1-1-b8-16-intra_only-intrabc-extreme-dv` skipped: it hard-hangs the RK3588 AV1 VPU (see below).
 
 - H.264: the RK decoders handle the interlaced/field vectors (PAFF/MBAFF) that MediaTek fails.
 - HEVC: the RK shortfall is likely the 10-bit vectors: rkvdec outputs NV15, and `board-ffmpeg-md5.py` asks for `p010le` via `hwdownload` (no NV15→P010 path), so it's a test-path limit, not decoding. To confirm.
