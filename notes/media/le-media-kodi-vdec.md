@@ -459,6 +459,8 @@ Commits on top of chewitt `armsoc-9.0.2` (`ad8c2e36ee`):
 
 ## Test recipes (board; one at a time)
 
+- All board scripts (`kodi-test.sh`, `board-*.sh`, `blade3-*.sh`, …) are versioned in `scripts/media/vdec/` (README) and symlinked into `le-media-kodi-vdec/`.
+
 - **GStreamer**: `nerdctl run --rm --net=host --privileged -v /dev:/dev -v /root/vdec/vectors:/vectors --entrypoint gst-launch-1.0 vdec/gst-fluster filesrc location=X ! parsebin ! v4l2slvp9dec ! v4l2convert ! video/x-raw,format=YUY2 ! fakesink`
 - **fluster**: `nerdctl run … -v /root/vdec/results:/results vdec/gst-fluster -ne run -j1 -t 60 -d GStreamer-H.264-V4L2SL -ts JVT-AVC_V1 -s -so /results/x.md`
 - **FFmpeg**: `nerdctl run --rm --net=host --privileged -v /dev:/dev -v /opt/ffmpeg-vdec:/opt/ffmpeg-vdec:ro -v /root/vdec/vectors:/vectors vdec/ffmpeg-run ffmpeg -hwaccel v4l2request -hwaccel_output_format drm_prime -i X [-vf scale_v4l2m2m=format=uyvy[:w=W:h=H] | -vf hwdownload,format=nv12] -f null -`
