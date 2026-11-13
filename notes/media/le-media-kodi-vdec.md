@@ -323,7 +323,10 @@ Commits on top of chewitt `armsoc-9.0.2` (`ad8c2e36ee`):
 
 - H.264: the RK decoders handle the interlaced/field vectors (PAFF/MBAFF) that MediaTek fails.
 - HEVC: the RK shortfall is likely the 10-bit vectors: rkvdec outputs NV15, and `board-ffmpeg-md5.py` asks for `p010le` via `hwdownload` (no NV15→P010 path), so it's a test-path limit, not decoding. To confirm.
+- **Blade3 hard hang (2026-11-13 02:47)**: FFmpeg AV1 vector `av1-1-b8-16-intra_only-intrabc-extreme-dv` (intra block copy with extreme displacement vectors) on the RK3588 AV1 VPU (`rockchip,rk3588-av1-vpu-dec`, hantro, kernel 7.3.1-edge-rockchip64) hard-hung the board: nothing on UART (the user had it open), no previous-boot journal; recovered by power cycle. Worth a report to the hantro/rockchip maintainers after a GStreamer cross-check (not done; skipped to protect the board).
+  - Resumed with `blade3-baseline-2.sh`: `SKIP=` in `board-ffmpeg-md5.py`, `-sv` for GStreamer AV1-TEST-VECTORS. VP9 FFmpeg 213/305 (before the hang).
 - Next: headless Kodi on the Blade3 (it may need a connected display), then the full comparison table.
+- LibreELEC history rewritten (user): from `3a2cdd01d5` to 5 commits: `f72ec647a1` ffmpeg base (chewitt armsoc-9.0.2), `54dc2606a0` ffmpeg MediaTek patches (11, bullets), `6fe991975f` kodi drmprime-filter gate, `47996ebd19` kodi MediaTek patches (11, bullets), `7cf2fccd61` linux 7.3.4. Identical tree; backup `backup/mediatek-genio-pre-squash-20261113`.
 
 ### Parked (2026-11-13, user decision: non-essential)
 
