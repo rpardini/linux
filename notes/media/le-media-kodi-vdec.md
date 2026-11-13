@@ -310,7 +310,8 @@ Commits on top of chewitt `armsoc-9.0.2` (`ad8c2e36ee`):
 - PR commits (last two on `extensions`; the user cuts PRs with `~/linuxdev/prtool`, so bodies are Markdown bullets):
   - `019cc0818` genio: edge: HDMI CEC for MT8195 (NIO-12L)
   - `f5be8635c` genio: edge: MDP3 GCE runtime PM, vcodec capture-queue guard, vb2 cache sync (body has sources and test results)
-- LibreELEC image: building natively (no Docker, per user) in tmux `le-mediatek-genio-image`, `taskset -c 0-11`, `THREADCOUNT=12 CONCURRENCY_MAKE_LEVEL=12`. Host deps installed: default-jre gperf libjson-perl libparse-yapp-perl libxml-parser-perl xfonts-utils xsltproc.
+- **LibreELEC image built** (2026-11-13 03:40, native, ~1 h, exit 0): `le-media-kodi-vdec/libreelec/target/LibreELEC-Genio.aarch64-13.0-devel-20261113023614-33da025-nio-12l.img.gz` (210 MB) + `.tar` (update). Built from `33da025` (pre-squash hash, same tree as `7cf2fccd61`). Not flashed or booted yet.
+- LibreELEC image: was building natively (no Docker, per user) in tmux `le-mediatek-genio-image`, `taskset -c 0-11`, `THREADCOUNT=12 CONCURRENCY_MAKE_LEVEL=12`. Host deps installed: default-jre gperf libjson-perl libparse-yapp-perl libxml-parser-perl xfonts-utils xsltproc.
 
 ### Rockchip baseline (Blade3, RK3588 mainline 7.3.1: hantro / rkvdec / AV1 VPU), 2026-11-13
 
