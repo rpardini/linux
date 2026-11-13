@@ -44,6 +44,7 @@ All of them default to **dry-run** (they print commands). `DRY_RUN=0` executes. 
 - `40-tmux-run.sh <name> [-C <dir>] -- <cmd...>`: run a long command in a window of a tmux session: the current one, else the most recently attached one, else a new one named after the VM (eg. `armbian-trixie-linuxdev`, as the iTerm2 tmux profiles do). It prints `WINDOW=`, `LOG=` and `RC=`.
 - `50-media-ffmpeg-build.sh [--reconfigure] [--ship]`: incremental FFmpeg build (le-media-kodi-vdec) in a trixie container; `--ship` copies it to the NIO-12L.
 - `51-media-image.sh <name>`: builds `scripts/media/<name>.Dockerfile` here and loads it into the board's containerd (`nerdctl load`).
+- `scripts/media/vdec/`: the vdec/Kodi board test harness (Kodi runs + HDMI-RX capture, conformance, watcher, dumper), symlinked into `le-media-kodi-vdec/`; see its README.
 
 Prefer extending these scripts (they share `lib.sh`: `run`, `each_topic`, `topic_row`, ...) over one-off commands.
 
