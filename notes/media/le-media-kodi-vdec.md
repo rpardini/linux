@@ -10,7 +10,7 @@ Started 2026-11-12. Board: Radxa NIO-12L (Genio 1200 / MT8395, Mali-G57).
   - K29: mtk-mdp3 GCE pm_runtime, **the MDP3 hang fix**
 - Userspace work has no IDs and is tracked here.
 
-## Status (2026-11-13 ~00:30)
+## Status (2026-11-13 ~04:00)
 
 - **Board**: Armbian genio edge 7.3.4 build #3 with patches 3200 (K29), 3201 (K26) and 3202 (K28), plus `scp.img`. Decoder and MDP3 work.
 - **Decoding (hardware, through FFmpeg and GStreamer)**: H.264, HEVC, VP8, VP9 and AV1 decode correctly on the hardware, apart from the open FFmpeg issues below. Conformance tables are under "Results".
@@ -23,6 +23,7 @@ Started 2026-11-12. Board: Radxa NIO-12L (Genio 1200 / MT8395, Mali-G57).
   - GStreamer passes all of these, so FFmpeg's controls differ from what the driver/firmware expects.
 - **H.264 B-frame corruption in FFmpeg: fixed** (2026-11-12, 2 FFmpeg commits). It showed up with real libx264 clips. FFmpeg H.264 conformance is now 100/135 (GStreamer 95).
 - **Kodi on the board: both paths work** (EGL and DirectToPlane via MDP3 + plane, UYVY LINEAR): hardware decode, 1080p fullscreen, real time, no faults or hangs. Kodi matrix with the fixed FFmpeg (image rebuilt with kodi-rockchip-deb `6a72109`): **16/16 runs on 8-bit clips OK** (H.264/HEVC/VP9/AV1 × 1080p/4K × EGL/plane). 10-bit HEVC now plays on both paths through the software fallback (3 Kodi fixes, below).
+- **2026-11-13 end of session**: LE Genio image built and written to the NIO's SD card (not booted yet); Armbian genio CEC + media commits ready on `extensions`; FFmpeg/kodi-rockchip-deb branches on the user's remotes; Rockchip baseline in the table below. Final conformance (FFmpeg on the NIO): H.264 100/135, HEVC 142/147, VP8 59/61, VP9 265/305, AV1 234/242, Chromium AV1 11/13 + 22/23.
 - **2026-11-13 summary**: Kodi plays 8-bit H.264/HEVC/VP9/AV1 up to 4K60 (150 Mbps) in HW on both paths. 10-bit = HW decode + CPU MT2110 detile → P010 (4K60 HEVC 10-bit/HDR10/DV8.1 at full rate, AV1 10-bit 4K at 44/60). Audio over HDMI works (SOF fw). Refresh switching, seeking and long play OK. FFmpeg fixes: H.264 pic_num/marking, AV1 tile MI units, MT2110 detile. Conformance: H.264 100/135, HEVC 142/147, AV1 201/242, Chromium AV1 8-bit 10/13, 10-bit 22/23. K27 (MDP3 10-bit) parked: the SCP fw can't do it.
 - **Branches** (nothing pushed):
   - FFmpeg `armsoc-9.0.2-mediatek` (also on the user's fork as `ffmpeg-rpardini/armsoc-9.0.2-mediatek`; local branch tracks it) (incl. the H.264 fixes `03849804f8`, `34de8f4aa7`)
@@ -310,7 +311,7 @@ Commits on top of chewitt `armsoc-9.0.2` (`ad8c2e36ee`):
 - PR commits (last two on `extensions`; the user cuts PRs with `~/linuxdev/prtool`, so bodies are Markdown bullets):
   - `019cc0818` genio: edge: HDMI CEC for MT8195 (NIO-12L)
   - `f5be8635c` genio: edge: MDP3 GCE runtime PM, vcodec capture-queue guard, vb2 cache sync (body has sources and test results)
-- **LibreELEC image built** (2026-11-13 03:40, native, ~1 h, exit 0): `le-media-kodi-vdec/libreelec/target/LibreELEC-Genio.aarch64-13.0-devel-20261113023614-33da025-nio-12l.img.gz` (210 MB) + `.tar` (update). Built from `33da025` (pre-squash hash, same tree as `7cf2fccd61`). Not flashed or booted yet.
+- **LibreELEC image built** (2026-11-13 03:40, native, ~1 h, exit 0): `le-media-kodi-vdec/libreelec/target/LibreELEC-Genio.aarch64-13.0-devel-20261113023614-33da025-nio-12l.img.gz` (210 MB) + `.tar` (update). Built from `33da025` (pre-squash hash, same tree as `7cf2fccd61`). Written to the NIO's SD card (`/dev/mmcblk1`, sha256 read-back OK, 2026-11-13 ~03:55); not booted yet (the user will).
 - LibreELEC image: was building natively (no Docker, per user) in tmux `le-mediatek-genio-image`, `taskset -c 0-11`, `THREADCOUNT=12 CONCURRENCY_MAKE_LEVEL=12`. Host deps installed: default-jre gperf libjson-perl libparse-yapp-perl libxml-parser-perl xfonts-utils xsltproc.
 
 ### Rockchip baseline (Blade3, RK3588 mainline 7.3.1: hantro / rkvdec / AV1 VPU), 2026-11-13
