@@ -291,6 +291,18 @@ Commits on top of chewitt `armsoc-9.0.2` (`ad8c2e36ee`):
     - `mtk-v5.15-dev` and 4 mtk-v6.6 headers weren't fetched (GitLab HTTP 429; retry later).
     - **Conclusion**: the hardware supports 10-bit block input, as Dufresne says, but the mainline SCP-firmware MDP path doesn't. K27 would mean porting the BSP's AP-side MDP algorithm (big, unlikely upstreamable) or getting MediaTek to update the SCP fw. **Parked**; the CPU detile covers 10-bit (4K60 HEVC at full rate). Armbian `3203` reverted (armbian-build `9259e765f`); branch `mainline/mtk-mdp3-mt2110` kept for reference. **The NIO still runs kernel build #4 with 3203**: harmless for our stack (nothing feeds 10-bit to MDP3), replace it at the next kernel install.
 
+### Housekeeping (2026-11-13)
+
+- **Final FFmpeg conformance on the NIO** (`results/k7-*`): AV1 **234/242**, VP9 **265/305**, H.264 100/135, HEVC 142/147, VP8 59/61; Chromium AV1 8-bit 11/13, 10-bit 22/23.
+- **Deployed on the NIO**: kernel build #3 (3200–3202, no 3203) and the Kodi image from kodi-rockchip-deb `d2525a0`. AV1 recheck in Kodi: 10-bit 1080p60 60/60 (HW + detile), 4K 44/60, 0 faults.
+- **Armbian 3200/3202 "needs_rebase"**: only index/blank-line differences; cosmetic, fixed by `./compile.sh rewrite-kernel-patches` when needed (user). Left as b4 dumps.
+- **LibreELEC** `mediatek-genio` rebased onto `le-upstream/master` (backup `backup/mediatek-genio-pre-rebase-20261113`). Master already moved Amlogic to 7.3.4 and chewitt `armsoc-9.0.2` `ad8c2e36ee`, the same commit our Mediatek FFmpeg case uses; chewitt's FFmpeg branch hasn't moved, so no FFmpeg rebase needed.
+  - `33da025fc3` "linux: Mediatek: update to 7.3.4 with CEC and media fixes": same 7.3.4 commit as Amlogic, plus Armbian's 3005 (ethernet ASPM), 3100–3104 (CEC), 3200–3202 (K29/K26/K28). Config regenerated with `olddefconfig`/`savedefconfig` (+`CEC_MTK=y`; 7.3 dropped `BATTERY_QCOM_BATTMGR`, `QCOM_PMIC_GLINK`, `DMA_FENCE_TRACE`). All patches apply on v7.3.4 (no image build yet).
+  - SOF/SCP firmware: covered by `mediatek/*` in `projects/Mediatek/config/kernel-firmware.dat`; UCM `sof-mt8395-evk` in the branch.
+  - chewitt's LE `amlogic-0174` is the same vb2-dma-contig change as our 3202.
+- **kodi-rockchip-deb** `9008c03`: ffmpeg-only `kodi-rockchip-gbm-ffmpeg_<arch>_ffmpeg_<id>_<distro>.deb` (ffmpeg/ffprobe + the `/usr/local` libs they link, `dpkg-shlibdeps -xkodi-rockchip-gbm`, `Conflicts: kodi-rockchip-gbm`); the container stage installs only the Kodi package. Tested: installs on plain trixie, `-hwaccels` = drm v4l2request. The rkmpp flavor is untested (MPP/RGA libs get picked up via ldd).
+- **Blade3 baseline (RK3588 mainline: hantro, rkvdec, AV1 VPU)**: `blade3-setup.sh`, `blade3-baseline.sh` (`BOARD=` override in `board-ffmpeg-md5.py`, `board-fluster-gst.sh`, `board-watch.sh`). Headless only (no HDMI-RX on the NIO). Results in `results/blade3-*`.
+
 ### Parked (2026-11-13, user decision: non-essential)
 
 - HEVC `PICSIZE_A`–`D` (no output; not fixed by the min-framesize change) and `CONFWIN_A` (likely left/top crop of hw frames)
