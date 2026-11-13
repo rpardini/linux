@@ -24,7 +24,7 @@ In a new session, say "continue the MediaTek vdec plan in `notes/media/le-media-
   - `d81abf04ae` `TYPEC_MT6360=m`
   - `4c26c67451` HDMI S32 via linear plugin (not in an image yet; board uses the autostart.sh bind mount)
 - Next (ask the user):
-  - lockup: if the `NR_CPUS=8` soak stays clean, more boots/Kodi restarts to confirm; if it hangs, `modprobe.blacklist=tcpci_mt6360`
+  - lockup: image #3 soak clean (4173 iterations / 73 min); confirm over more boots and Kodi restarts; if it hangs again, `modprobe.blacklist=tcpci_mt6360`
   - HDR output on LE
   - IRQ 116 root cause
   - suspend/resume WDT

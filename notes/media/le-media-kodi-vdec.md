@@ -213,6 +213,7 @@ The NIO-12L was moved to the TV and boots the LE SD image (`devel-20261113023614
   - Board workarounds removed (iwd drop-in, `autostart.sh`, `/storage/.config/alsa`, `/storage/.cache/alsa-cards-test`). Without them: iwd starts first time, WiFi is present, the HDMI ALSA device + Kodi HDMI sink work, the GUI is 2560x1440 with no ERANGE, and RAM is 16 GB.
   - CEC `standby_pc_on_tv_standby` = 36028 (Ignore; backup `cec__dev_cec0.xml.bak-20261113`).
   - `tcpci_mt6360` is loaded and IRQ 116 storms. The soak is restarted to test `NR_CPUS=8` alone.
+  - **Soak result on image #3 (`NR_CPUS=8`, TCPC loaded)**: 4173 iterations / 73 min from a fresh boot, **no lockup**, with playback tests, Jellyfin use and Kodi audio reconfigs alongside. Earlier LE images hung 3 times (1, 4 and 15 min after boot or a Kodi restart). So `NR_CPUS=8`/no `CPUMASK_OFFSTACK` is the prime suspect, not yet proven (one boot only; no Kodi restarts or reboots tested). The soak is stopped (2026-11-13 ~18:45 local).
 
 - **Jellyfin repo on LE** (2026-11-13): `repository.jellyfin.kodi` 1.0.0 (from `kodi.jellyfin.org/repository.jellyfin.kodi.zip`) unzipped into `/storage/.kodi/addons`, then `kodi-send --action=UpdateLocalAddons` + `Addons.SetAddonEnabled`.
   - Its URL `repo.jellyfin.org/releases/client/kodi/addons.xml` gives 404 to plain curl, but with Kodi's user agent it redirects to `…/files/client/kodi/py3/addons.xml` on a mirror. Kodi fetched it (`plugin.video.jellyfin` 2.2.0+py3, JellyCon).
