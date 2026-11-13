@@ -10,7 +10,17 @@ Started 2026-11-12. Board: Radxa NIO-12L (Genio 1200 / MT8395, Mali-G57).
   - K29: mtk-mdp3 GCE pm_runtime, **the MDP3 hang fix**
 - Userspace work has no IDs and is tracked here.
 
-## Status (2026-11-13 ~04:00)
+## Status (2026-11-13 ~18:10)
+
+- **LibreELEC on the NIO at the TV (2026-11-13 afternoon)**: LE image #3 (`mediatek-genio` `d81abf04ae`) from SD, display 2560x1440@60. See "LibreELEC on the TV".
+  - Kodi GUI, HDMI audio, WiFi, CEC and 16 GB RAM all work without board workarounds.
+  - Playback matrix (DirectToPlane): every 8-bit and 10-bit HW clip plays (8-bit via MDP3 → plane, 10-bit via P010 → GLES). HDR output doesn't work yet (TV stays SDR). 8K falls back to software.
+  - Open:
+    - the lost-IPI kernel lockup (3 hits; `mem=` ruled out; `NR_CPUS=8` soak clean so far)
+    - the MT6360 TCPC IRQ 116 storm (root-cause later)
+    - suspend/resume → HW watchdog reset
+    - HDR output
+  - Jellyfin repo installed; the user tests Jellyfin themselves.
 
 - **Board**: Armbian genio edge 7.3.4 build #3 with patches 3200 (K29), 3201 (K26) and 3202 (K28), plus `scp.img`. Decoder and MDP3 work.
 - **Decoding (hardware, through FFmpeg and GStreamer)**: H.264, HEVC, VP8, VP9 and AV1 decode correctly on the hardware, apart from the open FFmpeg issues below. Conformance tables are under "Results".
@@ -121,6 +131,117 @@ Packaging: kodi-rockchip-deb (Docker; v4l2requests flavor; container run via ner
 - **LibreELEC**: new branch off `le-upstream/master`.
 - **Trailers**: reworked commits drop `Co-Authored-By`/`Claude-Session` and get `Assisted-by: Claude:claude-opus-5-5`. No push and nothing to lists without the user's OK.
 - **Armbian patch names**: numbered series, `3200-…` for media.
+
+## LibreELEC on the TV (2026-11-13 ~14:00)
+
+The NIO-12L was moved to the TV and boots the LE SD image (`devel-20261113023614-33da025`, kernel 7.3.4, Mesa 26.3.0). Same IP. LE has no Blade3 capture, so the user reports what the TV shows.
+- **Kodi showed nothing (console only): fixed on the board, LE fix pending.**
+  - The TV's preferred mode is 2560x1440@60.
+  - The Genio `appliance.xml` defaults are `limitguisize=3` and DirectToPlane. So Kodi renders a 1920x1080 GUI and asks the GUI plane to scale it (`DRMUtils.cpp` `GetResolutionInfo`).
+  - MT8195 planes are `DRM_PLANE_NO_SCALING` (`mtk_plane.c`), so every atomic test commit got `-ERANGE` (~2000 log lines). With no good commit to fall back to, nothing was shown.
+  - Armbian never hit this: its display was 1080p.
+  - Board workaround: `videoscreen.limitguisize` → 0 in `/storage/.kodi/userdata/guisettings.xml` (backup `.bak-20261113`). Kodi now logs `GUI format 2560x1440, Display 2560x1440`.
+  - LE fix (to do): `limitguisize` default 0 and hidden in `projects/Mediatek{,/devices/Genio}/kodi/appliance.xml`.
+- **JSON-RPC**: the raw TCP port `127.0.0.1:9090` works over ssh (`echo '{…}' | nc -w 2 127.0.0.1 9090`).
+  - The HTTP server (:8080) uses user `kodi`, password `kodi` (user rule; Kodi 22 won't start it with an empty password). Set over 9090 with `Settings.SetSettingValue`. Enabling it pops a `DialogConfirm` on the TV that needs input.
+- **Audio**: the appliance default `ALSA:hdmi:CARD=HDMI,DEV=0` is the Rockchip card name and doesn't exist here. Kodi falls back to `sysdefault` (Analog).
+  - HDMI is `hw:0,5` (DL10). UCM `HiFi`/`HDMI1` exists, but Kodi doesn't list UCM devices. The UCM BootSequence already sets the routes at boot.
+  - **Fixed**: `cards/sof-mt8395-evk.conf` maps `hdmi:CARD=sofmt8395evk,DEV=0` → hw device 5 (2ch, 48 kHz only). speaker-test and Kodi (S24) play on the TV.
+    - On the board, `/storage/.config/autostart.sh` bind-mounts a `/run/alsa-cards` copy with `/storage/.config/alsa/sof-mt8395-evk.conf` before Kodi starts (it skips that once the image has the file). Kodi `audiooutput.audiodevice` points to it. Survives reboot (checked 14:47).
+  - LE `55cfbd6b66`: the card conf, the appliance audio default, and `limitguisize` 0/hidden.
+- **logind segfault after the lockup**: logind was watchdog-killed during the lockup, and every restart then SEGV'd right after "New seat seat0" (systemd 262.2). Kodi then waited 25 s per D-Bus call.
+  - Cause (very likely): stale Kodi sleep inhibitors in `/run/systemd/inhibit/{1,2}` whose PIDs (707, 1073) were dead. With those moved aside (copies in `/storage/.cache/logind-inhibit-stale/`), logind starts.
+  - A systemd bug, only reachable after the lockup. Not filed.
+- **WiFi missing in the wizard: an iwd boot race.**
+  - mt7921e (MT7961) and its firmware are fine, and connman adds `wlan0 [wifi]`.
+  - But `iwd` starts at 3.67 s, while `dbus.service` comes up at 3.84 s. It logs `Module rfkill failed to start: -19` (`RFKILL=m`, same as every LE project) and then `D-Bus disconnected, quitting...`. It exits 0, so `Restart=on-failure` doesn't restart it.
+  - `systemctl start iwd` later works: connman then shows the WiFi technology.
+  - Fix: drop-in `After=dbus.service` + `Restart=always`. On the board as `/storage/.config/system.d/iwd.service.d/10-dbus-race.conf`.
+  - **Reboot check (14:46)**: WiFi only came back through `Restart=always`. iwd failed again even after `Started dbus.service`, so the D-Bus theory was wrong.
+  - Reading iwd's source: "D-Bus disconnected" is only teardown. The real failure is `iwd_modules_init()` → the rfkill module's `open("/dev/rfkill")` = -ENODEV, which is fatal, then `l_main_quit()` and exit 0.
+  - An `ExecStartPre=-/usr/sbin/modprobe rfkill` drop-in failed with EPERM, because the unit's `CapabilityBoundingSet` has no `CAP_SYS_MODULE`. A `+` prefix would be needed.
+  - **Root cause (2026-11-13 ~15:55)**: the LE Mediatek kernel config has `CONFIG_STATIC_USERMODEHELPER=y` (path `/sbin/usermode-helper`, which doesn't exist). So every kernel `request_module()` autoload fails.
+    - `/dev/rfkill` is a kmod static node, so opening it relies on char-major autoload, and iwd (3.8–4.1 s) gets ENODEV until udev's modprobe of mt7921e pulls in `rfkill.ko`.
+    - Rockchip and Amlogic leave it unset. Armbian leaves it unset and builds `RFKILL=y`. Other module autoloads (crypto, net families, char-major) are silently broken too.
+    - LE fix **`c9d1833dd9`** "linux (Mediatek): enable module autoload, NR_CPUS=8": unsets `STATIC_USERMODEHELPER` and sets `NR_CPUS=8` (drops `CPUMASK_OFFSTACK`). The iwd commit was dropped (backup `backup/mediatek-genio-pre-iwd-drop-20261113`); the GUI/audio commit is now `6de0ba275e`. Needs a kernel/image rebuild.
+    - Board workaround until then: `/storage/.config/system.d/iwd.service.d/10-rfkill.conf` with `ExecStartPre=+/usr/sbin/modprobe -a rfkill cfg80211`. The `+` is needed; nl80211 genl autoload is broken too ("Failed to obtain nl80211").
+- **Kernel config vs Armbian** (both 7.3.4, **identical DTB**, same board firmware since LE ships no bootloader): LE Mediatek has `NR_CPUS=512` + `CPUMASK_OFFSTACK=y` (Rockchip/Amlogic LE: `NR_CPUS=8`, as Armbian), GCC 16.2 vs 14.2, `ARM64_LSUI=y`, and `mem=3838M` on the cmdline. These are the candidates for the lost-IPI lockup.
+  - The DT has **16 GB** RAM; `mem=3838M` (from the original Genio project commit, reason unknown) limits it. A/B (user): removed from `/flash/extlinux/extlinux.conf` (backup `extlinux.conf.bak-mem`) on 2026-11-13 14:56; the board boots with 16 GB, and Kodi, audio and video nodes are fine.
+  - Reproducer attempt: `/storage/.cache/ipi-soak.sh` (unit `ipi-soak`; stop with `touch /storage/.cache/ipi-soak.stop`) runs `systemd-run --wait -p DevicePolicy=closed /bin/true` every second (BPF device prog → JIT → `kick_all_cpus_sync`); the counter is in `ipi-soak.count`.
+  - **Result without mem= (old kernel, NR_CPUS=512)**: 1509 iterations / 27 min, no stall (2026-11-13 15:24 board time). With mem=3838M it hung twice in ~40 min, but during Kodi restart/reboot, not this loop. So it points at mem=, not proven; the soak keeps running.
+  - **Unplanned reboot (2026-11-13 15:57 board time)**: Kodi logged `OnSleep: Running sleep jobs` at 15:38:48 (resumed 9 s later) and again at 15:57:24. The second never resumed: a full boot at 15:58:25.
+    - Trigger: CEC, since `standby_pc_on_tv_standby=13011` (Suspend) in `peripheral_data/cec__dev_cec0.xml`, so TV standby suspends the box.
+    - Suspend/resume on LE Genio isn't reliable: one of two resumes ended in a reset. The journal is volatile and there's no pstore, so the kernel log is lost; it needs the serial console.
+  - **Lockup #3, mem= removed (2026-11-13 ~15:59, uptime ~60 s)**: the first soak iteration after that boot hung. CPU4 systemd `bpf_prog_load → bpf_jit_binary_pack_finalize → aarch64_insn_copy → kick_all_cpus_sync`; victim CPU7 (big, idle, IPI1 frozen). The governor switch unstuck it.
+    - **So `mem=` is not the cause.** Victims so far: CPU1 (little), CPU5, CPU7 (big). Hangs so far: about 15 min after boot (Kodi restart), about 4 min (reboot), about 1 min (soak). Yet one boot ran 3400+ soak iterations / 1 h clean, so it looks like early-boot-biased or bursty.
+    - Next candidate: LE image #2 (`NR_CPUS=8`, no `CPUMASK_OFFSTACK`).
+  - **MT6360 TCPC IRQ storm (same boot, ~10 min uptime)**: IRQ 116 (`mt-eint`, mt6360-tcpc) at ~1.2k/s on CPU0 plus its I2C bus IRQ 260 (`11d01000`, i2c5) at ~3.5k/s.
+    - Each one wakes `irq/116-mt6360-tcpc` on CPU7: ~4.7k function-call IPIs/s to CPU7 (ftrace `ipi_send_cpu` via `ttwu_queue_wakelist` from CPU0 hardirq). The soak slowed to one iteration per ~6.5 s.
+    - On the first LE boot the spurious-IRQ detector disabled IRQ 116 at 98 s ("nobody cared"); here it keeps going. Armbian also saw mt6360 storms.
+    - Weak suspect only: the same storm (and the `irq/116` thread in D state) was seen on CaptainOS/Armbian, which never locked up. The DTB, board firmware and kernel patch sets (3000–3202) are identical; LE adds only imon/i915/"pm: disable async suspend/resume".
+    - Real LE-vs-Armbian differences: GCC 16.2 vs 14.2, `NR_CPUS=512` + `CPUMASK_OFFSTACK`, `ARM64_LSUI`, lockup detectors off; userspace (systemd 262 BPF, native Kodi); SD (msdc) vs UFS.
+    - LE `d81abf04ae`: `TYPEC_MT6360=m` (`tcpci_mt6360`), so it can be blacklisted with `modprobe.blacklist=tcpci_mt6360` if needed.
+    - Plan (user): first test `NR_CPUS=8` alone (image #2, TCPC loaded); add the blacklist only if lockups continue.
+    - **To do (user, 2026-11-13): root-cause the IRQ 116 storm itself, whatever its link to the lockup.** Seen on both Armbian and LE. Leads:
+      - which TCPC alert bits stay set (read TCPCI `ALERT`/`ALERT_MASK` 0x10–0x13 via the regmap debugfs or i2c-tools on i2c5 @0x4e)
+      - whether the handler acks them
+      - DT `mt6360` TCPC node/IRQ type (level vs edge, `mt-eint` 100), and whether the vendor tree has fixes or uses a different IRQ trigger
+      - the USB-C port state (nothing attached? VBUS/CC toggling)
+      - why the spurious detector disables it on some boots only
+      - the I2C5 IRQ 260 load that comes with it
+    - Follow-up (user: later): run the BPF soak on CaptainOS from UFS (pull the SD) as a control. "Never seen on Armbian" was never stress-tested.
+- **SCP firmware**: an early -2 at 0.34 s (built-in `MTK_SCP`, before `kernel-overlays-setup` adds the firmware at 1.48 s); the SCP boots later (SOF / first decoder open). Harmless, same as on Armbian.
+- **Kernel lockup: a lost IPI to an idle CPU (2026-11-13 14:24)**. It happened on `systemctl stop/start kodi`.
+  - CPU2 spun at 100% sys in `bpf_prog_free_deferred → bpf_prog_pack_free → bpf_arch_text_invalidate → aarch64_insn_set → kick_all_cpus_sync → smp_call_function_many_cond`, waiting for CPU1's csd.
+  - CPU1 was idle (PSCI `cpu-off-l`) and still woke on timers, but its IPI0/IPI1 counts stayed frozen. The function-call SGI was lost, and an idle wakeup without `need_resched` doesn't flush the csd queue.
+  - Knock-on effects: workqueues stalled, so loop0/squashfs reads blocked (new execs hang, `sleep` too), Kodi's `setsockopt(SO_ATTACH_FILTER)` blocked on the bpf_prog_pack mutex, and khugepaged hung in `lru_add_drain_all`.
+  - All CPUs answered sysrq-l, memory and the SD card were fine, and dmesg had no RCU stall.
+  - **Unstuck without a reboot**: `echo teo > /sys/devices/system/cpu/cpuidle/current_governor; echo menu > …` runs `wake_up_all_idle_cpus()`. CPU1 left idle, flushed its queue (IPI1 19070 → 20025), and everything resumed.
+  - Never seen on Armbian 7.3.x on the same board. Suspects: the PSCI cpu-off path (BL31) or the GICv3 redistributor wake, `ARM64_PSEUDO_NMI=y`, or the LE kernel config vs Armbian's.
+  - User decision: noted; chase it only if it repeats.
+  - **Repeated (2026-11-13 ~14:50, uptime ~4 min, during `systemctl reboot`)**: CPU5 (big, idle) lost the SGI (IPI0/IPI1 frozen). CPU4 khugepaged (`collapse_huge_page → tlb_remove_table_sync_one → smp_call_function`) and CPU6 systemd (`bpf_prog_load → bpf_jit_binary_pack_finalize → aarch64_insn_copy → kick_all_cpus_sync`) spun waiting. The governor switch unstuck it again.
+    - So it's not BPF-specific: any all-CPU IPI can hit an idle CPU that misses its SGI. Twice in ~40 min of LE uptime vs never in hours on Armbian. Dumps: sysrq-w/sysrq-l in this session's scratchpad (not kept).
+
+- **LE image #2 built** (2026-11-13 16:16, about 12 min, rc 0; native, tmux `le-mediatek-genio-image`; log `runs/le-mediatek-genio-image-20261113-160413.log`). From `d8ee45e1c0`: `6de0ba275e` (GUI limit 0 hidden, HDMI ALSA conf + default), `c9d1833dd9` (no STATIC_USERMODEHELPER, NR_CPUS=8), `d8ee45e1c0` (no mem=, ttyS0 last, loglevel=7).
+  - Outputs: `target/LibreELEC-Genio.aarch64-13.0-devel-20261113160414-d8ee45e{.tar,-nio-12l.img.gz}`.
+  - Checked: kernel `.config` (`NR_CPUS=8`, no usermode helper), merged Kodi `appliance.xml`, `cards/sof-mt8395-evk.conf` in the system image, and the img's extlinux APPEND (`quiet console=tty0 console=ttyS0,921600 … loglevel=7`).
+  - Kodi was refreshed by deleting only `.stamps/kodi/build_target`: LE's stamp hash doesn't cover `projects/*/kodi/appliance.xml`, so without that the old defaults would have shipped.
+  - Not deployed yet (user decides).
+
+- **LE image #3 deployed** (2026-11-13 16:30 board time; built 17:28 local, `d81abf04ae`: image #2 + `TYPEC_MT6360=m`). Deployed as a `.tar` update via `/storage/.update/` and one reboot.
+  - Mediatek has no `bootloader/update.sh`, so `/flash/extlinux/extlinux.conf` stays hand-edited: no `mem=`, no `quiet`, ttyS0 last.
+  - Board workarounds removed (iwd drop-in, `autostart.sh`, `/storage/.config/alsa`, `/storage/.cache/alsa-cards-test`). Without them: iwd starts first time, WiFi is present, the HDMI ALSA device + Kodi HDMI sink work, the GUI is 2560x1440 with no ERANGE, and RAM is 16 GB.
+  - CEC `standby_pc_on_tv_standby` = 36028 (Ignore; backup `cec__dev_cec0.xml.bak-20261113`).
+  - `tcpci_mt6360` is loaded and IRQ 116 storms. The soak is restarted to test `NR_CPUS=8` alone.
+
+- **Jellyfin repo on LE** (2026-11-13): `repository.jellyfin.kodi` 1.0.0 (from `kodi.jellyfin.org/repository.jellyfin.kodi.zip`) unzipped into `/storage/.kodi/addons`, then `kodi-send --action=UpdateLocalAddons` + `Addons.SetAddonEnabled`.
+  - Its URL `repo.jellyfin.org/releases/client/kodi/addons.xml` gives 404 to plain curl, but with Kodi's user agent it redirects to `…/files/client/kodi/py3/addons.xml` on a mirror. Kodi fetched it (`plugin.video.jellyfin` 2.2.0+py3, JellyCon).
+
+- **LE playback matrix (image #3, 2026-11-13 ~17:00 board time; DirectToPlane setting, display 2560x1440@60, soak running alongside; the user watched the TV)**. Helper: `scripts/media/vdec/le-play.sh <clip> [s]` (JSON-RPC `Player.Open` on `/var/media/root/root/vdec/clips/real`, then player props, Kodi log + dmesg delta).
+
+  | clip | path | result |
+  |---|---|---|
+  | BBB 1080p24 H.264 + AAC 5.1 | plane (MDP3 → UYVY 2560x1440, plane 39) | OK, HDMI audio OK; small judder = 24p on 60 Hz |
+  | jf HEVC 8-bit 1080p 30M | plane | OK |
+  | jf HEVC 10-bit 1080p | P010 → GLES | OK |
+  | jf AV1 10-bit 1080p | P010 → GLES | OK |
+  | jf AVC 4K 40M | plane (MDP3 4K → 1440p) | OK |
+  | jf HEVC 10-bit 4K 40M | P010 → GLES | OK |
+  | jf HEVC HDR10 4K | P010 → GLES | plays, but **TV stays SDR** (HDR passthrough off, tonemap off) |
+  | jf AV1 HDR10 4K | P010 → GLES | slight stutter, SDR |
+  | jf DV 8.1 4K | P010 → GLES (base layer) | OK, SDR |
+  | jf AVC 4K 150M | plane | OK |
+  | jf AVC 8K 150M | **software** (hwaccel init fails above 4K) | slow, as expected |
+  | jf AV1 10-bit 4K 40M | P010 → GLES | OK |
+  | gen VP9 4K | plane | OK |
+  | gen AV1 8-bit 4K | plane | OK |
+
+  - No dmesg errors or IOMMU faults during the matrix.
+  - Benign log errors: `deinterlace_v4l2m2m` "Failed to configure output pad" / `FilterOpen -22` (Kodi probes for a V4L2 HW deinterlacer, which MDP3 lacks: "no deinterlacing filter found"), and `Could not find a valid device` (the same probe).
+  - Open:
+    - **HDR output on LE**: `failed to choose EGL config for 10-bit` + `HDR passthrough: off`. Check 10-bit GBM/EGL configs on panfrost + MTK planes and `HDR_OUTPUT_METADATA` on mtk_hdmi; or enable Kodi tonemapping for SDR.
+    - Refresh-rate switching: the TV has no 1440p24, and an empty whitelist means Kodi stays at 60 Hz (user setting: whitelist 1080p/2160p 23.976/24).
+    - `src bits 8` logged with a P010 fourcc for AV1 (cosmetic).
 
 ## Board state
 

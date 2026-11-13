@@ -16,6 +16,28 @@ In a new session, say "continue the MediaTek vdec plan in `notes/media/le-media-
   - Run one decode test at a time. Don't read clk/genpd debugfs on a hung board.
   - Nothing is pushed and nothing goes to lists without an OK.
 
+**Resume here (2026-11-13 ~18:10)**: the NIO runs LE image #3 at the TV. Read the main note's Status + "LibreELEC on the TV".
+- LE `mediatek-genio` on top of `7cf2fccd61` (nothing pushed):
+  - `6de0ba275e` GUI limit/HDMI audio defaults
+  - `c9d1833dd9` module autoload + `NR_CPUS=8`
+  - `d8ee45e1c0` cmdline
+  - `d81abf04ae` `TYPEC_MT6360=m`
+- Next (ask the user):
+  - lockup: if the `NR_CPUS=8` soak stays clean, more boots/Kodi restarts to confirm; if it hangs, `modprobe.blacklist=tcpci_mt6360`
+  - HDR output on LE
+  - IRQ 116 root cause
+  - suspend/resume WDT
+  - a Mediatek `bootloader/update.sh` (so `.tar` updates refresh extlinux)
+  - LE PR #10891 update + screenshots (the user's)
+  - CaptainOS control soak
+- Soak script on the board: `/storage/.cache/ipi-soak.sh` (unit `ipi-soak`, stop with `touch /storage/.cache/ipi-soak.stop`).
+
+**Update 2026-11-13 ~14:45**: the NIO is at the TV, running the LE SD image. See the main note, "LibreELEC on the TV": GUI scaling ERANGE fixed on the board (LE appliance fix to do), HDMI audio default to do, lost-IPI lockup noted. No image rebuild until the user asks; fix the running board first.
+- **Open (later, user)**:
+  - root-cause the MT6360 TCPC IRQ 116 storm (seen on Armbian and LE; leads in the main note)
+  - lost-IPI lockup control soak on CaptainOS from UFS
+  - suspend/resume ends in a HW watchdog reset (needs `loglevel=7` UART logs)
+
 **Resume here (2026-11-13 ~04:00; next session in 1–2 days)**: read the main note's Status, "Housekeeping", "Armbian PR prep", "Rockchip baseline" and "Parked".
 - **State**:
   - NIO: Armbian kernel build #3 (3200–3202, no 3203) on UFS; Kodi image `kodi-rockchip-gbm:trixie-v4l2requests` from kodi-rockchip-deb `9008c03`; FFmpeg in `/opt/ffmpeg-vdec` = `armsoc-9.0.2-mediatek` HEAD `abcf34a935`. **SD card (`/dev/mmcblk1`) holds the LibreELEC Genio image** (written + read-back verified 2026-11-13; it wiped a Switch exFAT card, with the user's OK). **The user boots it** (not done yet).
