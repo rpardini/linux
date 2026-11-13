@@ -291,6 +291,15 @@ Commits on top of chewitt `armsoc-9.0.2` (`ad8c2e36ee`):
     - `mtk-v5.15-dev` and 4 mtk-v6.6 headers weren't fetched (GitLab HTTP 429; retry later).
     - **Conclusion**: the hardware supports 10-bit block input, as Dufresne says, but the mainline SCP-firmware MDP path doesn't. K27 would mean porting the BSP's AP-side MDP algorithm (big, unlikely upstreamable) or getting MediaTek to update the SCP fw. **Parked**; the CPU detile covers 10-bit (4K60 HEVC at full rate). Armbian `3203` reverted (armbian-build `9259e765f`); branch `mainline/mtk-mdp3-mt2110` kept for reference. **The NIO still runs kernel build #4 with 3203**: harmless for our stack (nothing feeds 10-bit to MDP3), replace it at the next kernel install.
 
+### Parked (2026-11-13, user decision: non-essential)
+
+- HEVC `PICSIZE_A`–`D` (no output; not fixed by the min-framesize change) and `CONFWIN_A` (likely left/top crop of hw frames)
+- VP8 `segmentation-1425` (IOMMU faults) / `1436`
+- AV1 film grain (`av1-1-b8-23-filmgrain-50`, `ccvbfilmgrain`, `av1-1-b10-23-filmgrain-50`)
+- VP9 `resize*` (26; GStreamer fails them too), `vp91-2-04-yuv422/444` (unsupported profiles), `vp90-2-22-svc`
+- AV1 10-bit 4K headroom (44/60), EGL vs. plane colour, 10-bit fallback skip-ahead, display-driver warnings, Blade3 hdmirx audio
+- Latest fixes (2026-11-13): AV1 resolution-change reinit (FFmpeg `d10bfdc65f`, fixes `sizeup`; Chromium 8-bit AV1 11/13 = GStreamer); min framesize only enforces the maximum (`abcf34a935`; VP9 204 → 265/305). Packaging: kodi-rockchip-deb `d2525a0`, LibreELEC `3960b8c2f8`.
+
 ### Audio (2026-11-12)
 
 - **Root cause of "no sink"**: no sound card. The SOF DSP (`sof-audio-of-mt8195 10803000.dsp`) failed with `SOF firmware and/or topology file not found` (`mediatek/sof/sof-mt8195.ri`, `mediatek/sof-tplg/sof-mt8195.tplg`). The machine driver `mt8195_mt6359` then never registered the card.
