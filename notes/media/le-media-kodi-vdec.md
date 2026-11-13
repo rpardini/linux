@@ -242,6 +242,9 @@ The NIO-12L was moved to the TV and boots the LE SD image (`devel-20261113023614
     - **HDR output on LE**: `failed to choose EGL config for 10-bit` + `HDR passthrough: off`. Check 10-bit GBM/EGL configs on panfrost + MTK planes and `HDR_OUTPUT_METADATA` on mtk_hdmi; or enable Kodi tonemapping for SDR.
     - Refresh-rate switching: the TV has no 1440p24, and an empty whitelist means Kodi stays at 60 Hz (user setting: whitelist 1080p/2160p 23.976/24).
     - `src bits 8` logged with a P010 fourcc for AV1 (cosmetic).
+- **Idle HDMI buzz (2026-11-13 ~18:15)**: with nothing playing, the TV buzzed/toned. Kodi keeps PCM 5 RUNNING (S24_LE, 2ch, 48 kHz; `streamsilence=1`), and `audiooutput.streamnoise=true` sends a "low noise" signal that comes out audible. Turning it off (JSON-RPC) stopped it at once. BBB playback audio was clean.
+  - LE `871008b8b8`: Mediatek appliance `audiooutput.streamnoise` default false (next image).
+  - To do (later): why the low-level noise turns into a buzz (S24 container/justification through SOF DL10 → HDMI, gain, or the TV); test speaker-test S24 vs S16 at low amplitude.
 
 ## Board state
 
