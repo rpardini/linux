@@ -10,7 +10,7 @@ Started 2026-11-12. Board: Radxa NIO-12L (Genio 1200 / MT8395, Mali-G57).
   - K29: mtk-mdp3 GCE pm_runtime, **the MDP3 hang fix**
 - Userspace work has no IDs and is tracked here.
 
-## Status (2026-11-13 ~18:10)
+## Status (2026-11-13 ~18:50)
 
 - **LibreELEC on the NIO at the TV (2026-11-13 afternoon)**: LE image #3 (`mediatek-genio` `d81abf04ae`) from SD, display 2560x1440@60. See "LibreELEC on the TV".
   - Kodi GUI, HDMI audio, WiFi, CEC and 16 GB RAM all work without board workarounds.
@@ -20,7 +20,9 @@ Started 2026-11-12. Board: Radxa NIO-12L (Genio 1200 / MT8395, Mali-G57).
     - the MT6360 TCPC IRQ 116 storm (root-cause later)
     - suspend/resume → HW watchdog reset
     - HDR output
-  - Jellyfin repo installed; the user tests Jellyfin themselves.
+  - HDMI audio distortion fixed: the HW mishandles `S24_LE`, so LE `4c26c67451` feeds `S32_LE` (on the board via autostart.sh until image #4).
+  - Lockup soak on image #3 (`NR_CPUS=8`): clean for 73 min.
+  - Jellyfin repo + client installed; the user tests Jellyfin themselves.
 
 - **Board**: Armbian genio edge 7.3.4 build #3 with patches 3200 (K29), 3201 (K26) and 3202 (K28), plus `scp.img`. Decoder and MDP3 work.
 - **Decoding (hardware, through FFmpeg and GStreamer)**: H.264, HEVC, VP8, VP9 and AV1 decode correctly on the hardware, apart from the open FFmpeg issues below. Conformance tables are under "Results".

@@ -16,28 +16,39 @@ In a new session, say "continue the MediaTek vdec plan in `notes/media/le-media-
   - Run one decode test at a time. Don't read clk/genpd debugfs on a hung board.
   - Nothing is pushed and nothing goes to lists without an OK.
 
-**Resume here (2026-11-13 ~18:10)**: the NIO runs LE image #3 at the TV. Read the main note's Status + "LibreELEC on the TV".
-- LE `mediatek-genio` on top of `7cf2fccd61` (nothing pushed):
-  - `6de0ba275e` GUI limit/HDMI audio defaults
-  - `c9d1833dd9` module autoload + `NR_CPUS=8`
-  - `d8ee45e1c0` cmdline
+**Resume here (2026-11-13 ~18:50; latest)**: read the main note's Status and "LibreELEC on the TV" first.
+- **Board state (NIO-12L at the TV, `root@192.168.66.83`)**:
+  - Boots **LE image #3** from SD (`devel-20261113172341-d81abf0`); CaptainOS/Armbian stays on UFS (LE automounts it at `/var/media/root`, clips in `/var/media/root/root/vdec/clips{,/real}`).
+  - `/flash/extlinux/extlinux.conf` is hand-edited (no `mem=`, no `quiet`, ttyS0 last; backups `.bak-mem`). `.tar` updates don't touch it: Mediatek has no `bootloader/update.sh`.
+  - `/storage/.config/autostart.sh` + `/storage/.config/alsa/sof-mt8395-evk.conf` bind-mount the S32 HDMI ALSA conf until an image has `4c26c67451`. Remove both after deploying image #4.
+  - Kodi: GUI 2560x1440@60, DirectToPlane, HDMI audio, CEC TV-standby = Ignore, web server user `kodi` / password `kodi` on :8080, raw JSON-RPC on 127.0.0.1:9090. Jellyfin repo + client installed and configured by the user (their library).
+  - The soak is stopped; the script stays at `/storage/.cache/ipi-soak.sh` (start: `rm -f /storage/.cache/ipi-soak.stop; systemd-run --unit=ipi-soak /storage/.cache/ipi-soak.sh`; stop: `touch /storage/.cache/ipi-soak.stop`).
+- **LE `mediatek-genio`** on top of `7cf2fccd61` (local, nothing pushed; backups `backup/mediatek-genio-pre-*`):
+  - `6de0ba275e` GUI limit 0 + hidden, HDMI ALSA conf, HDMI audio default
+  - `c9d1833dd9` no `STATIC_USERMODEHELPER` (module autoload → WiFi), `NR_CPUS=8`
+  - `d8ee45e1c0` Genio cmdline (no `mem=`, ttyS0 last, `loglevel=7`)
   - `d81abf04ae` `TYPEC_MT6360=m`
-  - `4c26c67451` HDMI S32 via linear plugin (not in an image yet; board uses the autostart.sh bind mount)
-- Next (ask the user):
-  - lockup: image #3 soak clean (4173 iterations / 73 min); confirm over more boots and Kodi restarts; if it hangs again, `modprobe.blacklist=tcpci_mt6360`
-  - HDR output on LE
-  - IRQ 116 root cause
-  - suspend/resume WDT
-  - a Mediatek `bootloader/update.sh` (so `.tar` updates refresh extlinux)
-  - LE PR #10891 update + screenshots (the user's)
-  - CaptainOS control soak
-- Soak script on the board: `/storage/.cache/ipi-soak.sh` (unit `ipi-soak`, stop with `touch /storage/.cache/ipi-soak.stop`).
+  - `4c26c67451` HDMI PCM fed S32_LE via a linear plugin (the HW mishandles S24_LE) — **not in an image yet**
+  - Build: tmux `40-tmux-run.sh le-mediatek-genio-image`, `env PROJECT=Mediatek DEVICE=Genio ARCH=aarch64 THREADCOUNT=12 CONCURRENCY_MAKE_LEVEL=12 taskset -c 0-11 make image` (~5–12 min incremental). After `appliance.xml` changes, delete `.stamps/kodi/build_target` first (not in kodi's stamp hash). Deploy: `.tar` + `.sha256` into `/storage/.update/`, one reboot (the user's OK).
+- **Tools**:
+  - `scripts/media/vdec/le-play.sh <clip> [s]` plays one clip and collects player state, Kodi log and dmesg
+  - Lockup unstick: `echo teo > /sys/devices/system/cpu/cpuidle/current_governor; echo menu > …`
+  - UART logs from the user: `le-media-kodi-vdec/logs-uart/nio-12l-uart-logs-le.txt`
+  - LE has no `timeout`/`nproc`; use `read -t N x </dev/zero` as a sleep in ssh one-liners
+- **Next (ask the user)**:
+  1. image #4 with `4c26c67451`; deploy; remove the autostart ALSA workaround; recheck audio (BBB + Jellyfin) and the idle noise
+  2. lockup: image #3 soak clean (4173 iterations / 73 min); confirm over more boots and Kodi restarts; if it hangs again, `modprobe.blacklist=tcpci_mt6360`
+  3. HDR output on LE (10-bit EGL/GBM config on panfrost + MTK planes, `HDR_OUTPUT_METADATA` on mtk_hdmi; or Kodi tonemapping)
+  4. IRQ 116 (MT6360 TCPC) storm root cause (leads in the main note)
+  5. suspend/resume → HW watchdog reset (UART with `loglevel=7`)
+  6. upstream candidate: SOF/AFE DL10 advertising S24_LE (`sound/soc/sof/mediatek/`, sof-mt8195 tplg)
+  7. a Mediatek `bootloader/update.sh` (so `.tar` updates refresh extlinux)
+  8. Armbian test `scripts/media/vdec/kodi-home/asound.conf`: add `format S32_LE`
+  9. CaptainOS control soak (BPF loop from UFS)
+  10. LE PR #10891 update + screenshots (the user's)
+- **Rules**: ask before reboots, image deploys and risky board tests; one decode test at a time; nothing pushed to LE/FFmpeg/Kodi remotes and nothing to lists without an OK; the user reports what the TV shows (no capture at the TV).
 
-**Update 2026-11-13 ~14:45**: the NIO is at the TV, running the LE SD image. See the main note, "LibreELEC on the TV": GUI scaling ERANGE fixed on the board (LE appliance fix to do), HDMI audio default to do, lost-IPI lockup noted. No image rebuild until the user asks; fix the running board first.
-- **Open (later, user)**:
-  - root-cause the MT6360 TCPC IRQ 116 storm (seen on Armbian and LE; leads in the main note)
-  - lost-IPI lockup control soak on CaptainOS from UFS
-  - suspend/resume ends in a HW watchdog reset (needs `loglevel=7` UART logs)
+_Older resume blocks below are history._
 
 **Resume here (2026-11-13 ~04:00; next session in 1–2 days)**: read the main note's Status, "Housekeeping", "Armbian PR prep", "Rockchip baseline" and "Parked".
 - **State**:
