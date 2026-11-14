@@ -36,6 +36,12 @@ mtk_hdmi_v2_isr_thread
 - After HPD low, fbdev disables the CRTC. The vblank never arrives because the HDMI link is gone. Then the vdosys1 components (ETHDR, MDP-RDMA via `mtk_disp_ovl_adaptor`) get one runtime-PM put too many.
 - K23 patch 3 (`drm/mediatek: hdmi: register a CEC notifier for HDMI v2`) only sets `DRM_BRIDGE_OP_HDMI_CEC_NOTIFIER` + `hdmi_cec_dev`. The notifier runs on detect/HPD and only touches the CEC physical address. None of that code is in the trace.
 
+## Second trigger: reboot (2026-11-14, LE image #4, kernel 7.3.4)
+
+- UART on reboot, HDMI connected to the TV (no unplug): the same WARN `vblank wait timed out on crtc 0` at `drm_vblank.c:1329`, via `mtk_crtc_atomic_disable` ← `drm_atomic_helper_disable_all` ← `drm_atomic_helper_shutdown` ← `mtk_drm_shutdown` ← `device_shutdown` ← `kernel_restart`. The user says it had happened before, so it's not caused by the 2026-11-14 CEC/MDP3 fixes. The reboot still completes.
+- So it isn't about HPD: **any CRTC disable on crtc 0 (the vdosys1 HDMI path) misses the vblank**. Suspects: the vblank IRQ source for vdosys1 (ovl_adaptor/mutex) is stopped or gated before `mtk_crtc_atomic_disable` waits, or the wait is done after the pipe is stopped.
+- Nothing upstream since v7.3 in `mtk_crtc.c` / `mtk_disp_ovl_adaptor.c` / `mtk_ethdr.c` / `mtk_drm_drv.c` except refactors (checked 2026-11-14).
+
 ## To do
 
 1. Prove it's pre-existing: build genio edge without `3102` (or without all of `310x`), unplug once, check dmesg. Or check on the TV session with a stock kernel.
