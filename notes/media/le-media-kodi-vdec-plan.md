@@ -16,7 +16,15 @@ In a new session, say "continue the MediaTek vdec plan in `notes/media/le-media-
   - Run one decode test at a time. Don't read clk/genpd debugfs on a hung board.
   - Nothing is pushed and nothing goes to lists without an OK.
 
-**Resume here (2026-11-13 ~18:50; latest)**: read the main note's Status and "LibreELEC on the TV" first.
+**Resume here (2026-11-14 ~14:00; latest)**: Armbian PR review (CodeRabbit on #11362 CEC / #11363 MDP3), all 5 findings valid and fixed:
+- K23 `b4/mt8195-cec` patch 2 (deadlock: `disable_irq_nosync` + `enabled` guard in the IRQ thread; suspend guards in log_addr/transmit; polls update `bus_free`); details in `notes/kernel/mt8195-cec.md`.
+- K29 amended as "v3" in worktree `kernel-K29` (PM refs of all pipes before the first send; unsent packets drop theirs; `[rpardini: …]` note). topics.tsv K29 → `keep`.
+- armbian-build `extensions`: fixups squashed into the two genio commits, bodies updated; genio edge build OK (all patches apply). The user re-cuts the PRs with prtool.
+- LE `mediatek-genio` `1d847c9607`; **image #4 built** (`target/LibreELEC-Genio.aarch64-13.0-devel-20261114135606-1d847c9.tar`, also has `4c26c67451`). Deploy and reboot need the user's OK. Then run the TV tests: remove the autostart ALSA workaround; audio; CEC with the TV; a `cec-ctl --clear`/`--playback` loop; DirectToPlane 1080p + 4K.
+- Draft CodeRabbit replies: not posted yet (the user posts them, or they're posted with gh after an OK).
+- Backups: `b4/mt8195-cec-backup-pre-cr-fixes`, `mainline/mtk-mdp3-gce-pm-runtime-backup-pre-v3`, armbian `backup/extensions-pre-cr-fixes`, LE `backup/mediatek-genio-pre-cr-fixes`.
+
+**Resume here (2026-11-13 ~18:50)**: read the main note's Status and "LibreELEC on the TV" first.
 - **Board state (NIO-12L at the TV, `root@192.168.66.83`)**:
   - Boots **LE image #3** from SD (`devel-20261113172341-d81abf0`); CaptainOS/Armbian stays on UFS (LE automounts it at `/var/media/root`, clips in `/var/media/root/root/vdec/clips{,/real}`).
   - `/flash/extlinux/extlinux.conf` is hand-edited (no `mem=`, no `quiet`, ttyS0 last; backups `.bak-mem`). `.tar` updates don't touch it: Mediatek has no `bootloader/update.sh`.

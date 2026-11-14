@@ -166,6 +166,15 @@ Series (b4, v1, change-id `20261108-b4-mt8195-cec-7f2840a477aa`, base `d164c7d75
 - sparse: kernel `C=1` runs sparse on every compiled file; this tree's `scripts/checker-valid.sh` needs `__typeof_unqual__` support, which Debian's 0.6.4 lacks, so `C=1` is silently skipped (Makefile warns "sparse is not available or not up to date"). Needs sparse built from git (git.kernel.org/pub/scm/devel/sparse/sparse.git). Media builds with `C=1` (sparse + smatch) and wants no new warnings.
 - 2026-11-12: sparse built from git (tip `84ec065`, 2026-10-22) in `/opt/linuxdev/sparse-src`, installed to `~/.local/bin/sparse` (`--version` says 0.6.4: shallow clone, no tags). `checker-valid.sh` accepts it. Run: `make O=.build W=1 C=2 CHECK=$HOME/.local/bin/sparse CF=-D__CHECK_ENDIAN__ <objs>`. Result: `mtk-hdmi-cec.c`, `mtk_hdmi.c`, `mtk_hdmi_common.c`, `mtk_hdmi_v2.c` clean (V=1 confirms sparse ran on them). smatch not installed (not in Debian).
 
+## Armbian PR #11362 review (CodeRabbit, 2026-11-14)
+
+The PR was approved by Igor; CodeRabbit's 3 findings were checked against the code. All are valid, and all are fixed in patch 2 (fixup squashed; backup `b4/mt8195-cec-backup-pre-cr-fixes`; Armbian `3101` and LE `3101` updated):
+- **Deadlock**: `cec_adap_enable()` calls `adap_enable(false)` with `adap->lock` held. `mtk_cec_power_off()` then did `disable_irq()`, which waits for the IRQ thread, and that thread can be blocked on `adap->lock` in `cec_received_msg()`. Remove (`cec_unregister_adapter`) had the same problem. Fix: `disable_irq_nosync()`, and the thread returns `IRQ_NONE` while `!cec->enabled` (checked under the spinlock), so it never touches gated registers. The core ignores late TX/RX reports.
+- **Suspend**: the core still has `is_enabled` while the driver powered off in system suspend. `adap_log_addr` now only caches the address while off (`hw_init` writes it on power on); `adap_transmit` returns `-EIO` while off (the core aborts the message).
+- **Polls**: `bus_free` is now updated on every `CEC_RX_BUF_READY`, polls included (before, only for len > 0).
+- W=1 + sparse clean; `b4 prep --check` only flags the missing SoB on patch 1 (the user adds it).
+- Not re-tested yet with cec-compliance vs the Blade 3; TV test on LE image #4 (see `notes/media/`).
+
 ## Lore and references used to prepare v1
 
 Saved copies: `/opt/linuxdev/lore/topics/K23/refs/` (b4 mboxes, the lei search result, the cec-compliance source). Links use `https://lore.kernel.org/r/<msgid>`.
