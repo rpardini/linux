@@ -16,32 +16,35 @@ In a new session, say "continue the MediaTek vdec plan in `notes/media/le-media-
   - Run one decode test at a time. Don't read clk/genpd debugfs on a hung board.
   - Nothing is pushed and nothing goes to lists without an OK.
 
-**Resume here (2026-11-14 ~14:50; latest)**: review round 2 (after the user's PR re-cut). 3 CEC findings fixed (TX before RX; `disable_irq()` in remove; `pm_lock` mutex + `suspended` flag); vb2 3202 direction finding not changed (mainline dma-sg precedent; user's decision). Details and reply drafts in [armbian-pr-11362-11363-review.md](armbian-pr-11362-11363-review.md).
-- Armbian `extensions` CEC commit `cb1adcda2` (fixup + body bullets; backup `backup/extensions-pre-cr2`); genio edge build OK. **The user re-cuts and pushes with prtool.**
-- LE `b32b291ea6` "CEC review fixes, round 2"; **image #5 built** (`target/LibreELEC-Genio.aarch64-13.0-devel-20261114144816-b32b291.tar`, sha OK), **deployed 2026-11-14 ~14:52** (board on `devel-20261114144816-b32b291`, `/dev/cec0` present, clean boot dmesg); the user tests at the TV.
-- Late round-3 CEC SFT fix (pending RX → `bus_free = now`): Armbian `34310e649` (build OK), LE `c947509de9`, **image #6 built** (`target/LibreELEC-Genio.aarch64-13.0-devel-20261114151307-c947509.tar`, sha OK), **staged** in `/storage/.update/` 2026-11-14 ~15:15 (sha OK), **not rebooted** (board still runs image #5; it installs on the next reboot). The user re-cuts; then resolve the SFT thread on #11362.
-- Round 3 (after the second re-cut): #11362 clean; #11363 `3200` error-path leak = pre-existing mainline, reply posted, no change (see the review note). Possible upstream mtk-mdp3 cleanup patch later.
-- vb2 reply **posted** on #11363 (discussion_r4573739017); CodeRabbit withdrew the finding. The other findings were all fixed (no replies posted).
-
-**Resume here (2026-11-14 ~14:30)**: Armbian PR review done; image #4 on the board; the user is testing at the TV.
-- **Review (CodeRabbit on Armbian #11362 CEC / #11363 MDP3)**: all 5 findings valid and fixed. Findings and draft replies (**not posted**) are in [armbian-pr-11362-11363-review.md](armbian-pr-11362-11363-review.md).
-  - K23 `b4/mt8195-cec` patch 2: deadlock (`disable_irq_nosync` + an `enabled` guard in the IRQ thread), suspend guards in log_addr/transmit, polls update `bus_free`. Details in `notes/kernel/mt8195-cec.md`. Not re-run with cec-compliance vs the Blade 3 yet.
-  - K29 amended as "v3" in worktree `kernel-K29`: PM refs of all pipes are taken before the first send, and unsent packets drop theirs; there's a `[rpardini: …]` note; Angelo's R-b dropped. topics.tsv K29 → `keep`. This is the base for the upstream resend (the user's call).
-  - armbian-build `extensions`: fixups squashed into the two genio commits (bodies updated, R-b dropped in 3200); genio edge build OK. **The user re-cuts and pushes the PRs with prtool.**
-  - LE `mediatek-genio` top commit `0e1e544a56` "linux (Mediatek): CEC and MDP3 review fixes" (local, not pushed).
-- **Board (NIO-12L at the TV, `root@192.168.66.83`)**: LE **image #4** `devel-20261114135606-1d847c9` (built before the R-b-only amend; same code), has `4c26c67451` (S32 HDMI audio).
-  - The autostart ALSA workaround is **removed** (`autostart.sh` and `/storage/.config/alsa/` gone; the image's own `sof-mt8395-evk.conf` has `format S32_LE`).
-  - `/dev/cec0` is present. Boot dmesg had one `cec-10014000.cec: error counter: 1 (seq 8: 11)`; watch it.
-  - Last state: `real/jf-avc-2160-40M.mp4` (4K H.264, **no audio track**) looping in DirectToPlane (repeat one), so the user can check it. Stop it with `Player.Stop` or the remote. Clip for audio: `real/bbb-1080p24-h264.mov`.
-  - `FilterOpen -22` in the Kodi log = the known harmless deinterlacer probe.
-- **K25 parked** (user, 2026-11-14): the vblank-timeout WARN also fires on **reboot** (`mtk_drm_shutdown`), with HDMI connected, so any crtc 0 disable misses its vblank. Notes: `notes/kernel/mt8195-hdmi-unplug-vblank-warn.md`; the first step when resumed is the disable order in `mtk_crtc_atomic_disable()`.
+**Resume here (2026-11-14 ~15:30; latest)**: the Armbian PR review is done (3 CodeRabbit rounds). The board has image #6 staged but not installed. The user tests at the TV.
+- **Armbian PRs** [#11362](https://github.com/armbian/build/pull/11362) (CEC, approved by Igor) and [#11363](https://github.com/armbian/build/pull/11363) (MDP3/vcodec/vb2): **no open review threads**. PR heads `06134b3df` / `353281d45` match local `extensions` (`34310e649` CEC, `e06b7b69a` media), checked 2026-11-14 ~15:30. Full history, verdicts and posted replies: [armbian-pr-11362-11363-review.md](armbian-pr-11362-11363-review.md).
+  - Fixed in **K23** patch 2 (`b4/mt8195-cec`, v1 not sent):
+    - IRQ-thread deadlock (`disable_irq_nosync` + `enabled` guard)
+    - suspend guards (log_addr, transmit)
+    - polls and pending RX update `bus_free`
+    - TX reported before RX
+    - `disable_irq()` in remove
+    - `pm_lock` mutex + `suspended` flag
+    - details in `notes/kernel/mt8195-cec.md`
+  - Fixed in **K29** "v3" (worktree `kernel-K29`, branch `mainline/mtk-mdp3-gce-pm-runtime`): GCE PM refs balanced on submit failure; `[rpardini: …]` note; Angelo's R-b dropped; topics.tsv `keep`.
+  - Not changed, replied: vb2 `3202` direction (CodeRabbit withdrew it); MDP3 error-path leak (pre-existing in mainline v7.3; candidate for a separate upstream mtk-mdp3 cleanup patch).
+- **LE** `mediatek-genio` (local, not pushed), on top of `4c26c67451`: `0e1e544a56` (round 1), `b32b291ea6` (round 2), `c947509de9` (round 3).
+- **Board (NIO-12L at the TV, `root@192.168.66.83`)**:
+  - Running **image #5** `devel-20261114144816-b32b291`. **Image #6** `LibreELEC-Genio.aarch64-13.0-devel-20261114151307-c947509.tar` (+ `.sha256`, sha OK) is **staged in `/storage/.update/`** and installs on the next reboot (the user's call; don't reboot without an OK).
+  - The autostart ALSA workaround is removed (the image has `format S32_LE`). `/dev/cec0` is present; boot dmesg on #5 was clean.
+  - Last state: `real/jf-avc-2160-40M.mp4` (4K H.264, no audio track) may still be looping in DirectToPlane (repeat one). Audio clip: `real/bbb-1080p24-h264.mov`. `FilterOpen -22` in the Kodi log is the harmless deinterlacer probe.
+- **K25 parked** (user, 2026-11-14): the vblank-timeout WARN also fires on reboot (`mtk_drm_shutdown`). Notes: `notes/kernel/mt8195-hdmi-unplug-vblank-warn.md`.
 - **Next (ask the user)**:
-  1. the user's TV results for image #4: audio (BBB, Jellyfin, idle noise), CEC with the TV (remote, standby/active source), the adapter disable/enable loop (`cec-ctl --clear` / `--playback`) with a dmesg hung-task check, 4K/1080p DirectToPlane
-  2. CodeRabbit replies (user posts, or gh with an OK); prtool re-cut is the user's
-  3. K29 upstream resend draft (v3 = `kernel-K29` HEAD) for the user to review
+  1. after the reboot into image #6: the user's TV results (audio: BBB, Jellyfin, idle noise; CEC with the TV; an adapter disable/enable loop with a dmesg hung-task check; 4K/1080p DirectToPlane)
+  2. optional: cec-compliance vs the Blade 3 again (needs the board on the bench) before sending K23 v1
+  3. K29 upstream resend draft (v3 = `kernel-K29` HEAD) for the user to review; maybe a separate mtk-mdp3 error-path cleanup patch
   4. the remaining items from the 2026-11-13 block below (lockup soak, HDR, IRQ 116, suspend, SOF S24 upstream, `bootloader/update.sh`, Armbian asound.conf, CaptainOS soak, LE PR #10891)
-- **Backups**: `b4/mt8195-cec-backup-pre-cr-fixes`, `mainline/mtk-mdp3-gce-pm-runtime-backup-pre-v3`, armbian `backup/extensions-pre-cr-fixes`, LE `backup/mediatek-genio-pre-cr-fixes`.
-- **Rules**: unchanged (ask before reboots, deploys, risky board tests; nothing pushed or posted without an OK).
+- **Backups**:
+  - K23: `b4/mt8195-cec-backup-pre-cr-fixes` / `-pre-cr2` / `-pre-cr3`
+  - K29: `mainline/mtk-mdp3-gce-pm-runtime-backup-pre-v3`
+  - armbian: `backup/extensions-pre-cr-fixes` / `-pre-cr2` / `-pre-cr3`
+  - LE: `backup/mediatek-genio-pre-cr-fixes`
+- **Rules**: ask before reboots, deploys and risky board tests; nothing pushed or posted without an OK; Armbian PR re-cuts are the user's (prtool).
 
 **Resume here (2026-11-13 ~18:50)**: read the main note's Status and "LibreELEC on the TV" first.
 - **Board state (NIO-12L at the TV, `root@192.168.66.83`)**:
