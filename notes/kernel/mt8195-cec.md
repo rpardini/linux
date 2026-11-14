@@ -174,6 +174,7 @@ The PR was approved by Igor; CodeRabbit's 3 findings were checked against the co
 - **Polls**: `bus_free` is now updated on every `CEC_RX_BUF_READY`, polls included (before, only for len > 0).
 - W=1 + sparse clean; `b4 prep --check` only flags the missing SoB on patch 1 (the user adds it).
 - Not re-tested yet with cec-compliance vs the Blade 3; TV test on LE image #4 (see `notes/media/`).
+- Round 2 (after the PR re-cut; backup `b4/mt8195-cec-backup-pre-cr2`): TX completion reported before RX (`cec-core.rst` rule); `remove()` does `disable_irq()` before `cec_unregister_adapter()` (the adapter can be freed there, and power off doesn't wait for the thread anymore); a `pm_lock` mutex + `suspended` flag serialize `adap_enable` against suspend/resume (an enable/disable while suspended is only recorded). Reply drafts: `notes/media/armbian-pr-11362-11363-review.md`.
 
 ## Lore and references used to prepare v1
 

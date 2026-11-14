@@ -16,7 +16,11 @@ In a new session, say "continue the MediaTek vdec plan in `notes/media/le-media-
   - Run one decode test at a time. Don't read clk/genpd debugfs on a hung board.
   - Nothing is pushed and nothing goes to lists without an OK.
 
-**Resume here (2026-11-14 ~14:30; latest)**: Armbian PR review done; image #4 on the board; the user is testing at the TV.
+**Resume here (2026-11-14 ~14:50; latest)**: review round 2 (after the user's PR re-cut). 3 CEC findings fixed (TX before RX; `disable_irq()` in remove; `pm_lock` mutex + `suspended` flag); vb2 3202 direction finding not changed (mainline dma-sg precedent; user's decision). Details and reply drafts in [armbian-pr-11362-11363-review.md](armbian-pr-11362-11363-review.md).
+- Armbian `extensions` CEC commit `cb1adcda2` (fixup + body bullets; backup `backup/extensions-pre-cr2`); genio edge build OK. **The user re-cuts and pushes with prtool.**
+- LE `b32b291ea6` "CEC review fixes, round 2"; **image #5 built** (`target/LibreELEC-Genio.aarch64-13.0-devel-20261114144816-b32b291.tar`, sha OK), **not deployed** (needs the user's OK). The board is still on image #4.
+
+**Resume here (2026-11-14 ~14:30)**: Armbian PR review done; image #4 on the board; the user is testing at the TV.
 - **Review (CodeRabbit on Armbian #11362 CEC / #11363 MDP3)**: all 5 findings valid and fixed. Findings and draft replies (**not posted**) are in [armbian-pr-11362-11363-review.md](armbian-pr-11362-11363-review.md).
   - K23 `b4/mt8195-cec` patch 2: deadlock (`disable_irq_nosync` + an `enabled` guard in the IRQ thread), suspend guards in log_addr/transmit, polls update `bus_free`. Details in `notes/kernel/mt8195-cec.md`. Not re-run with cec-compliance vs the Blade 3 yet.
   - K29 amended as "v3" in worktree `kernel-K29`: PM refs of all pipes are taken before the first send, and unsent packets drop theirs; there's a `[rpardini: …]` note; Angelo's R-b dropped. topics.tsv K29 → `keep`. This is the base for the upstream resend (the user's call).
