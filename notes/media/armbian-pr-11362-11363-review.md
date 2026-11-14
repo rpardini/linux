@@ -32,4 +32,6 @@ Agreed. `remove()` now does `disable_irq()` (synchronous, outside `adap->lock`) 
 Agreed. I went a bit further than suggested: a driver mutex now serializes `adap_enable`, suspend and resume, which also covers power on vs resume. There's a `suspended` flag: an enable or disable that arrives while suspended is only recorded, and resume applies it. `cec->enabled` stays the spinlock-protected guard for register access in the IRQ thread, the timer and the callbacks.
 
 ## Reply: #11363 — 3202 line 60 (honor the CPU access direction)
+**Posted 2026-11-14** (https://github.com/armbian/build/pull/11363#discussion_r4573739017); CodeRabbit withdrew the finding.
+
 Not changing this one. It's Christian Hewitt's patch as carried by LibreELEC, and it follows what mainline `videobuf2-dma-sg` already does: `begin/end_cpu_access` sync with `buf->dma_dir`, the direction the sg_table was mapped with (`videobuf2-dma-sg.c`). As the comment itself notes, syncing with the importer's direction would mismatch the mapping direction. The stale-read case needs a foreign device writing into an OUTPUT buffer, which doesn't happen here. If it ever matters, it should be fixed in both vb2 allocators upstream.

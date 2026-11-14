@@ -18,7 +18,8 @@ In a new session, say "continue the MediaTek vdec plan in `notes/media/le-media-
 
 **Resume here (2026-11-14 ~14:50; latest)**: review round 2 (after the user's PR re-cut). 3 CEC findings fixed (TX before RX; `disable_irq()` in remove; `pm_lock` mutex + `suspended` flag); vb2 3202 direction finding not changed (mainline dma-sg precedent; user's decision). Details and reply drafts in [armbian-pr-11362-11363-review.md](armbian-pr-11362-11363-review.md).
 - Armbian `extensions` CEC commit `cb1adcda2` (fixup + body bullets; backup `backup/extensions-pre-cr2`); genio edge build OK. **The user re-cuts and pushes with prtool.**
-- LE `b32b291ea6` "CEC review fixes, round 2"; **image #5 built** (`target/LibreELEC-Genio.aarch64-13.0-devel-20261114144816-b32b291.tar`, sha OK), **not deployed** (needs the user's OK). The board is still on image #4.
+- LE `b32b291ea6` "CEC review fixes, round 2"; **image #5 built** (`target/LibreELEC-Genio.aarch64-13.0-devel-20261114144816-b32b291.tar`, sha OK), **deployed 2026-11-14 ~14:52** (board on `devel-20261114144816-b32b291`, `/dev/cec0` present, clean boot dmesg); the user tests at the TV.
+- vb2 reply **posted** on #11363 (discussion_r4573739017); CodeRabbit withdrew the finding. The other findings were all fixed (no replies posted).
 
 **Resume here (2026-11-14 ~14:30)**: Armbian PR review done; image #4 on the board; the user is testing at the TV.
 - **Review (CodeRabbit on Armbian #11362 CEC / #11363 MDP3)**: all 5 findings valid and fixed. Findings and draft replies (**not posted**) are in [armbian-pr-11362-11363-review.md](armbian-pr-11362-11363-review.md).
