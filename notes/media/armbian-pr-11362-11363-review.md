@@ -35,3 +35,8 @@ Agreed. I went a bit further than suggested: a driver mutex now serializes `adap
 **Posted 2026-11-14** (https://github.com/armbian/build/pull/11363#discussion_r4573739017); CodeRabbit withdrew the finding.
 
 Not changing this one. It's Christian Hewitt's patch as carried by LibreELEC, and it follows what mainline `videobuf2-dma-sg` already does: `begin/end_cpu_access` sync with `buf->dma_dir`, the direction the sg_table was mapped with (`videobuf2-dma-sg.c`). As the comment itself notes, syncing with the importer's direction would mismatch the mapping direction. The stale-read case needs a foreign device writing into an OUTPUT buffer, which doesn't happen here. If it ever matters, it should be fixed in both vb2 allocators upstream.
+
+# Round 3 (after the second re-cut, 2026-11-14 ~14:00)
+
+- #11362 (CEC): full review, **no new findings**.
+- #11363: one new finding on `3200`: failed submissions leak the prepared packets, `cmd`/`comps` and the mutex prepare. Verified **pre-existing in mainline v7.3** on every error exit of `mdp_cmdq_send()` (prepare failure for pipe 1, clocks-on failure, mbox send failure); the PM patch only adds the rare PM-resume-failure path into it. User: no change, reply posted (https://github.com/armbian/build/pull/11363#discussion_r4573828584). Possible separate upstream mtk-mdp3 error-path cleanup patch later (a release helper shared with the callback path).
