@@ -16,13 +16,25 @@ In a new session, say "continue the MediaTek vdec plan in `notes/media/le-media-
   - Run one decode test at a time. Don't read clk/genpd debugfs on a hung board.
   - Nothing is pushed and nothing goes to lists without an OK.
 
-**Resume here (2026-11-14 ~14:00; latest)**: Armbian PR review (CodeRabbit on #11362 CEC / #11363 MDP3), all 5 findings valid and fixed:
-- K23 `b4/mt8195-cec` patch 2 (deadlock: `disable_irq_nosync` + `enabled` guard in the IRQ thread; suspend guards in log_addr/transmit; polls update `bus_free`); details in `notes/kernel/mt8195-cec.md`.
-- K29 amended as "v3" in worktree `kernel-K29` (PM refs of all pipes before the first send; unsent packets drop theirs; `[rpardini: …]` note; Angelo's R-b dropped since the patch changed). topics.tsv K29 → `keep`.
-- armbian-build `extensions`: fixups squashed into the two genio commits, bodies updated; genio edge build OK (all patches apply). The user re-cuts the PRs with prtool.
-- LE `mediatek-genio` `1d847c9607`; **image #4 built** (`target/LibreELEC-Genio.aarch64-13.0-devel-20261114135606-1d847c9.tar`, also has `4c26c67451`). **Deployed 2026-11-14 ~14:10** (board on `devel-20261114135606-1d847c9`, `/dev/cec0` present); the user tests it at the TV: remove the autostart ALSA workaround; audio; CEC with the TV; a `cec-ctl --clear`/`--playback` loop; DirectToPlane 1080p + 4K.
-- Draft CodeRabbit replies: not posted yet (the user posts them, or they're posted with gh after an OK).
-- Backups: `b4/mt8195-cec-backup-pre-cr-fixes`, `mainline/mtk-mdp3-gce-pm-runtime-backup-pre-v3`, armbian `backup/extensions-pre-cr-fixes`, LE `backup/mediatek-genio-pre-cr-fixes`.
+**Resume here (2026-11-14 ~14:30; latest)**: Armbian PR review done; image #4 on the board; the user is testing at the TV.
+- **Review (CodeRabbit on Armbian #11362 CEC / #11363 MDP3)**: all 5 findings valid and fixed. Findings and draft replies (**not posted**) are in [armbian-pr-11362-11363-review.md](armbian-pr-11362-11363-review.md).
+  - K23 `b4/mt8195-cec` patch 2: deadlock (`disable_irq_nosync` + an `enabled` guard in the IRQ thread), suspend guards in log_addr/transmit, polls update `bus_free`. Details in `notes/kernel/mt8195-cec.md`. Not re-run with cec-compliance vs the Blade 3 yet.
+  - K29 amended as "v3" in worktree `kernel-K29`: PM refs of all pipes are taken before the first send, and unsent packets drop theirs; there's a `[rpardini: …]` note; Angelo's R-b dropped. topics.tsv K29 → `keep`. This is the base for the upstream resend (the user's call).
+  - armbian-build `extensions`: fixups squashed into the two genio commits (bodies updated, R-b dropped in 3200); genio edge build OK. **The user re-cuts and pushes the PRs with prtool.**
+  - LE `mediatek-genio` top commit `0e1e544a56` "linux (Mediatek): CEC and MDP3 review fixes" (local, not pushed).
+- **Board (NIO-12L at the TV, `root@192.168.66.83`)**: LE **image #4** `devel-20261114135606-1d847c9` (built before the R-b-only amend; same code), has `4c26c67451` (S32 HDMI audio).
+  - The autostart ALSA workaround is **removed** (`autostart.sh` and `/storage/.config/alsa/` gone; the image's own `sof-mt8395-evk.conf` has `format S32_LE`).
+  - `/dev/cec0` is present. Boot dmesg had one `cec-10014000.cec: error counter: 1 (seq 8: 11)`; watch it.
+  - Last state: `real/jf-avc-2160-40M.mp4` (4K H.264, **no audio track**) looping in DirectToPlane (repeat one), so the user can check it. Stop it with `Player.Stop` or the remote. Clip for audio: `real/bbb-1080p24-h264.mov`.
+  - `FilterOpen -22` in the Kodi log = the known harmless deinterlacer probe.
+- **K25 parked** (user, 2026-11-14): the vblank-timeout WARN also fires on **reboot** (`mtk_drm_shutdown`), with HDMI connected, so any crtc 0 disable misses its vblank. Notes: `notes/kernel/mt8195-hdmi-unplug-vblank-warn.md`; the first step when resumed is the disable order in `mtk_crtc_atomic_disable()`.
+- **Next (ask the user)**:
+  1. the user's TV results for image #4: audio (BBB, Jellyfin, idle noise), CEC with the TV (remote, standby/active source), the adapter disable/enable loop (`cec-ctl --clear` / `--playback`) with a dmesg hung-task check, 4K/1080p DirectToPlane
+  2. CodeRabbit replies (user posts, or gh with an OK); prtool re-cut is the user's
+  3. K29 upstream resend draft (v3 = `kernel-K29` HEAD) for the user to review
+  4. the remaining items from the 2026-11-13 block below (lockup soak, HDR, IRQ 116, suspend, SOF S24 upstream, `bootloader/update.sh`, Armbian asound.conf, CaptainOS soak, LE PR #10891)
+- **Backups**: `b4/mt8195-cec-backup-pre-cr-fixes`, `mainline/mtk-mdp3-gce-pm-runtime-backup-pre-v3`, armbian `backup/extensions-pre-cr-fixes`, LE `backup/mediatek-genio-pre-cr-fixes`.
+- **Rules**: unchanged (ask before reboots, deploys, risky board tests; nothing pushed or posted without an OK).
 
 **Resume here (2026-11-13 ~18:50)**: read the main note's Status and "LibreELEC on the TV" first.
 - **Board state (NIO-12L at the TV, `root@192.168.66.83`)**:
