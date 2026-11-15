@@ -65,6 +65,12 @@ User's reply, 2026-11-10 02:30, `<f225b5f6-13eb-40d0-a9ca-7efab0e6876c@pardini.n
 - **b4 0.16 gotcha:** don't run `b4 prep --auto-to-cc` when the cover has a `---` Changes section. Send parses To/Cc above the `---`, but auto-to-cc reads the raw cover, finds nothing, and appends a duplicate block at the end, which then leaks into the mail body.
 - Before sending: rerun `scripts/20-lore.sh all K9` for any Tested-by, then `b4 trailers -u`.
 - U1 3/3 (U-Boot twin): same Yifeng authorship question, still open.
+- Recipients (user, 2026-11-15), changed in the cover with `b4 prep --edit-cover`; backup branch `backup/rk3588-combphy-sata2-6g-pre-v2-recipients-20261115`:
+  - Lucas Tanure: `To: lucas.tanure@collabora.com` → `Cc: tanure@linux.com`. The Collabora address has been silent on lore since 2023-03; he's active as `tanure@linux.com` (Amlogic T7, iommu/rockchip, 2026-11).
+  - Andrew Powers-Holmes (`aholmes@omnom.net`) dropped: only Co-developed-by on the Fixes commit, silent on lore since 2022-11.
+  - Yifeng Zhao stays Cc'd by b4 from his SoB, even though he has been silent on lore since 2022-02. A bounce is harmless, and with B4 Relay we wouldn't see one anyway.
+  - get_maintainer re-adds both old addresses through `blamed_fixes` on `a03c44277253`, so any `--auto-to-cc` (see the gotcha above) undoes this. Check the recipients with `b4 send -o <dir>` before sending.
+  - Final recipients: To Vinod Koul, Neil Armstrong, Manivannan Sadhasivam, Heiko Stuebner. Cc Lucas, linux-phy, linux-arm-kernel, linux-rockchip, LKML, plus from the trailers Yifeng, stable, Sebastian. `b4 prep --check` 1/1 clean (2026-11-15).
 
 ## Checks run
 
