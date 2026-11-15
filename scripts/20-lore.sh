@@ -4,13 +4,16 @@
 #
 # Usage: [DRY_RUN=0] scripts/20-lore.sh <command> [args]
 #   init              lei store in $LORE_DIR/lei-store + lore.kernel.org/all as remote external (idempotent)
-#   mine              saved search $LORE_DIR/mine: all threads I posted in (direct + B4 Relay)
+#   mine              saved search $LORE_DIR/mine: all threads I posted in (direct + B4 Relay) or
+#                     was To/Cc'd on, so later replies to my patches are caught too
 #   topic <id|branch> saved search $LORE_DIR/topics/<id>/maildir: all threads of a b4 series
 #                     (matched by its b4 change-id, so future versions are picked up by `up`), plus
 #                     one b4 mbox per sent version in .../mbox/vN.mbx
 #   sashiko <id|branch>  Sashiko review per sent version: .../sashiko/vN.json + vN.md
 #   all <id|branch>   topic + sashiko
-#   up                lei up --all (refresh every saved search)
+#   up                lei up --all (refresh every saved search), then re-fetch the b4 mbox of every
+#                     sent version of each topic in $LORE_DIR/topics (the b: change-id search only
+#                     matches the cover letter, so it never sees replies that arrive later)
 #
 # Series info (change-id, sent versions' message-ids) comes from the b4 tracking JSON in the
 # branch's cover commit (b4 cover-strategy commit), so only b4/* topics work for topic/sashiko.
@@ -26,17 +29,26 @@ MY_FROM="${MY_FROM:-ricardo@pardini.net devnull+ricardo.pardini.net@kernel.org}"
 usage() { sed -n '2,/^# Requires/p' "$0" | sed 's/^# \{0,1\}//' >&2; exit 1; }
 
 # saved_search <dir> <query terms...>: lei q into a Maildir, or lei up if that output is already a
-# saved search. Pass terms as separate words (lei turns a single arg with spaces into a phrase).
+# saved search with the same query. A changed query re-creates the search (lei forget-search; the
+# Maildir is rebuilt). Pass terms as separate words (lei turns a single arg with spaces into a phrase).
 saved_search() {
-	local out="$1"
+	local out="$1" old
 	shift
 	if lei ls-search 2> /dev/null | grep -qxF "$out"; then
-		info "lei up $out"
-		run lei up "$out"
-	else
+		old="$(lei ls-search -l 2> /dev/null | python3 -I -c 'import json, sys
+print(" ".join(next((s["q"] for s in json.load(sys.stdin) if s["output"] == "maildir:" + sys.argv[1]), [])))' "$out")"
+		if [[ "$old" == "$*" ]]; then
+			info "lei up $out"
+			run lei up "$out"
+			return
+		fi
+		warn "query of $out changed (was: $old); re-creating the saved search"
+		run lei forget-search "$out"
+	fi
+	{
 		run mkdir -p "$(dirname "$out")"
 		run lei q -O "$LORE_URL" -t -o "$out" "$@"
-	fi
+	}
 }
 
 cmd_init() {
@@ -56,7 +68,7 @@ cmd_init() {
 
 cmd_mine() {
 	local q=() a
-	for a in $MY_FROM; do q+=(${q[@]:+OR} "f:$a"); done
+	for a in $MY_FROM; do q+=(${q[@]:+OR} "f:$a" OR "t:$a" OR "c:$a"); done
 	saved_search "$LORE_DIR/mine" "${q[@]}"
 }
 
@@ -69,11 +81,32 @@ cmd_topic() {
 	run mkdir -p "$dir/mbox"
 	[[ "$DRY_RUN" == "0" ]] && printf '%s\n' "id: $TOPIC_ID" "branch: $TOPIC_BRANCH" "change-id: $cid" > "$dir/INFO"
 	saved_search "$dir/maildir" "b:$cid"
+	topic_mboxes "$dir"
+	ok "$TOPIC_ID: $dir"
+}
+
+# topic_mboxes <dir>: (re-)fetch the b4 mbox of each sent version's thread into <dir>/mbox
+# (b4 overwrites, so this always has the whole thread). Needs b4_tracking first.
+topic_mboxes() {
+	local v mid
 	while read -r v mid; do
 		[[ -n "$v" ]] || continue
-		run b4 -q mbox -n "$v.mbx" -o "$dir/mbox" "$mid"
+		run b4 -q mbox -n "$v.mbx" -o "$1/mbox" "$mid"
+		if [[ "$DRY_RUN" == "0" ]]; then info "$TOPIC_ID $v: $(grep -c '^From ' "$1/mbox/$v.mbx") messages"; fi
 	done < <(sent_versions)
-	ok "$TOPIC_ID: $dir"
+}
+
+# up: refresh every saved search, then every topic's per-version mboxes (topics with an INFO file).
+cmd_up() {
+	local info id
+	run lei up --all
+	for info in "$LORE_DIR"/topics/*/INFO; do
+		[[ -f "$info" ]] || continue
+		id="$(sed -n 's/^id: //p' "$info")"
+		[[ -n "$ONLY" && ! "$id" =~ $ONLY ]] && continue
+		# subshell: b4_tracking dies when the branch isn't checked out here
+		(b4_tracking "$id" && topic_mboxes "$(dirname "$info")") || warn "$id: mbox refresh skipped"
+	done
 }
 
 cmd_sashiko() {
@@ -125,6 +158,6 @@ case "$cmd" in
 	topic) cmd_topic "$1" ;;
 	sashiko) cmd_sashiko "$1" ;;
 	all) cmd_topic "$1" && cmd_sashiko "$1" ;;
-	up) run lei up --all ;;
+	up) cmd_up ;;
 	*) usage ;;
 esac

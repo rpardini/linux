@@ -14,7 +14,7 @@ Set up 2026-11-08. Everything lives under `$LINUXDEV_ROOT/lore` (`~/linuxdev/lor
 ```
 lore/
   lei-store/            lei's store (lei init); config in ~/.config/lei/config
-  mine/                 Maildir: every thread I posted in (direct + via B4 Relay)
+  mine/                 Maildir: every thread I posted in (direct + via B4 Relay) or was To/Cc'd on
   topics/<ID>/
     INFO                id, branch, change-id
     maildir/            Maildir: every thread of the b4 series (matched by change-id)
@@ -30,11 +30,11 @@ It defaults to dry-run, like the other scripts. `DRY_RUN=0` executes.
 | Command | Does |
 |---|---|
 | `init` | `lei init lore/lei-store` and `lei add-external https://lore.kernel.org/all/`. Idempotent. |
-| `mine` | saved search `f:ricardo@pardini.net OR f:devnull+ricardo.pardini.net@kernel.org` with `-t` (whole threads) |
+| `mine` | saved search `f:`/`t:`/`c:` for `ricardo@pardini.net` and `devnull+ricardo.pardini.net@kernel.org`, with `-t` (whole threads). `t:`/`c:` are needed to catch replies that arrive later (see below) |
 | `topic <ID>` | reads the b4 tracking JSON from the branch's cover commit. Saves a search `b:<change-id>` with `-t`, then runs `b4 mbox` for each sent version |
 | `sashiko <ID>` | `GET https://sashiko.dev/api/patchset?id=<msgid>` for each sent version, saved as JSON and .md |
 | `all <ID>` | topic + sashiko |
-| `up` | `lei up --all` (incremental. The first `lei q` also saves the search) |
+| `up` | `lei up --all` (incremental. The first `lei q` also saves the search), then `b4 mbox` again for every sent version of each topic under `lore/topics/` (prints the message count per version) |
 
 - `topic`/`sashiko` need a b4 prep branch (cover strategy `commit`) that's present locally. Use `11-vm-checkout.sh <ID>` first.
 - `topics.tsv` gives the branch.
@@ -43,6 +43,8 @@ It defaults to dry-run, like the other scripts. `DRY_RUN=0` executes.
 
 ## lei gotchas
 
+- **`lei up` with `-t` does not pick up later replies to old threads.** It only runs the query on messages newer than the last run, and `-t` expands only the threads of those matches. A reply without the change-id in its body, or one that isn't `f:` me, matches nothing. That's why `mine` also searches `t:`/`c:`, and `up` re-fetches the topic mboxes (b4 overwrites them with the whole thread). Read replies in `topics/<ID>/mbox/vN.mbx`, not in `topics/<ID>/maildir`. Found 2026-11-15, when K4 v6's apply mail was missed.
+- `saved_search` compares the saved query with the new one (`lei ls-search -l`). If they differ, it runs `lei forget-search` and recreates the search, which rebuilds the Maildir.
 - Pass query terms as **separate arguments**: `lei q f:a OR f:b`. A single argument with spaces becomes a quoted phrase, which matches nothing.
 - `-O https://lore.kernel.org/all/` queries only that remote external. Remote results are memoized into the local store.
 - `lei q -o DIR` saves the search. Running `lei q` again on the same DIR clobbers it. To refresh, use `lei up DIR` (the script does this automatically).
