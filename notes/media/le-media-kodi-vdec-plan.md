@@ -16,7 +16,21 @@ In a new session, say "continue the MediaTek vdec plan in `notes/media/le-media-
   - Run one decode test at a time. Don't read clk/genpd debugfs on a hung board.
   - Nothing is pushed and nothing goes to lists without an OK.
 
-**Resume here (2026-11-14 ~15:30; latest)**: the Armbian PR review is done (3 CodeRabbit rounds). The board has image #6 staged but not installed. The user tests at the TV.
+**Resume here (2026-11-16; latest)**: the NIO left LibreELEC and is now an **Armbian k8s node** for real-world tests of the `kodi-gbm-rockchip` container. See the main note's "Board state".
+- **Image**: `./compile.sh rpardini-generic PREFER_DOCKER=no RELEASE=trixie BRANCH=edge BOARD=radxa-nio-12l CLOUD_INIT_RECIPE=arm2027_bare_k8s CLOUD_INIT_INSTANCE_ID=rk3588ng_2027_nio12l EXT=ufs`
+  - armbian-build `extensions` `f0d0d9b0a`; kernel `linux-image-edge-genio` 7.3.4 (3200–3202), u-boot 2027.01-rc1
+  - output `Armbian-armsurvivors_23.11.0-trunk_radxa-nio-12l_trixie_edge-cloud-ufs-custom-userdata.img` (sha256 `7416a25b…`)
+  - cloud-init user-data from `https://cloud-init.pardini.net/rpardini/oldskool-rpardini/master/arm2027_bare_k8s`
+- **Written 2026-11-15** from LE over ssh to UFS `/dev/sdc` (LUN 2), read-back sha256 OK. Boot LUNs `sda`/`sdb` not touched. The old CaptainOS root was wiped without a backup (user's call). Write recipe and pitfalls: LE's udevil automounts the new partition rw, so mask it before writing.
+- **2026-11-16**: the user pulled the SD, booted from UFS and joined the node to the cluster.
+  - The SD card still holds LE (image #5 running, #6 staged in `/storage/.update/`).
+- **Lost with the wipe; redo on the node if needed**:
+  - `/opt/ffmpeg-vdec`, `/root/vdec/{vectors,results}`, the nerdctl images (`vdec/gst-fluster`, `vdec/ffmpeg-run`, the Kodi image)
+  - The clips are still on the VM in `le-media-kodi-vdec/clips`.
+- **Checked 2026-11-16 (read-only)**: root fs grown to 238 GB, `scp.img` shipped by armbian-firmware (remoteproc running), `video0..4`, `cec0`, DRM present, k8s v1.36.6. ssh host key refreshed. **Production cluster**: read-only unless the user OKs it.
+- **Next (ask the user)**: deploy `kodi-gbm-rockchip` through k8s (privileged, host network, `/dev`, HDMI audio `format S32_LE`, see "Audio").
+
+**Resume here (2026-11-14 ~15:30)**: the Armbian PR review is done (3 CodeRabbit rounds). The board has image #6 staged but not installed. The user tests at the TV.
 - **Armbian PRs** [#11362](https://github.com/armbian/build/pull/11362) (CEC, approved by Igor) and [#11363](https://github.com/armbian/build/pull/11363) (MDP3/vcodec/vb2): **no open review threads**. PR heads `06134b3df` / `353281d45` match local `extensions` (`34310e649` CEC, `e06b7b69a` media), checked 2026-11-14 ~15:30. Full history, verdicts and posted replies: [armbian-pr-11362-11363-review.md](armbian-pr-11362-11363-review.md).
   - Fixed in **K23** patch 2 (`b4/mt8195-cec`, v1 not sent):
     - IRQ-thread deadlock (`disable_irq_nosync` + `enabled` guard)

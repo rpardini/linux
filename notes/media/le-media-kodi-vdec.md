@@ -10,6 +10,10 @@ Started 2026-11-12. Board: Radxa NIO-12L (Genio 1200 / MT8395, Mali-G57).
   - K29: mtk-mdp3 GCE pm_runtime, **the MDP3 hang fix**
 - Userspace work has no IDs and is tracked here.
 
+## Status (2026-11-16)
+
+- **The NIO is now an Armbian k8s node** (trixie edge, `arm2027_bare_k8s` cloud-init, on UFS) for real-world tests of the `kodi-gbm-rockchip` container. The user joined it to the cluster on 2026-11-16. LE stays on the (pulled) SD card. Details: "Board state" and the plan note's "Resume here (2026-11-16)".
+
 ## Status (2026-11-13 ~18:50)
 
 - **LibreELEC on the NIO at the TV (2026-11-13 afternoon)**: LE image #3 (`mediatek-genio` `d81abf04ae`) from SD, display 2560x1440@60. See "LibreELEC on the TV".
@@ -258,6 +262,22 @@ The NIO-12L was moved to the TV and boots the LE SD image (`devel-20261113023614
   - Kernel side (later, upstream candidate): the SOF topology / mt8195 AFE DL10 should not advertise `S24_LE` (or should honour `msbits`). Check `sound/soc/sof/mediatek/` and the sof-mt8195 tplg DAI formats.
 
 ## Board state
+
+### Since 2026-11-16: Armbian k8s node (UFS)
+
+- `root@192.168.66.83` (new host key). Armbian trixie edge, kernel `linux-image-edge-genio` 7.3.4 with 3200–3202, u-boot 2027.01-rc1 (deb in the image; the UFS boot LUNs `sda`/`sdb` keep the earlier lk/fip). cloud-init recipe `arm2027_bare_k8s`, instance id `rk3588ng_2027_nio12l`. The user joined it to their k8s cluster.
+- Purpose: real-world testing of the `kodi-gbm-rockchip` container, run as a k8s workload.
+- Written 2026-11-15 from LE: `pigz -1 -c img | ssh board 'gunzip -c | dd of=/dev/sdc bs=4M conv=fsync'` (~34 MB/s), then `head -c <size> /dev/sdc | sha256sum` after `drop_caches`.
+  - Pitfall: LE's udevil automounts the new `sdc1` rw as soon as the new table appears (`udevil-mount@-dev-sdc1.service`), which changes the superblock and journal and breaks the read-back hash. Unmount it, then `systemctl stop` and `systemctl mask --runtime` that unit, before writing.
+  - Pitfall: busybox `dd bs=4M count=1` from an ssh pipe short-reads (64 KB). To patch single chunks, stage them in `/tmp` first.
+- Checked 2026-11-16 (read-only; **production cluster: no writes, reboots or risky tests without an OK**):
+  - hostname `radxa-nio-12l`, Kubernetes v1.36.6 (kubelet + containerd active), cilium, tailscale; root fs grown to 238 GB (`sdc1`, 18 GB used)
+  - `scp.img` now comes from armbian-firmware (same sha256 `995bcf81…`); remoteproc0 `running`. The early-boot load still fails (-2, not in the initrd), which is harmless as before.
+  - `video0..4` = jpeg-dec, jpeg-enc, vcodec-enc, vcodec-dec, mdp3 m2m; `media0`, `cec0`, `card0` (GPU), `card1` (mediatek-drm), `renderD128`
+  - cloud-init is disabled by a marker file after the first boot (NoCloud seed)
+- Gone with the wipe: `/opt/ffmpeg-vdec`, `/root/vdec`, the nerdctl images. The clips are still on the VM.
+
+### Until 2026-11-15: CaptainOS (history)
 
 - `root@192.168.66.83`, CaptainOS (CAPT k8s node image, Debian trixie), Armbian `linux-image-edge-genio` 7.3.4, **build #3** (2026-11-12 15:17 UTC, with 3200/3201/3202).
   - `/boot/extlinux/extlinux.conf` pins the kernel version (`7.3.4-edge-genio`). Fix it after any kernel `dpkg -i` that changes the version, before rebooting.
