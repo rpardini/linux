@@ -15,6 +15,7 @@ Cover: "rockchip: fix on-board SATA on RK3588 and RK356x" (retitled 2026-11-09, 
    - `Link:` to the BSP commit and to the K9 patch (`20261109-rk3588-combphy-sata2-6g-v1-1-e9135c91de6a@pardini.net`).
    - Cc Yifeng Zhao.
    - K9 v1 review (Sebastian Reichel, 2026-11-10): make Yifeng Zhao the author with his SoB, drop the BSP sentence. Probably applies here too; see `notes/kernel/rk3588-combphy-sata2-6g.md`.
+   - Decision (user 2026-11-15): wait for K9 to be merged (K9 v2 sent 2026-11-15) before changing 3/3 here.
    - The cover has the same neutral PCIe link-reset-grant note as K9.
 
 ## Armbian PR #11101 feedback (merged 2026-10-25; checked 2026-11-09)

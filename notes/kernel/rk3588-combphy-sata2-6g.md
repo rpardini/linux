@@ -67,7 +67,8 @@ User's reply, 2026-11-10 02:30, `<f225b5f6-13eb-40d0-a9ca-7efab0e6876c@pardini.n
 - Backup branch `backup/k9-pre-v2`. Checks: `b4 prep --check` clean, `b4 send --dry-run` OK.
 - **b4 0.16 gotcha:** don't run `b4 prep --auto-to-cc` when the cover has a `---` Changes section. Send parses To/Cc above the `---`, but auto-to-cc reads the raw cover, finds nothing, and appends a duplicate block at the end, which then leaks into the mail body.
 - Tested-by: none had arrived on v1 by the v2 send (`scripts/20-lore.sh all K9`, 2026-11-15).
-- U1 3/3 (U-Boot twin): same Yifeng authorship question, still open.
+- U1 3/3 (U-Boot twin): same Yifeng authorship question. Decided to wait for K9 to be merged (user 2026-11-15).
+- Armbian `rockchip64-7.{3,4}/914-*`: don't regenerate from v2. Wait until K9 is merged (user 2026-11-15).
 - Recipients (user, 2026-11-15), changed in the cover with `b4 prep --edit-cover`; backup branch `backup/rk3588-combphy-sata2-6g-pre-v2-recipients-20261115`:
   - Lucas Tanure: `To: lucas.tanure@collabora.com` → `Cc: tanure@linux.com`. The Collabora address has been silent on lore since 2023-03; he's active as `tanure@linux.com` (Amlogic T7, iommu/rockchip, 2026-11).
   - Andrew Powers-Holmes (`aholmes@omnom.net`) dropped: only Co-developed-by on the Fixes commit, silent on lore since 2022-11.
