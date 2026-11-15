@@ -47,7 +47,7 @@ Vendor driver issues (why it is not upstreamable as is):
 
 ## Upstream series (K23)
 
-- Worktree `/opt/linuxdev/kernel-cec`, branch `b4/mt8195-cec`, base `d164c7d754f0` (v7.4-rc1+, "Merge tag 'devicetree-fixes-for-7.4-1'").
+- Worktree `/opt/linuxdev/kernel-cec`, branch `b4/mt8195-cec`, base v7.4-rc2 (`7475ea8b5861`; rebased 2026-11-15 from `d164c7d754f0` v7.4-rc1+).
 - b4-enrolled: change-id `20261108-b4-mt8195-cec-7f2840a477aa`, cover strategy `commit`, v1 unsent. Recipients not set yet (`b4 prep --auto-to-cc`).
 - `get_maintainer.pl`: Hans Verkuil (CEC), Mauro, Matthias Brugger, AngeloGioacchino; lists linux-media, linux-mediatek, linux-arm-kernel.
 
@@ -148,7 +148,7 @@ Driver changes from this (fixup into patch 2, Armbian `3101` re-exported, now in
 - Results (logs `mt8195-cec/2026-11-12-v1final-*`): `-A` NIO 11/11 0 warnings; `-A` Blade 3 11/11 0 warnings; `-r 4` from Blade 3 84/84 (1 cec-follower warning).
 - Measurement note: each side measures the other's replies ~1 bit period short (timestamp bias, symmetric); own transmits measure correctly.
 
-Series (b4, v1, change-id `20261108-b4-mt8195-cec-7f2840a477aa`, base `d164c7d754f0` v7.4-rc1+):
+Series (b4, v1, change-id `20261108-b4-mt8195-cec-7f2840a477aa`, base v7.4-rc2 since 2026-11-15):
 1. `dt-bindings: media: cec: add MediaTek MT8195 HDMI CEC controller`
 2. `media: cec: add MediaTek MT8195 HDMI CEC driver` (Co-developed-by + SoB Tommy Chen, from vendor `737f4ade54b2`)
 3. `drm/mediatek: mtk_hdmi: Register a CEC notifier for HDMI v2`
@@ -211,3 +211,11 @@ Other references:
 4. Before sending: SoB, trailer format, `b4 prep --auto-to-cc`, `b4 prep --check`, Cc Tommy Chen. MT8188 is untested; say so (already in the cover).
 5. Later: monitor-all, 3 logical addresses, CEC wakeup; MT8188/MT8370 DT nodes by someone with hardware.
 6. Canonical tree (fetched): worktree + Armbian vendor patches, compare CEC code with MediaTek's (low priority).
+
+## Rebase onto v7.4-rc2 (2026-11-15)
+
+- Base: v7.4-rc2 (user's choice, over media-committers `next`); the cover says so. Clean rebase. Backups `b4/mt8195-cec-backup-pre-rc2-rebase`, `-pre-devm-obj`, `-pre-cover-rc2`.
+- Patch 2: `devm_kzalloc(dev, sizeof(*cec), GFP_KERNEL)` → `devm_kzalloc_obj(dev, *cec)` (rc2 treewide `devm_kmalloc_obj()` conversion).
+- Cover: "The series is based on v7.4-rc2."; not-tested list now "a TV (beyond basic use with Kodi)". Test claims kept as they are (user: no re-test before v1), although they predate the CodeRabbit fixes.
+- Checks on the new base: W=1 + sparse clean for `mtk-hdmi-cec.c` and `mtk_hdmi*.c`; dt_binding_check clean; CHECK_DTBS only the old jpeg warnings; checkpatch / `b4 prep --check` only the missing SoB + the MAINTAINERS note. `--auto-to-cc`: no new addresses.
+- Remaining before send: user SoB (`git rebase --signoff` on the 6 patches + cover), `b4 send --dry-run`, then send with the user's OK.
