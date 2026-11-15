@@ -43,7 +43,7 @@ Only sata2 was tested.
 - Sashiko v1: Reviewed, "No issues found" (`lore/topics/K9/sashiko/v1.md`). No list replies yet: lore has 4 list copies of the patch. Rechecked 2026-11-09 afternoon: unchanged.
 - The backup branch `backup/k9-pre-trm-reword` was deleted 2026-11-09.
 - b4 bumped the local branch to revision 2 after sending, which left both branch commits **unsigned**: b4's pygit2 rewrite drops GPG signatures by design. The sent tag is still signed. That's fine: b4 doesn't need signed commits, since the mails are patatt-signed. Don't re-sign (user, 2026-11-09; see AGENTS.md).
-- Still to do: v2 per Sebastian's review (below).
+- v2 per Sebastian's review: sent 2026-11-15 (below).
 
 ## v1 review (lore, checked 2026-11-10)
 
@@ -57,13 +57,16 @@ User's reply, 2026-11-10 02:30, `<f225b5f6-13eb-40d0-a9ca-7efab0e6876c@pardini.n
 - In mainline, &sata2 is enabled on RK3588 only in `rk3588-firefly-itx-3588j.dts` and `rk3588-roc-rt.dts` (v7.4-rc1 / torvalds 2026-11-08). The other &sata2 users are RK356x, which uses a different grfcfg table and isn't affected.
 - Lucas Tanure (v1 To:) is not on the reply's Cc.
 
-## v2 (prepared 2026-11-10; user sends later this week)
+## v2 (sent 2026-11-15)
+
+- Sent by the user 2026-11-15 16:48, `<20261115-rk3588-combphy-sata2-6g-v2-1-778e0e8011fe@pardini.net>`, tag `sent/20261024-rk3588-combphy-sata2-6g-03bb30151552-v2`. On lore with the planned recipients and a patatt signature. Sashiko v2: no findings (`lore/topics/K9/sashiko/v2.md`).
+- Prepared 2026-11-10:
 
 - Yifeng's SoB is copied word for word from BSP commit 2f5fe2c0bbd4. Bracket note `[rewrite commit message]` (user's choice; precedents: c9211fa2602b, feb69bccf5d3, 98dcc6be3859). R-b collected with `b4 -n trailers -u` (DKIM ✗ for collabora.com).
 - Below the fold: the sata2-only note + `[1]` link to U1 v1, plus Changes in v2.
 - Backup branch `backup/k9-pre-v2`. Checks: `b4 prep --check` clean, `b4 send --dry-run` OK.
 - **b4 0.16 gotcha:** don't run `b4 prep --auto-to-cc` when the cover has a `---` Changes section. Send parses To/Cc above the `---`, but auto-to-cc reads the raw cover, finds nothing, and appends a duplicate block at the end, which then leaks into the mail body.
-- Before sending: rerun `scripts/20-lore.sh all K9` for any Tested-by, then `b4 trailers -u`.
+- Tested-by: none had arrived on v1 by the v2 send (`scripts/20-lore.sh all K9`, 2026-11-15).
 - U1 3/3 (U-Boot twin): same Yifeng authorship question, still open.
 - Recipients (user, 2026-11-15), changed in the cover with `b4 prep --edit-cover`; backup branch `backup/rk3588-combphy-sata2-6g-pre-v2-recipients-20261115`:
   - Lucas Tanure: `To: lucas.tanure@collabora.com` → `Cc: tanure@linux.com`. The Collabora address has been silent on lore since 2023-03; he's active as `tanure@linux.com` (Amlogic T7, iommu/rockchip, 2026-11).

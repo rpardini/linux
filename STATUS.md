@@ -36,14 +36,16 @@ Per-series links for what's on the lists. Lore `b:` search by change-id finds ev
   - devicetree: <https://patchwork.kernel.org/project/devicetree/patch/20261109-dt-bindings-net-realtek-rtl8125-v1-1-cff4b8a8be66@pardini.net/>
 - Sashiko v1 (no findings): <https://sashiko.dev/#/patchset/20261109-dt-bindings-net-realtek-rtl8125-v1-1-cff4b8a8be66%40pardini.net>
 
-### K9: RK3588 naneng-combphy SATA pipe_con1 (sent v1, v2 prepared)
+### K9: RK3588 naneng-combphy SATA pipe_con1 (sent v2)
 
+- Lore, v2 thread: <https://lore.kernel.org/all/20261115-rk3588-combphy-sata2-6g-v2-1-778e0e8011fe@pardini.net/>
 - Lore, v1 thread (Sebastian's review + my T-b request): <https://lore.kernel.org/all/20261109-rk3588-combphy-sata2-6g-v1-1-e9135c91de6a@pardini.net/>
 - Lore, all versions: <https://lore.kernel.org/all/?q=b%3A20261024-rk3588-combphy-sata2-6g-03bb30151552>
 - Patchwork:
   - linux-phy: <https://patchwork.kernel.org/project/linux-phy/patch/20261109-rk3588-combphy-sata2-6g-v1-1-e9135c91de6a@pardini.net/>
   - linux-rockchip: <https://patchwork.kernel.org/project/linux-rockchip/patch/20261109-rk3588-combphy-sata2-6g-v1-1-e9135c91de6a@pardini.net/>
 - Sashiko v1 (no findings): <https://sashiko.dev/#/patchset/20261109-rk3588-combphy-sata2-6g-v1-1-e9135c91de6a%40pardini.net>
+- Sashiko v2 (no findings): <https://sashiko.dev/#/patchset/20261115-rk3588-combphy-sata2-6g-v2-1-778e0e8011fe%40pardini.net>
 
 ### U1: RK3588/RK356x SATA fixes, u-boot (sent v1)
 
@@ -64,7 +66,7 @@ Per-series links for what's on the lists. Lore `b:` search by change-id finds ev
 | K6 | rk35xx MAC addresses from OTP (nvmem cpuid layouts RK3588/RK3568, GMAC + RTL8125 per-board) | `mainline/rk35xx-mac-from-otp` | wip | wait for dep | **On top of K4 and of someone else's nvmem serial#/cpuid series** — track that series; rebase when it lands |
 | K7 | Nio-12L: i2c3 on 40-pin, drop i2c2 drive-strength | `b4/nio-12l-add-i2c-40-pin` | sent v2 (2026-06-24); v3 prepared | ping / resend | change-id `20260624-nio-12l-add-i2c-40-pin-19e0482fd835` |
 | K8 | Nio-12L: UFS lanes, onboard LEDs, ASoC mediatek DAI-link refs (+K7) | `mainline/nio-12l-fixes` | wip | split: DT vs ASoC | Arm: `kernel/archive/genio-7.3/300{3,4}-*` |
-| K9 | RK3588 naneng-combphy SATA pipe_con1 offset (SATA stuck at 1.5 Gb/s) | `b4/rk3588-combphy-sata2-6g` | sent v1 (2026-11-09, Fixes + stable); v2 prepared | send v2 later this week (user). v2 does Sebastian Reichel's review (Yifeng Zhao author + SoB, `[rewrite commit message]`, R-b collected). Replied 2026-11-10 asking for T-b from &sata2 board owners (Firefly ITX-3588J, ROC-RK3588-RT). Checked lore 2026-11-15: no T-b yet. Sashiko v1 no findings. Links: [Sent series](#k9-rk3588-naneng-combphy-sata-pipe_con1-sent-v1-v2-prepared) | change-id `20261024-rk3588-combphy-sata2-6g-03bb30151552`; worktree `kernel-rk3588-combphy-sata2-6g`; Arm: `rockchip64-7.{3,4}/914-*`; u-boot twin U1; notes `notes/kernel/rk3588-combphy-sata2-6g.md` |
+| K9 | RK3588 naneng-combphy SATA pipe_con1 offset (SATA stuck at 1.5 Gb/s) | `b4/rk3588-combphy-sata2-6g` | sent v2 (2026-11-15; v1 2026-11-09; Fixes + stable) | await review / apply (Vinod, linux-phy). v2 does Sebastian Reichel's review (Yifeng Zhao author + SoB, `[rewrite commit message]`, R-b Sebastian); Lucas Tanure Cc'd at tanure@linux.com, Andrew Powers-Holmes dropped. T-b asked 2026-11-10 from &sata2 board owners (Firefly ITX-3588J, ROC-RK3588-RT): none yet. Sashiko v1, v2 no findings. Links: [Sent series](#k9-rk3588-naneng-combphy-sata-pipe_con1-sent-v2) | change-id `20261024-rk3588-combphy-sata2-6g-03bb30151552`; worktree `kernel-rk3588-combphy-sata2-6g`; Arm: `rockchip64-7.{3,4}/914-*`; u-boot twin U1; notes `notes/kernel/rk3588-combphy-sata2-6g.md` |
 | K10 | Seeed reComputer RK3588 Dev Kit (binding + 15 DT patches) | `mainline/recomputer-rk3588-devkit` | wip | b4 prep | includes K11 + PWMv4/counter build fixups underneath; alt attempts `v7.2-rc2-…-claude`, `…-copilot-FAIL` |
 | K11 | Seeed reComputer RK3576 Dev Kit | `mainline/recomputer-rk3576-devkit` | wip | b4 prep | fan patch is `[DO-NOT-MERGE]`; carries `pwm`/`counter` rockchip PWMv4 "device flag accessors" fixups (Armbian-only?) ; alt `rk3576-devkit-rework` |
 | K12 | Mixtile Blade 3 rework (fan, Type-C roles, RTL8125 behind ASM1182e, CAN2) | `mainline/mixtile-blade3-rework` | wip | clean up "claude pass" commits | sits on K4 |
