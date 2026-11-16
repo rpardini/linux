@@ -28,6 +28,9 @@ In a new session, say "continue the MediaTek vdec plan in `notes/media/le-media-
   - `/opt/ffmpeg-vdec`, `/root/vdec/{vectors,results}`, the nerdctl images (`vdec/gst-fluster`, `vdec/ffmpeg-run`, the Kodi image)
   - The clips are still on the VM in `le-media-kodi-vdec/clips`.
 - **Checked 2026-11-16 (read-only)**: root fs grown to 238 GB, `scp.img` shipped by armbian-firmware (remoteproc running), `video0..4`, `cec0`, DRM present, k8s v1.36.6. ssh host key refreshed. **Production cluster**: read-only unless the user OKs it.
+- **IR receiver (2026-11-16)**: the genio kernels had no `IR_MCEUSB`, so the TopSeed eHome receiver (USB `1784:0008`) the Kodi workload expects at `/dev/input/by-id/usb-Topseed_Technology_Corp._eHome_Infrared_Transceiver_TS000Jot-event-if00` got no driver.
+  - armbian-build `extensions` `adc261d27`: genio edge config gets the rockchip64 edge IR set. The kernel debs are built (`output/debs/linux-{image,dtb}-edge-genio_*-C80f1-*.deb`, `mceusb.ko` checked) but **not installed**: the user chose build only. Installing (dpkg -i + reboot of a production node) needs their OK.
+  - LE `mediatek-genio` `976accc925`: Rockchip's IR set (`LIRC`, `BPF_LIRC_MODE2`, all decoders, USB/GPIO/PWM receivers) plus `RC_CORE=y`. Checked with kconfig, not in an image yet.
 - **Next (ask the user)**: deploy `kodi-gbm-rockchip` through k8s (privileged, host network, `/dev`, HDMI audio `format S32_LE`, see "Audio").
 
 **Resume here (2026-11-14 ~15:30)**: the Armbian PR review is done (3 CodeRabbit rounds). The board has image #6 staged but not installed. The user tests at the TV.
