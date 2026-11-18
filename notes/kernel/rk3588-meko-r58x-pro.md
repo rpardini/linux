@@ -90,3 +90,10 @@
 | LEDs, vol keys, recovery key | |
 | RS232 (uart3) / RS485 (uart0) | |
 | NPU probe | |
+
+## Armbian (armbian-build `extensions`)
+
+- `rockchip64-7.4` (bleedingedge): the DT is byte-identical to the kernel series. Keep it in sync on every revision (`cp` from the worktree).
+- The segment LCD is the overlay `rockchip-rk3588-mekotronics-r58x-pro-lcd.dtso`, enabled with `overlays=mekotronics-r58x-pro-lcd`. It's on by default for non-vendor branches through `DEFAULT_OVERLAYS` in the board `.csc`.
+- `rockchip64-7.3` (edge) and the u-boot v2026.10 copy keep the old DT, with the LCD inline. On edge, the default overlay is just "not found".
+- The old variant with the LCD inline is kept as backup branch `backup/extensions-meko-lcd-inline-20261118`.
