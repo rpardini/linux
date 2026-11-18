@@ -97,7 +97,7 @@ First boot on 2026-11-18, Armbian bleedingedge 7.4.0-rc3, board at 192.168.66.17
 | Type-C host + device, both orientations, PD | fusb302 registers (SNK_UNATTACHED, role device). Not yet tested with anything attached |
 | Type-C DP altmode | DP-1 connector present, disconnected |
 | HDMI0 out (+ audio) | HDMI-A-1 connected; HDMI0 sound card present |
-| DP out (dp1) | DP-2 connector present, disconnected |
+| DP out (dp1) | OK: HPD on GPIO3_D5 (dp1m0) follows the plug, EDID read (Dell U3415W), link trains at HBR2 x4 (monitor asks for swing level 3). The 1080p modetest pattern is stable with the monitor on the DP input. It flashed in the monitor's PIP mode, and the Dell drops HPD when DP isn't its active input. AUX timeouts only while HPD is low |
 | HDMI-in (v4l2) | video nodes present |
 | es8388 headphones / mic | card rockchip-es8388 present |
 | RTC hym8563 | OK, rtc0 reads time |
