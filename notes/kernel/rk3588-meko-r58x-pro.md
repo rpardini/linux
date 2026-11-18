@@ -94,7 +94,7 @@ First boot on 2026-11-18, Armbian bleedingedge 7.4.0-rc3, board at 192.168.66.17
 | NVMe (pcie3x4) | OK (WD SN570) |
 | SATA | ahci probes, link down (no disk?) |
 | USB2 ports / USB3 host2 port | host2 xhci has SS (5000M); host1 is HS only, as intended. Devices not yet tested |
-| Type-C host + device, both orientations, PD | **not working** (see below) |
+| Type-C host + device, both orientations, PD | host 5 Gbps OK in normal orientation; reverse works only after a usbdp PHY re-init (driver issue, see below). Port is source-only |
 | Type-C DP altmode | DP-1 connector present, disconnected |
 | HDMI0 out (+ audio) | HDMI-A-1 connected; HDMI0 sound card present |
 | DP out (dp1) | OK: HPD on GPIO3_D5 (dp1m0) follows the plug, EDID read (Dell U3415W), link trains at HBR2 x4 (monitor asks for swing level 3). The 1080p modetest pattern is stable with the monitor on the DP input. It flashed in the monitor's PIP mode, and the Dell drops HPD when DP isn't its active input. AUX timeouts only while HPD is low |
@@ -132,3 +132,7 @@ First boot on 2026-11-18, Armbian bleedingedge 7.4.0-rc3, board at 192.168.66.17
 - Forcing VBUS on (GPIO4_A7 through devmem) sets fusb302 STATUS0.VBUSOK, so VBUS sensing on this connector is wired. But with usb_role=host, neither the HS nor the SS xHCI port sees a connect (portsc RxDetect). Reverted afterwards.
 - The old Armbian DT had no fusb302: vcc5v0_otg always-on, usb_host0_xhci `dr_mode = "host"`, `u2phy0_otg` commented "for fc000000.usb UDC", usbdp_phy0 `dp-lane-mux = <2 3>`.
 - Vendor DT: dp0 is `disable`d, so DP alt mode was likely never functional there either.
+- **Root cause of no detection:** the source PDO was 5V/3A, so tcpm used Rp-3.0. With Rp-3.0 the fusb302 hardware toggle never reports a sink: TOGSS stays 0, tested by hand over i2c with every POWER setting. With Rp-default or Rp-1.5 it reports SRC on CC2 right away. Manual MDAC sweep: CC lines float at about 0 V and the partner's Rd reads about 1.64 V. Fixed in the series: `power-role = "source"` (the user confirmed the board can't be powered from USB-C), `source-pdos` 5V/1.5A (as on Jaguar), no try-power-role or sink PDOs.
+- With that fix: attach, orientation, VBUS and host role all work. A USB-C 2.5G NIC enumerates at 5 Gbps in normal orientation.
+- **Reverse orientation:** tcpm reports `reverse` and the usbdp PHY flags "re-init required", but the PHY is only re-initialized from `rk_udphy_power_on()` (dwc3 phy_init). With a dwc3 rebind plus `usb_role=host`, the log shows "reinit PHY ... flipped=yes" and the NIC enumerates at 5 Gbps in reverse. So the wiring is fine in both orientations, and the problem is in the driver: the usbdp/dwc3 path doesn't re-init on orientation change. Under the old Armbian DT (no fusb302) reverse didn't work at all.
+- DP alt mode is still untested and needs a USB-C DP sink.
