@@ -81,26 +81,29 @@
 
 ## Board tests (user)
 
+First boot on 2026-11-18, Armbian bleedingedge 7.4.0-rc3, board at 192.168.66.175.
+
+
 | What | Result |
 |---|---|
-| boot / dmesg clean | |
-| gmac0 / gmac1 with rgmii-id (iperf3 both directions) | |
-| eMMC (HS200) | |
-| SD card | |
-| NVMe (pcie3x4) | |
-| SATA | |
-| USB2 ports / USB3 host2 port | |
-| Type-C host + device, both orientations, PD | |
-| Type-C DP altmode | |
-| HDMI0 out (+ audio) | |
-| DP out (dp1) | |
-| HDMI-in (v4l2) | |
-| es8388 headphones / mic | |
-| RTC hym8563 | |
-| WiFi BCM43752 / BT | |
-| LEDs, vol keys, recovery key | |
+| boot / dmesg clean | 7.4.0-rc3 bleedingedge boots, LCD overlay applied. dmesg is clean except for the pcie2x1l0 pin conflict (fixed, see below) |
+| gmac0 / gmac1 with rgmii-id (iperf3 both directions) | both link at 1G and carry traffic (ssh over end0) with rgmii-id. iperf3 TODO |
+| eMMC (HS200) | OK, HS200 8-bit at 187.5 MHz |
+| SD card | mmc1 probes; no card inserted |
+| NVMe (pcie3x4) | OK (WD SN570) |
+| SATA | ahci probes, link down (no disk?) |
+| USB2 ports / USB3 host2 port | host2 xhci has SS (5000M); host1 is HS only, as intended. Devices not yet tested |
+| Type-C host + device, both orientations, PD | fusb302 registers (SNK_UNATTACHED, role device). Not yet tested with anything attached |
+| Type-C DP altmode | DP-1 connector present, disconnected |
+| HDMI0 out (+ audio) | HDMI-A-1 connected; HDMI0 sound card present |
+| DP out (dp1) | DP-2 connector present, disconnected |
+| HDMI-in (v4l2) | video nodes present |
+| es8388 headphones / mic | card rockchip-es8388 present |
+| RTC hym8563 | OK, rtc0 reads time |
+| WiFi BCM43752 / BT | BT hci0 OK. WiFi: pcie2x1l0 failed (reset GPIO4_A5 = uart3 TX). Fixed to GPIO1_B4 per vendor; retest |
+| LEDs, vol keys, recovery key | 3 LEDs, power on. gpio-keys + adc-keys inputs registered; evtest TODO |
 | RS232 (uart3) / RS485 (uart0) | |
-| NPU probe | |
+| NPU probe | OK (accel0) |
 
 ## Armbian (armbian-build `extensions`)
 
