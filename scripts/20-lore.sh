@@ -11,6 +11,8 @@
 #                     one b4 mbox per sent version in .../mbox/vN.mbx
 #   sashiko <id|branch>  Sashiko review per sent version: .../sashiko/vN.json + vN.md
 #   all <id|branch>   topic + sashiko
+#   search <name> <query...>  ad-hoc saved search $LORE_DIR/research/<name>/maildir (eg. reviews of
+#                     other people's series to learn from); `msgid:<id>` terms fetch whole threads (-t)
 #   up                lei up --all (refresh every saved search), then re-fetch the b4 mbox of every
 #                     sent version of each topic in $LORE_DIR/topics (the b: change-id search only
 #                     matches the cover letter, so it never sees replies that arrive later)
@@ -96,6 +98,14 @@ topic_mboxes() {
 	done < <(sent_versions)
 }
 
+cmd_search() {
+	local name="$1"
+	shift
+	[[ -n "$name" && $# -gt 0 ]] || usage
+	saved_search "$LORE_DIR/research/$name/maildir" "$@"
+	ok "research $name: $LORE_DIR/research/$name/maildir"
+}
+
 # up: refresh every saved search, then every topic's per-version mboxes (topics with an INFO file).
 cmd_up() {
 	local info id
@@ -158,6 +168,7 @@ case "$cmd" in
 	topic) cmd_topic "$1" ;;
 	sashiko) cmd_sashiko "$1" ;;
 	all) cmd_topic "$1" && cmd_sashiko "$1" ;;
+	search) cmd_search "$@" ;;
 	up) cmd_up ;;
 	*) usage ;;
 esac

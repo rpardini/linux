@@ -29,6 +29,7 @@ K26	kernel	mainline/mtk-vcodec-cap-to-disp-guard	-	pick	v7.3	29c8b5f5bf593e7f2f2
 K27	kernel	mainline/mtk-mdp3-mt2110	-	keep	-	-	kernel-rpardini-linux	-	mdp3-mt2110
 K28	kernel	mainline/vb2-dc-noncoherent-cpu-sync	-	keep	-	-	kernel-rpardini-linux	-	vb2-dc-cache
 K29	kernel	mainline/mtk-mdp3-gce-pm-runtime	-	keep	-	-	kernel-rpardini-linux	-	-
+K30	kernel	b4/rk3588-mekotronics-r58x-pro	-	keep	-	-	kernel-rpardini-linux	y	rk3588-meko-r58x-pro
 KA1	kernel	armbian-tree/rockchip64-7.2-20260915	armbian-armsurvivors-rockchip64-7.2-20260915	copy	-	-	kernel-rpardini-linux	-	-
 KA2	kernel	armbian-tree/rockchip64-7.2-20260813-e24c	armbian-armsurvivors-rockchip64-7.2-20260813	copy	-	-	kernel-rpardini-linux	-	-
 KA3	kernel	armbian-tree/rockchip64-7.3-20261022-blade3-fusb302	armbian-armsurvivors-rockchip64-7.3-20261022-blade3-tcpm-fusb302-debug	copy	-	-	kernel-rpardini-linux	-	-
