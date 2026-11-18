@@ -47,7 +47,7 @@
   - The `wifi_host_wake_irq` pinctrl.
 - Ethernet: `rgmii-rxid` + `tx_delay` changed to `rgmii-id` with no delays (**needs a board test**). `snps,reset-*` moved to PHY `reset-gpios` with pinctrl.
 - Pinctrl and names:
-  - LEDs use `function`/`color` and one shared pinctrl group.
+  - LEDs use `function`/`color` and one shared pinctrl group. The power LED is `default-state = "on"`.
   - gpio-keys nodes are renamed `key-volume-*`.
   - PCIe reset pinctrl added.
   - hdmirx 5V detect changed to `pcfg_pull_none`, as in the YY3588 fix.
@@ -61,11 +61,12 @@
   - **USB3 host2**: `usb_host2_xhci` on `combphy2_psu`.
 - eMMC stays at HS200. Armbian says HS400 "causes immediate trouble"; retest later.
 
-## Open questions
+## Decisions (user, 2026-11-18)
 
-- The legal entity for the vendor prefix description (currently "Mekotronics Co., Ltd.") and the website link.
-- RS485 DE/RTS wiring on uart0.
-- Copyright line in the dts.
+- Vendor prefix description: "Mekotronics Co., Ltd.", with `Link: https://www.mekotronics.com`.
+- dts copyright: Ricardo Pardini only.
+- uart0 (RS485) stays a plain UART with no rs485 properties. Userspace uses TIOCSRS485 if needed.
+- Power LED: `default-state = "on"` (Armbian had `heartbeat`).
 
 ## Board tests (user)
 
