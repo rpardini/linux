@@ -45,7 +45,8 @@
   - All `//` comments.
   - always-on/boot-on on `vcc5v0_host`/`otg`, and always-on on `vdd_npu_s0`.
   - The `wifi_host_wake_irq` pinctrl.
-- Ethernet: `rgmii-rxid` + `tx_delay` changed to `rgmii-id` with no delays (**needs a board test**). `snps,reset-*` moved to PHY `reset-gpios` with pinctrl.
+- Ethernet: gmac1 changed to `rgmii-id` with no delays. gmac0 keeps `rgmii-rxid` + `tx_delay = <0x44>`, with a comment (see the tests below). `snps,reset-*` moved to PHY `reset-gpios` with pinctrl.
+- WiFi PCIe reset: changed from GPIO4_A5 (Armbian; that pin is uart3m2 TX, RS232) to GPIO1_B4, as in the vendor DT.
 - Pinctrl and names:
   - LEDs use `function`/`color` and one shared pinctrl group. The power LED is `default-state = "on"`.
   - gpio-keys nodes are renamed `key-volume-*`.
@@ -87,7 +88,7 @@ First boot on 2026-11-18, Armbian bleedingedge 7.4.0-rc3, board at 192.168.66.17
 | What | Result |
 |---|---|
 | boot / dmesg clean | 7.4.0-rc3 bleedingedge boots, LCD overlay applied. dmesg is clean except for the pcie2x1l0 pin conflict (fixed, see below) |
-| gmac0 / gmac1 with rgmii-id (iperf3 both directions) | both link at 1G and carry traffic (ssh over end0) with rgmii-id. iperf3 TODO |
+| gmac0 / gmac1 (iperf3 both directions) | gmac0 `rgmii-id` **fails** (RX CRC errors, then end0 dead, 2 of 2 boots). gmac0 `rgmii-rxid`+0x44: clean. gmac1 `rgmii-id`: clean. gmac1 rxid+0x42: clean. ~945 Mbit/s each way in the clean cases |
 | eMMC (HS200) | OK, HS200 8-bit at 187.5 MHz |
 | SD card | mmc1 probes; no card inserted |
 | NVMe (pcie3x4) | OK (WD SN570) |
@@ -100,7 +101,7 @@ First boot on 2026-11-18, Armbian bleedingedge 7.4.0-rc3, board at 192.168.66.17
 | HDMI-in (v4l2) | video nodes present |
 | es8388 headphones / mic | card rockchip-es8388 present |
 | RTC hym8563 | OK, rtc0 reads time |
-| WiFi BCM43752 / BT | BT hci0 OK. WiFi: pcie2x1l0 failed (reset GPIO4_A5 = uart3 TX). Fixed to GPIO1_B4 per vendor; retest |
+| WiFi BCM43752 / BT | OK after the reset fix (GPIO1_B4): enumerates, scans. BT hci0 OK |
 | LEDs, vol keys, recovery key | 3 LEDs, power on. gpio-keys + adc-keys inputs registered; evtest TODO |
 | RS232 (uart3) / RS485 (uart0) | |
 | NPU probe | OK (accel0) |
@@ -111,3 +112,12 @@ First boot on 2026-11-18, Armbian bleedingedge 7.4.0-rc3, board at 192.168.66.17
 - The segment LCD is the overlay `rockchip-rk3588-mekotronics-r58x-pro-lcd.dtso`, enabled with `overlays=mekotronics-r58x-pro-lcd`. It's on by default for non-vendor branches through `DEFAULT_OVERLAYS` in the board `.csc`.
 - `rockchip64-7.3` (edge) and the u-boot v2026.10 copy keep the old DT, with the LCD inline. On edge, the default overlay is just "not found".
 - The old variant with the LCD inline is kept as backup branch `backup/extensions-meko-lcd-inline-20261118`.
+
+### Ethernet delay tests (2026-11-18)
+
+- Method: on the board, set `arp_ignore=1`/`arp_announce=2` plus per-source policy routes (both ports are on one subnet, so otherwise all TX goes out through end0). Then a 120 s iperf3 run from this VM per port and direction, followed by pings to the gateway (`-I`, 56/1400 bytes) and `mmc_rx_crc_error`. Script: session scratchpad `ethtest.sh`.
+- A, both `rgmii-id`: end0 had 1011 CRC errors during the first run, then 100% loss. The first boot also had 315 CRC errors and lost pings.
+- B, both rxid (0x44/0x42): everything clean.
+- C, gmac0 rxid 0x44 + gmac1 `rgmii-id`: everything clean. This is what the series uses.
+- Precedent for rxid+tx_delay with a comment: YY3588 (66f407e2c3b9), QuartzPro64, OPi 5.
+- The board currently boots this dtb. The CI dtb is saved as `/boot/dtb/rockchip/rk3588-mekotronics-r58x-pro.dtb.orig-ci`.
