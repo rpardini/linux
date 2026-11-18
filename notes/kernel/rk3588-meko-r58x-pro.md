@@ -67,6 +67,17 @@
 - dts copyright: Ricardo Pardini only.
 - uart0 (RS485) stays a plain UART with no rs485 properties. Userspace uses TIOCSRS485 if needed.
 - Power LED: `default-state = "on"` (Armbian had `heartbeat`).
+- Ordering:
+  - Check with `scripts/dtc/dt-check-style --mode=strict <dts>`. It's in-tree since 2026-05, and its help calls it "required for new submissions".
+  - Node names use the tool's natural sort. In that sort `regulator-vcc-1v1-*` comes after `regulator-vcc12v-*`.
+  - Leave as Rockchip practice (Jonas on NanoPi R28S v6, Sept 2026, merged that way):
+    - pinctrl-names before pinctrl-0, and no blank line before status.
+    - aliases first in root.
+    - adc-keys `linux,code` before press-threshold.
+    - rk860x `fcs,suspend-voltage-selector` before regulator-*.
+    - rk806 dcdc→pldo→nldo.
+  - Names fixed by bindings are left as they are: AVDD-supply, clock_in_out, simple-audio-card,*.
+  - The remaining strict findings are only those.
 
 ## Board tests (user)
 
