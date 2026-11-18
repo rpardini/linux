@@ -94,7 +94,7 @@ First boot on 2026-11-18, Armbian bleedingedge 7.4.0-rc3, board at 192.168.66.17
 | NVMe (pcie3x4) | OK (WD SN570) |
 | SATA | ahci probes, link down (no disk?) |
 | USB2 ports / USB3 host2 port | host2 xhci has SS (5000M); host1 is HS only, as intended. Devices not yet tested |
-| Type-C host + device, both orientations, PD | fusb302 registers (SNK_UNATTACHED, role device). Not yet tested with anything attached |
+| Type-C host + device, both orientations, PD | **not working** (see below) |
 | Type-C DP altmode | DP-1 connector present, disconnected |
 | HDMI0 out (+ audio) | HDMI-A-1 connected; HDMI0 sound card present |
 | DP out (dp1) | OK: HPD on GPIO3_D5 (dp1m0) follows the plug, EDID read (Dell U3415W), link trains at HBR2 x4 (monitor asks for swing level 3). The 1080p modetest pattern is stable with the monitor on the DP input. It flashed in the monitor's PIP mode, and the Dell drops HPD when DP isn't its active input. AUX timeouts only while HPD is low |
@@ -121,3 +121,14 @@ First boot on 2026-11-18, Armbian bleedingedge 7.4.0-rc3, board at 192.168.66.17
 - C, gmac0 rxid 0x44 + gmac1 `rgmii-id`: everything clean. This is what the series uses.
 - Precedent for rxid+tx_delay with a comment: YY3588 (66f407e2c3b9), QuartzPro64, OPi 5.
 - The board currently boots this dtb. The CI dtb is saved as `/boot/dtb/rockchip/rk3588-mekotronics-r58x-pro.dtb.orig-ci`.
+
+### Type-C tests (2026-11-18)
+
+- A USB-C stick (works on other hosts) and a USB-C 2.5G NIC were used.
+- fusb302 (ID 0x91) only saw `cc1=Rd` once, briefly, on the first plug. The flow was SRC_ATTACH_WAIT → Try.SNK → SRC_TRYWAIT_UNATTACHED, then CC went Open. After that it sees nothing on either CC, in either orientation:
+  - TOGSS stays 0 (toggle running) and there are no IRQs (pin high).
+  - Setting `preferred_role=source` and restarting the port didn't help.
+  - Most mainline RK3588 fusb302 boards use `try-power-role = "source"`; this DT and the vendor's use `"sink"`.
+- Forcing VBUS on (GPIO4_A7 through devmem) sets fusb302 STATUS0.VBUSOK, so VBUS sensing on this connector is wired. But with usb_role=host, neither the HS nor the SS xHCI port sees a connect (portsc RxDetect). Reverted afterwards.
+- The old Armbian DT had no fusb302: vcc5v0_otg always-on, usb_host0_xhci `dr_mode = "host"`, `u2phy0_otg` commented "for fc000000.usb UDC", usbdp_phy0 `dp-lane-mux = <2 3>`.
+- Vendor DT: dp0 is `disable`d, so DP alt mode was likely never functional there either.
