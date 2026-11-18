@@ -64,6 +64,11 @@ Prefer extending these scripts (they share `lib.sh`: `run`, `each_topic`, `topic
   2. read `lore/topics/<ID>/mbox/*.mbx` and `sashiko/*.md`
   3. summarize per version: reviewer, what they asked for, whether it's addressed, tags received
 - Before sending, run `b4 prep --check`, `make dt_binding_check` / `CHECK_DTBS=y` for DT work, `b4 send --dry-run`.
+- DT style: also run `scripts/dtc/dt-check-style --mode=strict <file.dts|binding.yaml>` (in-tree since 2026-05; strict mode is "required for new submissions"). Node names follow the tool's natural sort. In Rockchip DTS, keep the subarch practice where it differs and say so in the cover letter:
+  - pinctrl-names before pinctrl-0, and no blank line before status (Jonas, NanoPi R28S v6, 2026-09).
+  - rk806 dcdc→pldo→nldo.
+  - Names fixed by bindings (eg. `AVDD-supply`, `clock_in_out`) can't change.
+  - See `notes/kernel/rk3588-meko-r58x-pro.md`.
 - **Never** run `b4 send`, `git push` or `02-push.sh` (with DRY_RUN=0), and never post to lists, without the user's explicit OK.
 - Before rewriting a branch that matters (rebase, drop, `b4 trailers -u`), make a backup branch.
 
