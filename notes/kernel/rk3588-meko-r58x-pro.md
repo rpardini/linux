@@ -58,7 +58,7 @@
 - Added, from the vendor DT:
   - **Type-C**: fusb302 on i2c6@0x22 (IRQ GPIO3_C7). VBUS `vcc5v0_otg` (GPIO4_A7). SBU dc GPIOs are GPIO0_C6/D3. DP altmode goes to dp0 (VP1) through usbdp_phy0, which uses the new `ports` scheme (`861e77f3314e`).
   - **DP**: dp1 (VP2) → full-size `dp-connector`, with `usbdp_phy1` lane mux `<0 1 2 3>`. `usb_host1_xhci` is therefore USB 2.0 only (`maximum-speed`, u2phy only).
-  - **SD**: `sdmmc` 4-bit SDR104, with `vccio_sd_s0` as vqmmc and no vmmc (the vendor has none either).
+  - ~~SD~~: dropped from v1, see "SD tests".
   - **USB3 host2**: `usb_host2_xhci` on `combphy2_psu`.
 - eMMC stays at HS200. Armbian says HS400 "causes immediate trouble"; retest later.
 
@@ -90,7 +90,7 @@ First boot on 2026-11-18, Armbian bleedingedge 7.4.0-rc3, board at 192.168.66.17
 | boot / dmesg clean | 7.4.0-rc3 bleedingedge boots, LCD overlay applied. dmesg is clean except for the pcie2x1l0 pin conflict (fixed, see below) |
 | gmac0 / gmac1 (iperf3 both directions) | gmac0 `rgmii-id` **fails** (RX CRC errors, then end0 dead, 2 of 2 boots). gmac0 `rgmii-rxid`+0x44: clean. gmac1 `rgmii-id`: clean. gmac1 rxid+0x42: clean. ~945 Mbit/s each way in the clean cases |
 | eMMC (HS200) | OK, HS200 8-bit at 187.5 MHz |
-| SD card | mmc1 probes; no card inserted |
+| SD card | **dropped from v1** (see below) |
 | NVMe (pcie3x4) | OK (WD SN570) |
 | SATA | ahci probes, link down (no disk?) |
 | USB2 ports / USB3 host2 port | host2 xhci has SS (5000M); host1 is HS only, as intended. Devices not yet tested |
@@ -136,3 +136,11 @@ First boot on 2026-11-18, Armbian bleedingedge 7.4.0-rc3, board at 192.168.66.17
 - With that fix: attach, orientation, VBUS and host role all work. A USB-C 2.5G NIC enumerates at 5 Gbps in normal orientation.
 - **Reverse orientation:** tcpm reports `reverse` and the usbdp PHY flags "re-init required", but the PHY is only re-initialized from `rk_udphy_power_on()` (dwc3 phy_init). With a dwc3 rebind plus `usb_role=host`, the log shows "reinit PHY ... flipped=yes" and the NIC enumerates at 5 Gbps in reverse. So the wiring is fine in both orientations, and the problem is in the driver: the usbdp/dwc3 path doesn't re-init on orientation change. Under the old Armbian DT (no fusb302) reverse didn't work at all.
 - **Decision (user):** drop DP alt mode from the series (untested; the vendor DT has dp0 disabled). dp0, altmodes, SBU dc GPIOs and usbdp_phy0 port@2/@3 are removed, and the full-size DP is now DRM `DP-1`. The reverse-orientation limitation is noted in the cover letter.
+
+### SD tests (2026-11-18)
+
+- Native card detect (sdmmc_det, GPIO0_A4) doesn't fire on hot-plug while dw_mmc is runtime-suspended: the IRQ count stays 0. With `cd-gpios = <&gpio0 RK_PA4 GPIO_ACTIVE_LOW>` plus a GPIO-function pinctrl group (as on rock-5a and OPi 5), detection works.
+- The card never answers: CMD0 goes out, then CMD8 and all CMD55 return -110 at 400/300/200 kHz. `vcc_3v3_s0` is on and `vccio_sd_s0` is at 3.3 V. The data/cmd lines (GPIO4_D0/D1/D4) twitch on insert.
+- The SoC's `sdmmc_pwren` (GPIO0_A5) is used by spi2m2 (the PMIC), so it's not that.
+- User: SD worked on the vendor OS, but only in slow mode. No Armbian DT for this family ever had sdmmc.
+- **Decision (user):** drop sdmmc from v1. Keep the cd-gpios variant for when it's revisited. Next ideas: dump the vendor kernel's GPIO and regulator state with a card inserted, and look for a switched VDD or a level shifter enable.
