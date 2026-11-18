@@ -7,6 +7,41 @@
   - No public schematic exists.
 - Not in the series: the VK2C21 segment LCD (stays in Armbian only).
 
+## Resume here (paused 2026-11-18)
+
+- **Series state:** 3 patches plus the cover, all checks clean (`CHECK_DTBS`, dt-check-style with only the known exceptions). Changes made today, each with a `backup/b4-meko-r58x-pro-pre-*-20261118` branch:
+  1. WiFi PCIe reset → GPIO1_B4.
+  2. gmac0 `rgmii-rxid` + `tx_delay` 0x44, with a one-line comment.
+  3. Type-C source-only, 1.5 A PDO.
+  4. DP altmode dropped.
+  5. sdmmc dropped.
+- **Cover letter:** has paragraphs on dt-check-style, gmac0 and Type-C (reverse orientation and altmode). The working copy is in the session scratchpad (`meko-cover.txt`) and may be gone; to edit, regenerate it from the cover commit and use `GIT_EDITOR="cp <file>" b4 prep --edit-cover`.
+- **armbian-build `extensions`:** the 7.4 DT is byte-identical to the series. The user pushes and builds in CI.
+- **Board (192.168.66.175 end0 / .174 end1, root ssh):**
+  - The final series dtb (without sdmmc) is copied to `/boot/dtb/rockchip/` but **not booted yet**. The CI one is saved as `.dtb.orig-ci`.
+  - Tools installed: iperf3, evtest, alsa-utils, i2c-tools, gpiod, libdrm-tests (modetest), edid-decode.
+  - Helper scripts in `/root`: `dpwatch.sh`, `dpauto.sh` (start modetest on HPD), `usbwatch.sh`, `cdwatch.sh`, `gpiowatch.sh`.
+  - modetest needs stdin held open (`sleep N | modetest ...`).
+  - Use 1080p on the Dell DP monitor, not PIP mode.
+- **Remaining board tests (the user plugs things in):**
+  - USB-A devices
+  - SATA disk
+  - evtest for the volume dial and the recovery adc key
+  - es8388 headphones/mic (aplay/arecord)
+  - RS232 (uart3) / RS485 (uart0)
+  - HDMI-in (v4l2)
+  - NVMe load
+  - Then fill the cover letter's "Tested:" line.
+- **Before sending:**
+  - The user reviews all wording and adds their SoB.
+  - `b4 prep --check`, `--auto-to-cc`, `b4 send --dry-run`.
+  - Check that the series still applies on `kernel-mmind/v7.5-armsoc/dts64`.
+  - Never send without an explicit OK.
+- **Optional later:**
+  - usbdp/dwc3 driver fix so the PHY re-inits on orientation change.
+  - SD slot debug (vendor kernel GPIO/regulator dump).
+  - DP altmode, if a USB-C DP sink turns up.
+
 ## Series
 
 1. `dt-bindings: vendor-prefixes: Add Mekotronics`
