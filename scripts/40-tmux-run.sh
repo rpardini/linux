@@ -12,6 +12,8 @@
 #   attached existing session; else a new one named after the VM (hostname minus 'lima-', eg. armbian-trixie-linuxdev),
 #   the same name the iTerm2 tmux profiles create.
 # Env: RUNS_DIR (default $LINUXDEV_ROOT/runs), TMUX_SESSION
+#   NICE (default 19): the run gets `nice -n $NICE ionice -c3` so builds don't starve the VM (and Claude);
+#   children (make, sudo compile.sh, ...) inherit it. NICE=0 runs at normal priority.
 # SSH agent: tmux's own SSH_AUTH_SOCK goes stale when the SSH connection that set it drops. The caller's
 #   SSH_AUTH_SOCK is passed to the window (tmux -e) if that agent holds keys; otherwise the runner picks the first
 #   /tmp/ssh-*/agent.* that does, and warns if there is none (git@ remotes, b4 send etc. will then fail).
@@ -49,6 +51,11 @@ if [[ -z "$SESSION" ]]; then
 fi
 id="${name}-$(date +%Y%m%d-%H%M%S)"
 log="$RUNS_DIR/$id.log" rc="$RUNS_DIR/$id.rc" runner="$RUNS_DIR/$id.sh"
+NICE="${NICE:-19}"
+[[ "$NICE" =~ ^[0-9]+$ ]] || die "NICE must be a number (got '$NICE')"
+if ((NICE > 0)); then
+	set -- nice -n "$NICE" ionice -c3 "$@"
+fi
 printf -v cmd_q '%q ' "$@"
 cmd_q="${cmd_q% }"
 
