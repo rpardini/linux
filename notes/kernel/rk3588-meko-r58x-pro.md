@@ -183,6 +183,7 @@ First boot on 2026-11-18, Armbian bleedingedge 7.4.0-rc3, board at 192.168.66.17
 - Sebastian, part3 v18 cover: orientation-switch without mode-switch is a DT bug ("mode-switch should be added"; jaguar is one of the two upstream DTs doing it). **Series now has `mode-switch` on usbdp_phy0** (user, 2026-11-19; backup `backup/b4-meko-r58x-pro-pre-mode-switch-20261119`). CHECK_DTBS clean.
 - Vendor kernel 6.1.172 (installed alongside, extlinux menu): reverse orientation enumerates at 5000M on hotplug with no rebind. It re-creates the xHCI on attach (new xhci-hcd instance), i.e. dwc3 re-init → PHY re-init. Wiring is fine both ways.
 - Cover: point to the pending fix with lore links, not our own analysis (user).
+- Tested with Sebastian's series on the board (2026-11-19/20): hotplug normal/reverse/normal, PHY re-init `flipped=yes/no` each time, SuperSpeed every time; cold boot reverse OK. Tested-by tags to send: [`tested-by-pending.md`](tested-by-pending.md).
 
 ### Vendor kernel audio (2026-11-19)
 
