@@ -142,7 +142,7 @@ First boot on 2026-11-18, Armbian bleedingedge 7.4.0-rc3, board at 192.168.66.17
 | WiFi BCM43752 / BT | OK after the reset fix (GPIO1_B4): enumerates, scans. BT hci0 OK |
 | LEDs, vol keys, recovery key | 3 LEDs, power on. evtest (2026-11-19): volume dial gives clean KEY_VOLUMEUP/DOWN pairs; recovery (button nearest the USB 3.0 Type-A) gives KEY_VENDOR, SARADC ch1 ~4085 idle / 39-44 pressed (~17-19 mV). The other button is the hardware reset (not in DT) |
 | RS232 (uart3) / RS485 (uart0) | |
-| NPU probe | OK (accel0) |
+| NPU | 2026-11-20: Mesa Teflon/Rocket MobileNet v1 (`ghcr.io/rpardini/mesa-teflon-etnaviv-rocket-docker`): first run failed (`vdd_npu_s0: disabling` at ~32 s, then "failed to set domain 'nputop' on" + NPU job timeouts). **Fix: `&pd_npu { domain-supply = <&vdd_npu_s0>; }`** (14 of 17 upstream RK3588 NPU boards have it; amended into the dts patch, backup `backup/b4-meko-r58x-pro-pre-pd-npu-20261120`, armbian 54669da48). After: regulator stays on, classification OK (military uniform 0.87, ~12.7 ms/inference) |
 
 ## Armbian (armbian-build `extensions`)
 
