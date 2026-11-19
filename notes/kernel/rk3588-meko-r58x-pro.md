@@ -193,6 +193,9 @@ First boot on 2026-11-18, Armbian bleedingedge 7.4.0-rc3, board at 192.168.66.17
 
 ### Board boot setup (2026-11-19)
 
+- DP alt mode retest prepared (2026-11-20, user looking for a USB-C→DP cable): worktree branch `test/meko-dp-altmode-20261120` = series + the dropped altmode blocks (dp0/VP1, connector altmodes + SBU port@2, usbdp_phy0 SBU dc GPIOs + port@2/@3; sdmmc stays out). CHECK_DTBS clean. On the board as extlinux entry `mainline-altmode` (`rk3588-mekotronics-r58x-pro-altmode-test.dtb`, built with `DTC_FLAGS=-@` so the LCD overlay applies). Needs dw-dp v12 OOB HPD (in the Armbian kernel).
+- Worktree dtbs built without `DTC_FLAGS=-@` have no `__symbols__`; the LCD overlay then can't apply.
+
 - `/boot/extlinux/extlinux.conf`: `mainline` (default; 7.4 + series dtb + LCD overlay) and `vendor` (6.1.172 vendor-rk35xx, `rk3588-blueberry-edge-v12-maizhuo-linux.dtb`). boot.scr stays as fallback; `/boot/Image`, `dtb`, `uInitrd` symlinks point at 7.4.
 - Armbian rockchip64-7.4 test patches (b4 dumps, not committed yet): rk35xx-1240 dwc3 glue v19, 1241 usbdp part3 v18, 1242 fusb302 probe cleanup v1, 1243 inno-usb2 clock fix v4, 1244 drm/bridge include removal (941e3acfb358, prereq for 1245), 1245 dw-dp improvements v12.
 - Reference tree: worktree `kernel-collabora-rockchip-devel` (detached `kernel-collabora-rk3588/rockchip-devel`, same base as the series).
