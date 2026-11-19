@@ -151,6 +151,7 @@ First boot on 2026-11-18, Armbian bleedingedge 7.4.0-rc3, board at 192.168.66.17
 - The segment LCD is the overlay `rockchip-rk3588-mekotronics-r58x-pro-lcd.dtso`, enabled with `overlays=mekotronics-r58x-pro-lcd`. It's on by default for non-vendor branches through `DEFAULT_OVERLAYS` in the board `.csc`.
 - `rockchip64-7.3` (edge) and the u-boot v2026.10 copy keep the old DT, with the LCD inline. On edge, the default overlay is just "not found".
 - The old variant with the LCD inline is kept as backup branch `backup/extensions-meko-lcd-inline-20261118`.
+- `lcd-clock.service` (board .csc) used `/sys/devices/platform/lcd_vk2c21/display`, which only exists with the vendor DT; with the overlay the node is `segment-lcd`, so the service was skipped every minute. Fixed 2026-11-20 (armbian 2591fe880, and on the board): it now uses `/sys/bus/platform/drivers/lcd-vk2c21/*/display`.
 
 ### Ethernet delay tests (2026-11-18)
 
