@@ -175,6 +175,27 @@ First boot on 2026-11-18, Armbian bleedingedge 7.4.0-rc3, board at 192.168.66.17
 - **Reverse orientation:** tcpm reports `reverse` and the usbdp PHY flags "re-init required", but the PHY is only re-initialized from `rk_udphy_power_on()` (dwc3 phy_init). With a dwc3 rebind plus `usb_role=host`, the log shows "reinit PHY ... flipped=yes" and the NIC enumerates at 5 Gbps in reverse. So the wiring is fine in both orientations, and the problem is in the driver: the usbdp/dwc3 path doesn't re-init on orientation change. Under the old Armbian DT (no fusb302) reverse didn't work at all.
 - **Decision (user):** drop DP alt mode from the series (untested; the vendor DT has dp0 disabled). dp0, altmodes, SBU dc GPIOs and usbdp_phy0 port@2/@3 are removed, and the full-size DP is now DRM `DP-1`. The reverse-orientation limitation is noted in the cover letter.
 
+### Type-C reverse orientation, root cause (2026-11-19)
+
+- Known upstream issue. Sebastian Reichel's usbdp series lists it from the start ("Switching the USB-C connector orientation during hotplug breaks USB3 speed, as the PHY is not being re-initialized"); Sashiko flagged our exact case on several versions.
+- Merged in 7.4: only the flag (`phy_needs_reinit`, part 2). USB3 re-init happens only via dwc3 `phy_init` (probe/rebind), which matches what we saw.
+- Pending fix: usbdp part3 v18 `<20261119-b4-rockchip-usbdp-cleanup-part3-v18-0-fb325e336494@collabora.com>` ("Re-init PHY on mux change") + dwc3 Rockchip glue v19 `<20261114-b4-rockchip-dwc3-rockchip-glue-v19-0-b79fb5f4b42a@collabora.com>` (USBDP PHY reset quirk). The re-init goes through the mode-switch path (`typec_set_mode`).
+- Sebastian, part3 v18 cover: orientation-switch without mode-switch is a DT bug ("mode-switch should be added"; jaguar is one of the two upstream DTs doing it). **Series now has `mode-switch` on usbdp_phy0** (user, 2026-11-19; backup `backup/b4-meko-r58x-pro-pre-mode-switch-20261119`). CHECK_DTBS clean.
+- Vendor kernel 6.1.172 (installed alongside, extlinux menu): reverse orientation enumerates at 5000M on hotplug with no rebind. It re-creates the xHCI on attach (new xhci-hcd instance), i.e. dwc3 re-init → PHY re-init. Wiring is fine both ways.
+- Cover: point to the pending fix with lore links, not our own analysis (user).
+
+### Vendor kernel audio (2026-11-19)
+
+- Vendor driver sets 0x2B = 0x80 (slrck) itself. Capture works; jack mic on LINPUT2 (left) at the same weak level as mainline+slrck (~-50 dBFS speech, -62 floor). Confirms DT routing.
+- Vendor headphone playback does not work at all: the vendor DT's card routing ("Headphone" ← LOUT1) doesn't connect to the es8323 driver's widgets (Headphone "in 0", Left Out 1 "out 0"), so DAPM never powers the DAC.
+- Mainline es8328 labels Output 1 as -30 dB/1 dB steps; the register (and vendor es8323) is -45 dB/1.5 dB steps.
+
+### Board boot setup (2026-11-19)
+
+- `/boot/extlinux/extlinux.conf`: `mainline` (default; 7.4 + series dtb + LCD overlay) and `vendor` (6.1.172 vendor-rk35xx, `rk3588-blueberry-edge-v12-maizhuo-linux.dtb`). boot.scr stays as fallback; `/boot/Image`, `dtb`, `uInitrd` symlinks point at 7.4.
+- Armbian rockchip64-7.4 test patches (b4 dumps, not committed yet): rk35xx-1240 dwc3 glue v19, 1241 usbdp part3 v18, 1242 fusb302 probe cleanup v1, 1243 inno-usb2 clock fix v4, 1244 drm/bridge include removal (941e3acfb358, prereq for 1245), 1245 dw-dp improvements v12.
+- Reference tree: worktree `kernel-collabora-rockchip-devel` (detached `kernel-collabora-rk3588/rockchip-devel`, same base as the series).
+
 ### SD tests (2026-11-18)
 
 - Native card detect (sdmmc_det, GPIO0_A4) doesn't fire on hot-plug while dw_mmc is runtime-suspended: the IRQ count stays 0. With `cd-gpios = <&gpio0 RK_PA4 GPIO_ACTIVE_LOW>` plus a GPIO-function pinctrl group (as on rock-5a and OPi 5), detection works.

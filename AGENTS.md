@@ -10,6 +10,7 @@ Instructions for AI agents working under `~/linuxdev` (= `/opt/linuxdev`). This 
 |---|---|
 | `kernel/`, `u-boot/` | main trees (all blobs fetched here; `10-vm-clone-main.sh --blobless` remains for new hosts). Remotes are listed in `linuxdev-status/remotes.tsv` |
 | `kernel-<slug>/`, `u-boot-<slug>/` | per-topic git worktrees of the main trees (eg. `kernel-rk3588-rtl-eth`, `kernel-cec`) |
+| `kernel-collabora-rockchip-devel/` | read-only reference worktree, detached at `kernel-collabora-rk3588/rockchip-devel` (Sebastian Reichel / Collabora RK3588 integration tree). Use it for all mainline Rockchip work to see which pending series exist, their order, and rebased versions of them. Refresh: `git fetch kernel-collabora-rk3588 && git checkout --detach kernel-collabora-rk3588/rockchip-devel` |
 | `linuxdev-status/` | this repo: `STATUS.md` (human tracker), `topics.tsv` (machine data per topic), `remotes.tsv`, `armbian.tsv`, `notes/`, `scripts/` |
 | `lore/` | lei store and saved searches, per-topic mail and Sashiko reviews (see `notes/lore-lei.md`) |
 | `armbian-build/` | Armbian build framework. Patch paths in STATUS are relative to `armbian-build/patch/` |
