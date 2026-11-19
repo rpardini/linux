@@ -76,7 +76,7 @@ User's reply, 2026-11-10 02:30, `<f225b5f6-13eb-40d0-a9ca-7efab0e6876c@pardini.n
   - get_maintainer re-adds both old addresses through `blamed_fixes` on `a03c44277253`, so any `--auto-to-cc` (see the gotcha above) undoes this. Check the recipients with `b4 send -o <dir>` before sending.
   - Final recipients: To Vinod Koul, Neil Armstrong, Manivannan Sadhasivam, Heiko Stuebner. Cc Lucas, linux-phy, linux-arm-kernel, linux-rockchip, LKML, plus from the trailers Yifeng, stable, Sebastian. `b4 prep --check` 1/1 clean (2026-11-15).
 
-## v2 review (lore, checked 2026-11-18)
+## v2 review (lore, checked 2026-11-19)
 
 - Shawn Lin (Rockchip), 2026-11-16 10:31, `<eb51e0bf-148a-4d8b-8110-b65094fa1b43@rock-chips.com>`: `Reviewed-by: Shawn Lin <shawn.lin@rock-chips.com>`. No comments. `b4 trailers -u` picks it up if there's a v3.
 - No other replies. Not applied by Vinod yet. Still no Tested-by from &sata2 board owners.
