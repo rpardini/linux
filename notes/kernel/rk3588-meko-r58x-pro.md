@@ -23,7 +23,9 @@
   - Helper scripts in `/root`: `dpwatch.sh`, `dpauto.sh` (start modetest on HPD), `usbwatch.sh`, `cdwatch.sh`, `gpiowatch.sh`.
   - modetest needs stdin held open (`sleep N | modetest ...`).
   - Use 1080p on the Dell DP monitor, not PIP mode.
-- **Remaining board tests (the user plugs things in):**
+- **Plan agreed 2026-11-19 (board offline then):** when the board is back, rebuild the dtb, deploy it, then reboot (check the boot config first). Then run only **keys (evtest: volume dial, recovery adc key) + es8388 audio**. The other tests below are skipped. Cover (user, 2026-11-19): replace the itemised "Tested:" line with one short sentence covering only what was exercised. Precedent: YY3588 "tested on the board", Axon Lite/LubanCat 4 "boots to userspace...". Untested-but-enabled nodes (USB-A, SATA, RS232/RS485, HDMI-in) stay as they are and the cover says nothing about them. If a reviewer asks, answer "per schematic/vendor DT" (cf. Charkov on OPi 5 Pro v6: "Not tested, not needed, why bother?").
+- **Done 2026-11-19:** keys pass. Audio: headphones work; the mic needs the es8328 `slrck` driver fix (see Board tests). Next: draft the cover's one-sentence test statement (playback only for audio), then wording review.
+- **Remaining board tests (the user plugs things in, skipped per the plan above):**
   - USB-A devices
   - SATA disk
   - evtest for the volume dial and the recovery adc key
@@ -134,10 +136,11 @@ First boot on 2026-11-18, Armbian bleedingedge 7.4.0-rc3, board at 192.168.66.17
 | HDMI0 out (+ audio) | HDMI-A-1 connected; HDMI0 sound card present |
 | DP out (dp1) | OK: HPD on GPIO3_D5 (dp1m0) follows the plug, EDID read (Dell U3415W), link trains at HBR2 x4 (monitor asks for swing level 3). The 1080p modetest pattern is stable with the monitor on the DP input. It flashed in the monitor's PIP mode, and the Dell drops HPD when DP isn't its active input. AUX timeouts only while HPD is low |
 | HDMI-in (v4l2) | video nodes present |
-| es8388 headphones / mic | card rockchip-es8388 present |
+| es8388 headphones | OK (2026-11-19, final dtb): speaker-test L/R correct and clean. Level is low with old Apple 4-pole in-ears, and only plays when the plug is fully seated (the earlier "silent" runs were most likely plug seating, not a codec latch). In-phase vs out-of-phase L/R only slightly different, so not a clear CTIA/OMTP mismatch |
+| es8388 mic | Routing correct: the jack mic is on **LINPUT2** (as in the DT). RINPUT2 is silent. **Capture needs ES8388 reg 0x2B = 0x80 (`slrck`, ADC uses DACLRC)**: without it, SDI0 stays high and every sample is -1 (checked with GPIO1 EXT_PORT sampling: only MCLK/SCLK/LRCK toggle). The upstream es8328 driver never writes 0x2B; the vendor es8323 driver writes 0x80. Driver gap, not DT: keep the DT as it is (user, 2026-11-19); a driver fix can be a separate series. Speech level weak at +12 dB PGA (~-55 dBFS) |
 | RTC hym8563 | OK, rtc0 reads time |
 | WiFi BCM43752 / BT | OK after the reset fix (GPIO1_B4): enumerates, scans. BT hci0 OK |
-| LEDs, vol keys, recovery key | 3 LEDs, power on. gpio-keys + adc-keys inputs registered; evtest TODO |
+| LEDs, vol keys, recovery key | 3 LEDs, power on. evtest (2026-11-19): volume dial gives clean KEY_VOLUMEUP/DOWN pairs; recovery (button nearest the USB 3.0 Type-A) gives KEY_VENDOR, SARADC ch1 ~4085 idle / 39-44 pressed (~17-19 mV). The other button is the hardware reset (not in DT) |
 | RS232 (uart3) / RS485 (uart0) | |
 | NPU probe | OK (accel0) |
 
