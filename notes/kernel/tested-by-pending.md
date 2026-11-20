@@ -40,6 +40,11 @@ Tag: `Tested-by: Ricardo Pardini <ricardo@pardini.net> # Mekotronics R58X-Pro (R
 - Tested 2026-11-19 (light): full-size DP (dp1, VP2) to a Dell U3415W: DP-1 connected, 3440x1440 active, no dw-dp errors. Not tested: DP audio.
 - Tested 2026-11-20: Type-C DP alt mode (dp0, VP1, via usbdp_phy0 + fusb302, K30 local v2 DT) with an Apple USB-C Digital AV Multiport adapter, pin assignment D: 1080p60 stable in both orientations; OOB HPD retrains the link after hot replug/flip. Issue: HPD sent before dw-dp binds at boot is lost (see K30 notes, "Boot-time HPD race"); mention or investigate before sending the Tested-by.
 
+### Sebastian Reichel: drm/connector: Cache out-of-band hotplug events v1
+
+- Reply to: `<20260821-drm-connector-oob-hotplug-cache-v1-1-e92e146fdc7b@collabora.com>` (single patch; Igor Paunovic already gave a Tested-by)
+- Tested 2026-11-20: Meko R58X-Pro (RK3588, fusb302, dw-dp v12, usbdp part3), Apple USB-C to HDMI adapter plugged at boot: without the patch DP stays disconnected until re-plug; with it the cached HPD is replayed when the connector registers and the link comes up at boot. Tested via Armbian 7.4-rc3 with Collabora's rebased copy (v1 has stale context on 7.4).
+
 ## Sent
 
 (none yet)
