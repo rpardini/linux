@@ -8,7 +8,7 @@ Tag: `Tested-by: Ricardo Pardini <ricardo@pardini.net> # Mekotronics R58X-Pro (R
 
 ## Pending
 
-Reply drafts for the five open ones were prepared 2026-11-20 (user sends them from Thunderbird).
+Reply drafts for the five open ones: [`tested-by-replies-2026-11-20.md`](tested-by-replies-2026-11-20.md) (user sends them from Thunderbird).
 
 ### Sebastian Reichel: usb: dwc3: introduce Rockchip glue driver v19
 
