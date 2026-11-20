@@ -37,7 +37,8 @@ Tag: `Tested-by: Ricardo Pardini <ricardo@pardini.net> # Mekotronics R58X-Pro (R
 
 - Reply to: `<20261114-synopsys-dw-dp-improvements-v12-0-d42d3dc5bdd4@collabora.com>` (cover, 23 patches)
 - Applied on v7.4-rc3 with prerequisite `941e3acfb358` ("drm/bridge: Do not include <drm/drm_simple_kms_helper.h>", in linux-next): v12 is based on a DRM tree where that include is already gone; without it patch 22 does not apply.
-- Tested 2026-11-19 (light): full-size DP (dp1, VP2) to a Dell U3415W: DP-1 connected, 3440x1440 active, no dw-dp errors. Not tested: HPD replug after the update, DP audio, Type-C DP alt mode (not described on this board).
+- Tested 2026-11-19 (light): full-size DP (dp1, VP2) to a Dell U3415W: DP-1 connected, 3440x1440 active, no dw-dp errors. Not tested: DP audio.
+- Tested 2026-11-20: Type-C DP alt mode (dp0, VP1, via usbdp_phy0 + fusb302, K30 local v2 DT) with an Apple USB-C Digital AV Multiport adapter, pin assignment D: 1080p60 stable in both orientations; OOB HPD retrains the link after hot replug/flip. Issue: HPD sent before dw-dp binds at boot is lost (see K30 notes, "Boot-time HPD race"); mention or investigate before sending the Tested-by.
 
 ## Sent
 
