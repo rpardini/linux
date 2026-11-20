@@ -47,7 +47,7 @@ Fetched 2026-11-20 (`scripts/20-lore.sh all K30`): `lore/topics/K30/mbox/v1.mbx`
   - DP-1 and HDMI-A-1 are connected. `frl-enable` is held by the driver. BT hci0 comes up with the BCM43752 patch loaded; GPIO1_B0 is pulled down.
   - Follow-up with devices in all ports: the host1 USB 2.0 port enumerates a SanDisk Extreme Pro at 480M (bus 3, 38 MB/s direct read). BlueZ was installed on the board: the BT scan finds 5 devices and the `host_wake` IRQ fires.
 - Cover: "Changes in v2" filled in (3 Sashiko bullets). Backup before the cover edit: `backup/b4-meko-r58x-pro-pre-v2-cover-20261120`.
-- armbian-build `extensions` 7.4 DT is no longer byte-identical to the series. Sync it when v2 is final.
+- armbian-build `extensions` 7.4 DT synced to local v2 (byte-identical again), as a separate commit "rockchip64-7.4: mekotronics-r58x-pro: DT fixes from review" (user's choice: not folded into the DT rework commit).
 
 ## Series
 
