@@ -72,6 +72,9 @@ Works on edge 7.4-rc3 (Armbian, dw-dp v12) on **both** DP outputs, with a test o
 - Ruled out by comparing vendor vs edge register dumps during playback: S/PDIF registers (CFGR/DMACR/XFER identical with mclk-fs), PL330 config, SYS_GRF SOC_CON6/7/12 (set to vendor values, no effect).
 - **Don't poke SYS_GRF SOC_CON9 (0xfd58c324)** on this board: writing the vendor value 0x42 took both GMACs down (board alive, network dead until reboot).
 - Board state after the test: edge entry has the DP audio overlay, `drm.debug=0x100` and `dyndbg="file drivers/clk/rockchip/clk.c +p"` (backups `extlinux.conf.bak-20261120-pre-dp-audio`, `…-pre-clkdbg`).
+- **Fixed (2026-11-20):** clk core patch "clk: send POST_RATE_CHANGE whenever PRE_RATE_CHANGE was sent" (worktree `kernel-clk-post-rate-change`, branch `mainline/clk-post-rate-change` on v7.4-rc3; `clk_change_rate()` sends POST if the rate changed or if PRE was sent, i.e. `old_rate != core->new_rate`). Armbian `rk35xx-1247-clk-send-post-rate-change-when-pre-was-sent.patch`. With it the boot log shows event 1 then event 2 for both fracs and both muxes stay on `_src`. Not sent upstream yet; the clk KUnit tests only cover the mux set_parent notifier case (not run).
+- **Armbian Meko DT** now has the DP audio cards (`dp0-sound` / `dp1-sound`, `RK3588 DP0/DP1`, spdif_tx2/tx5, mclk-fs 512, dp0/dp1 `#sound-dai-cells = <1>`), commit "rockchip64-7.4: mekotronics-r58x-pro: DP audio over S/PDIF"; it now differs from the K30 series (Armbian-only until dw-dp audio + the dtsi sound-dai-cells fix land upstream). Test overlay removed from extlinux.
+- Retest with the fixed edge build + Armbian dtb, no workaround: DP0 (adapter → Dell HDMI) and DP1 (full-size → Dell DP) both play, L/R correct (user).
 - Later: check DP audio on other boards with DP (same S/PDIF wiring on RK3588; the mux bug hits any RK3588 board).
 
 ## Series
