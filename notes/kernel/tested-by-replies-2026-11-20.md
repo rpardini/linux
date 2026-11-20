@@ -95,11 +95,12 @@ v7.4-rc3 (it needs 941e3acfb358 from linux-next to apply there):
   input. Works in both orientations, and out-of-band HPD retrains the
   link after a flip. With the adapter plugged in at boot, this also
   needs your "drm/connector: Cache out-of-band hotplug events".
-- Audio over S/PDIF (spdif_tx2/tx5 + simple-audio-card, mclk-fs 512)
-  on both outputs to the Dell's speakers. It needed a workaround for
-  an unrelated CRU issue: the spdif2/spdif5 muxes are left on the
-  fractional divider at boot, while the clock framework thinks they
-  are on the source.
+- Audio on both outputs to the Dell's speakers, over S/PDIF
+  (spdif_tx2/tx5, simple-audio-card, mclk-fs 512, DAI 1). It also
+  needs a clk core fix I'll send separately: AUPLL's assigned rate
+  rounds to the current rate, so the S/PDIF frac notifiers get
+  PRE_RATE_CHANGE without POST_RATE_CHANGE and leave the muxes on the
+  gated fractional divider; no DMA requests, EIO.
 
 Tested-by: Ricardo Pardini <ricardo@pardini.net> # Mekotronics R58X-Pro (RK3588)
 ```
