@@ -143,7 +143,19 @@ First boot on 2026-11-18, Armbian bleedingedge 7.4.0-rc3, board at 192.168.66.17
 | WiFi BCM43752 / BT | OK after the reset fix (GPIO1_B4): enumerates, scans. BT hci0 OK |
 | LEDs, vol keys, recovery key | 3 LEDs, power on. evtest (2026-11-19): volume dial gives clean KEY_VOLUMEUP/DOWN pairs; recovery (button nearest the USB 3.0 Type-A) gives KEY_VENDOR, SARADC ch1 ~4085 idle / 39-44 pressed (~17-19 mV). The other button is the hardware reset (not in DT) |
 | RS232 (uart3) / RS485 (uart0) | |
-| NPU | 2026-11-20: Mesa Teflon/Rocket MobileNet v1 (`ghcr.io/rpardini/mesa-teflon-etnaviv-rocket-docker`): first run failed (`vdd_npu_s0: disabling` at ~32 s, then "failed to set domain 'nputop' on" + NPU job timeouts). **Fix: `&pd_npu { domain-supply = <&vdd_npu_s0>; }`** (14 of 17 upstream RK3588 NPU boards have it; amended into the dts patch, backup `backup/b4-meko-r58x-pro-pre-pd-npu-20261120`, armbian 7b3139694). After: regulator stays on, classification OK (military uniform 0.87, ~12.7 ms/inference) |
+| NPU | 2026-11-20: Mesa Teflon/Rocket MobileNet v1 (`ghcr.io/rpardini/mesa-teflon-etnaviv-rocket-docker`): first run failed (`vdd_npu_s0: disabling` at ~32 s, then "failed to set domain 'nputop' on" + NPU job timeouts). **Fix: `&pd_npu { domain-supply = <&vdd_npu_s0>; }`**, which the original Armbian DT already had and the 2026-11-18 rework had dropped (14 of 17 upstream RK3588 NPU boards have it; amended into the dts patch, backup `backup/b4-meko-r58x-pro-pre-pd-npu-20261120`, armbian e476c5551). After: regulator stays on, classification OK (military uniform 0.87, ~12.7 ms/inference) |
+
+## Regression review vs the original Armbian DT (2026-11-20)
+
+Structural diff (cpp + dtc -s of both, per node/property) of the original Armbian 7.4 DT (armbian-build 315e8bcb4) against the series. Lost in the 2026-11-18 rework and restored:
+- `&pd_npu { domain-supply }` (NPU jobs timed out) and `&pd_gpu { domain-supply = <&vdd_gpu_s0>; }` (36/38 upstream GPU boards have it).
+- `pcfg_pull_up` on pcie30x4-pwren (GPIO1_C4), wifi-pwren (GPIO1_B1) and hdmirx-5v-det (GPIO1_D5), as in vendor + Armbian (the rework had changed them to pull_none without reason).
+- WiFi host-wake pinctrl (GPIO1_A7 pull-down) on pcie2x1l0, after pcie2_0_rst (as rk3588-evb1-v10).
+Backup: `backup/b4-meko-r58x-pro-pre-armbian-regress-20261120`. Board OK after: both domains hold their supply, PCIe/NVMe/WiFi up.
+
+Intended differences (OK): rgmii-id on gmac1, Type-C/DP1/host2 additions, aliases/rs485 flag/i2c5/cpu mem-supply dropped, unused pcie30 avdd regulators dropped, vcc5v0_host has consumers (u2phy), rtc clock-frequency dropped, power LED default-on, frl-enable-gpios (maps vendor enable-gpios, common pattern).
+
+Naming review (2026-11-20, user: avoid reviewer nags): LEDs `led-0/1/2` (leds-gpio binding preferred form), `dp-con` (Rockchip precedent; alt mode would hang off the usb-c-connector, so no second dp-connector). Backup `backup/b4-meko-r58x-pro-pre-naming-20261120`. Kept: `key-volume-*` (most common arm64), regulator-* names/labels consistent and all used, pinctrl group names (free-form). dt-check-style reports outside the cover's list also follow Rockchip majority: `linux,code` before `press-threshold-microvolt` (21/22), `fcs,suspend-voltage-selector` before `regulator-name` (32/36), rk806 dcdc→pldo→nldo, aliases first, `ROCKCHIP_VOP2_EP_*` unit addresses. Lore research: Krzysztof/Heiko nag on regulator-* consistency, unused regulators, odd sorting, double blank lines; all clean.
 
 ## Armbian (armbian-build `extensions`)
 
@@ -151,7 +163,7 @@ First boot on 2026-11-18, Armbian bleedingedge 7.4.0-rc3, board at 192.168.66.17
 - The segment LCD is the overlay `rockchip-rk3588-mekotronics-r58x-pro-lcd.dtso`, enabled with `overlays=mekotronics-r58x-pro-lcd`. It's on by default for non-vendor branches through `DEFAULT_OVERLAYS` in the board `.csc`.
 - `rockchip64-7.3` (edge) and the u-boot v2026.10 copy keep the old DT, with the LCD inline. On edge, the default overlay is just "not found".
 - The old variant with the LCD inline is kept as backup branch `backup/extensions-meko-lcd-inline-20261118`.
-- `lcd-clock.service` (board .csc) used `/sys/devices/platform/lcd_vk2c21/display`, which only exists with the vendor DT; with the overlay the node is `segment-lcd`, so the service was skipped every minute. Fixed 2026-11-20 (armbian 05645c43f, and on the board): it now uses `/sys/bus/platform/drivers/lcd-vk2c21/*/display`.
+- `lcd-clock.service` (board .csc) used `/sys/devices/platform/lcd_vk2c21/display`, which only exists with the vendor DT; with the overlay the node is `segment-lcd`, so the service was skipped every minute. Fixed 2026-11-20 (armbian 2531de4ca, and on the board): it now uses `/sys/bus/platform/drivers/lcd-vk2c21/*/display`.
 
 ### Ethernet delay tests (2026-11-18)
 
