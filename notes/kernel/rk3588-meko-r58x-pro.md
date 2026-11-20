@@ -145,6 +145,12 @@ First boot on 2026-11-18, Armbian bleedingedge 7.4.0-rc3, board at 192.168.66.17
 | RS232 (uart3) / RS485 (uart0) | |
 | NPU | 2026-11-20: Mesa Teflon/Rocket MobileNet v1 (`ghcr.io/rpardini/mesa-teflon-etnaviv-rocket-docker`): first run failed (`vdd_npu_s0: disabling` at ~32 s, then "failed to set domain 'nputop' on" + NPU job timeouts). **Fix: `&pd_npu { domain-supply = <&vdd_npu_s0>; }`**, which the original Armbian DT already had and the 2026-11-18 rework had dropped (14 of 17 upstream RK3588 NPU boards have it; amended into the dts patch, backup `backup/b4-meko-r58x-pro-pre-pd-npu-20261120`, armbian e476c5551). After: regulator stays on, classification OK (military uniform 0.87, ~12.7 ms/inference) |
 
+## Apply check on mmind (2026-11-20)
+
+- `kernel-mmind/v7.5-armsoc/dts64` at 30eb5fd93649 (2026-11-13): all 3 patches apply strictly (`git apply --check` on a clean checkout, no 3-way). rockchip.yaml entry (MangoPi M28K < Mekotronics < mqmaker), vendor-prefixes (megachips < mekotronics < mele) and Makefile (lubancat-5io < mekotronics < mnt-reform2) stay sorted.
+- CHECK_DTBS W=1 there: only `vop@fdd90000: 'reset-names', 'resets' do not match`, which rock-5b also gets on that tree (from mmind f245313cd545 "Add RK3588 VOP2 resets", binding update not in that branch). Not ours.
+- Scratch worktree: session scratchpad `wt-mmind`.
+
 ## Regression review vs the original Armbian DT (2026-11-20)
 
 Structural diff (cpp + dtc -s of both, per node/property) of the original Armbian 7.4 DT (armbian-build 315e8bcb4) against the series. Lost in the 2026-11-18 rework and restored:
