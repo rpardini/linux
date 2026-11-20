@@ -8,6 +8,8 @@ Tag: `Tested-by: Ricardo Pardini <ricardo@pardini.net> # Mekotronics R58X-Pro (R
 
 ## Pending
 
+Reply drafts for the five open ones were prepared 2026-11-20 (user sends them from Thunderbird).
+
 ### Sebastian Reichel: usb: dwc3: introduce Rockchip glue driver v19
 
 - Reply to: `<20261114-b4-rockchip-dwc3-rockchip-glue-v19-0-b79fb5f4b42a@collabora.com>` (cover, 6 patches)
@@ -31,6 +33,7 @@ Tag: `Tested-by: Ricardo Pardini <ricardo@pardini.net> # Mekotronics R58X-Pro (R
 ### Sebastian Reichel: phy: rockchip: inno-usb2: ensure PHY is running when clock is requested v4
 
 - Reply to: `<20261110-phy-rockchip-inno-usb2-clock-fix-v4-0-51acc071634f@collabora.com>` (cover, 5 patches)
+- **Obsolete (2026-11-20): v5 (`<20261110-phy-rockchip-inno-usb2-clock-fix-v5-0-d2e24582ab22@collabora.com>`) was applied by Vinod Koul on 2026-11-13; no Tested-by to send.** Armbian rk35xx-1243 still carries v4.
 - Tested 2026-11-19 (light): boots; USB2 host port (ehci fc880000) enumerates a hub + HID device; Type-C HS side of usb_host0 works (SuperSpeed NIC enumerates through the dwc3 that uses u2phy0). No suspend/resume tested.
 
 ### Sebastian Reichel: Synopsys DisplayPort Controller improvements for Rockchip platforms v12
