@@ -95,8 +95,11 @@ v7.4-rc3 (it needs 941e3acfb358 from linux-next to apply there):
   input. Works in both orientations, and out-of-band HPD retrains the
   link after a flip. With the adapter plugged in at boot, this also
   needs your "drm/connector: Cache out-of-band hotplug events".
-
-Not tested: DP audio.
+- Audio over S/PDIF (spdif_tx2/tx5 + simple-audio-card, mclk-fs 512)
+  on both outputs to the Dell's speakers. It needed a workaround for
+  an unrelated CRU issue: the spdif2/spdif5 muxes are left on the
+  fractional divider at boot, while the clock framework thinks they
+  are on the source.
 
 Tested-by: Ricardo Pardini <ricardo@pardini.net> # Mekotronics R58X-Pro (RK3588)
 ```

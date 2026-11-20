@@ -1,0 +1,55 @@
+// SPDX-License-Identifier: (GPL-2.0+ OR MIT)
+/* TEST ONLY: DP audio over S/PDIF for dp0 (Type-C alt mode) and dp1 (full-size DP) */
+/dts-v1/;
+/plugin/;
+
+&dp0 {
+	#sound-dai-cells = <1>;
+};
+
+&dp1 {
+	#sound-dai-cells = <1>;
+};
+
+&spdif_tx2 {
+	status = "okay";
+};
+
+&spdif_tx5 {
+	status = "okay";
+};
+
+/ {
+	fragment-dp0-sound {
+		target-path = "/";
+		__overlay__ {
+			dp0-sound {
+				compatible = "simple-audio-card";
+				simple-audio-card,name = "DP0";
+				simple-audio-card,mclk-fs = <512>;
+
+				simple-audio-card,cpu {
+					sound-dai = <&spdif_tx2>;
+				};
+
+				simple-audio-card,codec {
+					sound-dai = <&dp0 1>;
+				};
+			};
+
+			dp1-sound {
+				compatible = "simple-audio-card";
+				simple-audio-card,name = "DP1";
+				simple-audio-card,mclk-fs = <512>;
+
+				simple-audio-card,cpu {
+					sound-dai = <&spdif_tx5>;
+				};
+
+				simple-audio-card,codec {
+					sound-dai = <&dp1 1>;
+				};
+			};
+		};
+	};
+};

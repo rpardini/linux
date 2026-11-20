@@ -57,6 +57,23 @@ Fetched 2026-11-20 (`scripts/20-lore.sh all K30`): `lore/topics/K30/mbox/v1.mbx`
   - Next: send Tested-by for the OOB cache patch (with the user's OK); remove `drm.debug=0x100` from the edge entry when done.
 - armbian-build `extensions` 7.4 DT synced to local v2 (byte-identical again), as a separate commit "rockchip64-7.4: mekotronics-r58x-pro: DT fixes from review" (user's choice: not folded into the DT rework commit).
 
+## DP audio (2026-11-20)
+
+Works on edge 7.4-rc3 (Armbian, dw-dp v12) on **both** DP outputs, with a test overlay and a manual CRU mux workaround. User heard L/R correct on: full-size DP (dp1) → Dell U3415W DP input; Type-C DP alt mode (dp0) → Apple A2119 → Dell HDMI input. Baselines also heard: HDMI0 audio (I2S, dmac2) on edge and vendor; DP1 audio on the vendor kernel.
+
+- **DT (test overlay, [`rk3588-meko-r58x-pro/meko-dp-audio-test.dtso`](rk3588-meko-r58x-pro/meko-dp-audio-test.dtso), installed as `overlay/meko-dp-audio-test.dtbo` on the edge entry):** dp0/dp1 `#sound-dai-cells = <1>` (dw-dp v12 binding: 0 = I2S, 1 = S/PDIF; SoC dtsi still `<0>`, Sebastian fixes it separately), `spdif_tx2` (dp0) / `spdif_tx5` (dp1) okay, two `simple-audio-card`s with codec `<&dpN 1>` and **`simple-audio-card,mclk-fs = <512>`** (as the vendor DT's `rockchip,mclk-fs`). Without mclk-fs the S/PDIF mclk stays at 393 MHz (driver only sets the rate in `set_sysclk`).
+- Vendor DT routes DP audio the same way: `dp0-sound` = spdif_tx2 (disabled there), `dp1-sound` = spdif_tx5 (okay), mclk-fs 512.
+- **Kernel bug found (CRU frac mux left on the gated fractional divider):** after boot `CLKSEL_CON(126)` (spdif5 mux) = 1 and `CLKSEL_CON(124)[1:0]` (spdif2 mux) = 1, i.e. the fractional divider, while CCF reports parent `_src`. The S/PDIF block gets no usable mclk, never raises its DMA request (PL330 ch waits for peripheral 22 forever, dmac1 IRQs don't move), playback fails with EIO after ~2 s.
+  - Trigger (dyndbg `drivers/clk/rockchip/clk.c`): the CRU node's `assigned-clock-rates` sets PLL_AUPLL to 786432000; the PLL already runs at 786431991 and that's what it ends up at again. The clk core computes the subtree's new rates from the requested rate, so the spdif2/spdif5 fracs get **PRE_RATE_CHANGE** (14945847 → 14945848) and `rockchip_clk_frac_notifier_cb()` remuxes to frac; the actual rate doesn't change, so `clk_change_rate()` skips **POST_RATE_CHANGE** (`if (core->notifier_count && old_rate != core->rate)`) and the notifier never remuxes back. Log: two `event 1` at 0.0675 s with no `event 2`.
+  - The notifier also doesn't handle ABORT_RATE_CHANGE.
+  - Not reported upstream as far as lore shows (2026-11-20).
+  - Workaround used: `busybox devmem 0xfd7c04f0 32 0x00030000` (spdif2 mux → src) and `busybox devmem 0xfd7c04f8 32 0x00030000` (spdif5 mux → src).
+  - Fix candidates (not done): make PRE/POST symmetric in the core (POST when `old_rate != core->new_rate`), or have the Rockchip notifier not depend on POST (e.g. restore the mux when the rate turns out unchanged), or have the Rockchip PLL round to the rate it can actually produce. Affects any Rockchip frac+mux clock below a PLL whose assigned rate isn't exactly achievable.
+- Ruled out by comparing vendor vs edge register dumps during playback: S/PDIF registers (CFGR/DMACR/XFER identical with mclk-fs), PL330 config, SYS_GRF SOC_CON6/7/12 (set to vendor values, no effect).
+- **Don't poke SYS_GRF SOC_CON9 (0xfd58c324)** on this board: writing the vendor value 0x42 took both GMACs down (board alive, network dead until reboot).
+- Board state after the test: edge entry has the DP audio overlay, `drm.debug=0x100` and `dyndbg="file drivers/clk/rockchip/clk.c +p"` (backups `extlinux.conf.bak-20261120-pre-dp-audio`, `…-pre-clkdbg`).
+- Later: check DP audio on other boards with DP (same S/PDIF wiring on RK3588; the mux bug hits any RK3588 board).
+
 ## Series
 
 1. `dt-bindings: vendor-prefixes: Add Mekotronics`
