@@ -7,9 +7,10 @@
   - No public schematic exists.
 - Not in the series: the VK2C21 segment LCD (stays in Armbian only).
 
-## Resume here (paused 2026-11-20)
+## Resume here (sent v1 2026-11-20)
 
-- **State: prepared, ready to send.** The user sends it later; nothing is sent without an explicit OK.
+- **Sent v1 2026-11-20** by the user: `<20261120-rk3588-mekotronics-r58x-pro-v1-0-4e70c077c7b4@pardini.net>`, tag `sent/20261118-rk3588-mekotronics-r58x-pro-54cfda4bd8a4-v1`; b4 branch now at revision 2. Sashiko v1: 3 patches, no findings. Next: collect feedback with `scripts/20-lore.sh all K30`, then prepare v2 if needed.
+- **State before sending (for reference):**
   - Series: 3 patches + cover on `b4/rk3588-mekotronics-r58x-pro` (worktree `kernel-rk3588-meko-r58x-pro`), base torvalds master (v7.4-rc3 merge), user's SoB on all 3. Commit messages and cover approved by the user.
   - Checks (2026-11-20): `b4 prep --check` (only the MAINTAINERS warning), `CHECK_DTBS` clean, dt-check-style only documented exceptions, applies strictly on mmind `v7.5-armsoc/dts64` (see "Apply check on mmind"), `b4 send --dry-run` OK (4 messages, patatt-signed).
   - Recipients: To Rob Herring, Krzysztof Kozlowski, Conor Dooley, Heiko Stuebner; Cc devicetree, LKML, linux-arm-kernel, linux-rockchip, Sebastian Reichel.
