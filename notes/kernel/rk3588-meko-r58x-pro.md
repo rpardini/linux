@@ -9,7 +9,8 @@
 
 ## Resume here (sent v1 2026-11-20)
 
-- **Sent v1 2026-11-20** by the user: `<20261120-rk3588-mekotronics-r58x-pro-v1-0-4e70c077c7b4@pardini.net>`, tag `sent/20261118-rk3588-mekotronics-r58x-pro-54cfda4bd8a4-v1`; b4 branch now at revision 2. Sashiko v1: 3 patches, no findings. Next: collect feedback with `scripts/20-lore.sh all K30`, then prepare v2 if needed.
+- **Sent v1 2026-11-20** by the user: `<20261120-rk3588-mekotronics-r58x-pro-v1-0-4e70c077c7b4@pardini.net>`, tag `sent/20261118-rk3588-mekotronics-r58x-pro-54cfda4bd8a4-v1`; b4 branch now at revision 2. Next: collect feedback with `scripts/20-lore.sh all K30`, then prepare v2 if needed.
+- **v1 feedback (fetched 2026-11-20):** no human replies yet. Sashiko (patch 3/3 only) found 3 issues; the bot also mailed them to devicetree@, Rob, Conor (`<sashiko-outbox-224280@kernel.org>`). See "v1 review feedback" below.
 - **State before sending (for reference):**
   - Series: 3 patches + cover on `b4/rk3588-mekotronics-r58x-pro` (worktree `kernel-rk3588-meko-r58x-pro`), base torvalds master (v7.4-rc3 merge), user's SoB on all 3. Commit messages and cover approved by the user.
   - Checks (2026-11-20): `b4 prep --check` (only the MAINTAINERS warning), `CHECK_DTBS` clean, dt-check-style only documented exceptions, applies strictly on mmind `v7.5-armsoc/dts64` (see "Apply check on mmind"), `b4 send --dry-run` OK (4 messages, patatt-signed).
@@ -26,6 +27,27 @@
 - **Not tested / not described (cover says nothing, answer "per schematic/vendor DT" if asked):** USB-A devices, SATA (no disk), RS232/RS485, HDMI-in, mic (needs es8328 `slrck` driver fix), DP alt mode (cable was dead; test setup kept), microSD (dropped).
 - **Pending elsewhere:** Tested-by tags for Sebastian's series, see [`tested-by-pending.md`](tested-by-pending.md) (send only with the user's OK).
 - **Optional later:** es8328 slrck (0x2B) driver fix for capture; SD slot debug; DP alt mode with a working cable (`test/meko-dp-altmode-20261120`, extlinux `mainline-altmode`).
+
+## v1 review feedback
+
+Fetched 2026-11-20 (`scripts/20-lore.sh all K30`): `lore/topics/K30/mbox/v1.mbx` (cover, 3 patches, the Sashiko mail), `lore/topics/K30/sashiko/v1.md`. No human reviews yet (Rob's bot, Krzysztof, Conor, Heiko).
+
+| # | Source | Sev | Finding | Precedent / check | Proposed for v2 |
+|---|---|---|---|---|---|
+| S1 | Sashiko 3/3 | High | `&usb_host1_xhci` overrides `phys`/`phy-names` to u2phy only. dwc3 then never calls `phy_init()` on the usbdp_phy1 USB3 PHY, so `rk_udphy_usb3_phy_init()` never runs `rk_udphy_u3_port_disable()` (usb_grf usb3otg1_cfg: disable U3, PIPE clock from UTMI). Possible hang/SError on xHCI access. | Turing RK1 (`rk3588-turing-rk1.dtsi`, the only other `dp-lane-mux = <0 1 2 3>` board) keeps the default phys and only sets `maximum-speed = "high-speed"` on `usb_host0_xhci`. On our board (7.4-rc3 bleedingedge, series dtb), `fc400000.usb` probes with no SError, but that may depend on bootloader state. The Armbian DT had neither the override nor `maximum-speed`. | drop the `phys`/`phy-names` override, keep `dr_mode` + `maximum-speed`; retest that host1 USB 2.0 ports enumerate and DP still works (done locally) |
+| S2 | Sashiko 3/3 | Medium | `bt_wake_host_irq` (GPIO1_B0) has `pcfg_pull_up`, but the BT `host-wakeup` interrupt is `IRQ_TYPE_LEVEL_HIGH` (active high, idle low). A pull-up holds it in the active state. | Every other rk3588 board with a LEVEL_HIGH BT host-wakeup uses `pcfg_pull_down` (armsom-sige7, coolpi-4b, khadas-edge2, orangepi-5-pro). The pull-up came from the Armbian DT. | `pcfg_pull_down`; retest BT (done locally) |
+| S3 | Sashiko 3/3 | Low | `&hdmi0` `frl-enable-gpios` (GPIO4_B1) has no pinctrl; pull left to bootloader. | rock-5b-5bp-5t and orangepi-5-plus add `hdmi0_tx_on_h: hdmi0-tx-on-h` (`<4 RK_PB1 RK_FUNC_GPIO &pcfg_pull_none>`) and a full `pinctrl-0` (`hdmim0_tx0_cec/hpd/scl/sda` + tx_on_h). | add the pinctrl as rock-5b does (done locally) |
+
+**Local v2 (2026-11-20, user chose all three fixes; hold v2 until human review or ~1 week):**
+- Amended the DTS commit on `b4/rk3588-mekotronics-r58x-pro`. Backup: `backup/b4-meko-r58x-pro-pre-v2-sashiko-20261120`. Patches 1/3 and 2/3 are unchanged.
+- S1: dropped the `phys`/`phy-names` override. S2: `pcfg_pull_down`. S3: `hdmi { hdmi0_tx_on_h }` plus a full `pinctrl-0` on `&hdmi0`, names before pinctrl-0 (subarch practice).
+- Checks: CHECK_DTBS clean. dt-check-style shows +1 `property-order` (pinctrl-names before pinctrl-0, documented exception). `b4 prep --check` gives only the MAINTAINERS warning.
+- Board (dtb built with `-@`, installed as the `mainline` fdt; the v1 dtb was kept as `...r58x-pro.dtb.v1` on the board):
+  - Host1 xHCI (fc400000) now registers only a 480M roothub; v1 also had a stray 5000M SS roothub. So the U3 port is now disabled through the PHY, which confirms S1.
+  - DP-1 and HDMI-A-1 are connected. `frl-enable` is held by the driver. BT hci0 comes up with the BCM43752 patch loaded; GPIO1_B0 is pulled down.
+  - Follow-up with devices in all ports: the host1 USB 2.0 port enumerates a SanDisk Extreme Pro at 480M (bus 3, 38 MB/s direct read). BlueZ was installed on the board: the BT scan finds 5 devices and the `host_wake` IRQ fires.
+- Cover: "Changes in v2" filled in (3 Sashiko bullets). Backup before the cover edit: `backup/b4-meko-r58x-pro-pre-v2-cover-20261120`.
+- armbian-build `extensions` 7.4 DT is no longer byte-identical to the series. Sync it when v2 is final.
 
 ## Series
 
