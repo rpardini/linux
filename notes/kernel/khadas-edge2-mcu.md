@@ -19,7 +19,7 @@ Worktree `kernel-khadas-edge2-mcu`, branch `mainline/khadas-edge2-mcu` = v7.4-rc
 
 Checks: W=1 build of `khadas-mcu.o` / `khadas_mcu_fan.o`, CHECK_DTBS `rk3588s-khadas-edge2.dtb`, `dt_binding_check` `mfd/khadas,mcu.yaml`: clean. **Untested on hardware** (no Edge2 here).
 
-Armbian: `rk3588-1041-board-khadas-edge2-mcu.patch` (format-patch of the 4 commits) on `extensions`, commit "rockchip64-7.4: khadas-edge2: restore MCU fan control"; user cuts a separate PR (prtool) and asks Efe to look.
+Armbian: `rk3588-1041-board-khadas-edge2-mcu.patch` (format-patch of the 4 commits, then rewritten by `rewrite-kernel-patches`) on `extensions`, last commit "rockchip64-7.4: khadas-edge2: restore MCU fan control" (Armbian edge build for khadas-edge2: applies, dtb has the MCU node); user cuts a separate PR (prtool) and asks Efe to look.
 
 ## Next
 
