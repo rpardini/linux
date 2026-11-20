@@ -7,42 +7,24 @@
   - No public schematic exists.
 - Not in the series: the VK2C21 segment LCD (stays in Armbian only).
 
-## Resume here (paused 2026-11-18)
+## Resume here (paused 2026-11-20)
 
-- **Series state:** 3 patches plus the cover, all checks clean (`CHECK_DTBS`, dt-check-style with only the known exceptions). Changes made today, each with a `backup/b4-meko-r58x-pro-pre-*-20261118` branch:
-  1. WiFi PCIe reset → GPIO1_B4.
-  2. gmac0 `rgmii-rxid` + `tx_delay` 0x44, with a one-line comment.
-  3. Type-C source-only, 1.5 A PDO.
-  4. DP altmode dropped.
-  5. sdmmc dropped.
-- **Cover letter:** has paragraphs on dt-check-style, gmac0 and Type-C (reverse orientation and altmode). The working copy is in the session scratchpad (`meko-cover.txt`) and may be gone; to edit, regenerate it from the cover commit and use `GIT_EDITOR="cp <file>" b4 prep --edit-cover`.
-- **armbian-build `extensions`:** the 7.4 DT is byte-identical to the series. The user pushes and builds in CI.
-- **Board (192.168.66.175 end0 / .174 end1, root ssh):**
-  - The final series dtb (without sdmmc) is copied to `/boot/dtb/rockchip/` but **not booted yet**. The CI one is saved as `.dtb.orig-ci`.
-  - Tools installed: iperf3, evtest, alsa-utils, i2c-tools, gpiod, libdrm-tests (modetest), edid-decode.
-  - Helper scripts in `/root`: `dpwatch.sh`, `dpauto.sh` (start modetest on HPD), `usbwatch.sh`, `cdwatch.sh`, `gpiowatch.sh`.
-  - modetest needs stdin held open (`sleep N | modetest ...`).
-  - Use 1080p on the Dell DP monitor, not PIP mode.
-- **Plan agreed 2026-11-19 (board offline then):** when the board is back, rebuild the dtb, deploy it, then reboot (check the boot config first). Then run only **keys (evtest: volume dial, recovery adc key) + es8388 audio**. The other tests below are skipped. Cover (user, 2026-11-19): replace the itemised "Tested:" line with one short sentence covering only what was exercised. Precedent: YY3588 "tested on the board", Axon Lite/LubanCat 4 "boots to userspace...". Untested-but-enabled nodes (USB-A, SATA, RS232/RS485, HDMI-in) stay as they are and the cover says nothing about them. If a reviewer asks, answer "per schematic/vendor DT" (cf. Charkov on OPi 5 Pro v6: "Not tested, not needed, why bother?").
-- **Done 2026-11-19:** keys pass. Audio: headphones work; the mic needs the es8328 `slrck` driver fix (see Board tests). The cover's "Tested:" TODO is replaced by one sentence (eMMC + NVMe boot, both GbE, USB 3.0 over Type-C, HDMI/DP out, headphone audio, RTC, WiFi/BT, LEDs, keys); backup `backup/b4-meko-r58x-pro-pre-tested-20261119`. Cover approved by the user 2026-11-20 (trimmed; Type-C points to Sebastian's pending series [1]/[2]; tested line incl. GPU/NPU). Series also gained `mode-switch` (usbdp_phy0) and `&pd_npu` domain-supply on 2026-11-19/20. Commit messages OK'd and SoB added by the user (2026-11-20, `git rebase --signoff HEAD~3`). `b4 prep --check`: only the MAINTAINERS warning. `--auto-to-cc` (To: Rob, Krzysztof, Conor, Heiko; Cc: devicetree, LKML, linux-arm-kernel, linux-rockchip) + Cc Sebastian Reichel (user). `b4 send --dry-run`: 4 messages, patatt-signed, OK. **Ready to send; waiting for the user's explicit OK.**
-- **Remaining board tests (the user plugs things in, skipped per the plan above):**
-  - USB-A devices
-  - SATA disk
-  - evtest for the volume dial and the recovery adc key
-  - es8388 headphones/mic (aplay/arecord)
-  - RS232 (uart3) / RS485 (uart0)
-  - HDMI-in (v4l2)
-  - NVMe load
-  - Then fill the cover letter's "Tested:" line.
-- **Before sending:**
-  - The user reviews all wording and adds their SoB.
-  - `b4 prep --check`, `--auto-to-cc`, `b4 send --dry-run`.
-  - Check that the series still applies on `kernel-mmind/v7.5-armsoc/dts64`.
-  - Never send without an explicit OK.
-- **Optional later:**
-  - usbdp/dwc3 driver fix so the PHY re-inits on orientation change.
-  - SD slot debug (vendor kernel GPIO/regulator dump).
-  - DP altmode, if a USB-C DP sink turns up.
+- **State: prepared, ready to send.** The user sends it later; nothing is sent without an explicit OK.
+  - Series: 3 patches + cover on `b4/rk3588-mekotronics-r58x-pro` (worktree `kernel-rk3588-meko-r58x-pro`), base torvalds master (v7.4-rc3 merge), user's SoB on all 3. Commit messages and cover approved by the user.
+  - Checks (2026-11-20): `b4 prep --check` (only the MAINTAINERS warning), `CHECK_DTBS` clean, dt-check-style only documented exceptions, applies strictly on mmind `v7.5-armsoc/dts64` (see "Apply check on mmind"), `b4 send --dry-run` OK (4 messages, patatt-signed).
+  - Recipients: To Rob Herring, Krzysztof Kozlowski, Conor Dooley, Heiko Stuebner; Cc devicetree, LKML, linux-arm-kernel, linux-rockchip, Sebastian Reichel.
+  - To send: unlock gpg in the user's terminal, then `b4 send` in the worktree.
+- **Cover:** short version approved 2026-11-20: no-schematic source line, dt-check-style exceptions, GMAC0 rgmii-rxid, Type-C (source only; mode-switch per [2]; reverse orientation needs Sebastian's pending dwc3 glue [1] + usbdp part3 [2]; no DP alt mode), "Tested on the board" sentence (eMMC/NVMe boot, both GbE, USB 3.0 over Type-C, HDMI/DP out, headphone audio, RTC, WiFi/BT, LEDs, keys, GPU (Panfrost), NPU (Mesa Teflon)), and "I used Claude for cleanups, ordering and naming, according to recent series lore." To edit: write the cover text **without** the b4 tracking block to a file, then `GIT_EDITOR="cp <file>" b4 prep --edit-cover` (passing the tracking block duplicates it and breaks b4).
+- **DT changes since 2026-11-18:** `mode-switch` on usbdp_phy0; restored from the Armbian DT: `&pd_npu`/`&pd_gpu` domain-supply, pull-ups (pcie30x4-pwren, wifi-pwren, hdmirx-5v-det), WiFi host-wake pinctrl; names `led-0/1/2`, `dp-con`. See "Regression review" and the backup branches `backup/b4-meko-r58x-pro-pre-*-2026112*`.
+- **armbian-build `extensions`:** the 7.4 DT is byte-identical to the series. The Meko history was squashed to 8 commits (Sebastian's series + include prereq, DT+overlay `e476c5551`, board file `2531de4ca`). Not pushed; the user pushes and builds in CI.
+- **Board (192.168.66.175 end0 / .174 end1, root ssh):** boots the final series dtb via `/boot/extlinux/extlinux.conf` (`default mainline`; entries `vendor`, `mainline-altmode`, `vendor-dp0`; boot.scr as fallback). Kernel: Armbian bleedingedge 7.4-rc3 with Sebastian's series. Tools: iperf3, evtest, alsa-utils, i2c-tools, gpiod, libdrm-tests, edid-decode, kmscube, docker (NPU image). modetest/kmscube need stdin held open (`sleep N | ...`). kmscube has no connector option: force the other connector off via `/sys/class/drm/cardN-*/status`.
+- **Known, not ours:**
+  - `sdhci-dwcmshc fe2e0000.mmc: Can't reduce the clock below 52MHz in HS200/HS400 mode` (x3 at boot, `dmesg --level err`): harmless intermediate state during eMMC init (Shawn Lin). Downgraded to dev_dbg by "mmc: sdhci-of-dwcmshc: downgrade HS200/HS400 clock-reduce message to dev_dbg" (Jun Yan), applied by Ulf 2026-10-30, linux-next 199a09a191be; not in 7.4. User: no Armbian patch needed.
+  - fusb302 "IRQ: PD retry failed" spam at boot (also without Sebastian's series).
+  - On mmind dts64, CHECK_DTBS warns about vop resets for every rk3588 board (mmind f245313cd545).
+- **Not tested / not described (cover says nothing, answer "per schematic/vendor DT" if asked):** USB-A devices, SATA (no disk), RS232/RS485, HDMI-in, mic (needs es8328 `slrck` driver fix), DP alt mode (cable was dead; test setup kept), microSD (dropped).
+- **Pending elsewhere:** Tested-by tags for Sebastian's series, see [`tested-by-pending.md`](tested-by-pending.md) (send only with the user's OK).
+- **Optional later:** es8328 slrck (0x2B) driver fix for capture; SD slot debug; DP alt mode with a working cable (`test/meko-dp-altmode-20261120`, extlinux `mainline-altmode`).
 
 ## Series
 
