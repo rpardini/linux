@@ -53,7 +53,18 @@ Research mboxes: `lore/research/msm8998-cpr3/`.
   panel `port`/`rotation`). Expected for Armbian-only.
 - Cosmetic leftovers: panel Kconfig order/blank line (S6E3FA5/FC1), OnePlus dtsi node order.
 
+## Armbian (extensions branch, 2026-11-21)
+
+- Commits: "rpardini: drop 2023 oneplus5/msm8998 userpatches" (old files shadowed the new family), "bsp: usb-gadget-network:
+  optional ACM serial function", "msm8998: new family (edge 7.4) and OnePlus 5 (cheeseburger) board, WIP".
+- Image builds: `compile.sh build BOARD=oneplus-cheeseburger BRANCH=edge RELEASE=trixie BUILD_MINIMAL=yes EXPERT=yes`.
+  Outputs `*.boot_msm8998-oneplus-cheeseburger.img` (30MB), `*.rootfs.img` (1.5GB; armbian-firmware dropped, only the
+  OnePlus firmware repo is shipped: qcom/, qca/, ath10k/).
+- Firmware fetch runs inside the bsp hook (`fetch_sources_tools` only runs for u-boot artifacts).
+- `zz-update-abl-kernel` is generic (`packages/bsp/qcom-abl/`); kebab/elish still use their own copies.
+
 ## Resume here
 
-- Armbian side: family, board, config, patch export, ABL bootenv (non-A/B), firmware fetch, usb gadget ACM.
-- Then: build image, test on phone (`fastboot boot` first).
+- Test on the phone: `fastboot boot <boot img>` first; check ACM console (host ttyACM0), NCM 172.16.42.x + ssh,
+  UFS root (needs rootfs flashed to userdata), cpufreq (CPR3/OSM), WiFi, battery/charger, panel/GPU.
+- Then: drop `clk_ignore_unused` if display works without it; decide haptics/audio.
