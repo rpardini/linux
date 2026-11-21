@@ -19,9 +19,9 @@ On 11/14/26 02:01, Sebastian Reichel wrote:
 Thanks for the series! Tested on a Mekotronics R58X-Pro (RK3588,
 FUSB302, source-only Type-C) on v7.4-rc3, with usbdp part3 v18:
 
-- RTL8156 2.5G USB NIC, flipped while plugged in (reverse, normal,
-  reverse): 5 Gbps every time, iperf3 ~1.8 Gbit/s. Before the series,
-  reverse after a flip needed a dwc3 rebind.
+- RTL8156 2.5G USB NIC, flipped (reverse, normal, reverse): 5 Gbps every 
+  time, iperf3 ~1.8 Gbit/s. Before the series, reverse after a flip needed 
+  a dwc3 rebind.
 - Apple USB-C Digital AV Multiport adapter (A2119): a SanDisk Extreme
   Pro USB 3 stick on it reads ~220 MB/s at 5 Gbps while DP alt mode
   runs, in both orientations.
@@ -69,8 +69,7 @@ v7.4-rc3; the FUSB302 drives a source-only Type-C port there.
 
 Probe, attach/detach and flips in both orientations, PD to SRC_READY
 and DP alt mode entry all work, with an RTL8156 2.5G USB NIC and an
-Apple USB-C Digital AV Multiport adapter (A2119). The "PD retry failed"
-messages at boot also show up without the series.
+Apple USB-C Digital AV Multiport adapter (A2119).
 
 Tested-by: Ricardo Pardini <ricardo@pardini.net> # Mekotronics R58X-Pro (RK3588)
 ```
@@ -97,7 +96,7 @@ v7.4-rc3 (it needs 941e3acfb358 from linux-next to apply there):
   needs your "drm/connector: Cache out-of-band hotplug events".
 - Audio on both outputs to the Dell's speakers, over S/PDIF
   (spdif_tx2/tx5, simple-audio-card, mclk-fs 512, DAI 1). It also
-  needs a clk core fix I'll send separately: AUPLL's assigned rate
+  needs a clk core workaround I am not sure about: AUPLL's assigned rate
   rounds to the current rate, so the S/PDIF frac notifiers get
   PRE_RATE_CHANGE without POST_RATE_CHANGE and leave the muxes on the
   gated fractional divider; no DMA requests, EIO.
