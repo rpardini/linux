@@ -63,8 +63,51 @@ Research mboxes: `lore/research/msm8998-cpr3/`.
 - Firmware fetch runs inside the bsp hook (`fetch_sources_tools` only runs for u-boot artifacts).
 - `zz-update-abl-kernel` is generic (`packages/bsp/qcom-abl/`); kebab/elish still use their own copies.
 
+## Phone testing (2026-11-21, x13s root@192.168.66.19, phone serial c212167d)
+
+- Setup on x13s: adb, fastboot, mkbootimg, qdl 2.8 (trixie-backports) installed. Work dir `/root/op5/`:
+  - `boot.img`/`rootfs.img` (Armbian build), `unpacked/` (kernel+ramdisk from boot.img)
+  - `try.sh <name> "<extra cmdline>"` (env `KERNEL=`, `RAMDISK_OFFSET=`): repack + `fastboot boot`, watches 180s for
+    gadget (cdc_acm/ncm) or crashdump (05c6:900e); on crashdump auto `qdl ramdump` (KMSG, PMSG, DDRCS0_0 2GB, ...) into
+    `/root/op5/ramdump/<name>-<time>/`.
+  - kernels: `dbg-kernel` (patched, +simpledrm/pstore), `fix-kernel` (dbg + SMMU fix), `up-kernel` (plain v7.4-rc3),
+    `old-kernel`/`old2-kernel` (2023 6.1 branch; old2 = RPM builtin + simpledrm). All are Image.gz+dtb.
+- Phone: unlocked, non-A/B, boot 64MB, userdata ~53GB. Nothing flashed yet (only `fastboot boot`).
+- USB in Android was flaky through the hub; fastboot/crashdump enumerate fine.
+- Recovery from crashdump/EDL loop: unplug USB, hold Power 30-40s, Vol Up + Power, replug.
+- Crash dumps: OnePlus XBL exposes KMSG.txt at 0xac17e00c (downstream ramoops layout) = garbage for us; the real log is
+  in DDRCS0_0.BIN (phys 0x40000000+): `dd skip=0x6C000000` (ramoops at 0xac000000) + `strings`, from `Linux version 7.4`.
+  Only dump in ONE qdl run: any qdl ramdump session ends with a reset (lost one dump that way).
+
+### Findings
+
+1. All 7.4 kernels (patched, upstream) crashed into crashdump ~25s after `fastboot boot`, screen stayed on logo.
+   Cause (from RAM dump): MMSS SMMU probe puts MDSS into a translated domain while MDP still scans out the splash
+   (`arm-smmu cd00000.iommu: Unhandled context fault ... iova=0x9d638b00` inside cont_splash 0x9d400000) → firmware reset.
+   Fix committed on K33: "iommu/arm-smmu-qcom: Use identity domain for MSM8998 MDSS" (+`qcom,msm8998-mdss` in
+   qcom_smmu_client_of_match). NOT yet in armbian patch dir / not rebuilt via Armbian.
+2. With the fix (`fix-kernel`): no crash (no white LED), but screen goes black and no USB gadget within 180s.
+   Tried `pd_ignore_unused`, and `modprobe.blacklist=msm,panel_samsung_s6e3fa5`: still black, no gadget.
+3. Forced panic (`rdinit=/nonexistent rootdelay=20 panic=1 qcom_scm.download_mode=1`) rebooted to Android, not
+   crashdump: SCM download mode doesn't stick. Long-press Power on a hung kernel also went to Android.
+4. Ramdisk at 64MB (`RAMDISK_OFFSET=0x04000000`) didn't change the crash (before the fix). Image sizes: 6.1 13.8MiB,
+   7.4 17.9MiB, Armbian 7.4 27MiB (arm64 header image_size) — not proven relevant.
+5. 2023 6.1 kernel with the 7.4 initramfs: ABL stayed in fastboot (never left), or "powered by android" hang — not a valid
+   baseline (modules mismatch; RPM bits are modules there).
+- Caveat: test kernels are local builds (`kernel-msm8998/.build`, LOCALVERSION=-edge-msm8998, config = trimmed +
+  DRM=y/DRM_SIMPLEDRM/PSTORE) booted with the Armbian initramfs: module vermagic/CRCs may not match → initramfs modules
+  (rmi, i2c-qup, msm, gadget-related?) may fail to load. Gadget needs dwc3/qusb2/configfs (builtin) + regulators.
+
 ## Resume here
 
-- Test on the phone: `fastboot boot <boot img>` first; check ACM console (host ttyACM0), NCM 172.16.42.x + ssh,
-  UFS root (needs rootfs flashed to userdata), cpufreq (CPR3/OSM), WiFi, battery/charger, panel/GPU.
-- Then: drop `clk_ignore_unused` if display works without it; decide haptics/audio.
+- Get logs from the non-crashing hang (black screen, no gadget). Ideas:
+  - Match the downstream ramoops layout in the OP5 DT (console at 0xac17e000, size 0x40000; pmsg 0xac1bf000) so XBL's
+    KMSG.txt segment, or a later dump, contains our console; then trigger crashdump.
+  - Or make the kernel itself crash after ~30s in a way the firmware dumps (eg. the old SMMU fault: temporarily drop
+    the identity fix after initramfs? or a deliberate bad MMIO / `sysrq-trigger c` from an initramfs hook) to capture
+    the log in DDRCS0_0.
+  - Build the test kernel through Armbian instead (matching modules/initramfs), with the SMMU fix + simpledrm/pstore.
+- Check the USB gadget path in isolation: initramfs `usb-gadget` premount script, dwc3 peripheral mode, `/sys/class/udc`.
+- Also add `qcom,msm8998-mdss` fix + simpledrm/pstore config to armbian (`patch/kernel/archive/msm8998-7.4`, config).
+- Worktrees: `kernel-msm8998` (K33), `kernel-msm8998-up` (detached v7.4-rc3), `kernel-msm8998-old` (2023 6.1 branch;
+  `.config` has RPM builtin + simpledrm). The two extra worktrees can be removed when done.
