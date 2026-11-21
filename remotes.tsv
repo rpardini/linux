@@ -16,6 +16,9 @@ kernel	kernel-mediatek-aiot	https://gitlab.com/mediatek/aiot/bsp/linux.git	n
 kernel	kernel-canonical-linux-mtk	https://git.launchpad.net/~canonical-kernel/ubuntu/+source/linux-mtk/+git/jammy	n
 kernel	kernel-collabora-rk3588	https://gitlab.collabora.com/hardware-enablement/rockchip-3588/linux.git	y
 kernel	kernel-steev	https://github.com/steev/linux.git	n
+kernel	kernel-msm8998-mainline	git@github.com:msm8998-mainline/linux.git	n
+kernel	kernel-sdm660-mainline	git@github.com:sdm660-mainline/linux.git	n
+kernel	kernel-somainline	git@github.com:SoMainline/linux.git	n
 kernel	kernel-radxa	https://github.com/radxa/kernel.git	n
 kernel	kernel-friendlyarm-rk	https://github.com/friendlyarm/kernel-rockchip.git	n
 kernel	kernel-mixtile	https://github.com/mixtile/linux.git	n
